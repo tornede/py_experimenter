@@ -1,4 +1,5 @@
 import configparser
+import numpy as np
 
 from mysql.connector import connect, Error, ProgrammingError
 
@@ -78,9 +79,10 @@ def create_new_table_query(table_name: str, experiment_config) -> str:
     fields = experiment_config['keyfields'].split(',') + experiment_config['resultfields'].split(',')
     clean_fields = [field.replace(' ', '') for field in fields]
     typed_fields = [tuple(field.split(':')) if len(field.split(':')) == 2 else (field, 'VARCHAR(255)') for
-                       field in clean_fields]
+                    field in clean_fields]
 
-    typed_fields.extend([('status', 'VARCHAR(255)'), ('creation_date', 'VARCHAR(255)'), ('start_data', 'VARCHAR(255)'), ('end_data', 'VARCHAR(255)')])
+    typed_fields.extend([('status', 'VARCHAR(255)'), ('creation_date', 'VARCHAR(255)'), ('start_data', 'VARCHAR(255)'),
+                         ('end_data', 'VARCHAR(255)')])
 
     for field, datatype in typed_fields:
         query += '%s %s DEFAULT NULL, ' % (field, datatype)
@@ -89,3 +91,45 @@ def create_new_table_query(table_name: str, experiment_config) -> str:
     query = query[:-2] + ')'
 
     return query
+
+
+def fill_table(connection, table_name, config) -> None:
+    """
+    Fill table with all combination of keyfield values, if combiation does not exist.
+    :param connection: connection to database
+    :param table_name: name of the table
+    :param config: config file
+    """
+    experiment_config = config['EXPERIMENT']
+
+    keyfields = experiment_config['keyfields'].split(',')
+    clean_keyfields = [keyfield.replace(' ', '') for keyfield in keyfields]
+    keyfield_names = [keyfield.split(':')[0] for keyfield in clean_keyfields]
+
+    keyfield_data = []
+    for data_name in keyfield_names:
+        try:
+            data = experiment_config[data_name].split(',')
+            clean_data = [d.replace(' ', '') for d in data]
+            keyfield_data.append(clean_data)
+        except KeyError as err:
+            print('Missing value definitions for %s' % err)
+
+    # ref: https://www.kite.com/python/answers/how-to-get-all-element-combinations-of-two-numpy-arrays-in-python
+    combinations = np.array(np.meshgrid(*keyfield_data)).T.reshape(-1, len(keyfield_data))
+
+    cursor = connection.cursor()
+    columns_names = np.array2string(np.array(keyfield_names), separator=',')\
+        .replace('[', '')\
+        .replace(']', '')\
+        .replace("'", "")
+    cursor.execute("SELECT %s FROM %s" % (columns_names, table_name))
+    existing_rows = list(map(np.array2string, np.array(cursor.fetchall())))
+
+    for combination in combinations:
+        if str(combination) in existing_rows:
+            continue
+        values = np.array2string(combination, separator=',').replace('[', '').replace(']', '')
+        query = """INSERT INTO %s (%s) VALUES (%s)""" % (table_name, columns_names, values)
+        cursor.execute(query)
+        connection.commit()
