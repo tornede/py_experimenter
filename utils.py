@@ -1,17 +1,24 @@
 import configparser
+import sys
+
 import numpy as np
 
-from mysql.connector import connect, Error, ProgrammingError
+from mysql.connector import connect, ProgrammingError, DatabaseError
 
 
-def load_config():
+def load_config(path='config/configuration.cfg'):
     """
     Load and return configuration file
-    :return: Configuration file
+    :param path: path to the config file
+    :return: configuration file
     """
-
     config = configparser.ConfigParser()
-    config.read_file(open('config/configuration.cfg'))
+
+    try:
+        config.read_file(open(path))
+    except FileNotFoundError:
+        sys.exit('Configuration file missing! Please add file: %s' % path)
+
     return config
 
 
@@ -22,15 +29,14 @@ def get_mysql_connection_and_table_name(config):
     :param config: Configuration file with database and experiment information
     :return: mysql_connector and table name from the config file
     """
-
-    database_config = config['DATABASE']
-    host = database_config['host']
-    user = database_config['user']
-    database = database_config['database']
-    password = database_config['password']
-    table_name = database_config['table']
-
     try:
+        database_config = config['DATABASE']
+        host = database_config['host']
+        user = database_config['user']
+        database = database_config['database']
+        password = database_config['password']
+        table_name = database_config['table']
+
         connection = connect(
             host=host,
             user=user,
@@ -38,11 +44,18 @@ def get_mysql_connection_and_table_name(config):
             password=password
         )
 
-        create_table_if_not_exists(connection, table_name, config['EXPERIMENT'])
+    except KeyError as err:
+        sys.exit('Missing entries in the configuration file! (%s is missing)' % err)
 
-        return connection, table_name
-    except Error as e:
-        print(e)
+    except ProgrammingError:
+        sys.exit('Connection to the database %s could not be established. Please check your credentials.' % database)
+
+    except DatabaseError as err:
+        sys.exit(err.__context__)
+
+    create_table_if_not_exists(connection, table_name, config['EXPERIMENT'])
+
+    return connection, table_name
 
 
 def create_table_if_not_exists(connection, table_name, experiment_config) -> None:
@@ -119,9 +132,9 @@ def fill_table(connection, table_name, config) -> None:
     combinations = np.array(np.meshgrid(*keyfield_data)).T.reshape(-1, len(keyfield_data))
 
     cursor = connection.cursor()
-    columns_names = np.array2string(np.array(keyfield_names), separator=',')\
-        .replace('[', '')\
-        .replace(']', '')\
+    columns_names = np.array2string(np.array(keyfield_names), separator=',') \
+        .replace('[', '') \
+        .replace(']', '') \
         .replace("'", "")
     cursor.execute("SELECT %s FROM %s" % (columns_names, table_name))
     existing_rows = list(map(np.array2string, np.array(cursor.fetchall())))
