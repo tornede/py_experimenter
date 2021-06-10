@@ -1,7 +1,9 @@
 import configparser
+import re
 import sys
 
 import numpy as np
+import pandas as pd
 
 from mysql.connector import connect, ProgrammingError, DatabaseError
 
@@ -116,8 +118,7 @@ def fill_table(connection, table_name, config) -> None:
     experiment_config = config['EXPERIMENT']
 
     keyfields = experiment_config['keyfields'].split(',')
-    clean_keyfields = [keyfield.replace(' ', '') for keyfield in keyfields]
-    keyfield_names = [keyfield.split(':')[0] for keyfield in clean_keyfields]
+    keyfield_names = get_field_names(keyfields)
 
     keyfield_data = []
     for data_name in keyfield_names:
@@ -146,3 +147,31 @@ def fill_table(connection, table_name, config) -> None:
         query = """INSERT INTO %s (%s) VALUES (%s)""" % (table_name, columns_names, values)
         cursor.execute(query)
         connection.commit()
+
+def get_parameters_from_table(connection, table_name, config):
+    experiment_config = config['EXPERIMENT']
+
+    resultfields = experiment_config['resultfields'].split(',')
+    resultfield_names = get_field_names(resultfields)
+    resultfield_conditions = " IS NULL AND ".join(resultfield_names) + " IS NULL"
+
+    keyfields = experiment_config['keyfields'].split(',')
+    keyfield_names = get_field_names(keyfields)
+
+    cursor = connection.cursor()
+    query = "SELECT %s FROM %s WHERE %s" % (", ".join(keyfield_names), table_name, resultfield_conditions)
+
+    cursor.execute(query)
+    parameters = pd.DataFrame(cursor.fetchall())
+    parameters.columns = [i[0] for i in cursor.description]
+    cursor.close()
+
+    named_parameters = []
+    for parameter in parameters.iterrows():
+        named_parameters.append(re.sub(' +', '=', parameter[1].to_string()).replace('\n', ','))
+
+    return named_parameters
+
+def get_field_names(fields):
+    clean_fields = [field.replace(' ', '') for field in fields]
+    return [field.split(':')[0] for field in clean_fields]
