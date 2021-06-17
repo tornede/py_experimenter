@@ -133,3 +133,6 @@ dmypy.json
 
 # PyCharm
 .idea/
+
+# todo
+todo.md
