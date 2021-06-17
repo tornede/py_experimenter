@@ -2,29 +2,28 @@ import sys
 import utils
 from multiprocessing import Pool
 
+from database_connector import DatabaseConnector
 
 def run(approach):
-    config = utils.load_config()
-    connection, table_name = utils.get_mysql_connection_and_table_name(config)
-    utils.fill_table(connection, table_name, config)
+    config, table_name = utils.load_config_and_table_name('config/configuration.cfg')
+    dbconnector = DatabaseConnector(config)
+    dbconnector.create_table_if_not_exists()
+    dbconnector.fill_table()
 
-    parameters = utils.get_parameters_from_table(connection, table_name, config)
+    parameters = dbconnector.get_parameters_to_execute()
 
     try:
         cpus = int(config['EXPERIMENT']['cpu.max'])
     except ValueError:
         sys.exit('Error in config file: cpu.max must be integer')
-    results = []
+
     with Pool(cpus) as p:
-        results.append(p.map(approach, parameters))
+        print(p.map(approach, parameters))
 
     # TODO: Check results and write to database
-    # print(results)
 
 
 def own_function(parameter):
-    print("Run apporach with", parameter)
-
     result = [1, 2, 3]
     return result
 
