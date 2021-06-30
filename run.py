@@ -1,7 +1,7 @@
 import random
 import time
 
-from py_experimenter import PyExperimenter
+from base_folder.py_experimenter import PyExperimenter
 
 def own_function(parameter):
     pause = random.randrange(1, 10)
