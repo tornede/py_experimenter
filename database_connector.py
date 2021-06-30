@@ -51,7 +51,7 @@ class DatabaseConnector:
 
         typed_fields.extend(
             [('status', 'VARCHAR(255)'), ('creation_date', 'VARCHAR(255)'), ('start_date', 'VARCHAR(255)'),
-             ('end_date', 'VARCHAR(255)')])
+             ('end_date', 'VARCHAR(255)'), ('error', 'VARCHAR(255)')])
 
         for field, datatype in typed_fields:
             query += '%s %s DEFAULT NULL, ' % (field, datatype)
@@ -92,10 +92,13 @@ class DatabaseConnector:
         for combination in combinations:
             if str(combination) in existing_rows:
                 continue
-            values = np.array2string(combination, separator=',').replace('[', '').replace(']', '')
-            values += ",'created'"
-            values += ",'%s'" % time.strftime("%m/%d/%Y, %H:%M:%S")
-            self.write_to_database(columns_names, values)
+            values = list(combination)
+            #values = np.array2string(combination, separator=',').replace('[', '').replace(']', '')
+            values.append("created")
+            values.append("%s" % time.strftime("%m/%d/%Y, %H:%M:%S"))
+
+
+            self.write_to_database(columns_names.split(', '), values)
 
     def get_parameters_to_execute(self):
         experiment_config = self.config['EXPERIMENT']
@@ -109,6 +112,8 @@ class DatabaseConnector:
 
         self.dbcursor.execute(query)
         parameters = pd.DataFrame(self.dbcursor.fetchall())
+        if parameters.empty:
+            return []
         parameters.columns = [i[0] for i in self.dbcursor.description]
 
         named_parameters = []
@@ -117,7 +122,39 @@ class DatabaseConnector:
 
         return named_parameters
 
-    def write_to_database(self, column_names, values):
-        query = """INSERT INTO %s (%s) VALUES (%s)""" % (self.table_name, column_names, values)
+    def write_to_database(self, keys, values) -> None:
+        """
+        Write new row(s) to database
+        :param keys: Column names
+        :param values: Values for column names
+        """
+        keys = ", ".join(keys)
+        values = "'" + "', '".join(values) + "'"
+
+        query = """INSERT INTO %s (%s) VALUES (%s)""" % (self.table_name, keys, values)
+
         self.dbcursor.execute(query)
         self.connection.commit()
+
+    def update_database(self, keys, values, where):
+        """
+        Update existing row in database.
+        :param keys: Column names that need to be updated
+        :param values: New values for the specified columns
+        :param where: Condition which row to update
+        :return: 0 if error occurred, 1 otherwise.
+        """
+        new_data = ", ".join([f'{key}={value}' for key, value in zip(keys, values)])
+
+        query = """UPDATE %s SET %s WHERE %s""" % (self.table_name, new_data, where)
+
+        try:
+            self.dbcursor.execute(query)
+            self.connection.commit()
+        except DatabaseError as err:
+            # TODO: try except?
+            query = """UPDATE %s SET error="%s" WHERE %s""" % (self.table_name, err, where)
+            self.dbcursor.execute(query)
+            self.connection.commit()
+            return 0
+        return 1

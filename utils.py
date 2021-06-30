@@ -1,14 +1,10 @@
 import configparser
-import re
 import sys
 
-import numpy as np
-import pandas as pd
-
-from mysql.connector import connect, ProgrammingError, DatabaseError
+from mysql.connector import ProgrammingError
 
 
-def load_config_and_table_name(path):
+def load_config(path):
     """
     Load and return configuration file
     :param path: path to the config file
@@ -21,7 +17,7 @@ def load_config_and_table_name(path):
     except FileNotFoundError:
         sys.exit('Configuration file missing! Please add file: %s' % path)
 
-    return config, config['DATABASE']['table']
+    return config
 
 
 def extract_db_credentials_and_table_name_from_config(config):
@@ -45,36 +41,16 @@ def extract_db_credentials_and_table_name_from_config(config):
     except ProgrammingError:
         sys.exit('Connection to the database %s could not be established. Please check your credentials.' % database)
 
-    #create_table_if_not_exists(connection, table_name, config['EXPERIMENT'])
-
     return table_name, host, user, database, password
 
 
-def get_parameters_from_table(connection, table_name, config):
-    experiment_config = config['EXPERIMENT']
-
-    resultfields = experiment_config['resultfields'].split(',')
-    resultfield_names = get_field_names(resultfields)
-    resultfield_conditions = " IS NULL AND ".join(resultfield_names) + " IS NULL"
-
-    keyfields = experiment_config['keyfields'].split(',')
-    keyfield_names = get_field_names(keyfields)
-
-    cursor = connection.cursor()
-    query = "SELECT %s FROM %s WHERE %s" % (", ".join(keyfield_names), table_name, resultfield_conditions)
-
-    cursor.execute(query)
-    parameters = pd.DataFrame(cursor.fetchall())
-    parameters.columns = [i[0] for i in cursor.description]
-    cursor.close()
-
-    named_parameters = []
-    for parameter in parameters.iterrows():
-        named_parameters.append(re.sub(' +', '=', parameter[1].to_string()).replace('\n', ','))
-
-    return named_parameters
-
 def get_keyfields(config):
+    """
+    Extrect keyfieds from configuration file, clean them by removing all blank spaces and return a list of names and a list of keyfield data
+    :param config: Configuration file
+    :return: List of cleaned keyfield names and a list of keyfield data
+    """
+
     experiment_config = config['EXPERIMENT']
 
     keyfields = experiment_config['keyfields'].split(',')
@@ -87,10 +63,16 @@ def get_keyfields(config):
             clean_data = [d.replace(' ', '') for d in data]
             keyfield_data.append(clean_data)
         except KeyError as err:
-            print('Missing value definitions for %s' % err)
+            sys.exit('Missing value definitions for %s' % err)
 
     return keyfield_names, keyfield_data
 
+
 def get_field_names(fields):
+    """
+    Clean field names
+    :param fields: List of field names
+    :return: Cleaned list of field names
+    """
     clean_fields = [field.replace(' ', '') for field in fields]
     return [field.split(':')[0] for field in clean_fields]
