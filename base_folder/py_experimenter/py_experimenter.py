@@ -3,16 +3,19 @@ import base_folder.py_experimenter.utils as utils
 import concurrent.futures
 from datetime import datetime
 from base_folder.py_experimenter.database_connector import DatabaseConnector
+from base_folder.py_experimenter.result_processor import ResultProcessor
 
 
 class PyExperimenter:
 
-    def __init__(self, config_path='config/configuration.cfg') -> None:
+    def __init__(self, config_path='config/configuration.cfg', print_log=True) -> None:
         """
         Load configuration and connect to the database.
 
         :param config_path: Path to the configuration file.
         """
+
+        self.print_log = print_log
 
         # load and check config for mandatory fields
         self._config = utils.load_config(config_path)
@@ -24,11 +27,13 @@ class PyExperimenter:
         # connect to database
         self._dbconnector = DatabaseConnector(self._config)
 
+        self.log('initialized and connected to database')
+
     def _valid_configuration(self):
         if not {'host', 'user', 'database', 'password', 'table'}.issubset(set(self._config.options('DATABASE'))):
             return False
-        if not {'cpu.max', 'mem.max', 'datapath', 'numberoffolds', 'totaltimeout', 'keyfields',
-                'resultfields'}.issubset(set(self._config.options('EXPERIMENT'))):
+        if not {'cpu.max', 'keyfields',
+                'resultfields'}.issubset(set(self._config.options('PY_EXPERIMENTER'))):
             return False
 
         return True
@@ -39,9 +44,11 @@ class PyExperimenter:
         the table, only parameter combinations for which there is no entry in the database will be added. The status
         of this parameter combination is set to 'created'.
         """
-
+        self.log("create table if not exist")
         self._dbconnector.create_table_if_not_exists()
+        self.log("fill table with parameters")
         self._dbconnector.fill_table()
+        self.log("parameters successfully inserted to table")
 
     def execute(self, approach) -> None:
         """
@@ -51,9 +58,10 @@ class PyExperimenter:
         :param approach:
         """
 
+        self.log("start execution of approaches...")
         # load parameters (approach input) and results fields (approach output)
         parameters = self._dbconnector.get_parameters_to_execute()
-        result_fields = utils.get_field_names(self._config['EXPERIMENT']['resultfields'].split(', '))
+        result_fields = utils.get_field_names(self._config['PY_EXPERIMENTER']['resultfields'].split(', '))
 
         # update status to 'running' and set start date
         # TODO: not working
@@ -65,16 +73,19 @@ class PyExperimenter:
 
         # read cpu.max
         try:
-            cpus = int(self._config['EXPERIMENT']['cpu.max'])
+            cpus = int(self._config['PY_EXPERIMENTER']['cpu.max'])
         except ValueError:
             sys.exit('Error in config file: cpu.max must be integer')
 
         # execute approach
         with concurrent.futures.ProcessPoolExecutor(max_workers=cpus) as executor:
-
             # execute instances parallel
-            result_processors = ['test' for _ in parameters]
+            result_processors = [
+                ResultProcessor(dbconnector=self._dbconnector, condition=p, result_fields=result_fields) for p in
+                parameters]
+
             results = executor.map(approach, parameters, result_processors)
+            self.log("execution finished")
 
             # update status to 'done', set end date and write result or error in database
             for i, result in enumerate(results):
@@ -100,3 +111,8 @@ class PyExperimenter:
 
                 # everything was correct - set status to 'done'
                 self._dbconnector.update_database(['status', 'end_date'], ["'done'", time], conditions)
+        self.log("all executions finished")
+
+    def log(self, msg: str):
+        if self.print_log:
+            print("PyExperimenter:", msg)
