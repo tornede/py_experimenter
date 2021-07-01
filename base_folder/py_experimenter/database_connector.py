@@ -4,16 +4,14 @@ from mysql.connector import connect, ProgrammingError, DatabaseError
 from datetime import datetime
 import pandas as pd
 import re
-
-import utils
-from utils import extract_db_credentials_and_table_name_from_config
+import base_folder.py_experimenter.utils as utils
 
 
 class DatabaseConnector:
 
     def __init__(self, config):
         self.config = config
-        self.table_name, host, user, database, password = extract_db_credentials_and_table_name_from_config(config)
+        self.table_name, host, user, database, password = utils.extract_db_credentials_and_table_name_from_config(config)
 
         try:
             self.connection = connect(

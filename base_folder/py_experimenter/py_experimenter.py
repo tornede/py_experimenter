@@ -1,8 +1,8 @@
 import sys
-import utils
+import base_folder.py_experimenter.utils as utils
 import concurrent.futures
 from datetime import datetime
-from database_connector import DatabaseConnector
+from base_folder.py_experimenter.database_connector import DatabaseConnector
 
 
 class PyExperimenter:
