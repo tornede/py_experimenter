@@ -51,7 +51,7 @@ def get_keyfields(config):
     :return: List of cleaned keyfield names and a list of keyfield data
     """
 
-    experiment_config = config['EXPERIMENT']
+    experiment_config = config['PY_EXPERIMENTER']
 
     keyfields = experiment_config['keyfields'].split(',')
     keyfield_names = get_field_names(keyfields)

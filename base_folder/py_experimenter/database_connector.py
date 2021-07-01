@@ -33,7 +33,7 @@ class DatabaseConnector:
         :param table_name: name of the table from the config
         :param experiment_config: experiment section of the config file
         """
-        experiment_config = self.config['EXPERIMENT']
+        experiment_config = self.config['PY_EXPERIMENTER']
         self.dbcursor.execute('SHOW TABLES')
         table_exists = False
         for table in self.dbcursor:
@@ -101,7 +101,7 @@ class DatabaseConnector:
             self.write_to_database(columns_names.split(', '), values)
 
     def get_parameters_to_execute(self) -> List[dict]:
-        experiment_config = self.config['EXPERIMENT']
+        experiment_config = self.config['PY_EXPERIMENTER']
 
         execute_condition = "status='created'"
 

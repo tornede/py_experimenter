@@ -27,8 +27,7 @@ class PyExperimenter:
     def _valid_configuration(self):
         if not {'host', 'user', 'database', 'password', 'table'}.issubset(set(self._config.options('DATABASE'))):
             return False
-        if not {'cpu.max', 'mem.max', 'datapath', 'numberoffolds', 'totaltimeout', 'keyfields',
-                'resultfields'}.issubset(set(self._config.options('EXPERIMENT'))):
+        if not {'cpu.max', 'keyfields', 'resultfields'}.issubset(set(self._config.options('PY_EXPERIMENTER'))):
             return False
 
         return True
@@ -53,7 +52,7 @@ class PyExperimenter:
 
         # load parameters (approach input) and results fields (approach output)
         parameters = self._dbconnector.get_parameters_to_execute()
-        result_fields = utils.get_field_names(self._config['EXPERIMENT']['resultfields'].split(', '))
+        result_fields = utils.get_field_names(self._config['PY_EXPERIMENTER']['resultfields'].split(', '))
 
         # update status to 'running' and set start date
         # TODO: not working
@@ -65,7 +64,7 @@ class PyExperimenter:
 
         # read cpu.max
         try:
-            cpus = int(self._config['EXPERIMENT']['cpu.max'])
+            cpus = int(self._config['PY_EXPERIMENTER']['cpu.max'])
         except ValueError:
             sys.exit('Error in config file: cpu.max must be integer')
 
