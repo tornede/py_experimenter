@@ -73,7 +73,8 @@ class PyExperimenter:
         with concurrent.futures.ProcessPoolExecutor(max_workers=cpus) as executor:
 
             # execute instances parallel
-            results = executor.map(approach, parameters)
+            result_processors = ['test' for _ in parameters]
+            results = executor.map(approach, parameters, result_processors)
 
             # update status to 'done', set end date and write result or error in database
             for i, result in enumerate(results):

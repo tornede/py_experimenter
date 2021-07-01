@@ -1,4 +1,6 @@
 import sys
+from typing import List
+
 import numpy as np
 from mysql.connector import connect, ProgrammingError, DatabaseError
 from datetime import datetime
@@ -98,7 +100,7 @@ class DatabaseConnector:
 
             self.write_to_database(columns_names.split(', '), values)
 
-    def get_parameters_to_execute(self):
+    def get_parameters_to_execute(self) -> List[dict]:
         experiment_config = self.config['EXPERIMENT']
 
         execute_condition = "status='created'"
@@ -114,9 +116,7 @@ class DatabaseConnector:
             return []
         parameters.columns = [i[0] for i in self.dbcursor.description]
 
-        named_parameters = []
-        for parameter in parameters.iterrows():
-            named_parameters.append(re.sub(' +', '=', parameter[1].to_string()).replace('\n', ','))
+        named_parameters = [dict(parameter.to_dict()) for _, parameter in parameters.iterrows()]
 
         return named_parameters
 

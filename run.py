@@ -4,8 +4,9 @@ import time
 from base_folder.py_experimenter.py_experimenter import PyExperimenter
 
 
-def own_function(parameter):
-    print(parameter)
+def own_function(parameters: dict, result_processor):
+    print(parameters)
+    print(result_processor)
     pause = random.randrange(1, 10)
     print("start", pause)
     time.sleep(pause)
