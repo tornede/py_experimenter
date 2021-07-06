@@ -55,7 +55,7 @@ class PyExperimenter:
         result_fields = utils.get_field_names(self._config['PY_EXPERIMENTER']['resultfields'].split(', '))
 
         # update status to 'running' and set start date
-        # TODO: not working
+        # TODO: not working (and add machine number)
         # time = datetime.now()
         # time = "'%s'" % time.strftime("%m/%d/%Y, %H:%M:%S")
         # for parameter in parameters:
