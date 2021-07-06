@@ -1,3 +1,4 @@
+import logging
 import sys
 from typing import List
 
@@ -75,15 +76,36 @@ class DatabaseConnector:
         :param config: config file
 
         """
-        keyfield_names, keyfield_data = utils.get_keyfields(self.config)
+
         # ref: https://www.kite.com/python/answers/how-to-get-all-element-combinations-of-two-numpy-arrays-in-python
+        keyfield_names = utils.get_keyfields(self.config)
 
         if own_parameters is None:
+            keyfield_data = utils.get_keyfield_data(self.config)
             combinations = np.array(np.meshgrid(*keyfield_data)).T.reshape(-1, len(keyfield_data))
             combinations = [dict(zip(keyfield_names, combination)) for combination in combinations]
         else:
             combinations = own_parameters
-        # print(dictionary)
+
+        # check if combinations exist
+        if len(combinations) == 0:
+            return
+
+        if own_parameters is not None:
+            _number_of_keys = 0
+            for key in combinations[0].keys():
+
+                if key not in keyfield_names:
+                    logging.error(f"Keyfield '{key}' is not defined in configuration file")
+                    sys.exit()
+
+                _number_of_keys += 1
+
+            if _number_of_keys != len(keyfield_names):
+                logging.error(f"{len(keyfield_names) - _number_of_keys} keyfield(s) missing! Please check passed parameters contain all keyfields defined in the configuration file.")
+                sys.exit()
+
+
 
         columns_names = np.array2string(np.array(keyfield_names), separator=',') \
             .replace('[', '') \

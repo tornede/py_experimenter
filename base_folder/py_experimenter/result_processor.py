@@ -110,7 +110,6 @@ class ResultProcessor:
     def _valid_result_fields(self, result_fields):
         for result_field in result_fields:
             if result_field not in self._result_fields:
-                # result field name is not defined in config
-                # TODO: return this to the user?
+                # result field name is not defined in configuration
                 return False
         return True

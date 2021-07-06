@@ -1,4 +1,5 @@
 import configparser
+import logging
 import sys
 
 from mysql.connector import ProgrammingError
@@ -56,6 +57,20 @@ def get_keyfields(config):
     keyfields = experiment_config['keyfields'].split(',')
     keyfield_names = get_field_names(keyfields)
 
+    return keyfield_names
+
+def get_keyfield_data(config):
+    """
+    Extrect keyfieds from configuration file, clean them by removing all blank spaces and return a list of names and a list of keyfield data
+    :param config: Configuration file
+    :return: List of cleaned keyfield names and a list of keyfield data
+    """
+
+    experiment_config = config['PY_EXPERIMENTER']
+
+    keyfields = experiment_config['keyfields'].split(',')
+    keyfield_names = get_field_names(keyfields)
+
     keyfield_data = []
     for data_name in keyfield_names:
         try:
@@ -63,9 +78,10 @@ def get_keyfields(config):
             clean_data = [d.replace(' ', '') for d in data]
             keyfield_data.append(clean_data)
         except KeyError as err:
-            sys.exit('Missing value definitions for %s' % err)
+            logging.error("Missing value definitions for %s. Add it to the configuration file or provide own parameters by using fill_talbe(own_parameters=...)." % err)
+            sys.exit()
 
-    return keyfield_names, keyfield_data
+    return keyfield_data
 
 
 def get_field_names(fields):
