@@ -6,7 +6,6 @@ import numpy as np
 from mysql.connector import connect, ProgrammingError, DatabaseError
 from datetime import datetime
 import pandas as pd
-import re
 import base_folder.py_experimenter.utils as utils
 
 
@@ -126,7 +125,7 @@ class DatabaseConnector:
             values.append("created")
             values.append("%s" % time.strftime("%m/%d/%Y, %H:%M:%S"))
 
-            self.write_to_database(columns_names.split(', '), values)
+            self._write_to_database(columns_names.split(', '), values)
 
     def get_parameters_to_execute(self) -> List[dict]:
         experiment_config = self.config['PY_EXPERIMENTER']
@@ -148,7 +147,7 @@ class DatabaseConnector:
 
         return named_parameters
 
-    def write_to_database(self, keys, values) -> None:
+    def _write_to_database(self, keys, values) -> None:
         """
         Write new row(s) to database
         :param keys: Column names
@@ -161,26 +160,3 @@ class DatabaseConnector:
 
         self.dbcursor.execute(query)
         self.connection.commit()
-
-    def update_database(self, keys, values, where):
-        """
-        Update existing row in database.
-        :param keys: Column names that need to be updated
-        :param values: New values for the specified columns
-        :param where: Condition which row to update
-        :return: 0 if error occurred, 1 otherwise.
-        """
-        new_data = ", ".join([f'{key}={value}' for key, value in zip(keys, values)])
-
-        query = """UPDATE %s SET %s WHERE %s""" % (self.table_name, new_data, where)
-
-        try:
-            self.dbcursor.execute(query)
-            self.connection.commit()
-        except DatabaseError as err:
-            # TODO: try except?
-            query = """UPDATE %s SET error="%s" WHERE %s""" % (self.table_name, err, where)
-            self.dbcursor.execute(query)
-            self.connection.commit()
-            return 0
-        return 1

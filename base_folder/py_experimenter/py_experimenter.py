@@ -122,6 +122,7 @@ def execution_wrapper(approach, parameters, result_processor: ResultProcessor):
         result_processor._set_machine(os.getpid())
 
         # execute user approach
+        logging.debug(f"Start of approach on process {os.getpid()}")
         approach(parameters, result_processor)
 
         # set status to done

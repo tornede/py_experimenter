@@ -46,12 +46,6 @@ def extract_db_credentials_and_table_name_from_config(config):
 
 
 def get_keyfields(config):
-    """
-    Extrect keyfieds from configuration file, clean them by removing all blank spaces and return a list of names and a list of keyfield data
-    :param config: Configuration file
-    :return: List of cleaned keyfield names and a list of keyfield data
-    """
-
     experiment_config = config['PY_EXPERIMENTER']
 
     keyfields = experiment_config['keyfields'].split(',')
@@ -60,12 +54,6 @@ def get_keyfields(config):
     return keyfield_names
 
 def get_keyfield_data(config):
-    """
-    Extrect keyfieds from configuration file, clean them by removing all blank spaces and return a list of names and a list of keyfield data
-    :param config: Configuration file
-    :return: List of cleaned keyfield names and a list of keyfield data
-    """
-
     experiment_config = config['PY_EXPERIMENTER']
 
     keyfields = experiment_config['keyfields'].split(',')
