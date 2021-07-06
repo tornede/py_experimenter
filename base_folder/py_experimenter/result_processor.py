@@ -104,7 +104,4 @@ class ResultProcessor:
                 return False
         return True
 
-#d = dict(host='isys-otfml.cs.upb.de', user='lgehring', database='lgehring',password='hUqU2XJvZ4wzCiE')
-#ResultProcessor(d, None,None)
-
 

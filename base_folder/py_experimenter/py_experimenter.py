@@ -1,5 +1,7 @@
 import os
 import sys
+from typing import List
+
 import base_folder.py_experimenter.utils as utils
 import concurrent.futures
 from base_folder.py_experimenter.database_connector import DatabaseConnector
@@ -38,7 +40,9 @@ class PyExperimenter:
 
         return True
 
-    def fill_table(self) -> None:
+
+
+    def fill_table(self, own_paramerters: List[dict]=None) -> None:
         """
         Create (if not exist) and fill table in database with parameter combinations. If there are already entries in
         the table, only parameter combinations for which there is no entry in the database will be added. The status
@@ -47,7 +51,7 @@ class PyExperimenter:
         self.log("create table if not exist")
         self._dbconnector.create_table_if_not_exists()
         self.log("fill table with parameters")
-        self._dbconnector.fill_table()
+        self._dbconnector.fill_table(own_parameters=own_paramerters)
         self.log("parameters successfully inserted to table")
 
     def execute(self, approach) -> None:
@@ -88,6 +92,7 @@ class PyExperimenter:
             print("PyExperimenter:", msg)
 
 def execute_approach(approach, parameters, result_processor: ResultProcessor):
+    # TODO: Check if instance is on 'created'
     result_processor._change_status('running')
     result_processor._set_machine(os.getpid())
     approach(parameters, result_processor)

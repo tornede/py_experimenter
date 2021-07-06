@@ -13,7 +13,8 @@ class DatabaseConnector:
 
     def __init__(self, config):
         self.config = config
-        self.table_name, host, user, database, password = utils.extract_db_credentials_and_table_name_from_config(config)
+        self.table_name, host, user, database, password = utils.extract_db_credentials_and_table_name_from_config(
+            config)
 
         try:
             self.connection = connect(
@@ -50,7 +51,8 @@ class DatabaseConnector:
                         field in clean_fields]
 
         typed_fields.extend(
-            [('status', 'VARCHAR(255)'), ('machine', 'INTEGER'), ('creation_date', 'VARCHAR(255)'), ('start_date', 'VARCHAR(255)'),
+            [('status', 'VARCHAR(255)'), ('machine', 'INTEGER'), ('creation_date', 'VARCHAR(255)'),
+             ('start_date', 'VARCHAR(255)'),
              ('end_date', 'VARCHAR(255)'), ('error', 'VARCHAR(255)')])
 
         for field, datatype in typed_fields:
@@ -65,8 +67,7 @@ class DatabaseConnector:
             unkown_datatype = str(err.__context__).split("'")[1].split(" ")[0]
             print("Error: '%s' is unknown or not allowed" % unkown_datatype)
 
-
-    def fill_table(self) -> None:
+    def fill_table(self, own_parameters=None) -> None:
         """
         Fill table with all combination of keyfield values, if combiation does not exist.
         :param connection: connection to database
@@ -76,7 +77,13 @@ class DatabaseConnector:
         """
         keyfield_names, keyfield_data = utils.get_keyfields(self.config)
         # ref: https://www.kite.com/python/answers/how-to-get-all-element-combinations-of-two-numpy-arrays-in-python
-        combinations = np.array(np.meshgrid(*keyfield_data)).T.reshape(-1, len(keyfield_data))
+
+        if own_parameters is None:
+            combinations = np.array(np.meshgrid(*keyfield_data)).T.reshape(-1, len(keyfield_data))
+            combinations = [dict(zip(keyfield_names, combination)) for combination in combinations]
+        else:
+            combinations = own_parameters
+        # print(dictionary)
 
         columns_names = np.array2string(np.array(keyfield_names), separator=',') \
             .replace('[', '') \
@@ -91,13 +98,11 @@ class DatabaseConnector:
 
         time = datetime.now()
         for combination in combinations:
-            if str(combination) in existing_rows:
+            if ("['" + "' '".join(str(combination.values())) + "']") in existing_rows:
                 continue
-            values = list(combination)
-            #values = np.array2string(combination, separator=',').replace('[', '').replace(']', '')
+            values = list(combination.values())
             values.append("created")
             values.append("%s" % time.strftime("%m/%d/%Y, %H:%M:%S"))
-
 
             self.write_to_database(columns_names.split(', '), values)
 
@@ -128,7 +133,7 @@ class DatabaseConnector:
         :param values: Values for column names
         """
         keys = ", ".join(keys)
-        values = "'" + "', '".join(values) + "'"
+        values = "'" + "', '".join([str(value) for value in values]) + "'"
 
         query = """INSERT INTO %s (%s) VALUES (%s)""" % (self.table_name, keys, values)
 
