@@ -1,7 +1,7 @@
+import os
 import sys
 import base_folder.py_experimenter.utils as utils
 import concurrent.futures
-from datetime import datetime
 from base_folder.py_experimenter.database_connector import DatabaseConnector
 from base_folder.py_experimenter.result_processor import ResultProcessor
 
@@ -63,14 +63,6 @@ class PyExperimenter:
         parameters = self._dbconnector.get_parameters_to_execute()
         result_fields = utils.get_field_names(self._config['PY_EXPERIMENTER']['resultfields'].split(', '))
 
-        # update status to 'running' and set start date
-        # TODO: not working (and add machine number)
-        # time = datetime.now()
-        # time = "'%s'" % time.strftime("%m/%d/%Y, %H:%M:%S")
-        # for parameter in parameters:
-        #    conditions = parameter.replace(",", "' AND ").replace("=", "='") + "'"
-        #    self._dbconnector.update_database(['status', 'start_date'], ["'running'", time], conditions)
-
         # read cpu.max
         try:
             cpus = int(self._config['PY_EXPERIMENTER']['cpu.max'])
@@ -84,38 +76,19 @@ class PyExperimenter:
         with concurrent.futures.ProcessPoolExecutor(max_workers=cpus) as executor:
             # execute instances parallel
             result_processors = [ResultProcessor(dbcredentials=dbcredentials, table_name=table_name, condition=p, result_fields=result_fields) for p in parameters]
-            #result_processors = [ResultProcessor() for p in parameters]
-            #result_processors = ["Test" for p in parameters]
+            approaches = [approach for _ in parameters]
 
-            results = executor.map(approach, parameters, result_processors)
+            executor.map(execute_approach, approaches, parameters, result_processors)
             self.log("execution finished")
 
-            # update status to 'done', set end date and write result or error in database
-            for i, result in enumerate(results):
-
-                # check number of returned result fields
-                if len(result) != len(result_fields):
-                    print("Wrong number of returned values!")
-                    continue
-
-                result = [f"'{v}'" if isinstance(v, str) else str(v) for v in result]
-
-                conditions = parameters[i].replace(",", "' AND ").replace("=", "='") + "'"
-
-                # finish date
-                time = datetime.now()
-                time = "'%s'" % time.strftime("%m/%d/%Y, %H:%M:%S")
-
-                # write result to database
-                if not self._dbconnector.update_database(result_fields, result, conditions):
-                    # write error to database and set status to 'error
-                    self._dbconnector.update_database(['status', 'end_date'], ["'error'", time], conditions)
-                    continue
-
-                # everything was correct - set status to 'done'
-                self._dbconnector.update_database(['status', 'end_date'], ["'done'", time], conditions)
         self.log("all executions finished")
 
     def log(self, msg: str):
         if self.print_log:
             print("PyExperimenter:", msg)
+
+def execute_approach(approach, parameters, result_processor: ResultProcessor):
+    result_processor._change_status('running')
+    result_processor._set_machine(os.getpid())
+    approach(parameters, result_processor)
+    result_processor._change_status('done')

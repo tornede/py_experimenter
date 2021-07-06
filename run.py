@@ -5,7 +5,7 @@ from base_folder.py_experimenter.py_experimenter import PyExperimenter
 from base_folder.py_experimenter.result_processor import ResultProcessor
 
 
-def own_function(parameters, result_processor):
+def own_function(parameters, result_processor: ResultProcessor):
     print(parameters)
     #print(result_processor)
     pause = random.randrange(1, 10)
@@ -19,7 +19,6 @@ def own_function(parameters, result_processor):
         result[r] = pause
 
     result_processor.process_results(result)
-    #return result
 
 
 experimenter = PyExperimenter()
