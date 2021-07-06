@@ -22,7 +22,6 @@ class PyExperimenter:
         # load and check config for mandatory fields
         self._config = utils.load_config(config_path)
         if not self._valid_configuration():
-            # TODO: how to end?
             logging.error("Configuration file invalid")
             sys.exit()
 
@@ -99,7 +98,6 @@ class PyExperimenter:
 
 
 def execute_approach(approach, parameters, result_processor: ResultProcessor):
-    # TODO: Check if instance is on 'created'
     if not result_processor._not_executed_yet():
         return
 
