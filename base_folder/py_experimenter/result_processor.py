@@ -111,7 +111,7 @@ class ResultProcessor:
             cursor.execute(query)
             for result in cursor:
                 if result[0] == 'created':
-                    executed = True
+                    not_executed = True
 
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -122,7 +122,7 @@ class ResultProcessor:
                 print(err)
         else:
             self._cnx.close()
-            return executed
+            return not_executed
 
 
     def _valid_result_fields(self, result_fields):
