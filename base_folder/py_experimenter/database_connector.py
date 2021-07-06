@@ -65,6 +65,7 @@ class DatabaseConnector:
             unkown_datatype = str(err.__context__).split("'")[1].split(" ")[0]
             print("Error: '%s' is unknown or not allowed" % unkown_datatype)
 
+
     def fill_table(self) -> None:
         """
         Fill table with all combination of keyfield values, if combiation does not exist.
