@@ -100,6 +100,9 @@ class PyExperimenter:
 
 def execute_approach(approach, parameters, result_processor: ResultProcessor):
     # TODO: Check if instance is on 'created'
+    if not result_processor._not_executed_yet():
+        return
+
     result_processor._change_status('running')
     result_processor._set_machine(os.getpid())
     approach(parameters, result_processor)
