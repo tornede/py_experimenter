@@ -98,7 +98,7 @@ class DatabaseConnector:
 
         time = datetime.now()
         for combination in combinations:
-            if ("['" + "' '".join(str(combination.values())) + "']") in existing_rows:
+            if ("['" + "' '".join([str(value) for value in combination.values()]) + "']") in existing_rows:
                 continue
             values = list(combination.values())
             values.append("created")

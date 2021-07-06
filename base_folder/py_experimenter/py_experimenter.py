@@ -52,7 +52,7 @@ class PyExperimenter:
         self._dbconnector.fill_table(own_parameters=own_paramerters)
         logging.debug("Parameters successfully inserted to table")
 
-    def execute(self, approach) -> None:
+    def execute(self, approach, max_experiments:int=-1) -> None:
         """
         Execute all parameter combinations from the database with status 'created'. If the execution was successful,
         the results will be written in the database. Any errors that occur during execution are also written to the
@@ -63,6 +63,11 @@ class PyExperimenter:
         logging.info("Start execution of approaches...")
         # load parameters (approach input) and results fields (approach output)
         parameters = self._dbconnector.get_parameters_to_execute()
+
+        if 0 <= max_experiments < len(parameters):
+            parameters = parameters[:max_experiments]
+
+
         result_fields = utils.get_field_names(self._config['PY_EXPERIMENTER']['resultfields'].split(', '))
 
         # read cpu.max
