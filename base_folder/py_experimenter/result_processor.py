@@ -1,10 +1,19 @@
 import logging
-import sys
-import traceback
 from typing import List
 import mysql.connector
 from mysql.connector import errorcode, DatabaseError
 from datetime import datetime
+
+result_logger = logging.getLogger('result_logger')
+result_logger.setLevel(logging.INFO)
+
+formatter = logging.Formatter('%(message)s')
+
+file_handler = logging.FileHandler('result.log')
+file_handler.setFormatter(formatter)
+
+result_logger.addHandler(file_handler)
+
 
 
 class ResultProcessor:
@@ -57,12 +66,14 @@ class ResultProcessor:
                 for key, value in zip(keys, values):
                     stmt = f"UPDATE {self.table_name} SET {key}=%s WHERE {self._where}"
                     cursor.execute(stmt, (value, ))
+                    result_logger.info(cursor.statement)
                 self._cnx.commit()
             except DatabaseError as err:
                 print(err)
                 query = """UPDATE %s SET error="%s" WHERE %s""" % (self.table_name, err, self._where)
                 cursor.execute(query)
                 self._cnx.commit()
+
 
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
