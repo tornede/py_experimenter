@@ -1,5 +1,6 @@
 import os
 import sys
+import traceback
 from typing import List
 import logging
 from random import shuffle
@@ -121,13 +122,20 @@ def execution_wrapper(approach, parameters, result_processor: ResultProcessor):
         result_processor._change_status('running')
         result_processor._set_machine(os.getpid())
 
-        # execute user approach
-        logging.debug(f"Start of approach on process {os.getpid()}")
-        approach(parameters, result_processor)
+        try:
+            # execute user approach
+            logging.debug(f"Start of approach on process {os.getpid()}")
+            approach(parameters, result_processor)
 
-        # set status to done
-        result_processor._change_status('done')
+            # TODO: Error?
+        except Exception:
+            error_msg = traceback.format_exc()
+            logging.error(error_msg)
+            result_processor._write_error(error_msg)
+            result_processor._change_status('error')
 
-        # TODO: Error?
+        else:
+            # set status to done
+            result_processor._change_status('done')
 
 

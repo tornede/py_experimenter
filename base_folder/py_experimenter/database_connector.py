@@ -53,7 +53,7 @@ class DatabaseConnector:
         typed_fields.extend(
             [('status', 'VARCHAR(255)'), ('machine', 'INTEGER'), ('creation_date', 'VARCHAR(255)'),
              ('start_date', 'VARCHAR(255)'),
-             ('end_date', 'VARCHAR(255)'), ('error', 'VARCHAR(255)')])
+             ('end_date', 'VARCHAR(255)'), ('error', 'LONGTEXT')])
 
         for field, datatype in typed_fields:
             query += '%s %s DEFAULT NULL, ' % (field, datatype)

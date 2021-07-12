@@ -34,10 +34,13 @@ class ResultProcessor:
             return
 
         # write results to database
-        logging.info(f'Write result {results} for parameters {self._where} to database')
         self._update_database(keys=result_fields, values=result)
 
     def _update_database(self, keys, values):
+        logging.debug(f"Update '{keys}' with values '{values}' to database")
+
+        values = [f"'{str(value)}'" for value in values]
+
         new_data = ", ".join([f'{key}={value}' for key, value in zip(keys, values)])
 
         query = """UPDATE %s SET %s WHERE %s""" % (self.table_name, new_data, self._where)
@@ -65,19 +68,23 @@ class ResultProcessor:
         else:
             self._cnx.close()
 
+
     def _change_status(self, status):
 
         # get current time
         time = datetime.now()
-        time = "'%s'" % time.strftime("%m/%d/%Y, %H:%M:%S")
+        time = time.strftime("%m/%d/%Y, %H:%M:%S")
 
         # set current time to start date
         if status == 'running':
-            self._update_database(['status', 'start_date'], ["'running'", time])
+            self._update_database(['status', 'start_date'], ["running", time])
 
         # set current time to end date
-        if status == 'done':
-            self._update_database(['status', 'end_date'], ["'done'", time])
+        if status == 'done' or status == 'error':
+            self._update_database(['status', 'end_date'], [status, time])
+
+    def _write_error(self, error_msg):
+        self._update_database(['error'], [error_msg])
 
     def _set_machine(self, machine_id):
         self._update_database(['machine'], [machine_id])
@@ -98,11 +105,11 @@ class ResultProcessor:
 
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                print("Something is wrong with your user name or password")
+                logging.error("Something is wrong with your user name or password")
             elif err.errno == errorcode.ER_BAD_DB_ERROR:
-                print("Database does not exist")
+                logging.error("Database does not exist")
             else:
-                print(err)
+                logging.error(err)
         else:
             self._cnx.close()
             return not_executed
