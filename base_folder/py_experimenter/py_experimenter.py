@@ -102,19 +102,20 @@ class PyExperimenter:
         result_processors = [ResultProcessor(dbcredentials=db_credentials, table_name=table_name, condition=p,
                                              result_fields=result_fields) for p in parameters]
 
-        # initialize approach for each experiment
+        # initialize approach and custom configuration part for each experiment
         approaches = [approach for _ in parameters]
+        custom_config = [dict(self._config.items('CUSTOM')) for _ in parameters]
 
         # execution pool
         with concurrent.futures.ProcessPoolExecutor(max_workers=cpus) as executor:
 
             # execute approach by using the execution wrapper and pass parameters and result_processor
-            executor.map(execution_wrapper, approaches, parameters, result_processors)
+            executor.map(execution_wrapper, approaches, custom_config, parameters, result_processors)
 
         logging.info("All executions finished")
 
 
-def execution_wrapper(approach, parameters, result_processor: ResultProcessor):
+def execution_wrapper(approach, custom_config: dict, parameters, result_processor: ResultProcessor):
     # before running the experiment, check again if it has not already been run
     if result_processor._not_executed_yet():
 
@@ -125,7 +126,7 @@ def execution_wrapper(approach, parameters, result_processor: ResultProcessor):
         try:
             # execute user approach
             logging.debug(f"Start of approach on process {os.getpid()}")
-            approach(parameters, result_processor)
+            approach(parameters, result_processor, custom_config)
 
             # TODO: Error?
         except Exception:

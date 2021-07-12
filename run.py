@@ -6,10 +6,11 @@ from base_folder.py_experimenter.py_experimenter import PyExperimenter
 from base_folder.py_experimenter.result_processor import ResultProcessor
 
 
-def own_function(parameters, result_processor: ResultProcessor):
-    pause = random.randrange(1, 10)
+def own_function(parameters: dict, result_processor: ResultProcessor, custom_config: dict):
 
-    if pause == 9:
+    pause = random.randrange(1, int(custom_config['pause.max']))
+
+    if pause >= int(custom_config['pause.threshold']):
         raise ValueError("Example error")
 
     time.sleep(pause)
@@ -28,5 +29,6 @@ experimenter = PyExperimenter()
 #experimenter.fill_table(own_paramerters=[
 #    {'datasetName': '1', 'internal_performance_measure': '1', 'featureObjectiveMeasure': '1', 'seed': 1}])
 experimenter.fill_table()
+
 experimenter.execute(own_function)
 #experimenter.execute(own_function, max_experiments=1, random_order=False)

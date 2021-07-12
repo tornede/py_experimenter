@@ -3,6 +3,7 @@ import sys
 from typing import List
 
 import numpy as np
+from _mysql_connector import MySQLInterfaceError
 from mysql.connector import connect, ProgrammingError, DatabaseError
 from datetime import datetime
 import pandas as pd
@@ -137,7 +138,12 @@ class DatabaseConnector:
 
         query = "SELECT %s FROM %s WHERE %s" % (", ".join(keyfield_names), self.table_name, execute_condition)
 
-        self.dbcursor.execute(query)
+        try:
+            self.dbcursor.execute(query)
+        except ProgrammingError as e:
+            logging.error(str(e) + "\nPlease check if 'fill_table()' was called correctly.")
+            sys.exit()
+
         parameters = pd.DataFrame(self.dbcursor.fetchall())
         if parameters.empty:
             return []
