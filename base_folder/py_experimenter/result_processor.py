@@ -37,9 +37,9 @@ class ResultProcessor:
         self._update_database(keys=result_fields, values=result)
 
     def _update_database(self, keys, values):
-        logging.debug(f"Update '{keys}' with values '{values}' to database")
+        logging.info(f"Update '{keys}' with values '{values}' in database")
 
-        values = [f"'{str(value)}'" for value in values]
+        values = ["'" + str(value).replace("'", '"') + "'" for value in values]
 
         new_data = ", ".join([f'{key}={value}' for key, value in zip(keys, values)])
 
