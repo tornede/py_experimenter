@@ -33,6 +33,7 @@ class ResultProcessor:
         # check if result field names exist
         if not self._valid_result_fields(result_fields):
             logging.error("Key does not exist!")
+            self._write_error("Key does not exist!")
             return
 
         # write results to database
