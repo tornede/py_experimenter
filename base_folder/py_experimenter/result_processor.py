@@ -60,7 +60,7 @@ class ResultProcessor:
                 result_logger.info(cursor.statement)
             self._cnx.commit()
         except DatabaseError as err:
-            print(err)
+            logging.error(err)
             query = """UPDATE %s SET error="%s" WHERE %s""" % (self.table_name, err, self._where)
             cursor.execute(query)
             self._cnx.commit()
