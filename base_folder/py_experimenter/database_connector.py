@@ -2,9 +2,9 @@ import logging
 import sys
 from typing import List
 
+import mysql
 import numpy as np
-from _mysql_connector import MySQLInterfaceError
-from mysql.connector import connect, ProgrammingError, DatabaseError
+from mysql.connector import connect, ProgrammingError
 from datetime import datetime
 import pandas as pd
 import base_folder.py_experimenter.utils as utils
@@ -16,17 +16,18 @@ class DatabaseConnector:
         self.config = config
         self.table_name, host, user, database, password = utils.extract_db_credentials_and_table_name_from_config(
             config)
+        self._db_credentials = dict(host=host, user=user, database=database, password=password)
 
+        # try connection to database and exit program if connection not possible
         try:
-            self.connection = connect(
-                host=host,
-                user=user,
-                database=database,
-                password=password
-            )
-            self.dbcursor = self.connection.cursor()
-        except DatabaseError as err:
-            sys.exit(err.__context__)
+            connection = connect(**self._db_credentials)
+
+        except mysql.connector.Error as err:
+            logging.error(err)
+            sys.exit(1)
+
+        else:
+            connection.close()
 
     def create_table_if_not_exists(self) -> None:
         """
@@ -36,37 +37,54 @@ class DatabaseConnector:
         :param experiment_config: experiment section of the config file
         """
         experiment_config = self.config['PY_EXPERIMENTER']
-        self.dbcursor.execute('SHOW TABLES')
-        table_exists = False
-        for table in self.dbcursor:
-            if table[0] == self.table_name:
-                table_exists = True
-
-        if table_exists:
-            return
-
-        query = 'CREATE TABLE ' + self.table_name + ' ('
-        fields = experiment_config['keyfields'].split(',') + experiment_config['resultfields'].split(',')
-        clean_fields = [field.replace(' ', '') for field in fields]
-        typed_fields = [tuple(field.split(':')) if len(field.split(':')) == 2 else (field, 'VARCHAR(255)') for
-                        field in clean_fields]
-
-        typed_fields.extend(
-            [('status', 'VARCHAR(255)'), ('machine', 'INTEGER'), ('creation_date', 'VARCHAR(255)'),
-             ('start_date', 'VARCHAR(255)'),
-             ('end_date', 'VARCHAR(255)'), ('error', 'LONGTEXT')])
-
-        for field, datatype in typed_fields:
-            query += '%s %s DEFAULT NULL, ' % (field, datatype)
-
-        # remove last ', '
-        query = query[:-2] + ')'
 
         try:
-            self.dbcursor.execute(query)
-        except ProgrammingError as err:
-            unkown_datatype = str(err.__context__).split("'")[1].split(" ")[0]
-            print("Error: '%s' is unknown or not allowed" % unkown_datatype)
+            connection = connect(**self._db_credentials)
+            cursor = connection.cursor()
+
+            cursor.execute(f"SHOW TABLES LIKE '{self.table_name}'")
+
+            # exit if table already exist
+            # todo: what if new ranges for keyfields exists?
+            if cursor.fetchall():
+                return
+
+            # load column names from config
+            fields = experiment_config['keyfields'].split(',') + experiment_config['resultfields'].split(',')
+
+            # remove whitespace
+            clean_fields = [field.replace(' ', '') for field in fields]
+
+            # (name, type) - default type is 'VARCHAR(255)'
+            # todo: default type?
+            typed_fields = [tuple(field.split(':')) if len(field.split(':')) == 2 else (field, 'VARCHAR(255)') for
+                            field in clean_fields]
+
+            # extend experiment columns by pyexperimenter columns
+            typed_fields.extend(
+                [('status', 'VARCHAR(255)'), ('machine', 'INTEGER'), ('creation_date', 'VARCHAR(255)'),
+                 ('start_date', 'VARCHAR(255)'),
+                 ('end_date', 'VARCHAR(255)'), ('error', 'LONGTEXT')])
+
+            # set default value for each column to NULL
+            columns = ['%s %s DEFAULT NULL' % (field, datatype) for field, datatype in typed_fields]
+
+            stmt = f"CREATE TABLE {self.table_name} ({','.join(columns)})"
+
+            try:
+                cursor.execute(stmt)
+            except ProgrammingError:
+                logging.error("An error occurred while creating the table in the database. Please check the "
+                              "configuration file for allowed characters and data types for the keyfields and resultfields "
+                              "as well as the table name.")
+                sys.exit(1)
+
+        except mysql.connector.Error as err:
+            logging.error(err)
+            sys.exit(1)
+
+        else:
+            connection.close()
 
     def fill_table(self, own_parameters=None) -> None:
         """
@@ -112,8 +130,19 @@ class DatabaseConnector:
             .replace(']', '') \
             .replace("'", "")
 
-        self.dbcursor.execute("SELECT %s FROM %s" % (columns_names, self.table_name))
-        existing_rows = list(map(np.array2string, np.array(self.dbcursor.fetchall())))
+        try:
+            connection = connect(**self._db_credentials)
+            cursor = connection.cursor()
+
+            cursor.execute(f"SELECT {columns_names} FROM {self.table_name}")
+            existing_rows = list(map(np.array2string, np.array(cursor.fetchall())))
+
+        except mysql.connector.Error as err:
+            logging.error(err)
+            sys.exit(1)
+
+        else:
+            connection.close()
 
         columns_names += ",status"
         columns_names += ",creation_date"
@@ -136,18 +165,29 @@ class DatabaseConnector:
         keyfields = experiment_config['keyfields'].split(',')
         keyfield_names = utils.get_field_names(keyfields)
 
-        query = "SELECT %s FROM %s WHERE %s" % (", ".join(keyfield_names), self.table_name, execute_condition)
+        stmt = f"SELECT {', '.join(keyfield_names)} FROM {self.table_name} WHERE {execute_condition}"
 
         try:
-            self.dbcursor.execute(query)
-        except ProgrammingError as e:
-            logging.error(str(e) + "\nPlease check if 'fill_table()' was called correctly.")
-            sys.exit()
+            connection = connect(**self._db_credentials)
+            cursor = connection.cursor()
 
-        parameters = pd.DataFrame(self.dbcursor.fetchall())
-        if parameters.empty:
-            return []
-        parameters.columns = [i[0] for i in self.dbcursor.description]
+            try:
+                cursor.execute(stmt)
+            except ProgrammingError as e:
+                logging.error(str(e) + "\nPlease check if 'fill_table()' was called correctly.")
+                sys.exit(1)
+
+            parameters = pd.DataFrame(cursor.fetchall())
+            if parameters.empty:
+                return []
+            parameters.columns = [i[0] for i in cursor.description]
+
+        except mysql.connector.Error as err:
+            logging.error(err)
+            sys.exit(1)
+
+        else:
+            connection.close()
 
         named_parameters = [dict(parameter.to_dict()) for _, parameter in parameters.iterrows()]
 
@@ -162,7 +202,18 @@ class DatabaseConnector:
         keys = ", ".join(keys)
         values = "'" + "', '".join([str(value) for value in values]) + "'"
 
-        query = """INSERT INTO %s (%s) VALUES (%s)""" % (self.table_name, keys, values)
+        stmt = f"INSERT INTO {self.table_name} ({keys}) VALUES ({values})"
 
-        self.dbcursor.execute(query)
-        self.connection.commit()
+        try:
+            connection = connect(**self._db_credentials)
+            cursor = connection.cursor()
+
+            cursor.execute(stmt)
+            connection.commit()
+
+        except mysql.connector.Error as err:
+            logging.error(err)
+            sys.exit(1)
+
+        else:
+            connection.close()

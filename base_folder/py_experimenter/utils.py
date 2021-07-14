@@ -34,7 +34,7 @@ def extract_db_credentials_and_table_name_from_config(config):
         user = database_config['user']
         database = database_config['database']
         password = database_config['password']
-        table_name = database_config['table']
+        table_name = database_config['table'].replace(' ', '')
 
     except KeyError as err:
         sys.exit('Missing entries in the configuration file! (%s is missing)' % err)
