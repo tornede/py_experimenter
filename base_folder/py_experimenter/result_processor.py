@@ -51,12 +51,6 @@ class ResultProcessor:
     def _update_database(self, keys, values):
         logging.info(f"Update '{keys}' with values '{values}' in database")
 
-        data = [(key, value) for key, value in zip(keys, values)]
-
-        # values = ["'" + str(value).replace("'", '"') + "'" for value in values]
-
-        # new_data = ", ".join([f'{key}={value}' for key, value in zip(keys, values)])
-
         # TODO: move error to py_experimenter
         try:
             self._cnx = mysql.connector.connect(**self._dbcredentials)

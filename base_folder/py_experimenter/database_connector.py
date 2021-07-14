@@ -44,11 +44,6 @@ class DatabaseConnector:
 
             cursor.execute(f"SHOW TABLES LIKE '{self.table_name}'")
 
-            # exit if table already exist
-            # todo: what if new ranges for keyfields exists?
-            if cursor.fetchall():
-                return
-
             # load column names from config
             fields = experiment_config['keyfields'].split(',') + experiment_config['resultfields'].split(',')
 
@@ -56,9 +51,22 @@ class DatabaseConnector:
             clean_fields = [field.replace(' ', '') for field in fields]
 
             # (name, type) - default type is 'VARCHAR(255)'
-            # todo: default type?
             typed_fields = [tuple(field.split(':')) if len(field.split(':')) == 2 else (field, 'VARCHAR(255)') for
                             field in clean_fields]
+
+            # exit if table already exist
+            if cursor.fetchall():
+                cursor.execute(f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{self.table_name}'")
+                columns = [k[0] for k in cursor.fetchall()][:-6]
+                config_columns = [k[0] for k in typed_fields]
+
+                # check if fields in config match with columns in database
+                if set(columns) == set(config_columns):
+                    return
+
+                logging.error("Keyfields or resultfields from the configuration do not match columns in the existing "
+                              "table. Please change your configuration or delete the table in your database.")
+                sys.exit()
 
             # extend experiment columns by pyexperimenter columns
             typed_fields.extend(
