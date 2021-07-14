@@ -51,33 +51,22 @@ class ResultProcessor:
     def _update_database(self, keys, values):
         logging.info(f"Update '{keys}' with values '{values}' in database")
 
-        # TODO: move error to py_experimenter
+        self._cnx = mysql.connector.connect(**self._dbcredentials)
+        cursor = self._cnx.cursor()
+
         try:
-            self._cnx = mysql.connector.connect(**self._dbcredentials)
-            cursor = self._cnx.cursor()
+            for key, value in zip(keys, values):
+                stmt = f"UPDATE {self.table_name} SET {key}=%s WHERE {self._where}"
+                cursor.execute(stmt, (value, ))
+                result_logger.info(cursor.statement)
+            self._cnx.commit()
+        except DatabaseError as err:
+            print(err)
+            query = """UPDATE %s SET error="%s" WHERE %s""" % (self.table_name, err, self._where)
+            cursor.execute(query)
+            self._cnx.commit()
 
-            try:
-                for key, value in zip(keys, values):
-                    stmt = f"UPDATE {self.table_name} SET {key}=%s WHERE {self._where}"
-                    cursor.execute(stmt, (value, ))
-                    result_logger.info(cursor.statement)
-                self._cnx.commit()
-            except DatabaseError as err:
-                print(err)
-                query = """UPDATE %s SET error="%s" WHERE %s""" % (self.table_name, err, self._where)
-                cursor.execute(query)
-                self._cnx.commit()
-
-
-        except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                print("Something is wrong with your user name or password")
-            elif err.errno == errorcode.ER_BAD_DB_ERROR:
-                print("Database does not exist")
-            else:
-                print(err)
-        else:
-            self._cnx.close()
+        self._cnx.close()
 
     def _change_status(self, status):
 
