@@ -30,5 +30,5 @@ experimenter = PyExperimenter()
 #    {'datasetName': '1', 'internal_performance_measure': '1', 'featureObjectiveMeasure': '1', 'seed': 1}])
 experimenter.fill_table()
 
-experimenter.execute(own_function)
-#experimenter.execute(own_function, max_experiments=1, random_order=False)
+#experimenter.execute(own_function)
+experimenter.execute(own_function, max_experiments=1, random_order=False)

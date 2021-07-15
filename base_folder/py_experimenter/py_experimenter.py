@@ -1,6 +1,7 @@
 import os
 import sys
 import traceback
+from configparser import NoSectionError
 from typing import List
 import logging
 from random import shuffle
@@ -104,7 +105,11 @@ class PyExperimenter:
 
         # initialize approach and custom configuration part for each experiment
         approaches = [approach for _ in parameters]
-        custom_config = [dict(self._config.items('CUSTOM')) for _ in parameters]
+
+        try:
+            custom_config = [dict(self._config.items('CUSTOM')) for _ in parameters]
+        except NoSectionError:
+            custom_config = None
 
         # execution pool
         with concurrent.futures.ProcessPoolExecutor(max_workers=cpus) as executor:
@@ -127,6 +132,7 @@ def execution_wrapper(approach, custom_config: dict, parameters, result_processo
             # execute user approach
             logging.debug(f"Start of approach on process {os.getpid()}")
             approach(parameters, result_processor, custom_config)
+
 
             # TODO: Error?
         except Exception:

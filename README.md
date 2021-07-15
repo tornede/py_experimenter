@@ -92,5 +92,5 @@ defined in the configuration. If a dictionary with other keys not defined in the
 written to the database.
 
 The third parameter `custom_config: dict` passes all custom configurations defined in the `CUSTOM` section in the configuration
-file to the experiment. Note that this parameter is only needed even if you have set your custom configurations.
+file to the experiment. Note that this parameter is needed even if you have not set your custom configurations.
 ## Further usage
