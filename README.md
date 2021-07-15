@@ -55,7 +55,7 @@ These must be defined in SQL notation separated from the fieldname by a colon.
 If no data type is explicitly specified, `VARCHAR(255)` is used.
 
 ####CUSTOM
-In the last section you can define your own configurations. These are passed to the function to be executed, where they can then be used.
+In the last (optional) section you can define your own configurations. These are passed to the function to be executed, where they can then be used.
 ```
 [CUSTOM]
 custom.setting1=<value>
@@ -93,4 +93,71 @@ written to the database.
 
 The third parameter `custom_config: dict` passes all custom configurations defined in the `CUSTOM` section in the configuration
 file to the experiment. Note that this parameter is needed even if you have not set your custom configurations.
-## Further usage
+
+## How to run the PyExperimenter
+To run the PyExperimenter you need to initialize a `PyExperimenter` object:
+```python
+import PyExperimenter
+
+# initialize the PyExperiementer
+experimenter = PyExperimenter()
+```
+If you don't use the default path of the configuration file, you can pass a different path to the file
+in the constructor of the PyExperimenter by using the parameter `config_path`.
+
+### Fill the table with parameters
+The `fill_table()` method will create a new table in the database (if it not already exist) and fill
+it with all combinations of values defined for the keyfields in the configuration file. Note that only
+combinations that no duplicates will be created. If a combination already exist in the table, it will not
+be inserted again. After a new parameter combination was added to the table, the status of that row will
+be set to `created`.
+```python
+# create table in database and fill it with all parameter combinations
+experimenter.fill_table()
+```
+
+#### Set custom parameter combinations
+If your exeriment setup does not need all combinations of parameters, you can pass a list of parameter-combinations
+to the `fill_table()` method by using the parameter `own_parameters`. 
+```python
+# create table in database and fill it with specified parameter combinations
+experimenter.fill_table(own_paramerters=[{'keyfieldname1': '1', 'keyfieldname2': 42},
+                                         {'keyfieldname1': '2', 'keyfieldname2': 42},
+                                         {'keyfieldname1': '3', 'keyfieldname2': 42},])
+```
+Since the values defined in the configuration for each keypad are ignored when using this parameter,
+they can also be omitted there. Nevertheless, the names of the keyfields must be defined in the configuration.
+If you want to use all combinations of values from the configuration file, as well as your own additional combinations,
+you can call the `fill_table` once with and once without `own_parameters`.
+```python
+# create table in database and fill it with all parameter combinations
+experimenter.fill_table()
+
+# fill table with specified parameter combinations
+experimenter.fill_table(own_paramerters=[{'keyfieldname1': '1', 'keyfieldname2': 42},
+                                         {'keyfieldname1': '2', 'keyfieldname2': 42},
+                                         {'keyfieldname1': '3', 'keyfieldname2': 42},])
+```
+
+### Execute experiments
+The `execute(approach)` method will only run all experiments from the database table with status `created`.
+This ensures that each experiment is executed only once. After an experiment is started, the status of this
+experiment is set to `running`. The experiments will be run in parallel if the number of cpus is greater one
+in the configuration. If the experiment finished without any errors, the status will be set to `done`.
+However, if errors occur during execution, the status changes to `error`, and the respective error message
+is written to the database. In both cases, after the termination of one experiment, the next one is executed.
+```python
+# run the experiement for all experiement (parameter combinations from the database)
+experimenter.execute(own_function)
+```
+After all experiments have been executed, the user can check the database to see if any errors occurred during execution.
+If this is the case, he can fix the error, delete the experiments where the error occurred from the database
+and run the `PyExperimenter` again. The deleted experiments will then be automatically recreated and executed.
+All already successfully executed experiments are not affected by this.
+
+#### Execute specific number of experiments / Execute in random order
+You can specify a specific number of experiemts to execute as well as if the experiments should
+be execute in a random order.
+```python
+experimenter.execute(own_function, max_experiments=10, random_order=True)
+```
