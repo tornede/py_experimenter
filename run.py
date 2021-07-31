@@ -25,7 +25,7 @@ def own_function(parameters: dict, result_processor: ResultProcessor, custom_con
 
 
 logging.basicConfig(level=logging.DEBUG)
-experimenter = PyExperimenter()
+experimenter = PyExperimenter(config_path='config/example_config.cfg')
 #experimenter.fill_table(own_paramerters=[
 #    {'datasetName': '1', 'internal_performance_measure': '1', 'featureObjectiveMeasure': '1', 'seed': 1}])
 experimenter.fill_table()
