@@ -45,7 +45,7 @@ class PyExperimenter:
 
         return True
 
-    def fill_table(self, own_paramerters: List[dict] = None) -> None:
+    def fill_table(self, individual_parameters: List[dict] = None, parameters: dict = None) -> None:
         """
         Create (if not exist) and fill table in database with parameter combinations. If there are already entries in
         the table, only parameter combinations for which there is no entry in the database will be added. The status
@@ -58,7 +58,7 @@ class PyExperimenter:
         logging.debug("Create table if not exist")
         self._dbconnector.create_table_if_not_exists()
         logging.debug("Fill table with parameters")
-        self._dbconnector.fill_table(own_parameters=own_paramerters)
+        self._dbconnector.fill_table(individual_parameters=individual_parameters, parameters=parameters)
         logging.debug("Parameters successfully inserted to table")
 
     def execute(self, approach, max_experiments: int = -1, random_order=False) -> None:

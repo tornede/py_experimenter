@@ -116,25 +116,35 @@ be set to `created`.
 experimenter.fill_table()
 ```
 
-#### Set custom parameter combinations
-If your experiment setup does not need all combinations of parameters, you can pass a list of parameter-combinations
-to the `fill_table()` method by using the parameter `own_parameters`. 
+#### Set parameters within the program
+If you don't want to provide the parameter values in the configuration file but in the program itself, you can
+use the `fill_table()` method with the parameter `parameters`. This parameter is a dict with all possible values
+for the keyfieldnames defined in the config. The program will then create all combinations of the given parameters
+in the database, similar to the `fill_table()` method without any parameters.
 ```python
 # create table in database and fill it with specified parameter combinations
-experimenter.fill_table(own_paramerters=[{'keyfieldname1': '1', 'keyfieldname2': 42},
+experimenter.fill_table(parameters={'keyfieldname1': ['1', '2'], 'keyfieldname2': [1, 2, 42]})
+```
+
+#### Set custom parameter combinations
+If your experiment setup does not need all combinations of parameters, you can pass a list of parameter-combinations
+to the `fill_table()` method by using the parameter `individual_parameters`. 
+```python
+# create table in database and fill it with specified parameter combinations
+experimenter.fill_table(individual_parameters=[{'keyfieldname1': '1', 'keyfieldname2': 42},
                                          {'keyfieldname1': '2', 'keyfieldname2': 42},
                                          {'keyfieldname1': '3', 'keyfieldname2': 42},])
 ```
 Since the values defined in the configuration for each keypad are ignored when using this parameter,
 they can also be omitted there. Nevertheless, the names of the keyfields must be defined in the configuration.
 If you want to use all combinations of values from the configuration file, as well as your own additional combinations,
-you can call the `fill_table` once with and once without `own_parameters`.
+you can call the `fill_table` once with and once without `individual_parameters`.
 ```python
 # create table in database and fill it with all parameter combinations
 experimenter.fill_table()
 
 # fill table with specified parameter combinations
-experimenter.fill_table(own_paramerters=[{'keyfieldname1': '1', 'keyfieldname2': 42},
+experimenter.fill_table(individual_parameters=[{'keyfieldname1': '1', 'keyfieldname2': 42},
                                          {'keyfieldname1': '2', 'keyfieldname2': 42},
                                          {'keyfieldname1': '3', 'keyfieldname2': 42},])
 ```

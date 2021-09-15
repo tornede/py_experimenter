@@ -94,7 +94,7 @@ class DatabaseConnector:
         else:
             connection.close()
 
-    def fill_table(self, own_parameters=None) -> None:
+    def fill_table(self, individual_parameters=None, parameters=None) -> None:
         """
         Fill table with all combination of keyfield values, if combiation does not exist.
         :param connection: connection to database
@@ -106,18 +106,22 @@ class DatabaseConnector:
         # ref: https://www.kite.com/python/answers/how-to-get-all-element-combinations-of-two-numpy-arrays-in-python
         keyfield_names = utils.get_keyfields(self.config)
 
-        if own_parameters is None:
-            keyfield_data = utils.get_keyfield_data(self.config)
+        if individual_parameters is None:
+            if parameters is None:
+                keyfield_data = utils.get_keyfield_data(self.config)
+            else:
+                keyfield_data = list(parameters.values())
+
             combinations = np.array(np.meshgrid(*keyfield_data)).T.reshape(-1, len(keyfield_data))
             combinations = [dict(zip(keyfield_names, combination)) for combination in combinations]
         else:
-            combinations = own_parameters
+            combinations = individual_parameters
 
         # check if combinations exist
         if len(combinations) == 0:
             return
 
-        if own_parameters is not None:
+        if individual_parameters is not None:
             _number_of_keys = 0
             for key in combinations[0].keys():
 
@@ -141,7 +145,6 @@ class DatabaseConnector:
         try:
             connection = connect(**self._db_credentials)
             cursor = connection.cursor()
-
             cursor.execute(f"SELECT {columns_names} FROM {self.table_name}")
             existing_rows = list(map(np.array2string, np.array(cursor.fetchall())))
 
@@ -207,6 +210,10 @@ class DatabaseConnector:
         :param keys: Column names
         :param values: Values for column names
         """
+        if len(keys[0].split(',')) != len(values):
+            logging.error('Keyfield(s) missing! Please check passed parameters contain all keyfields defined in the configuration file.')
+            sys.exit(1)
+
         keys = ", ".join(keys)
         values = "'" + "', '".join([str(value) for value in values]) + "'"
 
