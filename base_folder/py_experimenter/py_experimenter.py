@@ -1,4 +1,4 @@
-import os
+import socket
 import sys
 import traceback
 from configparser import NoSectionError
@@ -126,11 +126,11 @@ def execution_wrapper(approach, custom_config: dict, parameters, result_processo
 
         # change status to running and set process id
         result_processor._change_status('running')
-        result_processor._set_machine(os.getpid())
+        result_processor._set_machine(socket.gethostname())
 
         try:
             # execute user approach
-            logging.debug(f"Start of approach on process {os.getpid()}")
+            logging.debug(f"Start of approach on process {socket.gethostname()}")
             approach(parameters, result_processor, custom_config)
 
 
