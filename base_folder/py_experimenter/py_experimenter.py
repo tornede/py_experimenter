@@ -6,10 +6,10 @@ from typing import List
 import logging
 from random import shuffle
 
-import base_folder.py_experimenter.utils as utils
+import utils as utils
 import concurrent.futures
-from base_folder.py_experimenter.database_connector import DatabaseConnector
-from base_folder.py_experimenter.result_processor import ResultProcessor
+from database_connector import DatabaseConnector
+from result_processor import ResultProcessor
 
 
 class PyExperimenter:

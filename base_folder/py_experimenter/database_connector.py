@@ -7,7 +7,7 @@ import numpy as np
 from mysql.connector import connect, ProgrammingError
 from datetime import datetime
 import pandas as pd
-import base_folder.py_experimenter.utils as utils
+import utils as utils
 
 
 class DatabaseConnector:
@@ -57,7 +57,9 @@ class DatabaseConnector:
             # exit if table already exist
             if cursor.fetchall():
                 cursor.execute(f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{self.table_name}'")
-                columns = [k[0] for k in cursor.fetchall()][:-6]
+
+                # ignore ID and the last six columns since they are not defined by the user
+                columns = [k[0] for k in cursor.fetchall()][1:-6]
                 config_columns = [k[0] for k in typed_fields]
 
                 # check if fields in config match with columns in database
@@ -77,7 +79,7 @@ class DatabaseConnector:
             # set default value for each column to NULL
             columns = ['%s %s DEFAULT NULL' % (field, datatype) for field, datatype in typed_fields]
 
-            stmt = f"CREATE TABLE {self.table_name} ({','.join(columns)})"
+            stmt = f"CREATE TABLE {self.table_name} (ID int NOT NULL AUTO_INCREMENT, {','.join(columns)}, PRIMARY KEY (ID))"
 
             try:
                 cursor.execute(stmt)
