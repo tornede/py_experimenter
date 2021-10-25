@@ -81,7 +81,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
             # set default value for each column to NULL
             columns = ['%s %s DEFAULT NULL' % (field, datatype) for field, datatype in typed_fields]
 
-            stmt = f"CREATE TABLE {self.table_name} (ID int PRIMARY KEY, {','.join(columns)});"
+            stmt = f"CREATE TABLE {self.table_name} (ID Integer PRIMARY KEY AUTOINCREMENT, {','.join(columns)});"
             #stmt = f"CREATE TABLE {self.table_name} ({','.join(columns)});"
             try:
                 print(stmt)
