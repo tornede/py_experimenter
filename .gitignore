@@ -133,6 +133,7 @@ dmypy.json
 
 # PyCharm
 .idea/
+.DS_Store
 
 # todo
 todo.md
