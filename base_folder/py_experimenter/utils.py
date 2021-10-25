@@ -2,8 +2,6 @@ import configparser
 import logging
 import sys
 
-from mysql.connector import ProgrammingError
-
 
 def load_config(path):
     """
@@ -38,9 +36,6 @@ def extract_db_credentials_and_table_name_from_config(config):
 
     except KeyError as err:
         sys.exit('Missing entries in the configuration file! (%s is missing)' % err)
-
-    except ProgrammingError:
-        sys.exit('Connection to the database %s could not be established. Please check your credentials.' % database)
 
     return table_name, host, user, database, password
 

@@ -135,5 +135,8 @@ dmypy.json
 .idea/
 .DS_Store
 
+# Database
+*.db
+
 # todo
 todo.md

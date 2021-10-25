@@ -4,27 +4,26 @@ from typing import List
 
 import mysql
 import numpy as np
-# from mysql.connector import connect, ProgrammingError
-from sqlite3 import connect, ProgrammingError, Error, DatabaseError
+from mysql.connector import connect, ProgrammingError, DatabaseError, Error, errorcode
 from datetime import datetime
 import pandas as pd
 import base_folder.py_experimenter.utils as utils
 from base_folder.py_experimenter.database_connector import DatabaseConnector
 
 
-class DatabaseConnectorLITE(DatabaseConnector):
+class DatabaseConnectorMYSQL(DatabaseConnector):
 
     def __init__(self, config):
         self.config = config
         self.table_name, host, user, database, password = utils.extract_db_credentials_and_table_name_from_config(
             config)
-        self._db_credentials = dict(database=f'{database}.db')
+        self._db_credentials = dict(host=host, user=user, database=database, password=password)
 
         # try connection to database and exit program if connection not possible
         try:
             connection = connect(**self._db_credentials)
 
-        except Error as err:
+        except mysql.connector.Error as err:
             logging.error(err)
             sys.exit(1)
 
@@ -44,7 +43,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
             connection = connect(**self._db_credentials)
             cursor = connection.cursor()
 
-            cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table';")
+            cursor.execute(f"SHOW TABLES LIKE '{self.table_name}'")
 
             # load column names from config
             fields = experiment_config['keyfields'].split(',') + experiment_config['resultfields'].split(',')
@@ -58,10 +57,10 @@ class DatabaseConnectorLITE(DatabaseConnector):
 
             # exit if table already exist
             if cursor.fetchall():
-                cursor.execute(f"PRAGMA table_info({self.table_name})")
+                cursor.execute(f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{self.table_name}'")
 
                 # ignore ID and the last six columns since they are not defined by the user
-                columns = [k[1] for k in cursor.fetchall()][1:-6]
+                columns = [k[0] for k in cursor.fetchall()][1:-6]
                 config_columns = [k[0] for k in typed_fields]
 
                 # check if fields in config match with columns in database
@@ -81,10 +80,9 @@ class DatabaseConnectorLITE(DatabaseConnector):
             # set default value for each column to NULL
             columns = ['%s %s DEFAULT NULL' % (field, datatype) for field, datatype in typed_fields]
 
-            stmt = f"CREATE TABLE {self.table_name} (ID int PRIMARY KEY, {','.join(columns)});"
-            #stmt = f"CREATE TABLE {self.table_name} ({','.join(columns)});"
+            stmt = f"CREATE TABLE {self.table_name} (ID int NOT NULL AUTO_INCREMENT, {','.join(columns)}, PRIMARY KEY (ID))"
+
             try:
-                print(stmt)
                 cursor.execute(stmt)
             except ProgrammingError:
                 logging.error("An error occurred while creating the table in the database. Please check the "
@@ -92,7 +90,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
                               "as well as the table name.")
                 sys.exit(1)
 
-        except Error as err:
+        except mysql.connector.Error as err:
             logging.error(err)
             sys.exit(1)
 
@@ -107,6 +105,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
         :param config: config file
 
         """
+
         # ref: https://www.kite.com/python/answers/how-to-get-all-element-combinations-of-two-numpy-arrays-in-python
         keyfield_names = utils.get_keyfields(self.config)
 
@@ -136,9 +135,10 @@ class DatabaseConnectorLITE(DatabaseConnector):
                 _number_of_keys += 1
 
             if _number_of_keys != len(keyfield_names):
-                logging.error(
-                    f"{len(keyfield_names) - _number_of_keys} keyfield(s) missing! Please check passed parameters contain all keyfields defined in the configuration file.")
+                logging.error(f"{len(keyfield_names) - _number_of_keys} keyfield(s) missing! Please check passed parameters contain all keyfields defined in the configuration file.")
                 sys.exit()
+
+
 
         columns_names = np.array2string(np.array(keyfield_names), separator=',') \
             .replace('[', '') \
@@ -151,7 +151,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
             cursor.execute(f"SELECT {columns_names} FROM {self.table_name}")
             existing_rows = list(map(np.array2string, np.array(cursor.fetchall())))
 
-        except Error as err:
+        except mysql.connector.Error as err:
             logging.error(err)
             sys.exit(1)
 
@@ -162,13 +162,13 @@ class DatabaseConnectorLITE(DatabaseConnector):
         columns_names += ",creation_date"
 
         time = datetime.now()
-
         for combination in combinations:
             if ("['" + "' '".join([str(value) for value in combination.values()]) + "']") in existing_rows:
                 continue
             values = list(combination.values())
             values.append("created")
             values.append("%s" % time.strftime("%m/%d/%Y, %H:%M:%S"))
+
             self._write_to_database(columns_names.split(', '), values)
 
     def get_parameters_to_execute(self) -> List[dict]:
@@ -196,7 +196,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
                 return []
             parameters.columns = [i[0] for i in cursor.description]
 
-        except Error as err:
+        except mysql.connector.Error as err:
             logging.error(err)
             sys.exit(1)
 
@@ -214,8 +214,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
         :param values: Values for column names
         """
         if len(keys[0].split(',')) != len(values):
-            logging.error(
-                'Keyfield(s) missing! Please check passed parameters contain all keyfields defined in the configuration file.')
+            logging.error('Keyfield(s) missing! Please check passed parameters contain all keyfields defined in the configuration file.')
             sys.exit(1)
 
         keys = ", ".join(keys)
@@ -236,6 +235,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
 
         else:
             connection.close()
+
 
     def _update_database(self, keys, values, where):
         logging.info(f"Update '{keys}' with values '{values}' in database")
@@ -273,12 +273,12 @@ class DatabaseConnectorLITE(DatabaseConnector):
                     not_executed = True
 
         except Error as err:
-            #    if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            #        logging.error("Something is wrong with your user name or password")
-            #    elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            #        logging.error("Database does not exist")
-            #    else:
-            logging.error(err)
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                logging.error("Something is wrong with your user name or password")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                logging.error("Database does not exist")
+            else:
+                logging.error(err)
         else:
             connection.close()
             return not_executed
