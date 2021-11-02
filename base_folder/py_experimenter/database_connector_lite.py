@@ -4,12 +4,11 @@ from typing import List
 
 import mysql
 import numpy as np
-# from mysql.connector import connect, ProgrammingError
 from sqlite3 import connect, ProgrammingError, Error, DatabaseError
 from datetime import datetime
 import pandas as pd
-import base_folder.py_experimenter.utils as utils
-from base_folder.py_experimenter.database_connector import DatabaseConnector
+import py_experimenter.utils as utils
+from py_experimenter.database_connector import DatabaseConnector
 
 
 class DatabaseConnectorLITE(DatabaseConnector):

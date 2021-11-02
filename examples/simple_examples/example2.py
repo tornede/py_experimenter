@@ -1,7 +1,7 @@
 import logging
 
-from base_folder.py_experimenter.py_experimenter import PyExperimenter
-from base_folder.py_experimenter.result_processor import ResultProcessor
+from py_experimenter import PyExperimenter
+from py_experimenter.result_processor import ResultProcessor
 
 from math import sin, cos
 

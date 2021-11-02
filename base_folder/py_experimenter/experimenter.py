@@ -6,11 +6,11 @@ from typing import List
 import logging
 from random import shuffle
 
-import base_folder.py_experimenter.utils as utils
+import py_experimenter.utils as utils
 import concurrent.futures
-from base_folder.py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
-from base_folder.py_experimenter.database_connector_lite import DatabaseConnectorLITE
-from base_folder.py_experimenter.result_processor import ResultProcessor
+from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
+from py_experimenter.database_connector_lite import DatabaseConnectorLITE
+from py_experimenter.result_processor import ResultProcessor
 
 
 class PyExperimenter:
@@ -42,13 +42,20 @@ class PyExperimenter:
         logging.info('Initialized and connected to database')
 
     def _valid_configuration(self):
-        if not {'host', 'user', 'database', 'password', 'table'}.issubset(set(self._config.options('DATABASE'))):
+        if not {'provider', 'database', 'table'}.issubset(set(self._config.options('DATABASE'))):
             return False
+
         if not {'cpu.max', 'keyfields',
                 'resultfields'}.issubset(set(self._config.options('PY_EXPERIMENTER'))):
             return False
 
-        return True
+        if self._config['DATABASE']['provider'] == 'mysql':
+            if not {'host', 'user', 'password'}.issubset(set(self._config.options('DATABASE'))):
+                return False
+        elif self._config['DATABASE']['provider'] == 'sqlite':
+            return True
+
+        return False
 
     def fill_table(self, individual_parameters: List[dict] = None, parameters: dict = None) -> None:
         """
@@ -113,7 +120,9 @@ class PyExperimenter:
         try:
             custom_config = [dict(self._config.items('CUSTOM')) for _ in parameters]
         except NoSectionError:
-            custom_config = None
+            custom_config = [None for _ in parameters]
+
+        print(custom_config)
 
         # execution pool
         with concurrent.futures.ProcessPoolExecutor(max_workers=cpus) as executor:

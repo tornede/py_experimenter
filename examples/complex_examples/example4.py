@@ -2,8 +2,8 @@ import logging
 import random
 import time
 
-from base_folder.py_experimenter.py_experimenter import PyExperimenter
-from base_folder.py_experimenter.result_processor import ResultProcessor
+from py_experimenter import PyExperimenter
+from py_experimenter.result_processor import ResultProcessor
 
 
 def own_function(parameters: dict, result_processor: ResultProcessor, custom_config: dict):

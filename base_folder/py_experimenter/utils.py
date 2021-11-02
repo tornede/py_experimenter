@@ -28,10 +28,15 @@ def extract_db_credentials_and_table_name_from_config(config):
     """
     try:
         database_config = config['DATABASE']
-        host = database_config['host']
-        user = database_config['user']
+        if database_config['provider'] == 'sqlite':
+            host = None
+            user = None
+            password = None
+        else:
+            host = database_config['host']
+            user = database_config['user']
+            password = database_config['password']
         database = database_config['database']
-        password = database_config['password']
         table_name = database_config['table'].replace(' ', '')
 
     except KeyError as err:
