@@ -2,8 +2,6 @@ import configparser
 import logging
 import sys
 
-from mysql.connector import ProgrammingError
-
 
 def load_config(path):
     """
@@ -30,17 +28,19 @@ def extract_db_credentials_and_table_name_from_config(config):
     """
     try:
         database_config = config['DATABASE']
-        host = database_config['host']
-        user = database_config['user']
+        if database_config['provider'] == 'sqlite':
+            host = None
+            user = None
+            password = None
+        else:
+            host = database_config['host']
+            user = database_config['user']
+            password = database_config['password']
         database = database_config['database']
-        password = database_config['password']
         table_name = database_config['table'].replace(' ', '')
 
     except KeyError as err:
         sys.exit('Missing entries in the configuration file! (%s is missing)' % err)
-
-    except ProgrammingError:
-        sys.exit('Connection to the database %s could not be established. Please check your credentials.' % database)
 
     return table_name, host, user, database, password
 
