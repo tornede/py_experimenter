@@ -81,9 +81,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
             columns = ['%s %s DEFAULT NULL' % (field, datatype) for field, datatype in typed_fields]
 
             stmt = f"CREATE TABLE {self.table_name} (ID Integer PRIMARY KEY AUTOINCREMENT, {','.join(columns)});"
-            #stmt = f"CREATE TABLE {self.table_name} ({','.join(columns)});"
             try:
-                print(stmt)
                 cursor.execute(stmt)
             except ProgrammingError:
                 logging.error("An error occurred while creating the table in the database. Please check the "
@@ -100,7 +98,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
 
     def fill_table(self, individual_parameters=None, parameters=None) -> None:
         """
-        Fill table with all combination of keyfield values, if combiation does not exist.
+        Fill table with all combination of keyfield values, if combination does not exist.
         :param connection: connection to database
         :param table_name: name of the table
         :param config: config file
@@ -149,6 +147,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
             cursor = connection.cursor()
             cursor.execute(f"SELECT {columns_names} FROM {self.table_name}")
             existing_rows = list(map(np.array2string, np.array(cursor.fetchall())))
+            existing_rows = [' '.join(row.split()) for row in existing_rows]
 
         except Error as err:
             logging.error(err)
@@ -163,7 +162,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
         time = datetime.now()
 
         for combination in combinations:
-            if ("['" + "' '".join([str(value) for value in combination.values()]) + "']") in existing_rows:
+            if ("[" + " ".join([str(value) for value in combination.values()]) + "]") in existing_rows:
                 continue
             values = list(combination.values())
             values.append("created")
@@ -218,7 +217,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
             sys.exit(1)
 
         keys = ", ".join(keys)
-        values = "'" + "', '".join([str(value) for value in values]) + "'"
+        values = "'" + "','".join([str(value) for value in values]) + "'"
 
         stmt = f"INSERT INTO {self.table_name} ({keys}) VALUES ({values})"
 

@@ -12,7 +12,8 @@ def load_config(path):
     config = configparser.ConfigParser()
 
     try:
-        config.read_file(open(path))
+        with open(path) as f:
+            config.read_file(f)
     except FileNotFoundError:
         sys.exit('Configuration file missing! Please add file: %s' % path)
 
