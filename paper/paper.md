@@ -1,14 +1,14 @@
 ---
-title: 'PyExperimenter: A Python package to execute a large number of experiments'
+title: 'PyExperimenter: easily execute experiments and track results'
 tags:
   - Python
 authors:
   - name: Tanja Tornede
-    orcid: 0000-0000-0000-0000
+    orcid: 0000-0001-9954-462X
     corresponding: true # (This is how to denote the corresponding author)
     affiliation: 1
   - name: Alexander Tornede
-    orcid: 0000-0000-0000-0000
+    orcid: 0000-0002-2415-2186
     corresponding: true # (This is how to denote the corresponding author)
     affiliation: 1
   - name: Lukas Fehring
@@ -34,7 +34,7 @@ The `PyExperimenter` is a tool for the automatic execution of, e.g. machine lear
 
 `PyExperimenter` is a Python package supporting easy execution of multiple experiments differing only in their parametrizations. `PyExperimenter` was designed to be used by machine learning researchers and according students, but is not limited to those. The general structure of the project allows using `PyExperimenter` also for other types of experiments, as long as the execution requires the same code parameterized in a different way.  
 
-Compared to other solutions such as [@mlflow; @weightsAndBiases], `PyExperimenter` is very lightweight and has only a handful of dependencies. Furthermore it is designed to support simple but effective configurations. 
+Compared to other solutions [@mlflow; @wandb], `PyExperimenter` is very lightweight and has only a handful of dependencies. Furthermore it is designed to support simple but effective configurations. 
 
 
 # Example Usage
@@ -46,5 +46,3 @@ This work was partially supported by the German Federal Ministry for Economic Af
 
 
 # References
-
-- Example: https://joss.readthedocs.io/en/latest/submitting.html#example-paper-and-bibliography
