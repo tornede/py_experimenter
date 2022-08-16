@@ -128,9 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# config files
-*.cfg
-
 # PyCharm
 .idea/
 .DS_Store
@@ -140,3 +137,4 @@ dmypy.json
 
 # todo
 todo.md
+config/database_credentials.cfg
