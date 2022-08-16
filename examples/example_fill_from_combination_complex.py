@@ -1,5 +1,6 @@
 import logging
 from math import cos, sin
+import os
 
 from py_experimenter.experimenter import PyExperimenter
 from py_experimenter.result_processor import ResultProcessor
@@ -20,7 +21,7 @@ def own_function(parameters: dict, result_processor: ResultProcessor, custom_con
 logging.basicConfig(level=logging.INFO)
 
 # Create sqlite experimenter.
-experimenter = PyExperimenter(config_path='examples/example_fill_from_combination_complex.cfg')
+experimenter = PyExperimenter(config_path=os.path.join('examples','example_fill_from_combination_complex.cfg'))
 # To use a mysql database, modify the examples/example_fill_complex.cfg file and change the provider to mysql.
 # In addition you need to provide the credentials file config/database_credentials.cfg and make sure that the database exists.
 # For more information refer to the README.md file.

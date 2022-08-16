@@ -45,8 +45,7 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
     close_connection_mock.return_value = None
     table_exists_mock.return_value = True
     table_has_correct_structure_mock.return_value = True
-
-    config = load_config('test/test_config_files/load_config_test_file/my_sql_test_file.cfg')
+    config = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     database_connector = DatabaseConnectorMYSQL(config, credential_path=os.path.join(
         'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
     database_connector.create_table_if_not_exists()
@@ -68,7 +67,7 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
 @pytest.mark.parametrize(
     'config_path, parameters, fixed_parameter_combination, write_to_database_keys, write_to_database_values',
     [
-        ('test/test_config_files/load_config_test_file/my_sql_test_file.cfg',
+        (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {'value': [1, 2], 'exponent': [3, 4]},
          [],
          ['value,exponent,status,creation_date'],
@@ -77,16 +76,16 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
              [1, 4, 'created'],
              [2, 3, 'created'],
              [2, 4, 'created']
-         ]),
-        ('test/test_config_files/load_config_test_file/my_sql_test_file.cfg',
+        ]),
+        (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {},
          [{'value': 1, 'exponent': 3}, {'value': 1, 'exponent': 4}],
          ['value,exponent,status,creation_date'],
          [
              [1, 3, 'created'],
              [1, 4, 'created'],
-         ]),
-        ('test/test_config_files/load_config_test_file/my_sql_test_file_3_parameters.cfg',
+        ]),
+        (os.path.join('test','test_config_files','load_config_test_file','my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], },
          [{'exponent': 3, 'other_value': 5}],
          ['value,exponent,other_value,status,creation_date'],
@@ -95,7 +94,7 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
              [2, 3, 5, 'created'],
          ]
          ),
-        ('test/test_config_files/load_config_test_file/my_sql_test_file_3_parameters.cfg',
+        (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], 'exponent': [3, 4], },
          [{'other_value': 5}],
          ['value,exponent,other_value,status,creation_date'],
@@ -104,8 +103,8 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
              [1, 4, 5, 'created'],
              [2, 3, 5, 'created'],
              [2, 4, 5, 'created'],
-         ]
-         ),
+        ]
+        ),
     ]
 )
 @patch.object(database_connector.DatabaseConnector, '_write_to_database')

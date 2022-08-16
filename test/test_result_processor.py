@@ -94,6 +94,6 @@ def test_process_results_raises_error(test_fn, result_fields, results, error, er
 )
 def test_valid_result_fields(mock_fn, existing_result_fields, used_result_fields, subset_boolean):
     mock_fn.return_value = None
-    mock_config = utils.load_config('test/test_config_files/load_config_test_file/my_sql_test_file.cfg')
+    mock_config = utils.load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     assert subset_boolean == ResultProcessor(mock_config, CREDENTIAL_PATH, 'test_table_name', {
                                              'test_condition_key': 'test_condition_value'}, used_result_fields)._valid_result_fields(existing_result_fields)

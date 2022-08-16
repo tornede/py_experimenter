@@ -9,7 +9,7 @@ from py_experimenter.utils import combine_fill_table_parameters, get_field_names
 @pytest.mark.parametrize(
     'path, comparable_dict',
     [
-        ('test/test_config_files/load_config_test_file/my_sql_test_file.cfg',
+        (os.path.join('test','test_config_files','load_config_test_file','my_sql_test_file.cfg'),
          {
              'DATABASE': {
                  'provider': 'mysql',
@@ -25,7 +25,7 @@ from py_experimenter.utils import combine_fill_table_parameters, get_field_names
              },
              'DEFAULT': {}
          }),
-        ('test/test_config_files/load_config_test_file/my_sql_file_with_weird_syntax.cfg',
+        (os.path.join('test','test_config_files','load_config_test_file','my_sql_file_with_weird_syntax.cfg'),
          {
              'DATABASE': {
                  'provider': 'mysql',
@@ -41,7 +41,7 @@ from py_experimenter.utils import combine_fill_table_parameters, get_field_names
              },
              'DEFAULT': {}
          }),
-        ('test/test_config_files/load_config_test_file/my_sql_test_file_without_keyfields.cfg',
+        (os.path.join('test','test_config_files','load_config_test_file','my_sql_test_file_without_keyfields.cfg'),
          {
              'DATABASE': {
                  'provider': 'mysql',
@@ -58,7 +58,7 @@ from py_experimenter.utils import combine_fill_table_parameters, get_field_names
              'DEFAULT': {}
          }),
 
-        ('test/test_config_files/load_config_test_file/sqlite_test_file.cfg',
+        (os.path.join('test','test_config_files','load_config_test_file','sqlite_test_file.cfg'),
          {
              'DATABASE': {
                  'provider': 'sqlite',
