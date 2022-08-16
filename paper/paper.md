@@ -9,16 +9,27 @@ authors:
     affiliation: 1
   - name: Alexander Tornede
     orcid: 0000-0002-2415-2186
-    corresponding: true # (This is how to denote the corresponding author)
     affiliation: 1
   - name: Lukas Fehring
     affiliation: 1
   - name: Lukas Gehring
     affiliation: 1
+  - name: Helena Graf
+    affiliation: 1
+  - name: Jonas Hanselle
+    affiliation: 1
+  - name: Marcel Wever
+    affiliation: 2
+  - name: Felix Mohr
+    affiliation: 3
 affiliations:
  - name: Department of Computer Science, Paderborn University, Germany
    index: 1
-date: 10 August 2022
+ - name: Institut of Informatics, University of Munich, Germany
+   index: 2
+ - name: Universidad de La Sabana, Chia, Cundinamarca, Colombia
+   index: 3
+date: 16 August 2022
 bibliography: paper.bib
 
 ---
