@@ -1,5 +1,4 @@
 import os
-from locale import DAY_1
 
 import pytest
 from mock import patch
