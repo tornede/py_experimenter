@@ -1,4 +1,5 @@
 import os
+import re
 
 import pytest
 
@@ -98,8 +99,8 @@ def test_load_config(path, comparable_dict):
 
 
 def test_load_config_raises_error():
-    path = os.path.join('config', 'file', 'misssing.cfg')
-    with pytest.raises(NoConfigFileError, match=f'Configuration file missing! Please add file: {str(path)}'):
+    path = os.path.join('config', 'file', 'missing.cfg')
+    with pytest.raises(NoConfigFileError, match=re.escape(f'Configuration file missing! Please add file: {path}')):
         load_config(path)
 
 
