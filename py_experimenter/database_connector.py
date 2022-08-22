@@ -104,6 +104,9 @@ class DatabaseConnector(abc.ABC):
             self._create_table(cursor, columns)
         self.close_connection(connection)
 
+    def _exclude_fixed_columns(self, columns: List[str]) -> List[str]:
+        return columns[1:-7]
+
     @abc.abstractmethod
     def _table_exists(self, cursor):
         pass
@@ -136,7 +139,7 @@ class DatabaseConnector(abc.ABC):
             .replace("'", "")
 
         existing_rows = self._get_existing_rows(column_names)
-        
+
         column_names += ",status"
         column_names += ",creation_date"
         column_names += ",name"
