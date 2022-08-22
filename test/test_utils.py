@@ -1,4 +1,5 @@
 import os
+import re
 
 import pytest
 
@@ -9,12 +10,12 @@ from py_experimenter.utils import combine_fill_table_parameters, get_field_names
 @pytest.mark.parametrize(
     'path, comparable_dict',
     [
-        (os.path.join('test','test_config_files','load_config_test_file','my_sql_test_file.cfg'),
+        (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {
              'DATABASE': {
                  'provider': 'mysql',
-                 'database': 'example3',
-                 'table': 'example_table'
+                 'database': 'py_experimenter',
+                 'table': 'test_table'
              },
              'PY_EXPERIMENTER': {
                  'cpu.max': '5',
@@ -24,13 +25,13 @@ from py_experimenter.utils import combine_fill_table_parameters, get_field_names
                  'exponent': '1,2,3'
              },
              'DEFAULT': {}
-         }),
-        (os.path.join('test','test_config_files','load_config_test_file','my_sql_file_with_weird_syntax.cfg'),
+        }),
+        (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_file_with_wrong_syntax.cfg'),
          {
              'DATABASE': {
                  'provider': 'mysql',
-                 'database': 'example3',
-                 'table': 'example_table'
+                 'database': 'py_experimenter',
+                 'table': 'test_table_mysql_with_wrong_syntax'
              },
              'PY_EXPERIMENTER': {
                  'cpu.max': '5',
@@ -40,13 +41,13 @@ from py_experimenter.utils import combine_fill_table_parameters, get_field_names
                  'exponent': '1,2,3'
              },
              'DEFAULT': {}
-         }),
-        (os.path.join('test','test_config_files','load_config_test_file','my_sql_test_file_without_keyfields.cfg'),
+        }),
+        (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_without_keyfields.cfg'),
          {
              'DATABASE': {
                  'provider': 'mysql',
-                 'database': 'example3',
-                 'table': 'example_table'
+                 'database': 'py_experimenter',
+                 'table': 'test_table_without_keyfields'
              },
              'PY_EXPERIMENTER': {
                  'cpu.max': '5',
@@ -56,14 +57,14 @@ from py_experimenter.utils import combine_fill_table_parameters, get_field_names
                  'exponent': '1,2,3'
              },
              'DEFAULT': {}
-         }),
+        }),
 
-        (os.path.join('test','test_config_files','load_config_test_file','sqlite_test_file.cfg'),
+        (os.path.join('test', 'test_config_files', 'load_config_test_file', 'sqlite_test_file.cfg'),
          {
              'DATABASE': {
                  'provider': 'sqlite',
-                 'database': 'example4',
-                 'table': 'example_table'
+                 'database': 'py_experimenter',
+                 'table': 'test_table_sqlite'
              },
              'PY_EXPERIMENTER': {
                  'cpu.max': '5',
@@ -79,7 +80,7 @@ from py_experimenter.utils import combine_fill_table_parameters, get_field_names
                  'pause.threshold': '8'
              },
              'DEFAULT': {}
-         })
+        })
     ],
 
 )
@@ -98,8 +99,8 @@ def test_load_config(path, comparable_dict):
 
 
 def test_load_config_raises_error():
-    path = os.path.join('config', 'file', 'misssing.cfg')
-    with pytest.raises(NoConfigFileError, match=f'Configuration file missing! Please add file: {str(path)}'):
+    path = os.path.join('config', 'file', 'missing.cfg')
+    with pytest.raises(NoConfigFileError, match=re.escape(f'Configuration file missing! Please add file: {path}')):
         load_config(path)
 
 

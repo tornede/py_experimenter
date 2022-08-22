@@ -1,3 +1,4 @@
+import logging
 from sqlite3 import Error, connect
 from typing import List
 
@@ -12,6 +13,15 @@ class DatabaseConnectorLITE(DatabaseConnector):
 
     def _extract_credentials(self):
         return dict(database=f'{self.database}.db')
+
+    def _test_connection(self):
+        try:
+            connection = self.connect()
+        except Exception as err:
+            logging.error(err)
+            raise DatabaseConnectionError(err)
+        else:
+            self.close_connection(connection)
 
     def connect(self):
         try:

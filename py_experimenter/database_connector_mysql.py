@@ -1,10 +1,11 @@
+import logging
 from configparser import ConfigParser
 
 import numpy as np
 from mysql.connector import Error, connect
 
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.py_experimenter_exceptions import DatabaseConnectionError, TableError
+from py_experimenter.py_experimenter_exceptions import DatabaseConnectionError, DatabaseCreationError, TableError
 from py_experimenter.utils import load_config
 
 
@@ -16,14 +17,46 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         self.host = credentials.get('CREDENTIALS', 'host')
         self.user = credentials.get('CREDENTIALS', 'user')
         self.password = credentials.get('CREDENTIALS', 'password')
+        
         super().__init__(config)
+
+        self._create_database_if_not_existing()
+
+    def _test_connection(self):
+        modified_credentials = self._db_credentials.copy()
+        del modified_credentials['database']
+        try:
+            connection = self.connect(modified_credentials)
+        except Exception as err:
+            logging.error(err)
+            raise DatabaseConnectionError(err)
+        else:
+            self.close_connection(connection)
+
+    def _create_database_if_not_existing(self):
+        modified_credentials = self._db_credentials.copy()
+        del modified_credentials['database']
+        try:
+            connection = self.connect(modified_credentials)
+            cursor = self.cursor(connection)
+            self.execute(cursor, "SHOW DATABASES")
+            databases = [database[0] for database in self.fetchall(cursor)]
+
+            if not self.database in databases:
+                self.execute(cursor, f"CREATE DATABASE {self.database}")
+                self.commit(connection)
+            self.close_connection(connection)
+        except Exception as err:
+            raise DatabaseCreationError(f'Error when creating database: \n {err}')
 
     def _extract_credentials(self):
         return dict(host=self.host, user=self.user, database=self.database, password=self.password)
 
-    def connect(self):
+    def connect(self, credentials=None):
         try:
-            return connect(**self._db_credentials, use_pure=True)
+            if credentials is None:
+                credentials = self._db_credentials
+            return connect(**credentials, use_pure=True)
         except Error as err:
             raise DatabaseConnectionError(err)
 

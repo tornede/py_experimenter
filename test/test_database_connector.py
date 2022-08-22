@@ -36,7 +36,9 @@ def test_check_combination_in_existing_rows(combination, existing_rows, keyfield
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'execute')
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'connect')
 @patch.object(database_connector.DatabaseConnector, '_test_connection')
-def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_mock, close_connection_mock, fetchall_mock, cursor_mock, table_exists_mock, table_has_correct_structure_mock):
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
+def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_connection_mock, connect_mock, execute_mock, close_connection_mock, fetchall_mock, cursor_mock, table_exists_mock, table_has_correct_structure_mock):
+    create_database_if_not_existing_mock.return_value = None
     test_connection_mock.return_value = None
     connect_mock.return_value = None
     cursor_mock.return_value = None
@@ -49,7 +51,7 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
     database_connector = DatabaseConnectorMYSQL(config, credential_path=os.path.join(
         'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
     database_connector.create_table_if_not_exists()
-    create_table_string = ('CREATE TABLE `example_table` (ID int NOT NULL AUTO_INCREMENT, '
+    create_table_string = ('CREATE TABLE `test_table` (ID int NOT NULL AUTO_INCREMENT, '
                            '`value` int DEFAULT NULL,`exponent` int DEFAULT NULL,`sin` VARCHAR(255) '
                            'DEFAULT NULL,`cos` VARCHAR(255) DEFAULT NULL,`status` VARCHAR(255) '
                            'DEFAULT NULL,`machine` VARCHAR(255) DEFAULT NULL,`creation_date` '
@@ -58,7 +60,7 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
                            )
     execute_mock.assert_has_calls(
         [
-            mock.call(None, "SHOW TABLES LIKE 'example_table'"),
+            mock.call(None, "SHOW TABLES LIKE 'test_table'"),
             mock.call(None, create_table_string)
         ]
     )
@@ -109,15 +111,19 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
 )
 @patch.object(database_connector.DatabaseConnector, '_write_to_database')
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_get_existing_rows')
-@patch.object(database_connector.DatabaseConnector, '_test_connection')
-def test_fill_table(test_connection_mock,
-                    get_existing_rows_mock,
-                    write_to_database_mock,
-                    config_path,
-                    parameters,
-                    fixed_parameter_combination,
-                    write_to_database_keys,
-                    write_to_database_values):
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_test_connection')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
+def test_fill_table(
+        create_database_if_not_existing_mock,
+        test_connection_mock,
+        get_existing_rows_mock,
+        write_to_database_mock,
+        config_path,
+        parameters,
+        fixed_parameter_combination,
+        write_to_database_keys,
+        write_to_database_values):
+    create_database_if_not_existing_mock.return_value = None
     test_connection_mock.return_value = None
     get_existing_rows_mock.return_value = []
     write_to_database_mock.return_value = None
