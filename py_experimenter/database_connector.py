@@ -91,9 +91,13 @@ class DatabaseConnector(abc.ABC):
                                                   "table. Please change your configuration or delete the table in your database.")
         else:
             typed_fields.extend(
-                [('status', 'VARCHAR(255)'), ('machine', 'VARCHAR(255)'), ('creation_date', 'VARCHAR(255)'),
-                    ('start_date', 'VARCHAR(255)'),
-                    ('end_date', 'VARCHAR(255)'), ('error', 'LONGTEXT')])
+                [('status', 'VARCHAR(255)'),
+                 ('machine', 'VARCHAR(255)'),
+                 ('creation_date', 'VARCHAR(255)'),
+                 ('start_date', 'VARCHAR(255)'),
+                 ('end_date', 'VARCHAR(255)'),
+                 ('error', 'LONGTEXT'),
+                 ('name', 'LONGTEXT')])
 
             columns = ['%s %s DEFAULT NULL' % (self.__class__.escape_sql_chars(field)[0], datatype) for field, datatype in typed_fields]
 
@@ -116,7 +120,7 @@ class DatabaseConnector(abc.ABC):
     def escape_sql_chars(*args):
         pass
 
-    def fill_table(self, parameters=None, fixed_parameter_combinations=None) -> None:
+    def fill_table(self, parameters=None, fixed_parameter_combinations=None, experimenter_name='No experimenter name given') -> None:
         parameters = parameters if parameters is not None else {}
         fixed_parameter_combinations = fixed_parameter_combinations if fixed_parameter_combinations is not None else []
 
@@ -132,8 +136,10 @@ class DatabaseConnector(abc.ABC):
             .replace("'", "")
 
         existing_rows = self._get_existing_rows(column_names)
+        
         column_names += ",status"
         column_names += ",creation_date"
+        column_names += ",name"
 
         time = datetime.now()
         values_added = 0
@@ -143,6 +149,7 @@ class DatabaseConnector(abc.ABC):
             values = list(combination.values())
             values.append("created")
             values.append("%s" % time.strftime("%m/%d/%Y, %H:%M:%S"))
+            values.append(experimenter_name)
 
             self._write_to_database(column_names.split(', '), values)
         logging.info(f"{values_added} values added to database")

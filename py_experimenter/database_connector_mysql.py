@@ -45,7 +45,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         self.execute(cursor,
                      f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{self.table_name}' AND TABLE_SCHEMA = '{self.database}'")
 
-        columns = [k[0] for k in self.fetchall(cursor)][1:-6]
+        columns = [k[0] for k in self.fetchall(cursor)][1:-7]
         config_columns = [k[0] for k in typed_fields]
         return set(columns) == set(config_columns)
 

@@ -54,7 +54,7 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
                            'DEFAULT NULL,`cos` VARCHAR(255) DEFAULT NULL,`status` VARCHAR(255) '
                            'DEFAULT NULL,`machine` VARCHAR(255) DEFAULT NULL,`creation_date` '
                            'VARCHAR(255) DEFAULT NULL,`start_date` VARCHAR(255) DEFAULT NULL,`end_date` '
-                           'VARCHAR(255) DEFAULT NULL,`error` LONGTEXT DEFAULT NULL, PRIMARY KEY (ID))'
+                           'VARCHAR(255) DEFAULT NULL,`error` LONGTEXT DEFAULT NULL,`name` LONGTEXT DEFAULT NULL, PRIMARY KEY (ID))'
                            )
     execute_mock.assert_has_calls(
         [
@@ -70,39 +70,39 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {'value': [1, 2], 'exponent': [3, 4]},
          [],
-         ['value,exponent,status,creation_date'],
+         ['value,exponent,status,creation_date,name'],
          [
-             [1, 3, 'created'],
-             [1, 4, 'created'],
-             [2, 3, 'created'],
-             [2, 4, 'created']
+             [1, 3, 'created', 'No experimenter name given'],
+             [1, 4, 'created', 'No experimenter name given'],
+             [2, 3, 'created', 'No experimenter name given'],
+             [2, 4, 'created', 'No experimenter name given']
         ]),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {},
          [{'value': 1, 'exponent': 3}, {'value': 1, 'exponent': 4}],
-         ['value,exponent,status,creation_date'],
+         ['value,exponent,status,creation_date,name'],
          [
-             [1, 3, 'created'],
-             [1, 4, 'created'],
+             [1, 3, 'created', 'No experimenter name given'],
+             [1, 4, 'created', 'No experimenter name given'],
         ]),
-        (os.path.join('test','test_config_files','load_config_test_file','my_sql_test_file_3_parameters.cfg'),
+        (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], },
          [{'exponent': 3, 'other_value': 5}],
-         ['value,exponent,other_value,status,creation_date'],
+         ['value,exponent,other_value,status,creation_date,name'],
          [
-             [1, 3, 5, 'created'],
-             [2, 3, 5, 'created'],
-         ]
-         ),
+             [1, 3, 5, 'created', 'No experimenter name given'],
+             [2, 3, 5, 'created', 'No experimenter name given'],
+        ]
+        ),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], 'exponent': [3, 4], },
          [{'other_value': 5}],
-         ['value,exponent,other_value,status,creation_date'],
+         ['value,exponent,other_value,status,creation_date,name'],
          [
-             [1, 3, 5, 'created'],
-             [1, 4, 5, 'created'],
-             [2, 3, 5, 'created'],
-             [2, 4, 5, 'created'],
+             [1, 3, 5, 'created', 'No experimenter name given'],
+             [1, 4, 5, 'created', 'No experimenter name given'],
+             [2, 3, 5, 'created', 'No experimenter name given'],
+             [2, 4, 5, 'created', 'No experimenter name given'],
         ]
         ),
     ]
@@ -131,8 +131,9 @@ def test_fill_table(test_connection_mock,
     assert len(args) == len(write_to_database_values)
     for expected_args, arg in zip(write_to_database_values, args):
         assert write_to_database_keys == arg[0][0]
-        assert expected_args == arg[0][1][:-1]
-        datetime_from_string_argument = datetime.datetime.strptime(arg[0][1][-1], "%m/%d/%Y, %H:%M:%S")
+        assert expected_args[:-1] == arg[0][1][:-2]
+        assert expected_args[-1] == arg[0][1][-1]
+        datetime_from_string_argument = datetime.datetime.strptime(arg[0][1][-2], "%m/%d/%Y, %H:%M:%S")
         assert datetime_from_string_argument.day == datetime.datetime.now().day
         assert datetime_from_string_argument.hour == datetime.datetime.now().hour
         assert datetime_from_string_argument.minute - datetime.datetime.now().minute <= 2

@@ -22,7 +22,7 @@ class PyExperimenter:
     Module that connects the execution of different machine learning experiments with a database.
     """
 
-    def __init__(self, config_path: str = os.path.join('config', 'configuration.cfg'), credential_path: str = os.path.join('config', 'database_credentials.cfg'), table_name: str = None, database_name: str = None):
+    def __init__(self, config_path: str = os.path.join('config', 'configuration.cfg'), credential_path: str = os.path.join('config', 'database_credentials.cfg'), table_name: str = None, database_name: str = None, experimenter_name='No experimenter name given'):
         """
         Initialize PyExperimenter with the configuration file. If table_name or database_name are given they overwrite the
         values in the configuration file.
@@ -40,6 +40,7 @@ class PyExperimenter:
             self._config.set('DATABASE', 'table', table_name)
         if database_name is not None:
             self._config.set('DATABASE', 'database', database_name)
+        self.experimenter_name = experimenter_name
 
         self._config_path = config_path
 
@@ -117,7 +118,8 @@ class PyExperimenter:
         logging.debug("Create table if not exist")
         self._dbconnector.create_table_if_not_exists()
         logging.debug("Fill table with parameters")
-        self._dbconnector.fill_table(fixed_parameter_combinations=fixed_parameter_combinations, parameters=parameters)
+        self._dbconnector.fill_table(fixed_parameter_combinations=fixed_parameter_combinations,
+                                     parameters=parameters, experimenter_name=self.experimenter_name)
         logging.debug("Parameters successfully inserted to table")
 
     def fill_table_from_config(self) -> None:
@@ -130,7 +132,7 @@ class PyExperimenter:
         self._dbconnector.create_table_if_not_exists()
         logging.debug("Fill table with parameters")
         parameters = utils.get_keyfield_data(self._config)
-        self._dbconnector.fill_table(parameters=parameters)
+        self._dbconnector.fill_table(parameters=parameters, experimenter_name=self.experimenter_name)
 
     def fill_table_with_rows(self, rows: List[dict]) -> None:
         logging.debug("Create table if not exist")
@@ -140,7 +142,7 @@ class PyExperimenter:
         for row in rows:
             if not set(keyfields) == set(row.keys()):
                 raise ValueError('The keyfields in the config file do not match the keyfields in the rows')
-        self._dbconnector.fill_table(fixed_parameter_combinations=rows)
+        self._dbconnector.fill_table(fixed_parameter_combinations=rows, experimenter_name=self.experimenter_name)
 
     def execute(self, approach, max_experiments: int = -1, random_order=False) -> None:
         """
