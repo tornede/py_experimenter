@@ -3,7 +3,7 @@ import os
 import pytest
 from mock import patch
 
-from py_experimenter import database_connector, utils
+from py_experimenter import database_connector, database_connector_lite, database_connector_mysql, utils
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
 from py_experimenter.py_experimenter_exceptions import InvalidConfigError, InvalidResultFieldError
@@ -12,7 +12,9 @@ from py_experimenter.result_processor import ResultProcessor
 CREDENTIAL_PATH = os.path.join('test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
 
 
-@patch.object(database_connector.DatabaseConnector, '_test_connection')
+@patch.object(database_connector_lite.DatabaseConnectorLITE, '_test_connection')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_test_connection')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
 @pytest.mark.parametrize(
     'config, table_name, condition, result_fields, expected_provider',
     [
@@ -32,8 +34,10 @@ CREDENTIAL_PATH = os.path.join('test', 'test_config_files', 'load_config_test_fi
         ),
     ]
 )
-def test_init(mock_fn, config, table_name, condition, result_fields, expected_provider):
-    mock_fn.return_value = None
+def test_init(create_database_if_not_existing_mock, test_connection_mysql, test_connection_sqlite, config, table_name, condition, result_fields, expected_provider):
+    create_database_if_not_existing_mock.return_value = None
+    test_connection_mysql.return_value = None
+    test_connection_sqlite.return_value = None
     result_processor = ResultProcessor(config, CREDENTIAL_PATH, table_name, condition, result_fields)
 
     assert table_name == result_processor.table_name
@@ -53,7 +57,8 @@ def test_init_raises_error(mock_fn):
         ResultProcessor(config, CREDENTIAL_PATH, table_name, condition, result_fields)
 
 
-@patch.object(database_connector.DatabaseConnector, '_test_connection')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_test_connection')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
 @pytest.mark.parametrize(
     'result_fields, results, error, errorstring',
     [
@@ -70,8 +75,9 @@ def test_init_raises_error(mock_fn):
         ),
     ]
 )
-def test_process_results_raises_error(test_fn, result_fields, results, error, errorstring):
-    test_fn.return_value = None
+def test_process_results_raises_error(create_database_mock, test_connection_mock, result_fields, results, error, errorstring):
+    create_database_mock.return_value = None
+    test_connection_mock.return_value = None
     table_name = 'test_table'
     condition = {'test': 'condition'}
     config = utils.load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
@@ -82,7 +88,8 @@ def test_process_results_raises_error(test_fn, result_fields, results, error, er
         result_processor.process_results(results)
 
 
-@patch.object(database_connector.DatabaseConnector, '_test_connection')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_test_connection')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
 @pytest.mark.parametrize(
     'existing_result_fields, used_result_fields, subset_boolean',
     [
@@ -91,8 +98,9 @@ def test_process_results_raises_error(test_fn, result_fields, results, error, er
         ([], ['result_field_1', 'result_field_2', 'result_field_3', 'result_field_4'], True),
     ]
 )
-def test_valid_result_fields(mock_fn, existing_result_fields, used_result_fields, subset_boolean):
-    mock_fn.return_value = None
+def test_valid_result_fields(create_database_if_not_existing_mock, test_connection_mock, existing_result_fields, used_result_fields, subset_boolean):
+    create_database_if_not_existing_mock.return_value = None
+    test_connection_mock.return_value = None
     mock_config = utils.load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     assert subset_boolean == ResultProcessor(mock_config, CREDENTIAL_PATH, 'test_table_name', {
                                              'test_condition_key': 'test_condition_value'}, used_result_fields)._valid_result_fields(existing_result_fields)
