@@ -49,7 +49,7 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
     database_connector = DatabaseConnectorMYSQL(config, credential_path=os.path.join(
         'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
     database_connector.create_table_if_not_exists()
-    create_table_string = ('CREATE TABLE `example_table` (ID int NOT NULL AUTO_INCREMENT, '
+    create_table_string = ('CREATE TABLE `test_table` (ID int NOT NULL AUTO_INCREMENT, '
                            '`value` int DEFAULT NULL,`exponent` int DEFAULT NULL,`sin` VARCHAR(255) '
                            'DEFAULT NULL,`cos` VARCHAR(255) DEFAULT NULL,`status` VARCHAR(255) '
                            'DEFAULT NULL,`machine` VARCHAR(255) DEFAULT NULL,`creation_date` '
@@ -58,7 +58,7 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
                            )
     execute_mock.assert_has_calls(
         [
-            mock.call(None, "SHOW TABLES LIKE 'example_table'"),
+            mock.call(None, "SHOW TABLES LIKE 'test_table'"),
             mock.call(None, create_table_string)
         ]
     )
