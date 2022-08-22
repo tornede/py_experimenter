@@ -12,6 +12,7 @@ CREDENTIAL_PATH = os.path.join('test', 'test_config_files', 'load_config_test_fi
 
 
 @patch.object(database_connector.DatabaseConnector, '__init__')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
 @pytest.mark.parametrize(
     'config_file, table_name, database_name, expected_table_name, expected_database_name, expected_db_connector_class',
     [
@@ -82,8 +83,9 @@ CREDENTIAL_PATH = os.path.join('test', 'test_config_files', 'load_config_test_fi
 
     ]
 )
-def test_init(mock_fn, config_file, table_name, database_name, expected_table_name, expected_database_name, expected_db_connector_class):
+def test_init(create_database_if_not_existing_mock, mock_fn, config_file, table_name, database_name, expected_table_name, expected_database_name, expected_db_connector_class):
     mock_fn.return_value = None
+    create_database_if_not_existing_mock.return_value = None
     experimenter = PyExperimenter(config_file, os.path.join('test', 'test_config_files', 'load_config_test_file',
                                   'mysql_fake_credentials.cfg'), table_name, database_name)
 
@@ -124,6 +126,7 @@ def test_get_config_values(mock_valid_config, mcok_database_connector_init, conf
 
 
 @patch.object(database_connector.DatabaseConnector, '__init__')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
 @pytest.mark.parametrize(
     'config_path, section_name, key, value',
     [
@@ -147,7 +150,8 @@ def test_get_config_values(mock_valid_config, mcok_database_connector_init, conf
         ),
     ]
 )
-def test_set_config_values(mock_fn, config_path, section_name, key, value):
+def test_set_config_values(create_database_if_not_existing_mock, mock_fn, config_path, section_name, key, value):
+    create_database_if_not_existing_mock.return_value = None
     mock_fn.return_value = None
     py_experimenter = PyExperimenter(config_path, CREDENTIAL_PATH)
     py_experimenter.set_config_value(section_name, key, value)

@@ -25,14 +25,9 @@ class DatabaseConnector(abc.ABC):
     def _extract_credentials(self):
         pass
 
+    @abc.abstractmethod
     def _test_connection(self):
-        try:
-            connection = self.connect()
-        except Exception as err:
-            logging.error(err)
-            raise DatabaseConnectionError(err)
-        else:
-            self.close_connection(connection)
+        pass
 
     @ abc.abstractmethod
     def connect(self):
@@ -96,7 +91,6 @@ class DatabaseConnector(abc.ABC):
                     ('end_date', 'VARCHAR(255)'), ('error', 'LONGTEXT')])
 
             columns = ['%s %s DEFAULT NULL' % (self.__class__.escape_sql_chars(field)[0], datatype) for field, datatype in typed_fields]
-
             self._create_table(cursor, columns)
         self.close_connection(connection)
 

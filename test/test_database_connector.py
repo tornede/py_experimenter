@@ -36,7 +36,9 @@ def test_check_combination_in_existing_rows(combination, existing_rows, keyfield
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'execute')
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'connect')
 @patch.object(database_connector.DatabaseConnector, '_test_connection')
-def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_mock, close_connection_mock, fetchall_mock, cursor_mock, table_exists_mock, table_has_correct_structure_mock):
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
+def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_connection_mock, connect_mock, execute_mock, close_connection_mock, fetchall_mock, cursor_mock, table_exists_mock, table_has_correct_structure_mock):
+    create_database_if_not_existing_mock.return_value = None
     test_connection_mock.return_value = None
     connect_mock.return_value = None
     cursor_mock.return_value = None
@@ -85,15 +87,15 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
              [1, 3, 'created'],
              [1, 4, 'created'],
         ]),
-        (os.path.join('test','test_config_files','load_config_test_file','my_sql_test_file_3_parameters.cfg'),
+        (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], },
          [{'exponent': 3, 'other_value': 5}],
          ['value,exponent,other_value,status,creation_date'],
          [
              [1, 3, 5, 'created'],
              [2, 3, 5, 'created'],
-         ]
-         ),
+        ]
+        ),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], 'exponent': [3, 4], },
          [{'other_value': 5}],
@@ -109,15 +111,19 @@ def test_create_table_if_not_exists(test_connection_mock, connect_mock, execute_
 )
 @patch.object(database_connector.DatabaseConnector, '_write_to_database')
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_get_existing_rows')
-@patch.object(database_connector.DatabaseConnector, '_test_connection')
-def test_fill_table(test_connection_mock,
-                    get_existing_rows_mock,
-                    write_to_database_mock,
-                    config_path,
-                    parameters,
-                    fixed_parameter_combination,
-                    write_to_database_keys,
-                    write_to_database_values):
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_test_connection')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
+def test_fill_table(
+        create_database_if_not_existing_mock,
+        test_connection_mock,
+        get_existing_rows_mock,
+        write_to_database_mock,
+        config_path,
+        parameters,
+        fixed_parameter_combination,
+        write_to_database_keys,
+        write_to_database_values):
+    create_database_if_not_existing_mock.return_value = None
     test_connection_mock.return_value = None
     get_existing_rows_mock.return_value = []
     write_to_database_mock.return_value = None

@@ -9,6 +9,8 @@ class ParameterCombinationError(PyExperimenterError):
 class DatabaseError(PyExperimenterError):
     pass
 
+class DatabaseCreationError(DatabaseError):
+	pass
 
 class DatabaseConnectionError(DatabaseError):
     pass
