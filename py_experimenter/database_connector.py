@@ -74,12 +74,12 @@ class DatabaseConnector(abc.ABC):
         """
 
         keyfields = utils.get_keyfields(self._config)
-        result_fields = utils.get_resultfields(self._config)
+        resultfields = utils.get_resultfields(self._config)
 
         if self._timestamp_on_result_fields:
-            result_fields = utils.add_timestamp_to_result_fields(result_fields)
+            resultfields = utils.add_timestep_result_columns(resultfields)
 
-        fields = keyfields + result_fields
+        fields = keyfields + resultfields
 
         connection = self.connect()
         cursor = self.cursor(connection)

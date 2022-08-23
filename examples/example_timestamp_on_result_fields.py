@@ -9,7 +9,8 @@ from py_experimenter.result_processor import ResultProcessor
 
 def own_function(parameters: dict, result_processor: ResultProcessor, custom_config: dict):
     pause = random.randrange(1, int(custom_config['pause.max']))
-    if pause >= int(custom_config['pause.threshold']):
+    seed = parameters['seed']
+    if seed >= 2:
         raise ValueError("Example error")
     time.sleep(pause)
 

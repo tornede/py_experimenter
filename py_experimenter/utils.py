@@ -31,11 +31,11 @@ def timestamps_for_result_fields(config: configparser.ConfigParser) -> bool:
     return timestamp_on_result_fields
 
 
-def add_timestamp_to_result_fields(result_field_configuration):
+def add_timestep_result_columns(result_field_configuration):
     result_fields_with_timestamp = list()
     for result_field in result_field_configuration:
         result_fields_with_timestamp.append(result_field)
-        result_fields_with_timestamp.append((f'{result_field[0]}_timestamp', result_field[1]))
+        result_fields_with_timestamp.append((f'{result_field[0]}_timestamp', 'VARCHAR(255)'))
     return result_fields_with_timestamp
 
 

@@ -4,8 +4,8 @@ import re
 import pytest
 
 from py_experimenter.py_experimenter_exceptions import NoConfigFileError, ParameterCombinationError
-from py_experimenter.utils import (combine_fill_table_parameters, get_fields, get_keyfield_names, get_keyfields, load_config,
-                                   timestamps_for_result_fields)
+from py_experimenter.utils import (add_timestep_result_columns, combine_fill_table_parameters, get_fields, get_keyfield_names, get_keyfields,
+                                   get_resultfields, load_config, timestamps_for_result_fields)
 
 
 @pytest.mark.parametrize(
@@ -138,6 +138,30 @@ def test_load_config_raises_error():
     path = os.path.join('config', 'file', 'missing.cfg')
     with pytest.raises(NoConfigFileError, match=re.escape(f'Configuration file missing! Please add file: {path}')):
         load_config(path)
+
+
+@pytest.mark.parametrize(
+    'path, expected_result',
+    [
+        pytest.param(
+            os.path.join('test', 'test_config_files', 'load_config_test_file', 'test_resultfield_timestamp_lower_case.cfg'),
+                        ([
+                            ('final_pipeline', 'LONGTEXT'),
+                            ('final_pipeline_timestamp', 'VARCHAR(255)'),
+                            ('internal_performance', 'int(3)'),
+                            ('internal_performance_timestamp', 'VARCHAR(255)'),
+                            ('performance_asymmetric_loss', 'VARCHAR(255)'),
+                            ('performance_asymmetric_loss_timestamp', 'VARCHAR(255)'),
+                        ]
+            ),
+            id='basic_test_case'
+        )
+    ]
+)
+def test_add_timestep_result_columns(path, expected_result):
+    config = load_config(path)
+    resultfields = get_resultfields(config)
+    assert expected_result == add_timestep_result_columns(resultfields)
 
 
 @pytest.mark.parametrize(
