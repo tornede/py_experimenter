@@ -20,17 +20,10 @@ def own_function(parameters: dict, result_processor: ResultProcessor, custom_con
 
 logging.basicConfig(level=logging.INFO)
 
-# To use a mysql database, modify the examples/example_fill_complex.cfg file and change the provider to mysql.
-# In addition you need to provide the credentials file config/database_credentials.cfg and confirm that you
-# have the permission to create a database/a database exists as defined in the config file.
-# For more information refer to the README.md file.
-
-# Create sqlite experimenter with name: 'example_name_1'
-experimenter = PyExperimenter(config_path=os.path.join('examples', 'example_use_name.cfg'), experimenter_name='example_name_1')
-
-
-
+# Create sqlite experimenter with name: 'name1',
 # Add 6 experiments to the database.
+# Execute one of the experiments.
+experimenter = PyExperimenter(config_path=os.path.join('examples', 'example_use_name.cfg'), experimenter_name='name1')
 experimenter.fill_table_with_rows(
     rows=[
         {'value': 1, 'exponent': 1},
@@ -41,12 +34,9 @@ experimenter.fill_table_with_rows(
         {'value': 9, 'exponent': 3},
     ]
 )
-# Execute two of the experiemnts with name: 'example_name_1'.
-experimenter.execute(own_function, 2)
+experimenter.execute(own_function, 1)
 
-
-# Create new experimenter with name: 'example_name_2'
-experimenter = PyExperimenter(config_path=os.path.join('examples', 'example_use_name.cfg'), experimenter_name='example_name_2')
-
-# Execute two of the experiments with name: 'example_name_2'.
+# Create new experimenter with name: 'name2'
+# Execute two of the experiments.
+experimenter = PyExperimenter(config_path=os.path.join('examples', 'example_use_name.cfg'), experimenter_name='name2')
 experimenter.execute(own_function, 2)
