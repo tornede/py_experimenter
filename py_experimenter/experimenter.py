@@ -22,7 +22,7 @@ class PyExperimenter:
     Module that connects the execution of different machine learning experiments with a database.
     """
 
-    def __init__(self, config_path: str = os.path.join('config', 'configuration.cfg'), credential_path: str = os.path.join('config', 'database_credentials.cfg'), table_name: str = None, database_name: str = None, experimenter_name='No experimenter name given'):
+    def __init__(self, config_path: str = os.path.join('config', 'configuration.cfg'), credential_path: str = os.path.join('config', 'database_credentials.cfg'), table_name: str = None, database_name: str = None, experimenter_name='PyExperimenter'):
         """
         Initialize PyExperimenter with the configuration file. If table_name or database_name are given they overwrite the
         values in the configuration file.
