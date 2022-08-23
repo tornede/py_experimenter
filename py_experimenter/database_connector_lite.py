@@ -12,7 +12,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
     _write_to_database_seperator = "','"
 
     def _extract_credentials(self):
-        return dict(database=f'{self.database}.db')
+        return dict(database=f'{self._database_name}.db')
 
     def _test_connection(self):
         try:
@@ -32,14 +32,14 @@ class DatabaseConnectorLITE(DatabaseConnector):
     def _table_exists(self, cursor) -> bool:
         self.execute(cursor, f"SELECT name FROM sqlite_master WHERE type='table';")
         table_names = self.fetchall(cursor)
-        return self.table_name in [x[0] for x in table_names]
+        return self._table_name in [x[0] for x in table_names]
 
     def _create_table(self, cursor, columns):
         self.execute(cursor,
-                     f"CREATE TABLE {DatabaseConnectorLITE.escape_sql_chars(self.table_name)[0]} (ID Integer PRIMARY KEY AUTOINCREMENT, {','.join(DatabaseConnectorLITE.escape_sql_chars(*columns))});")
+                     f"CREATE TABLE {DatabaseConnectorLITE.escape_sql_chars(self._table_name)[0]} (ID Integer PRIMARY KEY AUTOINCREMENT, {','.join(DatabaseConnectorLITE.escape_sql_chars(*columns))});")
 
     def _table_has_correct_structure(self, cursor, typed_fields) -> List[str]:
-        self.execute(cursor, f"PRAGMA table_info({DatabaseConnectorLITE.escape_sql_chars(self.table_name)[0]})")
+        self.execute(cursor, f"PRAGMA table_info({DatabaseConnectorLITE.escape_sql_chars(self._table_name)[0]})")
 
         columns = [k[1] for k in self.fetchall(cursor)][1:-6]
         config_columns = [k[0] for k in typed_fields]
@@ -54,7 +54,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
             return row.replace("'", "")
         connection = self.connect()
         cursor = self.cursor(connection)
-        self.execute(cursor, f"SELECT {column_names} FROM {self.table_name}")
+        self.execute(cursor, f"SELECT {column_names} FROM {self._table_name}")
         existing_rows = list(map(np.array2string, np.array(self.fetchall(cursor))))
         existing_rows = [' '.join(_remove_string_markers(row).split()) for row in existing_rows]
         self.close_connection(connection)
