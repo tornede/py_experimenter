@@ -117,7 +117,7 @@ class DatabaseConnector(abc.ABC):
     def escape_sql_chars(*args):
         pass
 
-    def fill_table(self, parameters=None, fixed_parameter_combinations=None, experimenter_name='No experimenter name given') -> None:
+    def fill_table(self, parameters=None, fixed_parameter_combinations=None) -> None:
         parameters = parameters if parameters is not None else {}
         fixed_parameter_combinations = fixed_parameter_combinations if fixed_parameter_combinations is not None else []
 
@@ -136,7 +136,6 @@ class DatabaseConnector(abc.ABC):
 
         column_names += ",status"
         column_names += ",creation_date"
-        column_names += ",name"
 
         time = datetime.now()
         values_added = 0
@@ -146,7 +145,6 @@ class DatabaseConnector(abc.ABC):
             values = list(combination.values())
             values.append("created")
             values.append("%s" % time.strftime("%m/%d/%Y, %H:%M:%S"))
-            values.append(experimenter_name)
 
             self._write_to_database(column_names.split(', '), values)
         logging.info(f"{values_added} values added to database")

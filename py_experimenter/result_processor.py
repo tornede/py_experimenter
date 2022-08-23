@@ -66,8 +66,12 @@ class ResultProcessor:
     def _set_machine(self, machine_id):
         self._dbconnector._update_database(keys=['machine'], values=[machine_id], where=self._where)
 
+    def _set_experimenter_name(self, experimenter_name):
+        self._dbconnector._update_database(keys=['name'], values=[experimenter_name], where=self._where)
+
     def _not_executed_yet(self) -> bool:
         return self._dbconnector.not_executed_yet(where=self._where)
 
     def _valid_result_fields(self, result_fields):
         return set(result_fields).issubset(set(self._result_fields))
+
