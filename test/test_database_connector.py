@@ -72,39 +72,39 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {'value': [1, 2], 'exponent': [3, 4]},
          [],
-         ['value,exponent,status,creation_date,name'],
+         ['value,exponent,status,creation_date'],
          [
-             [1, 3, 'created', 'No experimenter name given'],
-             [1, 4, 'created', 'No experimenter name given'],
-             [2, 3, 'created', 'No experimenter name given'],
-             [2, 4, 'created', 'No experimenter name given']
+             [1, 3, 'created'],
+             [1, 4, 'created'],
+             [2, 3, 'created'],
+             [2, 4, 'created']
         ]),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {},
          [{'value': 1, 'exponent': 3}, {'value': 1, 'exponent': 4}],
-         ['value,exponent,status,creation_date,name'],
+         ['value,exponent,status,creation_date'],
          [
-             [1, 3, 'created', 'No experimenter name given'],
-             [1, 4, 'created', 'No experimenter name given'],
+             [1, 3, 'created'],
+             [1, 4, 'created'],
         ]),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], },
          [{'exponent': 3, 'other_value': 5}],
-         ['value,exponent,other_value,status,creation_date,name'],
+         ['value,exponent,other_value,status,creation_date'],
          [
-             [1, 3, 5, 'created', 'No experimenter name given'],
-             [2, 3, 5, 'created', 'No experimenter name given'],
+             [1, 3, 5, 'created'],
+             [2, 3, 5, 'created'],
         ]
         ),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], 'exponent': [3, 4], },
          [{'other_value': 5}],
-         ['value,exponent,other_value,status,creation_date,name'],
+         ['value,exponent,other_value,status,creation_date'],
          [
-             [1, 3, 5, 'created', 'No experimenter name given'],
-             [1, 4, 5, 'created', 'No experimenter name given'],
-             [2, 3, 5, 'created', 'No experimenter name given'],
-             [2, 4, 5, 'created', 'No experimenter name given'],
+             [1, 3, 5, 'created'],
+             [1, 4, 5, 'created'],
+             [2, 3, 5, 'created'],
+             [2, 4, 5, 'created'],
         ]
         ),
     ]
@@ -137,9 +137,8 @@ def test_fill_table(
     assert len(args) == len(write_to_database_values)
     for expected_args, arg in zip(write_to_database_values, args):
         assert write_to_database_keys == arg[0][0]
-        assert expected_args[:-1] == arg[0][1][:-2]
-        assert expected_args[-1] == arg[0][1][-1]
-        datetime_from_string_argument = datetime.datetime.strptime(arg[0][1][-2], "%m/%d/%Y, %H:%M:%S")
+        assert expected_args == arg[0][1][:-1]
+        datetime_from_string_argument = datetime.datetime.strptime(arg[0][1][-1], "%m/%d/%Y, %H:%M:%S")
         assert datetime_from_string_argument.day == datetime.datetime.now().day
         assert datetime_from_string_argument.hour == datetime.datetime.now().hour
         assert datetime_from_string_argument.minute - datetime.datetime.now().minute <= 2
