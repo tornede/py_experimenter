@@ -25,8 +25,10 @@ logging.basicConfig(level=logging.INFO)
 # Create sqlite experimenter.
 experimenter = PyExperimenter(config_path=os.path.join('examples','example_fill_complex.cfg'))
 # To use a mysql database, modify the examples/example_fill_complex.cfg file and change the provider to mysql.
-# In addition you need to provide the credentials file config/database_credentials.cfg and make sure that the database exists.
+# In addition you need to provide the credentials file config/database_credentials.cfg and confirm that you
+# have the permission to create a database/a database exists as defined in the config file.
 # For more information refer to the README.md file.
+
 
 # Fill database table with combination of values defined in the dict.
 experimenter.fill_table_from_combination(

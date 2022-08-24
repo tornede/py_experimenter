@@ -41,7 +41,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
     def _table_has_correct_structure(self, cursor, typed_fields) -> List[str]:
         self.execute(cursor, f"PRAGMA table_info({DatabaseConnectorLITE.escape_sql_chars(self._table_name)[0]})")
 
-        columns = [k[1] for k in self.fetchall(cursor)][1:-6]
+        columns = self._exclude_fixed_columns([k[1] for k in self.fetchall(cursor)])
         config_columns = [k[0] for k in typed_fields]
         return set(columns) == set(config_columns)
 

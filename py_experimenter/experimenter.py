@@ -26,7 +26,8 @@ class PyExperimenter:
                  config_path: str = os.path.join('config', 'configuration.cfg'),
                  credential_path: str = os.path.join('config', 'database_credentials.cfg'),
                  table_name: str = None,
-                 database_name: str = None):
+                 database_name: str = None,
+                 experimenter_name='PyExperimenter'):
         """
         Initialize PyExperimenter with the configuration file. If table_name or database_name are given they overwrite the
         values in the configuration file.
@@ -44,6 +45,7 @@ class PyExperimenter:
             self._config.set('DATABASE', 'table', table_name)
         if database_name is not None:
             self._config.set('DATABASE', 'database', database_name)
+        self.experimenter_name = experimenter_name
 
         self._config_path = config_path
         self.timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
@@ -125,7 +127,8 @@ class PyExperimenter:
         logging.debug("Create table if not exist")
         self._dbconnector.create_table_if_not_exists()
         logging.debug("Fill table with parameters")
-        self._dbconnector.fill_table(fixed_parameter_combinations=fixed_parameter_combinations, parameters=parameters)
+        self._dbconnector.fill_table(fixed_parameter_combinations=fixed_parameter_combinations,
+                                     parameters=parameters)
         logging.debug("Parameters successfully inserted to table")
 
     def fill_table_from_config(self) -> None:
@@ -184,24 +187,24 @@ class PyExperimenter:
             custom_config = [None for _ in parameters]
 
         with concurrent.futures.ProcessPoolExecutor(max_workers=cpus) as executor:
-            executor.map(execution_wrapper, approaches, custom_config, parameters, result_processors)
+            executor.map(self.execution_wrapper, approaches, custom_config, parameters, result_processors)
         logging.info("All executions finished")
 
     def get_results_table(self) -> pd.DataFrame:
         return self._dbconnector.get_results_table()
 
-
-def execution_wrapper(approach, custom_config: dict, parameters, result_processor: ResultProcessor):
-    if result_processor._not_executed_yet():
-        result_processor._change_status('running')
-        result_processor._set_machine(socket.gethostname())
-        try:
-            logging.debug(f"Start of approach on process {socket.gethostname()}")
-            approach(parameters, result_processor, custom_config)
-        except Exception:
-            error_msg = traceback.format_exc()
-            logging.error(error_msg)
-            result_processor._write_error(error_msg)
-            result_processor._change_status('error')
-        else:
-            result_processor._change_status('done')
+    def execution_wrapper(self, approach, custom_config: dict, parameters, result_processor: ResultProcessor):
+        if result_processor._not_executed_yet():
+            result_processor._change_status('running')
+            result_processor._set_experimenter_name(self.experimenter_name)
+            result_processor._set_machine(socket.gethostname())
+            try:
+                logging.debug(f"Start of approach on process {socket.gethostname()}")
+                approach(parameters, result_processor, custom_config)
+            except Exception:
+                error_msg = traceback.format_exc()
+                logging.error(error_msg)
+                result_processor._write_error(error_msg)
+                result_processor._change_status('error')
+            else:
+                result_processor._change_status('done')
