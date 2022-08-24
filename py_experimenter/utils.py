@@ -1,5 +1,6 @@
 import configparser
 import logging
+from typing import List, Tuple
 
 import numpy as np
 
@@ -20,6 +21,22 @@ def load_config(path):
         raise NoConfigFileError(f'Configuration file missing! Please add file: {path}')
 
     return config
+
+
+def timestamps_for_result_fields(config: configparser.ConfigParser) -> bool:
+    if config.has_option('DATABASE', 'resultfields.timestamps'):
+        timestamp_on_result_fields = config.getboolean('DATABASE', 'resultfields.timestamps')
+    else:
+        timestamp_on_result_fields = False
+    return timestamp_on_result_fields
+
+
+def add_timestep_result_columns(result_field_configuration):
+    result_fields_with_timestamp = list()
+    for result_field in result_field_configuration:
+        result_fields_with_timestamp.append(result_field)
+        result_fields_with_timestamp.append((f'{result_field[0]}_timestamp', 'VARCHAR(255)'))
+    return result_fields_with_timestamp
 
 
 def extract_db_credentials_and_table_name_from_config(config):
@@ -45,7 +62,7 @@ def extract_db_credentials_and_table_name_from_config(config):
 
 
 def get_keyfield_data(config):
-    keyfield_names = get_keyfields(config)
+    keyfield_names = get_keyfield_names(config)
 
     experiment_config = config['PY_EXPERIMENTER']
 
@@ -62,17 +79,27 @@ def get_keyfield_data(config):
     return keyfield_data
 
 
-def get_keyfields(config):
-    keyfield_names = get_field_names(config['PY_EXPERIMENTER']['keyfields'])
+def get_keyfield_names(config: configparser.ConfigParser) -> List[str]:
+    keyfield_names = get_keyfields(config)
+    return [name for name, _ in keyfield_names]
+
+
+def get_keyfields(config: configparser.ConfigParser) -> List[Tuple[str, str]]:
+    keyfield_names = get_fields(config['PY_EXPERIMENTER']['keyfields'])
     return keyfield_names
 
 
-def get_resultfields(config):
-    result_fields = get_field_names(config['PY_EXPERIMENTER']['resultfields'])
+def get_result_field_names(config: configparser.ConfigParser) -> List[str]:
+    result_fields = get_resultfields(config)
+    return [name for name, _ in result_fields]
+
+
+def get_resultfields(config: configparser.ConfigParser) -> List[Tuple[str, str]]:
+    result_fields = get_fields(config['PY_EXPERIMENTER']['resultfields'])
     return result_fields
 
 
-def get_field_names(fields):
+def get_fields(fields: str) -> List[Tuple[str, str]]:
     """
     Clean field names
     :param fields: List of field names
@@ -83,7 +110,9 @@ def get_field_names(fields):
     fields = fields.rstrip(',')
     fields = fields.split(',')
     clean_fields = [field.replace(' ', '') for field in fields]
-    return [field.split(':')[0] for field in clean_fields]
+    typed_fields = [tuple(field.split(':')) if len(field.split(':')) == 2 else (field, 'VARCHAR(255)') for
+                    field in clean_fields]
+    return typed_fields
 
 
 def combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations):

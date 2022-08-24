@@ -12,12 +12,13 @@ from py_experimenter.py_experimenter_exceptions import DatabaseConnectionError, 
 
 class DatabaseConnector(abc.ABC):
 
-    def __init__(self, config):
-        self.config = config
-        self.table_name = self.config.get('DATABASE', 'table')
-        self.database = self.config.get('DATABASE', 'database')
+    def __init__(self, _config):
+        self._config = _config
+        self._table_name = self._config.get('DATABASE', 'table')
+        self._database_name = self._config.get('DATABASE', 'database')
 
         self._db_credentials = self._extract_credentials()
+        self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
 
         self._test_connection()
 
@@ -70,22 +71,24 @@ class DatabaseConnector(abc.ABC):
         :param table_name: name of the table from the config
         :param experiment_config: experiment section of the config file
         """
-        experiment_config = self.config['PY_EXPERIMENTER']
 
-        fields = experiment_config['keyfields'].split(',') + experiment_config['resultfields'].split(',')
-        clean_fields = [field.replace(' ', '') for field in fields]
-        typed_fields = [tuple(field.split(':')) if len(field.split(':')) == 2 else (field, 'VARCHAR(255)') for
-                        field in clean_fields]
+        keyfields = utils.get_keyfields(self._config)
+        resultfields = utils.get_resultfields(self._config)
+
+        if self._timestamp_on_result_fields:
+            resultfields = utils.add_timestep_result_columns(resultfields)
+
+        fields = keyfields + resultfields
 
         connection = self.connect()
         cursor = self.cursor(connection)
 
         if self._table_exists(cursor):
-            if not self._table_has_correct_structure(cursor, typed_fields):
+            if not self._table_has_correct_structure(cursor, fields):
                 raise TableHasWrongStructureError("Keyfields or resultfields from the configuration do not match columns in the existing "
                                                   "table. Please change your configuration or delete the table in your database.")
         else:
-            typed_fields.extend(
+            fields.extend(
                 [('status', 'VARCHAR(255)'),
                  ('machine', 'VARCHAR(255)'),
                  ('creation_date', 'VARCHAR(255)'),
@@ -94,7 +97,7 @@ class DatabaseConnector(abc.ABC):
                  ('error', 'LONGTEXT'),
                  ('name', 'LONGTEXT')])
 
-            columns = ['%s %s DEFAULT NULL' % (self.__class__.escape_sql_chars(field)[0], datatype) for field, datatype in typed_fields]
+            columns = ['%s %s DEFAULT NULL' % (self.__class__.escape_sql_chars(field)[0], datatype) for field, datatype in fields]
             self._create_table(cursor, columns)
         self.close_connection(connection)
 
@@ -121,7 +124,7 @@ class DatabaseConnector(abc.ABC):
         parameters = parameters if parameters is not None else {}
         fixed_parameter_combinations = fixed_parameter_combinations if fixed_parameter_combinations is not None else []
 
-        keyfield_names = utils.get_keyfields(self.config)
+        keyfield_names = utils.get_keyfield_names(self._config)
         combinations = utils.combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations)
 
         if len(combinations) == 0:
@@ -147,6 +150,7 @@ class DatabaseConnector(abc.ABC):
             values.append("%s" % time.strftime("%m/%d/%Y, %H:%M:%S"))
 
             self._write_to_database(column_names.split(', '), values)
+            values_added += 1
         logging.info(f"{values_added} values added to database")
 
     def _check_combination_in_existing_rows(self, combination, existing_rows, keyfield_names) -> bool:
@@ -159,11 +163,11 @@ class DatabaseConnector(abc.ABC):
         pass
 
     def get_parameters_to_execute(self) -> List[dict]:
-        keyfield_names = utils.get_keyfields(self.config)
+        keyfield_names = utils.get_keyfield_names(self._config)
 
         execute_condition = "status='created'"
 
-        stmt = f"SELECT {', '.join(keyfield_names)} FROM {self.table_name} WHERE {execute_condition}"
+        stmt = f"SELECT {', '.join(keyfield_names)} FROM {self._table_name} WHERE {execute_condition}"
 
         connection = self.connect()
         cursor = self.cursor(connection)
@@ -191,7 +195,7 @@ class DatabaseConnector(abc.ABC):
         keys = ", ".join(keys)
         values = "'" + self.__class__._write_to_database_seperator.join([str(value) for value in values]) + "'"
 
-        stmt = f"INSERT INTO {self.table_name} ({keys}) VALUES ({values})"
+        stmt = f"INSERT INTO {self._table_name} ({keys}) VALUES ({values})"
 
         connection = self.connect()
         cursor = self.cursor(connection)
@@ -206,13 +210,13 @@ class DatabaseConnector(abc.ABC):
             connection = self.connect()
             cursor = self.cursor(connection)
             for key, value in zip(keys, values):
-                stmt = f"UPDATE {self.table_name} SET {key}='{value}' WHERE {where}"
+                stmt = f"UPDATE {self._table_name} SET {key}='{value}' WHERE {where}"
                 self.execute(cursor, stmt)
             self.commit(connection)
 
         except Exception as err:
             logging.error(err)
-            stmt = """UPDATE %s SET error="%s" WHERE %s""" % (self.table_name, err, where)
+            stmt = """UPDATE %s SET error="%s" WHERE %s""" % (self._table_name, err, where)
             self.execute(cursor, stmt)
             self.commit(connection)
         else:
@@ -225,7 +229,7 @@ class DatabaseConnector(abc.ABC):
             connection = self.connect()
             cursor = self.cursor(connection)
 
-            stmt = "SELECT status FROM %s WHERE %s" % (self.table_name, where)
+            stmt = "SELECT status FROM %s WHERE %s" % (self._table_name, where)
 
             self.execute(cursor, stmt)
             for result in cursor:
@@ -238,9 +242,33 @@ class DatabaseConnector(abc.ABC):
             connection.close()
             return not_executed
 
+    def delete_experiments_with_status(self, status):
+        def _get_keyfields_from_columns(column_names, entries):
+            df = pd.DataFrame(entries, columns=column_names)
+            keyfields = utils.get_keyfield_names(self._config)
+            entries = df[keyfields].values.tolist()
+            return keyfields, entries
+
+        connection = self.connect()
+        cursor = self.cursor(connection)
+        column_names = self.get_structure_from_table(cursor)
+
+        cursor.execute(f"SELECT * FROM {self._table_name} WHERE status='{status}'")
+        entries = cursor.fetchall()
+        column_names, entries = _get_keyfields_from_columns(column_names, entries)
+        cursor.execute(f"DELETE FROM {self._table_name} WHERE status='{status}'")
+        self.commit(connection)
+        self.close_connection(connection)
+
+        return column_names, entries
+
+    @abc.abstractmethod
+    def get_structure_from_table(self, cursor):
+        pass
+
     def get_results_table(self) -> pd.DataFrame:
         connection = self.connect()
-        query = f"SELECT * FROM {self.table_name}"
+        query = f"SELECT * FROM {self._table_name}"
         df = pd.read_sql(query, connection)
         self.close_connection(connection)
         return df

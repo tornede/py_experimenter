@@ -4,7 +4,8 @@ import re
 import pytest
 
 from py_experimenter.py_experimenter_exceptions import NoConfigFileError, ParameterCombinationError
-from py_experimenter.utils import combine_fill_table_parameters, get_field_names, get_keyfields, load_config
+from py_experimenter.utils import (add_timestep_result_columns, combine_fill_table_parameters, get_fields, get_keyfield_names, get_keyfields,
+                                   get_resultfields, load_config, timestamps_for_result_fields)
 
 
 @pytest.mark.parametrize(
@@ -98,6 +99,41 @@ def test_load_config(path, comparable_dict):
     compare_dict_with_config(config, comparable_dict)
 
 
+@pytest.mark.parametrize(
+    'config_path, expected_result',
+    [
+        pytest.param(
+            os.path.join('test', 'test_config_files', 'load_config_test_file', 'test_no_resultfield_timestamp_upper_case.cfg'),
+            False,
+            id='no_timestamp_upper_case'
+        ),
+        pytest.param(
+            os.path.join('test', 'test_config_files', 'load_config_test_file', 'test_no_resultfield_timestamp_config.cfg'),
+            False,
+            id='file_without_specification'
+        ),
+        pytest.param(
+            os.path.join('test', 'test_config_files', 'load_config_test_file', 'test_no_resultfield_timestamp_lower_case.cfg'),
+            False,
+            id='no_timestamp_lower_case'
+        ),
+        pytest.param(
+            os.path.join('test', 'test_config_files', 'load_config_test_file', 'test_resultfield_timestamp_lower_case.cfg'),
+            True,
+            id='with_timestamp_lower_case'
+        ), pytest.param(
+            os.path.join('test', 'test_config_files', 'load_config_test_file', 'test_resultfield_timestamp_upper_case.cfg'),
+            True,
+            id='with_timestamp_upper_case'
+        )
+
+    ]
+)
+def test_timestamps_for_result_fields(config_path, expected_result):
+    config = load_config(config_path)
+    assert expected_result == timestamps_for_result_fields(config)
+
+
 def test_load_config_raises_error():
     path = os.path.join('config', 'file', 'missing.cfg')
     with pytest.raises(NoConfigFileError, match=re.escape(f'Configuration file missing! Please add file: {path}')):
@@ -105,20 +141,44 @@ def test_load_config_raises_error():
 
 
 @pytest.mark.parametrize(
-    'fields, expected_field_names',
+    'path, expected_result',
     [
-        ('value:int, exponent:int', ['value', 'exponent']),
-        ('value, exponent', ['value', 'exponent']),
-        ('', []),
-        ('value:int, exponent', ['value', 'exponent']),
-        ('value:int,', ['value']),
-        ('value, value:int', ['value', 'value']),
-    ])
-def test_get_field_names(fields, expected_field_names):
-    assert get_field_names(fields) == expected_field_names
+        pytest.param(
+            os.path.join('test', 'test_config_files', 'load_config_test_file', 'test_resultfield_timestamp_lower_case.cfg'),
+                        ([
+                            ('final_pipeline', 'LONGTEXT'),
+                            ('final_pipeline_timestamp', 'VARCHAR(255)'),
+                            ('internal_performance', 'int(3)'),
+                            ('internal_performance_timestamp', 'VARCHAR(255)'),
+                            ('performance_asymmetric_loss', 'VARCHAR(255)'),
+                            ('performance_asymmetric_loss_timestamp', 'VARCHAR(255)'),
+                        ]
+            ),
+            id='basic_test_case'
+        )
+    ]
+)
+def test_add_timestep_result_columns(path, expected_result):
+    config = load_config(path)
+    resultfields = get_resultfields(config)
+    assert expected_result == add_timestep_result_columns(resultfields)
 
 
 @pytest.mark.parametrize(
+    'fields, expected_field_names',
+    [
+        ('value:int, exponent:int',  [('value', 'int'), ('exponent', 'int')]),
+        ('value, exponent', [('value', 'VARCHAR(255)'), ('exponent', 'VARCHAR(255)')]),
+        ('', []),
+        ('value:int, exponent', [('value', 'int'), ('exponent', 'VARCHAR(255)')]),
+        ('value:int,', [('value', 'int')]),
+        ('value, value:int', [('value', 'VARCHAR(255)'), ('value', 'int')]),
+    ])
+def test_get_field_names(fields, expected_field_names):
+    assert get_fields(fields) == expected_field_names
+
+
+@ pytest.mark.parametrize(
     'config_mock_dict, expected_keyfields',
     [
         ({'PY_EXPERIMENTER': {
@@ -136,12 +196,56 @@ def test_get_field_names(fields, expected_field_names):
 
     ]
 )
-def test_get_keyfields(config_mock_dict, expected_keyfields):
-    keyfields = get_keyfields(config_mock_dict)
+def test_get_keyfield_names(config_mock_dict, expected_keyfields):
+    keyfields = get_keyfield_names(config_mock_dict)
     assert keyfields == expected_keyfields
 
 
-@pytest.mark.parametrize(
+@ pytest.mark.parametrize(
+    'config_mock_dict, expected_keyfields',
+    [
+        ({'PY_EXPERIMENTER': {
+            'keyfields': 'datasetName, internal_performance_measure, featureObjectiveMeasure, seed:int(3)',
+        }, },
+            [('datasetName', 'VARCHAR(255)'), ('internal_performance_measure', 'VARCHAR(255)'), ('featureObjectiveMeasure', 'VARCHAR(255)'), ('seed', 'int(3)')]),
+        ({'PY_EXPERIMENTER': {
+            'keyfields': '',
+        }},
+            []),
+        ({'PY_EXPERIMENTER': {
+            'keyfields': 'datasetName:str, internal_performance_measure:some_type, featureObjectiveMeasure,'
+        }},
+            [('datasetName', 'str'), ('internal_performance_measure', 'some_type'), ('featureObjectiveMeasure', 'VARCHAR(255)')]),
+
+    ]
+)
+def test_get_keyfields(config_mock_dict, expected_keyfields):
+    keyfields = get_keyfields(config_mock_dict)
+    assert expected_keyfields == keyfields
+
+
+@ pytest.mark.parametrize(
+    'fields, expected_keyfields',
+    [
+        (
+            'datasetName, internal_performance_measure, featureObjectiveMeasure, seed:int(3)',
+            [('datasetName', 'VARCHAR(255)'), ('internal_performance_measure', 'VARCHAR(255)'), ('featureObjectiveMeasure', 'VARCHAR(255)'), ('seed', 'int(3)')]),
+        (
+            '',
+            []
+        ),
+        (
+            'datasetName:str, internal_performance_measure:some_type, featureObjectiveMeasure,',
+            [('datasetName', 'str'), ('internal_performance_measure', 'some_type'), ('featureObjectiveMeasure', 'VARCHAR(255)')]),
+
+    ]
+)
+def test_get_fields(fields, expected_keyfields):
+    field_values = get_fields(fields)
+    assert expected_keyfields == field_values
+
+
+@ pytest.mark.parametrize(
     'keyfield_names, parameters, fixed_parameter_combinations, expected_result',
     [
         (
@@ -181,7 +285,7 @@ def test_combine_fill_table_parameters(keyfield_names, parameters, fixed_paramet
     assert expected_result == combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations)
 
 
-@pytest.mark.parametrize(
+@ pytest.mark.parametrize(
     'keyfield_names, parameters, fixed_parameter_combinations, error_msg',
     [
         ([], {}, [], 'No parameter combination found!'),

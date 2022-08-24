@@ -23,7 +23,7 @@ def own_function(parameters: dict, result_processor: ResultProcessor, custom_con
 def check_done_entries(experimenter, amount_of_entries):
     connection = experimenter._dbconnector.connect()
     cursor = experimenter._dbconnector.cursor(connection)
-    cursor.execute(f"SELECT * FROM {experimenter._dbconnector.table_name} WHERE status = 'done'")
+    cursor.execute(f"SELECT * FROM {experimenter._dbconnector._table_name} WHERE status = 'done'")
     entries = cursor.fetchall()
 
     assert amount_of_entries == len(entries)
@@ -35,7 +35,7 @@ def delete_existing_table(experimenter):
     connection = experimenter._dbconnector.connect()
     cursor = experimenter._dbconnector.cursor(connection)
     try:
-        cursor.execute(f"DROP TABLE {experimenter._dbconnector.table_name}")
+        cursor.execute(f"DROP TABLE {experimenter._dbconnector._table_name}")
         experimenter._dbconnector.commit(connection)
         experimenter._dbconnector.close_connection(connection)
     except ProgrammingError as e:
@@ -56,7 +56,7 @@ def test_run_all_mqsql_experiments():
 
     connection = experimenter._dbconnector.connect()
     cursor = experimenter._dbconnector.cursor(connection)
-    cursor.execute(f"SELECT * FROM {experimenter._dbconnector.table_name} WHERE status = 'done'")
+    cursor.execute(f"SELECT * FROM {experimenter._dbconnector._table_name} WHERE status = 'done'")
     entries = cursor.fetchall()
 
     assert len(entries) == 1
@@ -69,7 +69,7 @@ def test_run_all_mqsql_experiments():
     check_done_entries(experimenter, 30)
     connection = experimenter._dbconnector.connect()
     cursor = experimenter._dbconnector.cursor(connection)
-    cursor.execute(f"DELETE FROM {experimenter._dbconnector.table_name} WHERE ID = 1")
+    cursor.execute(f"DELETE FROM {experimenter._dbconnector._table_name} WHERE ID = 1")
     experimenter._dbconnector.commit(connection)
     experimenter._dbconnector.close_connection(connection)
     check_done_entries(experimenter, 29)
@@ -79,7 +79,7 @@ def test_run_all_mqsql_experiments():
     check_done_entries(experimenter, 30)
     connection = experimenter._dbconnector.connect()
     cursor = experimenter._dbconnector.cursor(connection)
-    cursor.execute(f"SELECT ID FROM {experimenter._dbconnector.table_name}")
+    cursor.execute(f"SELECT ID FROM {experimenter._dbconnector._table_name}")
     entries = cursor.fetchall()
     experimenter._dbconnector.close_connection(connection)
 
