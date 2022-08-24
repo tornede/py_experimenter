@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 import numpy as np
 
-from py_experimenter.py_experimenter_exceptions import NoConfigFileError, ParameterCombinationError
+from py_experimenter.py_experimenter_exceptions import ConfigError, NoConfigFileError, ParameterCombinationError
 
 
 def load_config(path):
@@ -62,21 +62,65 @@ def extract_db_credentials_and_table_name_from_config(config):
 
 
 def get_keyfield_data(config):
-    keyfield_names = get_keyfield_names(config)
+    keyfields = get_keyfields(config)
 
     experiment_config = config['PY_EXPERIMENTER']
 
     keyfield_data = {}
-    for keyfield_name in keyfield_names:
+    for keyfield_name, keyfield_type in keyfields:
+        keyfield_values = experiment_config[keyfield_name].replace(' ', '').split(',')
+
+        if keyfield_type.startswith('int'):
+            final_data = _generate_int_data(keyfield_values)
+
+        else:
+            final_data = keyfield_values
         try:
-            data = experiment_config[keyfield_name].split(',')
-            clean_data = [d.replace(' ', '') for d in data]
-            keyfield_data[keyfield_name] = clean_data
+            keyfield_data[keyfield_name] = final_data
         except KeyError as err:
             logging.info(
                 "No value definitions for %s. Add it to the configuration file or provide at fill_talbe() call" % err)
 
     return keyfield_data
+
+
+def _generate_int_data(keyfield_values):
+    final_data = []
+    for data_definition in keyfield_values:
+        if ':' in data_definition:
+
+            if data_definition.startswith(':') or data_definition.endswith(':') or '::' in data_definition:
+                raise ConfigError(f'{data_definition} is not a valid integer range')
+
+            integer_range = data_definition.split(':')
+
+            if len(integer_range) not in (2, 3):
+                raise ConfigError(f'{data_definition} is not a valid integer range')
+
+            try:
+                start = int(integer_range[0])
+                stop = int(integer_range[1])
+            except ValueError:
+                raise ConfigError(f'{data_definition} is not a valid integer range')
+
+            if len(integer_range) == 3:
+                try:
+                    step = int(integer_range[2])
+                except ValueError:
+                    raise ConfigError(f'{data_definition} is not a valid integer range')
+
+            else:
+                step = 1
+
+            if start >= stop:
+                raise ConfigError(f'end of range {stop} is smaller than, or equal to start of range {start}')
+
+            final_data += list(range(start, stop + 1, step))
+        else:
+            final_data.append(int(data_definition))
+
+    final_data = sorted(list(set(final_data)))
+    return final_data
 
 
 def get_keyfield_names(config: configparser.ConfigParser) -> List[str]:
