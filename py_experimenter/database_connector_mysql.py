@@ -104,3 +104,11 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         existing_rows = _remove_double_witespaces(existing_rows)
         self.close_connection(connection)
         return existing_rows
+
+    def get_structure_from_table(self, cursor):
+        def _get_column_names_from_entries(entries):
+            return [entry[0] for entry in entries]
+
+        self.execute(cursor, f"SHOW COLUMNS FROM {self._table_name}")
+        column_names = _get_column_names_from_entries(self.fetchall(cursor))
+        return column_names
