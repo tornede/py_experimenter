@@ -24,8 +24,8 @@ def load_config(path):
 
 
 def timestamps_for_result_fields(config: configparser.ConfigParser) -> bool:
-    if config.has_option('DATABASE', 'resultfield.timestamps'):
-        timestamp_on_result_fields = config.getboolean('DATABASE', 'resultfield.timestamps')
+    if config.has_option('DATABASE', 'resultfields.timestamps'):
+        timestamp_on_result_fields = config.getboolean('DATABASE', 'resultfields.timestamps')
     else:
         timestamp_on_result_fields = False
     return timestamp_on_result_fields
