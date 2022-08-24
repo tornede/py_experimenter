@@ -1,6 +1,6 @@
 import logging
-from math import cos, sin
 import os
+from math import cos, sin
 
 from py_experimenter.experimenter import PyExperimenter
 from py_experimenter.result_processor import ResultProcessor
@@ -20,24 +20,23 @@ def own_function(parameters: dict, result_processor: ResultProcessor, custom_con
 
 logging.basicConfig(level=logging.INFO)
 
-# Create sqlite experimenter.
-experimenter = PyExperimenter(config_path=os.path.join('examples','example_fill_with_rows.cfg'))
-# To use a mysql database, modify the examples/example_fill_complex.cfg file and change the provider to mysql.
-# In addition you need to provide the credentials file config/database_credentials.cfg and confirm that you
-# have the permission to create a database/a database exists as defined in the config file.
-# For more information refer to the README.md file.
-
-
-
-# Fill database table with rows defined as the first argument.
+# Create sqlite experimenter with name: 'name1',
+# Add 6 experiments to the database.
+# Execute one of the experiments.
+experimenter = PyExperimenter(config_path=os.path.join('examples', 'example_use_name.cfg'), experimenter_name='name1')
 experimenter.fill_table_with_rows(
     rows=[
         {'value': 1, 'exponent': 1},
         {'value': 1, 'exponent': 3},
         {'value': 2, 'exponent': 2},
         {'value': 3, 'exponent': 3},
+        {'value': 8, 'exponent': 2},
+        {'value': 9, 'exponent': 3},
     ]
 )
+experimenter.execute(own_function, 1)
 
-# Execute all experiments.
-experimenter.execute(own_function, -1)
+# Create new experimenter with name: 'name2'
+# Execute two of the experiments.
+experimenter = PyExperimenter(config_path=os.path.join('examples', 'example_use_name.cfg'), experimenter_name='name2')
+experimenter.execute(own_function, 2)

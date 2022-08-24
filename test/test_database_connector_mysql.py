@@ -1,7 +1,6 @@
 import pytest
 
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
-from py_experimenter.utils import load_config
 
 
 @pytest.mark.parametrize(

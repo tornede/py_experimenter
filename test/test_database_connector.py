@@ -56,7 +56,7 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
                            'DEFAULT NULL,`cos` VARCHAR(255) DEFAULT NULL,`status` VARCHAR(255) '
                            'DEFAULT NULL,`machine` VARCHAR(255) DEFAULT NULL,`creation_date` '
                            'VARCHAR(255) DEFAULT NULL,`start_date` VARCHAR(255) DEFAULT NULL,`end_date` '
-                           'VARCHAR(255) DEFAULT NULL,`error` LONGTEXT DEFAULT NULL, PRIMARY KEY (ID))'
+                           'VARCHAR(255) DEFAULT NULL,`error` LONGTEXT DEFAULT NULL,`name` LONGTEXT DEFAULT NULL, PRIMARY KEY (ID))'
                            )
     execute_mock.assert_has_calls(
         [

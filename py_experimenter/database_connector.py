@@ -86,13 +86,20 @@ class DatabaseConnector(abc.ABC):
                                                   "table. Please change your configuration or delete the table in your database.")
         else:
             typed_fields.extend(
-                [('status', 'VARCHAR(255)'), ('machine', 'VARCHAR(255)'), ('creation_date', 'VARCHAR(255)'),
-                    ('start_date', 'VARCHAR(255)'),
-                    ('end_date', 'VARCHAR(255)'), ('error', 'LONGTEXT')])
+                [('status', 'VARCHAR(255)'),
+                 ('machine', 'VARCHAR(255)'),
+                 ('creation_date', 'VARCHAR(255)'),
+                 ('start_date', 'VARCHAR(255)'),
+                 ('end_date', 'VARCHAR(255)'),
+                 ('error', 'LONGTEXT'),
+                 ('name', 'LONGTEXT')])
 
             columns = ['%s %s DEFAULT NULL' % (self.__class__.escape_sql_chars(field)[0], datatype) for field, datatype in typed_fields]
             self._create_table(cursor, columns)
         self.close_connection(connection)
+
+    def _exclude_fixed_columns(self, columns: List[str]) -> List[str]:
+        return columns[1:-7]
 
     @abc.abstractmethod
     def _table_exists(self, cursor):
@@ -126,6 +133,7 @@ class DatabaseConnector(abc.ABC):
             .replace("'", "")
 
         existing_rows = self._get_existing_rows(column_names)
+
         column_names += ",status"
         column_names += ",creation_date"
 
