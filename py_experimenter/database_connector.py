@@ -1,6 +1,7 @@
 import abc
 import logging
 from datetime import datetime
+from multiprocessing.connection import Connection
 from typing import List
 
 import numpy as np
@@ -147,6 +148,7 @@ class DatabaseConnector(abc.ABC):
             values.append("%s" % time.strftime("%m/%d/%Y, %H:%M:%S"))
 
             self._write_to_database(column_names.split(', '), values)
+            values_added += 1
         logging.info(f"{values_added} values added to database")
 
     def _check_combination_in_existing_rows(self, combination, existing_rows, keyfield_names) -> bool:
@@ -237,6 +239,30 @@ class DatabaseConnector(abc.ABC):
         else:
             connection.close()
             return not_executed
+
+    def delete_experiments_with_status(self, status):
+        def _get_keyfields_from_columns(column_names, entries):
+            df = pd.DataFrame(entries, columns=column_names)
+            keyfields = utils.get_keyfields(self.config)
+            entries = df[keyfields].values.tolist()
+            return keyfields, entries
+
+        connection = self.connect()
+        cursor = self.cursor(connection)
+        column_names = self.get_structure_from_table(cursor)
+
+        cursor.execute(f"SELECT * FROM {self.table_name} WHERE status='{status}'")
+        entries = cursor.fetchall()
+        column_names, entries = _get_keyfields_from_columns(column_names, entries)
+        cursor.execute(f"DELETE FROM {self.table_name} WHERE status='{status}'")
+        self.commit(connection)
+        self.close_connection(connection)
+
+        return column_names, entries
+
+    @abc.abstractmethod
+    def get_structure_from_table(self, cursor):
+        pass
 
     def get_results_table(self) -> pd.DataFrame:
         connection = self.connect()

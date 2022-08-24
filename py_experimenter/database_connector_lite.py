@@ -59,3 +59,10 @@ class DatabaseConnectorLITE(DatabaseConnector):
         existing_rows = [' '.join(_remove_string_markers(row).split()) for row in existing_rows]
         self.close_connection(connection)
         return existing_rows
+
+    def get_structure_from_table(self, cursor):
+        def _get_columnnames_from_entries(entries):
+            return [entry[1] for entry in entries]
+        self.execute(cursor, f"PRAGMA table_info({(self.table_name)})")
+        column_names = _get_columnnames_from_entries(self.fetchall(cursor))
+        return column_names
