@@ -3,9 +3,9 @@ import re
 
 import pytest
 
-from py_experimenter.py_experimenter_exceptions import NoConfigFileError, ParameterCombinationError
-from py_experimenter.utils import (add_timestep_result_columns, combine_fill_table_parameters, get_fields, get_keyfield_names, get_keyfields,
-                                   get_resultfields, load_config, timestamps_for_result_fields)
+from py_experimenter.py_experimenter_exceptions import ConfigError, NoConfigFileError, ParameterCombinationError
+from py_experimenter.utils import (_generate_int_data, add_timestep_result_columns, combine_fill_table_parameters, get_fields, get_keyfield_data,
+                                   get_keyfield_names, get_keyfields, get_resultfields, load_config, timestamps_for_result_fields)
 
 
 @pytest.mark.parametrize(
@@ -121,12 +121,12 @@ def test_load_config(path, comparable_dict):
             os.path.join('test', 'test_config_files', 'load_config_test_file', 'test_resultfield_timestamp_lower_case.cfg'),
             True,
             id='with_timestamp_lower_case'
-        ), pytest.param(
+        ),
+        pytest.param(
             os.path.join('test', 'test_config_files', 'load_config_test_file', 'test_resultfield_timestamp_upper_case.cfg'),
             True,
             id='with_timestamp_upper_case'
         )
-
     ]
 )
 def test_timestamps_for_result_fields(config_path, expected_result):
@@ -154,7 +154,7 @@ def test_load_config_raises_error():
                             ('performance_asymmetric_loss_timestamp', 'VARCHAR(255)'),
                         ]
             ),
-            id='basic_test_case'
+            id='basic'
         )
     ]
 )
@@ -162,6 +162,106 @@ def test_add_timestep_result_columns(path, expected_result):
     config = load_config(path)
     resultfields = get_resultfields(config)
     assert expected_result == add_timestep_result_columns(resultfields)
+
+
+def test_get_keyfield_data():
+    expected_data = {
+        'value': [1, 2, 3, 4, 5],
+        'value2': [1, 2, 3, 4, 5],
+        'value3': ['different', 'test', 'strings'],
+        'value4': [1, 2, 3, 4, 5, 6, 8, 10]
+    }
+
+    config = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'test_get_keyfield_data.cfg'))
+    data = get_keyfield_data(config)
+    assert expected_data == data
+
+
+@pytest.mark.parametrize(
+    'file_data, expected_data',
+    [
+        pytest.param(
+            '1,2,3,4,5,6,7,8,9,10'.split(','),
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            id='simple_values'
+        ),
+        pytest.param(
+            '1:4:1'.split(','),
+            [1, 2, 3, 4],
+            id='range'
+        ),
+        pytest.param(
+            '1:4:1,6:9:2'.split(','),
+            [1, 2, 3, 4, 6, 8],
+            id='two_ranges_without_overlap'
+        ),
+        pytest.param(
+            '-1:10:2, 1:10:3'.split(','),
+            [-1, 1, 3, 4, 5, 7, 9, 10],
+            id='two_ranges_with_overlap'
+        ),
+        pytest.param(
+            '1:6:2, 4'.split(','),
+            [1, 3, 4, 5],
+            id='range_and_simple_value'
+        ),
+        pytest.param(
+            '1:6, 4'.split(','),
+            [1, 2, 3, 4, 5, 6],
+            id='range_without_step'
+        )
+    ]
+)
+def test_generate_int_data(file_data, expected_data):
+    assert expected_data == _generate_int_data(file_data)
+
+
+@pytest.mark.parametrize(
+    'keyfield_values, error, error_string',
+    [
+        pytest.param(
+            ':2:2'.split(','),
+            ConfigError,
+            ':2:2 is not a valid integer range',
+            id='no_start_of_range'
+        ),
+        pytest.param(
+            'error:2:2'.split(','),
+            ConfigError,
+            'error:2:2 is not a valid integer range',
+            id='invalid_start_of_range'
+        ),
+        pytest.param(
+            '1::2'.split(','),
+            ConfigError,
+            '1::2 is not a valid integer range',
+            id='no_end_of_range'
+        ),
+        pytest.param(
+            '1:error:2'.split(','),
+            ConfigError,
+            '1:error:2 is not a valid integer range',
+            id='invalid_end_of_range'
+        ),
+        pytest.param(
+            '1:2:error'.split(','),
+            ConfigError,
+            '1:2:error is not a valid integer range',
+            id='invalid_step'
+        ),
+        pytest.param(
+            '2:1'.split(','),
+            ConfigError,
+            'end of range 1 is smaller than, or equal to start of range 2',
+            id='end_smaller_than_start'
+        )
+
+
+    ]
+)
+def test_generate_int_data_raises_error(keyfield_values, error, error_string):
+    with pytest.raises(error, match=re.escape(error_string)):
+        _generate_int_data(keyfield_values)
 
 
 @pytest.mark.parametrize(
