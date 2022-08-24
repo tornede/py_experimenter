@@ -40,7 +40,7 @@ def test_init(create_database_if_not_existing_mock, test_connection_mysql, test_
     test_connection_sqlite.return_value = None
     result_processor = ResultProcessor(config, CREDENTIAL_PATH, table_name, condition, result_fields)
 
-    assert table_name == result_processor.table_name
+    assert table_name == result_processor._table_name
     assert result_fields == result_processor._result_fields
     assert expected_provider == result_processor._dbconnector.__class__
 
@@ -104,3 +104,46 @@ def test_valid_result_fields(create_database_if_not_existing_mock, test_connecti
     mock_config = utils.load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     assert subset_boolean == ResultProcessor(mock_config, CREDENTIAL_PATH, 'test_table_name', {
                                              'test_condition_key': 'test_condition_value'}, used_result_fields)._valid_result_fields(existing_result_fields)
+
+
+@pytest.mark.parametrize(
+    'results, time, expected_results',
+    [
+        pytest.param(
+            {
+                'result_field_1': 'result_field_1_value',
+                'result_field_2': 'result_field_2_value',
+            },
+            '2020-01-01 00:00:00',
+            {
+                'result_field_1': 'result_field_1_value',
+                'result_field_1_timestamp': '2020-01-01 00:00:00',
+                'result_field_2': 'result_field_2_value',
+                'result_field_2_timestamp': '2020-01-01 00:00:00',
+            },
+            id='default_testcase'
+        ),
+        pytest.param(
+            {
+            },
+            '2020-01-01 00:00:00',
+            {
+            },
+            id='empty_testcase'
+        ),
+        pytest.param(
+            {
+                'result_field_1': 'result_field_1_value',
+            },
+            '2020-01-01 00:00:00',
+            {
+                'result_field_1': 'result_field_1_value',
+                'result_field_1_timestamp': '2020-01-01 00:00:00',
+            },
+            id='one_value_testcase'
+        ),
+
+    ]
+)
+def test_add_timestamps_to_results(results, time, expected_results):
+    assert expected_results == ResultProcessor._add_timestamps_to_results(results, time)

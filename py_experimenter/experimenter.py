@@ -22,7 +22,12 @@ class PyExperimenter:
     Module that connects the execution of different machine learning experiments with a database.
     """
 
-    def __init__(self, config_path: str = os.path.join('config', 'configuration.cfg'), credential_path: str = os.path.join('config', 'database_credentials.cfg'), table_name: str = None, database_name: str = None, experimenter_name='PyExperimenter'):
+    def __init__(self,
+                 config_path: str = os.path.join('config', 'configuration.cfg'),
+                 credential_path: str = os.path.join('config', 'database_credentials.cfg'),
+                 table_name: str = None,
+                 database_name: str = None,
+                 experimenter_name='PyExperimenter'):
         """
         Initialize PyExperimenter with the configuration file. If table_name or database_name are given they overwrite the
         values in the configuration file.
@@ -43,6 +48,7 @@ class PyExperimenter:
         self.experimenter_name = experimenter_name
 
         self._config_path = config_path
+        self.timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
 
         if self._config['DATABASE']['provider'] == 'sqlite':
             self._dbconnector = DatabaseConnectorLITE(self._config)
@@ -67,6 +73,9 @@ class PyExperimenter:
 
     def get_config_value(self, section_name: str, key: str) -> str:
         return self._config.get(section_name, key)
+
+    def has_option(self, section_name: str, key: str) -> bool:
+        return self._config.has_option(section_name, key)
 
     @ staticmethod
     def _valid_configuration(_config: configparser, credential_path=None) -> bool:
@@ -138,9 +147,9 @@ class PyExperimenter:
         logging.debug("Create table if not exist")
         self._dbconnector.create_table_if_not_exists()
         logging.debug("Fill table with parameters")
-        keyfields = utils.get_keyfields(self._config)
+        keyfield_names = utils.get_keyfield_names(self._config)
         for row in rows:
-            if not set(keyfields) == set(row.keys()):
+            if not set(keyfield_names) == set(row.keys()):
                 raise ValueError('The keyfields in the config file do not match the keyfields in the rows')
         self._dbconnector.fill_table(fixed_parameter_combinations=rows)
 
@@ -163,14 +172,14 @@ class PyExperimenter:
 
         if 0 <= max_experiments < len(parameters):
             parameters = parameters[:max_experiments]
-        result_fields = utils.get_resultfields(self._config)
+        result_field_names = utils.get_result_field_names(self._config)
         try:
             cpus = int(self._config['PY_EXPERIMENTER']['cpu.max'])
         except ValueError:
             raise InvalidValuesInConfiguration('cpu.max must be an integer')
         table_name = self.get_config_value('DATABASE', 'table')
         result_processors = [ResultProcessor(self._config, self._crendtial_path, table_name=table_name, condition=p,
-                                             result_fields=result_fields) for p in parameters]
+                                             result_fields=result_field_names) for p in parameters]
         approaches = [approach for _ in parameters]
         try:
             custom_config = [dict(self._config.items('CUSTOM')) for _ in parameters]

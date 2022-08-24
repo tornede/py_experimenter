@@ -1,7 +1,9 @@
 import logging
+from copy import deepcopy
 from datetime import datetime
-from typing import List
+from typing import List, Tuple
 
+import py_experimenter.utils as utils
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
 from py_experimenter.py_experimenter_exceptions import InvalidConfigError, InvalidResultFieldError
@@ -22,15 +24,17 @@ class ResultProcessor:
     database.
     """
 
-    def __init__(self, config: dict, credential_path, table_name: str, condition: dict, result_fields: List[str]):
-        self.table_name = table_name
+    def __init__(self, _config: dict, credential_path, table_name: str, condition: dict, result_fields: List[str]):
+        self._table_name = table_name
         self._where = ' AND '.join([f"{str(key)}='{str(value)}'" for key, value in condition.items()])
         self._result_fields = result_fields
+        self._config = _config
+        self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
 
-        if config['DATABASE']['provider'] == 'sqlite':
-            self._dbconnector = DatabaseConnectorLITE(config)
-        elif config['DATABASE']['provider'] == 'mysql':
-            self._dbconnector = DatabaseConnectorMYSQL(config, credential_path)
+        if _config['DATABASE']['provider'] == 'sqlite':
+            self._dbconnector = DatabaseConnectorLITE(_config)
+        elif _config['DATABASE']['provider'] == 'mysql':
+            self._dbconnector = DatabaseConnectorMYSQL(_config, credential_path)
         else:
             raise InvalidConfigError("Invalid database provider!")
 
@@ -40,14 +44,31 @@ class ResultProcessor:
         want to write results to the database.
         :param results: Dictionary with result field name and result value pairs.
         """
-
-        result_fields = list(results.keys())
-        result = list(results.values())
-        if not self._valid_result_fields(result_fields):
-            invalid_result_keys = set(result_fields) - set(self._result_fields)
+        def _split_key_values(results: dict):
+            keys = []
+            values = []
+            for key, value in results.items():
+                keys.append(key)
+                values.append(value)
+            return keys, values
+        time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+        if not self._valid_result_fields(list(results.keys())):
+            invalid_result_keys = set(list(results.keys())) - set(self._result_fields)
             raise InvalidResultFieldError(f"Invalid result keys: {invalid_result_keys}")
 
-        self._dbconnector._update_database(keys=result_fields, values=result, where=self._where)
+        if self._timestamp_on_result_fields:
+            results = self.__class__._add_timestamps_to_results(results, time)
+
+        keys, values = _split_key_values(results)
+        self._dbconnector._update_database(keys=keys, values=values, where=self._where)
+
+    @staticmethod
+    def _add_timestamps_to_results(results: dict, time: datetime) -> List[Tuple[str, object]]:
+        result_fields_with_timestep = deepcopy(results)
+        for result_field, value in sorted(results.items()):
+            result_fields_with_timestep[result_field] = value
+            result_fields_with_timestep[f"{result_field}_timestamp"] = time
+        return result_fields_with_timestep
 
     def _change_status(self, status):
         time = datetime.now()
