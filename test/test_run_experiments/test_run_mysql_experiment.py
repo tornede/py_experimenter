@@ -60,7 +60,8 @@ def test_run_all_mqsql_experiments():
     entries = cursor.fetchall()
 
     assert len(entries) == 1
-    assert entries[0][:6] == (1, 1, 1, '0.8414709848078965', '0.5403023058681398', 'done')
+    entries_without_metadata = entries[0][:3] + (entries[0][4],) + entries[0][6:7] + entries[0][8:10] + (entries[0][-1],)
+    assert entries_without_metadata == (1, 1, 1, 'done', 'PyExperimenter', '0.8414709848078965', '0.5403023058681398', None)
     experimenter._dbconnector.close_connection(connection)
 
     experimenter = PyExperimenter(config_path=config_path)

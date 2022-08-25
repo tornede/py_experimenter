@@ -64,7 +64,7 @@ class DatabaseConnector(abc.ABC):
         except Exception as e:
             raise DatabaseConnectionError(f'error \n{e}\n raised when fetching all rows from database.')
 
-    def create_table_if_not_exists(self) -> None:
+    def create_table_if_not_existing(self) -> None:
         """
         Check if tables does exist. If not, a new table will be created.
         :param mysql_connection: mysql_connector to the database
@@ -78,31 +78,42 @@ class DatabaseConnector(abc.ABC):
         if self._timestamp_on_result_fields:
             resultfields = utils.add_timestep_result_columns(resultfields)
 
-        fields = keyfields + resultfields
-
         connection = self.connect()
         cursor = self.cursor(connection)
 
         if self._table_exists(cursor):
-            if not self._table_has_correct_structure(cursor, fields):
+            if not self._table_has_correct_structure(cursor, keyfields + resultfields):
                 raise TableHasWrongStructureError("Keyfields or resultfields from the configuration do not match columns in the existing "
                                                   "table. Please change your configuration or delete the table in your database.")
         else:
-            fields.extend(
-                [('status', 'VARCHAR(255)'),
-                 ('machine', 'VARCHAR(255)'),
-                 ('creation_date', 'VARCHAR(255)'),
-                 ('start_date', 'VARCHAR(255)'),
-                 ('end_date', 'VARCHAR(255)'),
-                 ('error', 'LONGTEXT'),
-                 ('name', 'LONGTEXT')])
+            fields = (
+                keyfields +
+                [
+                    ('creation_date', 'VARCHAR(255)'),
+                    ('status', 'VARCHAR(255)'),
+                    ('start_date', 'VARCHAR(255)'),
+                    ('name', 'LONGTEXT'),
+                    ('machine', 'VARCHAR(255)')
+                ]
+                + resultfields +
+                [
+                    ('end_date', 'VARCHAR(255)'),
+                    ('error', 'LONGTEXT'),
+                ]
+            )
 
             columns = ['%s %s DEFAULT NULL' % (self.__class__.escape_sql_chars(field)[0], datatype) for field, datatype in fields]
             self._create_table(cursor, columns)
         self.close_connection(connection)
 
     def _exclude_fixed_columns(self, columns: List[str]) -> List[str]:
-        return columns[1:-7]
+        amount_of_keyfields = len(utils.get_keyfield_names(self._config))
+        amount_of_result_fields = len(utils.get_result_field_names(self._config))
+
+        if self._timestamp_on_result_fields:
+            amount_of_result_fields *= 2
+
+        return columns[1:amount_of_keyfields + 1] + columns[-amount_of_result_fields - 2:-2]
 
     @abc.abstractmethod
     def _table_exists(self, cursor):

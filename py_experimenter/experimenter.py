@@ -125,7 +125,7 @@ class PyExperimenter:
         """
 
         logging.debug("Create table if not exist")
-        self._dbconnector.create_table_if_not_exists()
+        self._dbconnector.create_table_if_not_existing()
         logging.debug("Fill table with parameters")
         self._dbconnector.fill_table(fixed_parameter_combinations=fixed_parameter_combinations,
                                      parameters=parameters)
@@ -138,14 +138,14 @@ class PyExperimenter:
         of this parameter combination is set to 'created'.
         """
         logging.debug("Create table if not exist")
-        self._dbconnector.create_table_if_not_exists()
+        self._dbconnector.create_table_if_not_existing()
         logging.debug("Fill table with parameters")
         parameters = utils.get_keyfield_data(self._config)
         self._dbconnector.fill_table(parameters=parameters)
 
     def fill_table_with_rows(self, rows: List[dict]) -> None:
         logging.debug("Create table if not exist")
-        self._dbconnector.create_table_if_not_exists()
+        self._dbconnector.create_table_if_not_existing()
         logging.debug("Fill table with parameters")
         keyfield_names = utils.get_keyfield_names(self._config)
         for row in rows:
