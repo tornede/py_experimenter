@@ -56,8 +56,8 @@ def test_run_all_sqlite_experiments():
     entries = cursor.fetchall()
 
     assert len(entries) == 1
-    entries_without_metadata = entries[0][:3] + (entries[0][4],) + entries[0][6:10] + (entries[0][-1],)
-    assert entries_without_metadata == (1, 1, 1, 'done', 'PyExperimenter', 'vm-tornede4', '0.8414709848078965', '0.5403023058681398', None)
+    entries_without_metadata = entries[0][:3] + (entries[0][4],) + entries[0][6:7] + entries[0][8:10] + (entries[0][-1],)
+    assert entries_without_metadata == (1, 1, 1, 'done', 'PyExperimenter', '0.8414709848078965', '0.5403023058681398', None)
     experimenter._dbconnector.close_connection(connection)
 
     experimenter = PyExperimenter(config_path=os.path.join('test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg'))
