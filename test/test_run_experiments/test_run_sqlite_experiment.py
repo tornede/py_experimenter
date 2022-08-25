@@ -1,6 +1,6 @@
 import logging
-from math import cos, sin
 import os
+from math import cos, sin
 
 from mysql.connector.errors import ProgrammingError
 
@@ -45,7 +45,7 @@ def delete_existing_table(experimenter):
 
 def test_run_all_sqlite_experiments():
     logging.basicConfig(level=logging.DEBUG)
-    experimenter = PyExperimenter(config_path=os.path.join('test','test_run_experiments','test_run_sqlite_experiment_config.cfg'))
+    experimenter = PyExperimenter(config_path=os.path.join('test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg'))
     delete_existing_table(experimenter)
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, 1)
@@ -56,10 +56,11 @@ def test_run_all_sqlite_experiments():
     entries = cursor.fetchall()
 
     assert len(entries) == 1
-    assert entries[0][:6] == (1, 1, 1, '0.8414709848078965', '0.5403023058681398', 'done')
+    entries_without_metadata = entries[0][:3] + (entries[0][4],) + entries[0][6:10] + (entries[0][-1],)
+    assert entries_without_metadata == (1, 1, 1, 'done', 'PyExperimenter', 'vm-tornede4', '0.8414709848078965', '0.5403023058681398', None)
     experimenter._dbconnector.close_connection(connection)
 
-    experimenter = PyExperimenter(config_path=os.path.join('test','test_run_experiments','test_run_sqlite_experiment_config.cfg'))
+    experimenter = PyExperimenter(config_path=os.path.join('test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg'))
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, -1)
     check_done_entries(experimenter, 30)
