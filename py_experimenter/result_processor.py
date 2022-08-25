@@ -31,9 +31,9 @@ class ResultProcessor:
         self._config = _config
         self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
 
-        if _config['DATABASE']['provider'] == 'sqlite':
+        if _config['PY_EXPERIMENTER']['provider'] == 'sqlite':
             self._dbconnector = DatabaseConnectorLITE(_config)
-        elif _config['DATABASE']['provider'] == 'mysql':
+        elif _config['PY_EXPERIMENTER']['provider'] == 'mysql':
             self._dbconnector = DatabaseConnectorMYSQL(_config, credential_path)
         else:
             raise InvalidConfigError("Invalid database provider!")
