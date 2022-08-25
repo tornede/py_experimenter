@@ -52,7 +52,7 @@ def test_init_raises_error(mock_fn):
     condition = {'test': 'condition'}
     result_fields = ['result_field_1', 'result_field_2']
     config = utils.load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
-    config.set('DATABASE', 'provider', 'test_provider')
+    config.set('PY_EXPERIMENTER', 'provider', 'test_provider')
     with pytest.raises(InvalidConfigError, match='Invalid database provider!'):
         ResultProcessor(config, CREDENTIAL_PATH, table_name, condition, result_fields)
 

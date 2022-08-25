@@ -24,8 +24,8 @@ def load_config(path):
 
 
 def timestamps_for_result_fields(config: configparser.ConfigParser) -> bool:
-    if config.has_option('DATABASE', 'resultfields.timestamps'):
-        timestamp_on_result_fields = config.getboolean('DATABASE', 'resultfields.timestamps')
+    if config.has_option('PY_EXPERIMENTER', 'resultfields.timestamps'):
+        timestamp_on_result_fields = config.getboolean('PY_EXPERIMENTER', 'resultfields.timestamps')
     else:
         timestamp_on_result_fields = False
     return timestamp_on_result_fields
@@ -46,7 +46,7 @@ def extract_db_credentials_and_table_name_from_config(config):
     :param config: Configuration file with database and experiment information
     :return: mysql_connector and table name from the config file
     """
-    database_config = config['DATABASE']
+    database_config = config['PY_EXPERIMENTER']
     if database_config['provider'] == 'sqlite':
         host = None
         user = None
@@ -55,7 +55,7 @@ def extract_db_credentials_and_table_name_from_config(config):
         host = database_config['host']
         user = database_config['user']
         password = database_config['password']
-    database = database_config['database']
+    database = database_config['PY_EXPERIMENTER']
     table_name = database_config['table'].replace(' ', '')
 
     return table_name, host, user, database, password
