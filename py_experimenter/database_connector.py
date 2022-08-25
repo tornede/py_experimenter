@@ -14,8 +14,8 @@ class DatabaseConnector(abc.ABC):
 
     def __init__(self, _config):
         self._config = _config
-        self._table_name = self._config.get('DATABASE', 'table')
-        self._database_name = self._config.get('DATABASE', 'database')
+        self._table_name = self._config.get('PY_EXPERIMENTER', 'table')
+        self._database_name = self._config.get('PY_EXPERIMENTER', 'database')
 
         self._db_credentials = self._extract_credentials()
         self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)

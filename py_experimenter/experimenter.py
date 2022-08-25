@@ -42,17 +42,17 @@ class PyExperimenter:
             raise InvalidConfigError('Invalid configuration')
 
         if table_name is not None:
-            self._config.set('DATABASE', 'table', table_name)
+            self._config.set('PY_EXPERIMENTER', 'table', table_name)
         if database_name is not None:
-            self._config.set('DATABASE', 'database', database_name)
+            self._config.set('PY_EXPERIMENTER', 'database', database_name)
         self.experimenter_name = experimenter_name
 
         self._config_path = config_path
         self.timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
 
-        if self._config['DATABASE']['provider'] == 'sqlite':
+        if self._config['PY_EXPERIMENTER']['provider'] == 'sqlite':
             self._dbconnector = DatabaseConnectorLITE(self._config)
-        elif self._config['DATABASE']['provider'] == 'mysql':
+        elif self._config['PY_EXPERIMENTER']['provider'] == 'mysql':
             self._dbconnector = DatabaseConnectorMYSQL(self._config, credential_path)
         else:
             raise ValueError('The provider indicated in the config file is not supported')
@@ -82,26 +82,26 @@ class PyExperimenter:
         """
         This method checks if the configuration is valid.
         """
-        if not _config.has_section('DATABASE'):
+        if not _config.has_section('PY_EXPERIMENTER'):
             return False
 
-        if not {'provider', 'database', 'table'}.issubset(set(_config.options('DATABASE'))):
+        if not set(_config.keys()) <= {'PY_EXPERIMENTER', 'CUSTOM', 'DEFAULT'}:
+            return False
+    
+        if not {'provider', 'database', 'table'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
             logging.error('Error in config file: DATABASE section must contain provider, database, and table')
             return False
 
-        if not _config['DATABASE']['provider'] in ['sqlite', 'mysql']:
+        if not _config['PY_EXPERIMENTER']['provider'] in ['sqlite', 'mysql']:
             logging.error('Error in config file: DATABASE provider must be either sqlite or mysql')
             return False
 
-        if _config['DATABASE']['provider'] == 'mysql':
+        if _config['PY_EXPERIMENTER']['provider'] == 'mysql':
             credentials = utils.load_config(credential_path)
             if not {'host', 'user', 'password'}.issubset(set(credentials.options('CREDENTIALS'))):
                 logging.error(
                     f'Error in config file: DATABASE section must contain host, user, and password since provider is {_config["DATABASE"]["provider"]}')
                 return False
-
-        if not _config.has_section('PY_EXPERIMENTER'):
-            return False
 
         if not {'cpu.max', 'keyfields',
                 'resultfields'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
@@ -177,7 +177,7 @@ class PyExperimenter:
             cpus = int(self._config['PY_EXPERIMENTER']['cpu.max'])
         except ValueError:
             raise InvalidValuesInConfiguration('cpu.max must be an integer')
-        table_name = self.get_config_value('DATABASE', 'table')
+        table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
         result_processors = [ResultProcessor(self._config, self._crendtial_path, table_name=table_name, condition=p,
                                              result_fields=result_field_names) for p in parameters]
         approaches = [approach for _ in parameters]

@@ -13,12 +13,10 @@ from py_experimenter.utils import (_generate_int_data, add_timestep_result_colum
     [
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {
-             'DATABASE': {
+             'PY_EXPERIMENTER': {
                  'provider': 'mysql',
                  'database': 'py_experimenter',
-                 'table': 'test_table'
-             },
-             'PY_EXPERIMENTER': {
+                 'table': 'test_table',
                  'cpu.max': '5',
                  'keyfields': 'value:int, exponent:int',
                  'resultfields': 'sin, cos',
@@ -29,12 +27,10 @@ from py_experimenter.utils import (_generate_int_data, add_timestep_result_colum
         }),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_file_with_wrong_syntax.cfg'),
          {
-             'DATABASE': {
+             'PY_EXPERIMENTER': {
                  'provider': 'mysql',
                  'database': 'py_experimenter',
-                 'table': 'test_table_mysql_with_wrong_syntax'
-             },
-             'PY_EXPERIMENTER': {
+                 'table': 'test_table_mysql_with_wrong_syntax',
                  'cpu.max': '5',
                  'keyfields': 'value:int, exponent:int,',
                  'resultfields': 'sin, cos',
@@ -45,12 +41,10 @@ from py_experimenter.utils import (_generate_int_data, add_timestep_result_colum
         }),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_without_keyfields.cfg'),
          {
-             'DATABASE': {
+             'PY_EXPERIMENTER': {
                  'provider': 'mysql',
                  'database': 'py_experimenter',
-                 'table': 'test_table_without_keyfields'
-             },
-             'PY_EXPERIMENTER': {
+                 'table': 'test_table_without_keyfields',
                  'cpu.max': '5',
                  'keyfields': '',
                  'resultfields': 'sin, cos',
@@ -62,12 +56,10 @@ from py_experimenter.utils import (_generate_int_data, add_timestep_result_colum
 
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'sqlite_test_file.cfg'),
          {
-             'DATABASE': {
+             'PY_EXPERIMENTER': {
                  'provider': 'sqlite',
                  'database': 'py_experimenter',
-                 'table': 'test_table_sqlite'
-             },
-             'PY_EXPERIMENTER': {
+                 'table': 'test_table_sqlite',
                  'cpu.max': '5',
                  'keyfields': 'datasetName, internal_performance_measure, featureObjectiveMeasure, seed:int(3)',
                  'resultfields': 'final_pipeline:LONGTEXT, internal_performance:int(3), performance_asymmetric_loss',
