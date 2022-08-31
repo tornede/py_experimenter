@@ -173,7 +173,7 @@ class DatabaseConnector(abc.ABC):
     def _get_existing_rows(self, column_names):
         pass
 
-    def get_parameters_to_execute(self) -> List[dict]:
+    def get_keyfield_values_to_execute(self) -> List[dict]:
         keyfield_names = utils.get_keyfield_names(self._config)
 
         execute_condition = "status='created'"
@@ -187,15 +187,15 @@ class DatabaseConnector(abc.ABC):
             self.execute(cursor, stmt)
         except Exception as e:
             raise DatabaseConnectionError(f'error \n {e} raised. \n Please check if fill_table() was called correctly.')
-        parameters = pd.DataFrame(self.fetchall(cursor))
-        if parameters.empty:
+        keyfield_name_value_pairs = pd.DataFrame(self.fetchall(cursor))
+        if keyfield_name_value_pairs.empty:
             return []
-        parameters.columns = [i[0] for i in cursor.description]
+        keyfield_name_value_pairs.columns = [i[0] for i in cursor.description]
         self.close_connection(connection)
 
-        named_parameters = [dict(parameter.to_dict()) for _, parameter in parameters.iterrows()]
+        keyfield_values = [dict(parameter.to_dict()) for _, parameter in keyfield_name_value_pairs.iterrows()]
 
-        return named_parameters
+        return keyfield_values
 
     def _write_to_database(self, keys, values) -> None:
         """

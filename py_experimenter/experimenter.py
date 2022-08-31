@@ -165,13 +165,13 @@ class PyExperimenter:
         """
 
         logging.info("Start execution of approaches...")
-        parameters = self._dbconnector.get_parameters_to_execute()
+        keyfield_values = self._dbconnector.get_keyfield_values_to_execute()
 
         if random_order:
-            shuffle(parameters)
+            shuffle(keyfield_values)
 
-        if 0 <= max_experiments < len(parameters):
-            parameters = parameters[:max_experiments]
+        if 0 <= max_experiments < len(keyfield_values):
+            keyfield_values = keyfield_values[:max_experiments]
         result_field_names = utils.get_result_field_names(self._config)
         try:
             cpus = int(self._config['PY_EXPERIMENTER']['cpu.max'])
@@ -179,15 +179,15 @@ class PyExperimenter:
             raise InvalidValuesInConfiguration('cpu.max must be an integer')
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
         result_processors = [ResultProcessor(self._config, self._crendtial_path, table_name=table_name, condition=p,
-                                             result_fields=result_field_names) for p in parameters]
-        approaches = [approach for _ in parameters]
+                                             result_fields=result_field_names) for p in keyfield_values]
+        approaches = [approach for _ in keyfield_values]
         try:
-            custom_fields = [dict(self._config.items('CUSTOM')) for _ in parameters]
+            custom_fields = [dict(self._config.items('CUSTOM')) for _ in keyfield_values]
         except NoSectionError:
-            custom_fields = [None for _ in parameters]
+            custom_fields = [None for _ in keyfield_values]
 
         with concurrent.futures.ProcessPoolExecutor(max_workers=cpus) as executor:
-            executor.map(self.execution_wrapper, approaches, custom_fields, parameters, result_processors)
+            executor.map(self.execution_wrapper, approaches, custom_fields, keyfield_values, result_processors)
         logging.info("All executions finished")
 
     def get_table(self) -> pd.DataFrame:

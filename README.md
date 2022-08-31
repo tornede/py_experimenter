@@ -167,7 +167,7 @@ therefore leads to:
 ### Fill Table from Combination
 The last way to fill the database is using `experimenter.fill_table_from_combination`. This is essentially a combination of [the first option](#fill-table-from-configuration), and [the second option](#fill-table-with-rows).
 
-If you have 4 parameters
+If you have 4 keyfields
 ```
 keyfields=parameter_1, parameter_2, parameter_3, parameter_4
 ```
@@ -210,7 +210,7 @@ To execute experiments you need to define the experiment as a function and then 
 ### Definition of an Experiment
 To execute an experiment it needs to be put into a function like
 ```python
-def own_function(parameters: dict, result_processor: ResultProcessor, custom_fields: dict):
+def own_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
     # run the experiment with the given value for the sin and cos function
     sin_result = sin(parameters['value'])
     cos_result = cos(parameters['value'])
@@ -222,7 +222,7 @@ def own_function(parameters: dict, result_processor: ResultProcessor, custom_fie
     result_processor.process_results(result)
 ```
 
-that has three parameters:
+that has three keyfields:
 1. `parameters`: A dictionary that holds all values given in the table. The keys are the keyfield names defined in the configuration file.
 2. `result_processor`: is an object of class `ResultProcessor` which processes the results and writes them to the database. To write one (or multiple) result(s) to the database, create a dictionary of `resultfieldname` and `value` pairs. After that call the `process_results()` method of the `ResultProcessor` and pass the dictionary as an argument to write the results to the database. You can call this method multiple times during the execution of your experiment. Note that you can only write to `resultfields` defined in the [configuration file](#configuration-file). If a dictionary has other keys not defined in the configuration file, the results will not be written to the database.
 3. `custom_fields`: A dictionary that holds the values given in [CUSTOM] in the configuration.  Note that this parameter is needed even if you have not set your custom configurations.

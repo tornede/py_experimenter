@@ -8,10 +8,10 @@ from py_experimenter.experimenter import PyExperimenter
 from py_experimenter.result_processor import ResultProcessor
 
 
-def own_function(parameters: dict, result_processor: ResultProcessor, custom_fields: dict):
+def own_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
     # run the experiment with the given value for the sin and cos function
-    sin_result = sin(parameters['value'])**parameters['exponent']
-    cos_result = cos(parameters['value'])**parameters['exponent']
+    sin_result = sin(keyfields['value'])**keyfields['exponent']
+    cos_result = cos(keyfields['value'])**keyfields['exponent']
 
     # write result in dict with the resultfield as key
     result = {'sin': sin_result, 'cos': cos_result}
