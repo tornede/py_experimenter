@@ -44,13 +44,6 @@ class ResultProcessor:
         want to write results to the database.
         :param results: Dictionary with result field name and result value pairs.
         """
-        def _split_key_values(results: dict):
-            keys = []
-            values = []
-            for key, value in results.items():
-                keys.append(key)
-                values.append(value)
-            return keys, values
         time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
         if not self._valid_result_fields(list(results.keys())):
             invalid_result_keys = set(list(results.keys())) - set(self._result_fields)
@@ -59,7 +52,8 @@ class ResultProcessor:
         if self._timestamp_on_result_fields:
             results = self.__class__._add_timestamps_to_results(results, time)
 
-        keys, values = _split_key_values(results)
+        keys = self._dbconnector.escape_sql_chars(*list(results.keys()))
+        values = self._dbconnector.escape_sql_chars(*list(results.values()))
         self._dbconnector._update_database(keys=keys, values=values, where=self._where)
 
     @staticmethod
@@ -95,4 +89,3 @@ class ResultProcessor:
 
     def _valid_result_fields(self, result_fields):
         return set(result_fields).issubset(set(self._result_fields))
-

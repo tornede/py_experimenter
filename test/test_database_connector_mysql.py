@@ -6,11 +6,11 @@ from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
 @pytest.mark.parametrize(
     'args, modified_args',
     [
-        (['a', 'b'], ['`a`', '`b`']),
+        (['a', 'b'], ['a', 'b']),
         ([], []),
-        (['a', ], ['`a`']),
-        (['a`b'], ['`a``b`']),
-        (['a``b'], ['`a````b`']),
+        (['a', ], ['a']),
+        (['a`b'], ['a``b']),
+        (['a``b'], ['a````b']),
 
     ]
 )

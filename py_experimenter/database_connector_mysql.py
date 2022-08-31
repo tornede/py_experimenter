@@ -72,7 +72,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             raise TableError(f'Error when creating table: {err}')
 
     def _get_tablename_for_queary(self):
-        return DatabaseConnectorMYSQL.escape_sql_chars(self._table_name)[0][1:-1]
+        return DatabaseConnectorMYSQL.escape_sql_chars(self._table_name)[0]
 
     def _table_has_correct_structure(self, cursor, typed_fields):
         self.execute(cursor,
@@ -84,10 +84,13 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
     @staticmethod
     def escape_sql_chars(*args):
-        modified_args = list()
+        escaped_args = []
         for arg in args:
-            modified_args.append('`' + arg.replace('`', '``') + '`')
-        return modified_args
+            if isinstance(arg, str):
+                escaped_args.append(arg.replace("'", "''").replace('"', '""').replace('`', '``'))
+            else:
+                escaped_args.append(arg)
+        return escaped_args
 
     def _get_existing_rows(self, column_names):
         def _remove_double_witespaces(existing_rows):
