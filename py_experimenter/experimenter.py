@@ -191,7 +191,7 @@ class PyExperimenter:
         logging.info("All executions finished")
 
     def get_table(self) -> pd.DataFrame:
-        return self._dbconnector.get_results_table()
+        return self._dbconnector.get_table()
 
     def execution_wrapper(self, approach, custom_fields: dict, keyfields, result_processor: ResultProcessor):
         if result_processor._not_executed_yet():

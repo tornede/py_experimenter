@@ -277,7 +277,7 @@ class DatabaseConnector(abc.ABC):
     def get_structure_from_table(self, cursor):
         pass
 
-    def get_results_table(self) -> pd.DataFrame:
+    def get_table(self) -> pd.DataFrame:
         connection = self.connect()
         query = f"SELECT * FROM {self._table_name}"
         df = pd.read_sql(query, connection)
