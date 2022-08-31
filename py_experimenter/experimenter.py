@@ -23,20 +23,20 @@ class PyExperimenter:
     """
 
     def __init__(self,
-                 config_path: str = os.path.join('config', 'configuration.cfg'),
+                 config_file: str = os.path.join('config', 'configuration.cfg'),
                  credential_path: str = os.path.join('config', 'database_credentials.cfg'),
                  table_name: str = None,
                  database_name: str = None,
-                 experimenter_name='PyExperimenter'):
+                 name='PyExperimenter'):
         """
         Initialize PyExperimenter with the configuration file. If table_name or database_name are given they overwrite the
         values in the configuration file.
 
-        :param config_path: Path to the configuration file. Defaults to 'config/configuration.cfg'.
+        :param config_file: Path to the configuration file. Defaults to 'config/configuration.cfg'.
         :param table_name: Name of the table in the database. If None, the table name is taken from the configuration file. Defaults to None.
         :param database_name: Name of the database. If None, the database name is taken from the configuration file. Defaults to None.
         """
-        self._config = utils.load_config(config_path)
+        self._config = utils.load_config(config_file)
         self._crendtial_path = credential_path
         if not PyExperimenter._valid_configuration(self._config, credential_path):
             raise InvalidConfigError('Invalid configuration')
@@ -45,9 +45,9 @@ class PyExperimenter:
             self._config.set('PY_EXPERIMENTER', 'table', table_name)
         if database_name is not None:
             self._config.set('PY_EXPERIMENTER', 'database', database_name)
-        self.experimenter_name = experimenter_name
+        self.name= name
 
-        self._config_path = config_path
+        self._config_file = config_file
         self.timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
 
         if self._config['PY_EXPERIMENTER']['provider'] == 'sqlite':
@@ -182,25 +182,25 @@ class PyExperimenter:
                                              result_fields=result_field_names) for p in parameters]
         approaches = [approach for _ in parameters]
         try:
-            custom_config = [dict(self._config.items('CUSTOM')) for _ in parameters]
+            custom_fields = [dict(self._config.items('CUSTOM')) for _ in parameters]
         except NoSectionError:
-            custom_config = [None for _ in parameters]
+            custom_fields = [None for _ in parameters]
 
         with concurrent.futures.ProcessPoolExecutor(max_workers=cpus) as executor:
-            executor.map(self.execution_wrapper, approaches, custom_config, parameters, result_processors)
+            executor.map(self.execution_wrapper, approaches, custom_fields, parameters, result_processors)
         logging.info("All executions finished")
 
-    def get_results_table(self) -> pd.DataFrame:
+    def get_table(self) -> pd.DataFrame:
         return self._dbconnector.get_results_table()
 
-    def execution_wrapper(self, approach, custom_config: dict, parameters, result_processor: ResultProcessor):
+    def execution_wrapper(self, approach, custom_fields: dict, keyfields, result_processor: ResultProcessor):
         if result_processor._not_executed_yet():
             result_processor._change_status('running')
-            result_processor._set_experimenter_name(self.experimenter_name)
+            result_processor._set_name(self.name)
             result_processor._set_machine(socket.gethostname())
             try:
                 logging.debug(f"Start of approach on process {socket.gethostname()}")
-                approach(parameters, result_processor, custom_config)
+                approach(keyfields, result_processor, custom_fields)
             except Exception:
                 error_msg = traceback.format_exc()
                 logging.error(error_msg)

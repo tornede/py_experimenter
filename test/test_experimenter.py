@@ -128,7 +128,7 @@ def test_get_config_values(mock_valid_config, mcok_database_connector_init, conf
 @patch.object(database_connector.DatabaseConnector, '__init__')
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
 @pytest.mark.parametrize(
-    'config_path, section_name, key, value',
+    'config_file, section_name, key, value',
     [
         (
             os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
@@ -150,16 +150,16 @@ def test_get_config_values(mock_valid_config, mcok_database_connector_init, conf
         ),
     ]
 )
-def test_set_config_values(create_database_if_not_existing_mock, mock_fn, config_path, section_name, key, value):
+def test_set_config_values(create_database_if_not_existing_mock, mock_fn, config_file, section_name, key, value):
     create_database_if_not_existing_mock.return_value = None
     mock_fn.return_value = None
-    py_experimenter = PyExperimenter(config_path, CREDENTIAL_PATH)
+    py_experimenter = PyExperimenter(config_file, CREDENTIAL_PATH)
     py_experimenter.set_config_value(section_name, key, value)
     assert py_experimenter.get_config_value(section_name, key) == value
 
 
 @pytest.mark.parametrize(
-    'config_path, valid',
+    'config_file, valid',
     [
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_file_with_wrong_syntax.cfg'), True),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_without_keyfields.cfg'), True),
@@ -171,6 +171,6 @@ def test_set_config_values(create_database_if_not_existing_mock, mock_fn, config
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'invalid_config_3.cfg'), False),
     ]
 )
-def test_valid_configuration(config_path, valid):
-    config_file = utils.load_config(config_path)
+def test_valid_configuration(config_file, valid):
+    config_file = utils.load_config(config_file)
     assert PyExperimenter._valid_configuration(config_file, CREDENTIAL_PATH) == valid

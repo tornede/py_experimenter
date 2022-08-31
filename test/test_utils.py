@@ -92,7 +92,7 @@ def test_load_config(path, comparable_dict):
 
 
 @pytest.mark.parametrize(
-    'config_path, expected_result',
+    'config_file, expected_result',
     [
         pytest.param(
             os.path.join('test', 'test_config_files', 'load_config_test_file', 'test_no_resultfield_timestamp_upper_case.cfg'),
@@ -121,8 +121,8 @@ def test_load_config(path, comparable_dict):
         )
     ]
 )
-def test_timestamps_for_result_fields(config_path, expected_result):
-    config = load_config(config_path)
+def test_timestamps_for_result_fields(config_file, expected_result):
+    config = load_config(config_file)
     assert expected_result == timestamps_for_result_fields(config)
 
 

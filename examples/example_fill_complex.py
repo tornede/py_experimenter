@@ -7,13 +7,13 @@ from py_experimenter.experimenter import PyExperimenter
 from py_experimenter.result_processor import ResultProcessor
 
 
-def own_function(parameters: dict, result_processor: ResultProcessor, custom_config: dict):
-    pause = random.randrange(1, int(custom_config['pause.max']))
-    if pause >= int(custom_config['pause.threshold']):
+def own_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+    pause = random.randrange(1, int(custom_fields['pause.max']))
+    if pause >= int(custom_fields['pause.threshold']):
         raise ValueError("Example error")
     time.sleep(pause)
 
-    result = {'final_pipeline': parameters['datasetName']}
+    result = {'final_pipeline': keyfields['datasetName']}
     result_processor.process_results(result)
 
     result = {'internal_performance': pause, 'performance_asymmetric_loss': 0}
@@ -23,7 +23,7 @@ def own_function(parameters: dict, result_processor: ResultProcessor, custom_con
 logging.basicConfig(level=logging.INFO)
 
 # Create sqlite experimenter.
-experimenter = PyExperimenter(config_path=os.path.join('examples','example_fill_complex.cfg'))
+experimenter = PyExperimenter(config_file=os.path.join('examples', 'example_fill_complex.cfg'))
 # To use a mysql database, modify the examples/example_fill_complex.cfg file and change the provider to mysql.
 # In addition you need to provide the credentials file config/database_credentials.cfg and confirm that you
 # have the permission to create a database/a database exists as defined in the config file.

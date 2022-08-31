@@ -7,14 +7,14 @@ from py_experimenter.experimenter import PyExperimenter
 from py_experimenter.result_processor import ResultProcessor
 
 
-def own_function(parameters: dict, result_processor: ResultProcessor, custom_config: dict):
-    pause = random.randrange(1, int(custom_config['pause.max']))
-    seed = parameters['seed']
+def own_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+    pause = random.randrange(1, int(custom_fields['pause.max']))
+    seed = keyfields['seed']
     if seed >= 2:
         raise ValueError("Example error")
     time.sleep(pause)
 
-    result = {'final_pipeline': parameters['datasetName']}
+    result = {'final_pipeline': keyfields['datasetName']}
     result_processor.process_results(result)
 
     time.sleep(pause)
@@ -26,7 +26,7 @@ def own_function(parameters: dict, result_processor: ResultProcessor, custom_con
 logging.basicConfig(level=logging.INFO)
 
 # Create sqlite experimenter.
-experimenter = PyExperimenter(config_path=os.path.join('examples', 'example_timestamp_on_result_fields.cfg'))
+experimenter = PyExperimenter(config_file=os.path.join('examples', 'example_timestamp_on_result_fields.cfg'))
 # To use a mysql database, modify the examples/example_fill_complex.cfg file and change the provider to mysql.
 # In addition you need to provide the credentials file config/database_credentials.cfg and make sure that the database exists.
 # For more information refer to the README.md file.

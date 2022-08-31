@@ -8,7 +8,7 @@ from py_experimenter.experimenter import PyExperimenter
 from py_experimenter.result_processor import ResultProcessor
 
 
-def own_function(parameters: dict, result_processor: ResultProcessor, custom_config: dict):
+def own_function(parameters: dict, result_processor: ResultProcessor, custom_fields: dict):
     # run the experiment with the given value for the sin and cos function
     sin_result = sin(parameters['value'])**parameters['exponent']
     cos_result = cos(parameters['value'])**parameters['exponent']
@@ -44,9 +44,9 @@ def delete_existing_table(experimenter):
 
 
 def test_run_all_mqsql_experiments():
-    config_path = os.path.join('test', 'test_run_experiments', 'test_run_mysql_experiment_config.cfg')
+    config_file = os.path.join('test', 'test_run_experiments', 'test_run_mysql_experiment_config.cfg')
     logging.basicConfig(level=logging.DEBUG)
-    experimenter = PyExperimenter(config_path=config_path)
+    experimenter = PyExperimenter(config_file=config_file)
     try:
         delete_existing_table(experimenter)
     except ProgrammingError as e:
@@ -64,7 +64,7 @@ def test_run_all_mqsql_experiments():
     assert entries_without_metadata == (1, 1, 1, 'done', 'PyExperimenter', '0.8414709848078965', '0.5403023058681398', None)
     experimenter._dbconnector.close_connection(connection)
 
-    experimenter = PyExperimenter(config_path=config_path)
+    experimenter = PyExperimenter(config_file=config_file)
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, -1)
     check_done_entries(experimenter, 30)
