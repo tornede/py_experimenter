@@ -264,10 +264,10 @@ class DatabaseConnector(abc.ABC):
         cursor = self.cursor(connection)
         column_names = self.get_structure_from_table(cursor)
 
-        cursor.execute(f"SELECT * FROM {self._table_name} WHERE status='{status}'")
+        self.execute(cursor, f"SELECT * FROM {self._table_name} WHERE status='{status}'") 
         entries = cursor.fetchall()
         column_names, entries = _get_keyfields_from_columns(column_names, entries)
-        cursor.execute(f"DELETE FROM {self._table_name} WHERE status='{status}'")
+        self.execute(cursor, f"DELETE FROM {self._table_name} WHERE status='{status}'")
         self.commit(connection)
         self.close_connection(connection)
 
