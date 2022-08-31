@@ -212,7 +212,8 @@ class PyExperimenter:
     def reset_experiments(self, status= 'error') -> None:        
         keyfields,entries = self._dbconnector.delete_experiments_with_status(status)
         rows = self._extract_row_from_entries(keyfields, entries)
-        self.fill_table_with_rows(rows)
+        if rows:
+            self.fill_table_with_rows(rows)
         logging.info(f"{len(rows)} experiments with status {status} were reset")
         
     def _extract_row_from_entries(self, keyfields, entries):
