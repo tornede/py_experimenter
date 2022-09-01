@@ -65,7 +65,7 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
 
 
 @pytest.mark.parametrize(
-    'config_path, parameters, fixed_parameter_combination, write_to_database_keys, write_to_database_values',
+    'config_file, parameters, fixed_parameter_combination, write_to_database_keys, write_to_database_values',
     [
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {'value': [1, 2], 'exponent': [3, 4]},
@@ -116,7 +116,7 @@ def test_fill_table(
         test_connection_mock,
         get_existing_rows_mock,
         write_to_database_mock,
-        config_path,
+        config_file,
         parameters,
         fixed_parameter_combination,
         write_to_database_keys,
@@ -126,7 +126,7 @@ def test_fill_table(
     get_existing_rows_mock.return_value = []
     write_to_database_mock.return_value = None
 
-    config = load_config(config_path)
+    config = load_config(config_file)
     database_connector = DatabaseConnectorMYSQL(config, credential_path=os.path.join(
         'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
     database_connector.fill_table(parameters, fixed_parameter_combination)

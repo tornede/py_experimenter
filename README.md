@@ -90,20 +90,20 @@ As mentioned above we can connect to either sqlite or mysql databases.
 
 To establish a connection to the database with sqlite
 ```python3
-PyExperimenter(config_path, table_name, database_name)
+PyExperimenter(config_file, table_name, database_name)
 ```
 is called with the following parameters:
-- `config_path` refers to the position of the aforementioned configuration file. 
+- `config_file` refers to the position of the aforementioned configuration file. 
 - `table_name` is an optional parameter. If given it overwrites the table name given in the configuration file.
 - `database_name` is an optional parameter. If given it overwrites the database name in the configuration file. 
 
 To establish a connection to the database with mysql
 ```python3
-PyExperimenter(config_path, credential_path, table_name, database_name)
+PyExperimenter(config_file, credential_path, table_name, database_name)
 ```
 is called with the parameter `credential_path` as an additional parameter. This path refers to the [credential file](#database) mentioned above.
 
-For both sqlite and mysql, the parameters are then used to connect to the database at `database_name` and create a table with the name `table_name` according to the structure in the configuration file at `config_path`. If there is already a table with the name `table_name` in the database two things can happen:
+For both sqlite and mysql, the parameters are then used to connect to the database at `database_name` and create a table with the name `table_name` according to the structure in the configuration file at `config_file`. If there is already a table with the name `table_name` in the database two things can happen:
 1. If the table has the same structure nothing happens.
 2. If the table has a different structure `TableHasWrongStructureError` is raised.
 
@@ -167,7 +167,7 @@ therefore leads to:
 ### Fill Table from Combination
 The last way to fill the database is using `experimenter.fill_table_from_combination`. This is essentially a combination of [the first option](#fill-table-from-configuration), and [the second option](#fill-table-with-rows).
 
-If you have 4 parameters
+If you have 4 keyfields
 ```
 keyfields=parameter_1, parameter_2, parameter_3, parameter_4
 ```
@@ -210,7 +210,7 @@ To execute experiments you need to define the experiment as a function and then 
 ### Definition of an Experiment
 To execute an experiment it needs to be put into a function like
 ```python
-def own_function(parameters: dict, result_processor: ResultProcessor, custom_config: dict):
+def own_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
     # run the experiment with the given value for the sin and cos function
     sin_result = sin(parameters['value'])
     cos_result = cos(parameters['value'])
@@ -222,10 +222,10 @@ def own_function(parameters: dict, result_processor: ResultProcessor, custom_con
     result_processor.process_results(result)
 ```
 
-that has three parameters:
+that has three keyfields:
 1. `parameters`: A dictionary that holds all values given in the table. The keys are the keyfield names defined in the configuration file.
 2. `result_processor`: is an object of class `ResultProcessor` which processes the results and writes them to the database. To write one (or multiple) result(s) to the database, create a dictionary of `resultfieldname` and `value` pairs. After that call the `process_results()` method of the `ResultProcessor` and pass the dictionary as an argument to write the results to the database. You can call this method multiple times during the execution of your experiment. Note that you can only write to `resultfields` defined in the [configuration file](#configuration-file). If a dictionary has other keys not defined in the configuration file, the results will not be written to the database.
-3. `custom_config`: A dictionary that holds the values given in [CUSTOM] in the configuration.  Note that this parameter is needed even if you have not set your custom configurations.
+3. `custom_fields`: A dictionary that holds the values given in [CUSTOM] in the configuration.  Note that this parameter is needed even if you have not set your custom configurations.
 
 ### Execution of an Experiment 
 To execute the experiment `experimenter.execute(own_function)` needs to be called. It will only run experiments from the database table with the status `created`. This ensures that each experiment is executed only once. After an experiment is started, the status of this experiment is set to `running` and the experiment is started as a new thread. If the experiment is finished without any errors, the status will be set to `done`. However, if errors occur during execution, the status changes to `error`, and the respective error message is written to the database. In both cases, after the termination of one experiment, the next one is executed.
