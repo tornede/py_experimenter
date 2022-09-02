@@ -68,7 +68,3 @@ experimenter.fill_table_from_combination(parameters={'seed': ['1', '2', '3', '4'
 fixed_parameter_combinations=combinations)
 
 experimenter.execute(run_svm, max_experiments=-1, random_order=True)
-
-table= experimenter.get_table()
-
-table.to_csv("table.csv")
