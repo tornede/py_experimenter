@@ -51,10 +51,10 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
     database_connector = DatabaseConnectorMYSQL(config, credential_path=os.path.join(
         'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
     database_connector.create_table_if_not_existing()
-    create_table_string = create_table_string = ('CREATE TABLE `test_table` (ID int NOT NULL AUTO_INCREMENT, `value` int DEFAULT NULL,`exponent` int DEFAULT NULL,'
-                                                 '`creation_date` VARCHAR(255) DEFAULT NULL,`status` VARCHAR(255) DEFAULT NULL,`start_date` VARCHAR(255) DEFAULT NULL,'
-                                                 '`name` LONGTEXT DEFAULT NULL,`machine` VARCHAR(255) DEFAULT NULL,`sin` VARCHAR(255) DEFAULT NULL,'
-                                                 '`cos` VARCHAR(255) DEFAULT NULL,`end_date` VARCHAR(255) DEFAULT NULL,`error` LONGTEXT DEFAULT NULL, PRIMARY KEY (ID))'
+    create_table_string = create_table_string = ('CREATE TABLE test_table (ID int NOT NULL AUTO_INCREMENT, value int DEFAULT NULL,exponent int DEFAULT NULL,'
+                                                 'creation_date VARCHAR(255) DEFAULT NULL,status VARCHAR(255) DEFAULT NULL,start_date VARCHAR(255) DEFAULT NULL,'
+                                                 'name LONGTEXT DEFAULT NULL,machine VARCHAR(255) DEFAULT NULL,sin VARCHAR(255) DEFAULT NULL,'
+                                                 'cos VARCHAR(255) DEFAULT NULL,end_date VARCHAR(255) DEFAULT NULL,error LONGTEXT DEFAULT NULL, PRIMARY KEY (ID))'
                                                  )
     execute_mock.assert_has_calls(
         [

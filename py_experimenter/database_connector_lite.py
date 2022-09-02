@@ -47,7 +47,15 @@ class DatabaseConnectorLITE(DatabaseConnector):
 
     @staticmethod
     def escape_sql_chars(*args):
-        return args
+        modified_args = list()
+        for arg in args:
+            arg = str(arg)
+            if type(arg) == str:
+                modified_args.append(arg.replace('`', '``').replace("'", "''").replace('"', '""'))
+
+            else:
+                modified_args.append(arg)
+        return modified_args
 
     def _get_existing_rows(self, column_names):
         def _remove_string_markers(row):
