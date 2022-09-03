@@ -37,7 +37,7 @@ class PyExperimenter:
         :param database_name: Name of the database. If None, the database name is taken from the configuration file. Defaults to None.
         """
         self._config = utils.load_config(config_file)
-        self._crendtial_path = credential_path
+        self._credential_path = credential_path
         if not PyExperimenter._valid_configuration(self._config, credential_path):
             raise InvalidConfigError('Invalid configuration')
 
@@ -69,7 +69,7 @@ class PyExperimenter:
         if not self._config.has_section(section_name):
             self._config.add_section(section_name)
         self._config.set(section_name, key, value)
-        PyExperimenter._valid_configuration(self._config, self._crendtial_path)
+        PyExperimenter._valid_configuration(self._config, self._credential_path)
 
     def get_config_value(self, section_name: str, key: str) -> str:
         return self._config.get(section_name, key)
@@ -85,14 +85,14 @@ class PyExperimenter:
         if not _config.has_section('PY_EXPERIMENTER'):
             return False
 
-        if not set(_config.keys()) <= {'PY_EXPERIMENTER', 'CUSTOM', 'DEFAULT'}:
+        if set(_config.keys()) > {'PY_EXPERIMENTER', 'CUSTOM', 'DEFAULT'}:
             return False
     
         if not {'provider', 'database', 'table'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
             logging.error('Error in config file: DATABASE section must contain provider, database, and table')
             return False
 
-        if not _config['PY_EXPERIMENTER']['provider'] in ['sqlite', 'mysql']:
+        if _config['PY_EXPERIMENTER']['provider'] not in ['sqlite', 'mysql']:
             logging.error('Error in config file: DATABASE provider must be either sqlite or mysql')
             return False
 
@@ -124,12 +124,10 @@ class PyExperimenter:
         param fixed_parameter_combinations: List of fixed parameter combinations.
         """
 
-        logging.debug("Create table if not exist")
         self._dbconnector.create_table_if_not_existing()
-        logging.debug("Fill table with parameters")
         self._dbconnector.fill_table(fixed_parameter_combinations=fixed_parameter_combinations,
                                      parameters=parameters)
-        logging.debug("Parameters successfully inserted to table")
+        
 
     def fill_table_from_config(self) -> None:
         """
@@ -137,27 +135,23 @@ class PyExperimenter:
         the table, only parameter combinations for which there is no entry in the database will be added. The status
         of this parameter combination is set to 'created'.
         """
-        logging.debug("Create table if not exist")
         self._dbconnector.create_table_if_not_existing()
-        logging.debug("Fill table with parameters")
         parameters = utils.get_keyfield_data(self._config)
         self._dbconnector.fill_table(parameters=parameters)
 
     def fill_table_with_rows(self, rows: List[dict]) -> None:
-        logging.debug("Create table if not exist")
         self._dbconnector.create_table_if_not_existing()
-        logging.debug("Fill table with parameters")
         keyfield_names = utils.get_keyfield_names(self._config)
         for row in rows:
-            if not set(keyfield_names) == set(row.keys()):
+            if set(keyfield_names) != set(row.keys()):
                 raise ValueError('The keyfields in the config file do not match the keyfields in the rows')
         self._dbconnector.fill_table(fixed_parameter_combinations=rows)
 
     def execute(self, approach, max_experiments: int = -1, random_order=False) -> None:
         """
-        Execute approach for max_experiment parameter combinations that are in the dabase and have status 'created'.
+        Execute approach for max_experiment parameter combinations that are in the database and have status 'created'.
         If the execution was successful, the status is changed to done and the results are written into the database. 
-        If an errors that occurs during execution the status is changed to error and the error is writtien into the databse.
+        If an errors that occurs during execution the status is changed to error and the error is written into the database.
 
         :param approach: Function to execute an experiment.
         :param max_experiments: Max number of experiments to execute. If max_experiments is -1, all experiments are executed.
@@ -178,7 +172,7 @@ class PyExperimenter:
         except ValueError:
             raise InvalidValuesInConfiguration('cpu.max must be an integer')
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
-        result_processors = [ResultProcessor(self._config, self._crendtial_path, table_name=table_name, condition=p,
+        result_processors = [ResultProcessor(self._config, self._credential_path, table_name=table_name, condition=p,
                                              result_fields=result_field_names) for p in keyfield_values]
         approaches = [approach for _ in keyfield_values]
         try:

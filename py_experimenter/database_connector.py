@@ -71,6 +71,7 @@ class DatabaseConnector(abc.ABC):
         :param table_name: name of the table from the config
         :param experiment_config: experiment section of the config file
         """
+        logging.debug("Create table if not exist")
 
         keyfields = utils.get_keyfields(self._config)
         resultfields = utils.get_resultfields(self._config)
@@ -132,6 +133,7 @@ class DatabaseConnector(abc.ABC):
         pass
 
     def fill_table(self, parameters=None, fixed_parameter_combinations=None) -> None:
+        logging.debug("Fill table with parameters")
         parameters = parameters if parameters is not None else {}
         fixed_parameter_combinations = fixed_parameter_combinations if fixed_parameter_combinations is not None else []
 
@@ -162,7 +164,7 @@ class DatabaseConnector(abc.ABC):
 
             self._write_to_database(column_names.split(', '), values)
             values_added += 1
-        logging.info(f"{values_added} values added to database")
+        logging.info(f"{values_added} values successfully added to database")
 
     def _check_combination_in_existing_rows(self, combination, existing_rows, keyfield_names) -> bool:
         def _get_column_values():
@@ -204,7 +206,7 @@ class DatabaseConnector(abc.ABC):
         :param values: Values for column names
         """
         keys = ", ".join(keys)
-        values = "'" + self.__class__._write_to_database_seperator.join([str(value) for value in values]) + "'"
+        values = "'" + self.__class__._write_to_database_separator.join([str(value) for value in values]) + "'"
 
         stmt = f"INSERT INTO {self._table_name} ({keys}) VALUES ({values})"
 
@@ -264,7 +266,7 @@ class DatabaseConnector(abc.ABC):
         cursor = self.cursor(connection)
         column_names = self.get_structure_from_table(cursor)
 
-        self.execute(cursor, f"SELECT * FROM {self._table_name} WHERE status='{status}'") 
+        self.execute(cursor, f"SELECT * FROM {self._table_name} WHERE status='{status}'")
         entries = cursor.fetchall()
         column_names, entries = _get_keyfields_from_columns(column_names, entries)
         self.execute(cursor, f"DELETE FROM {self._table_name} WHERE status='{status}'")

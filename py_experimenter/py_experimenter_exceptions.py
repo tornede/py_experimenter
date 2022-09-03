@@ -9,14 +9,16 @@ class ParameterCombinationError(PyExperimenterError):
 class DatabaseError(PyExperimenterError):
     pass
 
+
 class DatabaseCreationError(DatabaseError):
-	pass
+    pass
+
 
 class DatabaseConnectionError(DatabaseError):
     pass
 
 
-class DatabaseQuearyError(DatabaseError):
+class DatabaseQueryError(DatabaseError):
     pass
 
 
@@ -27,8 +29,10 @@ class EmptyFillDatabaseCallError(DatabaseError):
 class TableError(DatabaseError):
     pass
 
+
 class InvalidResultFieldError(DatabaseError):
     pass
+
 
 class TableHasWrongStructureError(TableError):
     pass
