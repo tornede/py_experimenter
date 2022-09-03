@@ -24,7 +24,17 @@
 	"restructuredtext.preview.docutil.disabled": true,
 	"restructuredtext.preview.scrollEditorWithPreview": false,
 	"cSpell.words": [
-		"keyfields"
+		"cpus",
+		"dbconnector",
+		"gethostname",
+		"iterrows",
+		"keyfield",
+		"keyfields",
+		"meshgrid",
+		"resultfields",
+		"Tanja",
+		"timestep",
+		"Tornede"
 	],
 	"terminal.integrated.env.linux": {
 		"PYTHONPATH": "${workspaceFolder}"

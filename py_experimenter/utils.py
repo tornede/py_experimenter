@@ -79,7 +79,7 @@ def get_keyfield_data(config):
             keyfield_data[keyfield_name] = final_data
         except KeyError as err:
             logging.info(
-                "No value definitions for %s. Add it to the configuration file or provide at fill_talbe() call" % err)
+                "No value definitions for %s. Add it to the configuration file or provide at fill_table() call" % err)
 
     return keyfield_data
 
@@ -179,10 +179,10 @@ def combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_co
     def add_individual_parameters_to_combinations():
         new_combinations = list()
         if combinations:
-            for comination in combinations:
+            for combination in combinations:
                 for fixed_parameter_combination in fixed_parameter_combinations:
                     try:
-                        new_combination = dict(**comination, **fixed_parameter_combination)
+                        new_combination = dict(**combination, **fixed_parameter_combination)
                     except TypeError:
                         raise ParameterCombinationError('There is at least one key that is used more than once!')
                     new_combinations.append(new_combination)
@@ -200,7 +200,7 @@ def combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_co
         raise ParameterCombinationError('No parameter combination found!')
 
     for combination in combinations:
-        if not len(combination.keys()) == len(set(combination.keys())):
+        if len(combination.keys()) != len(set(combination.keys())):
             raise ParameterCombinationError(f'There is at least one key that is used more than once in {str(combination.keys())}!')
 
         if set(combination.keys()) != set(keyfield_names):

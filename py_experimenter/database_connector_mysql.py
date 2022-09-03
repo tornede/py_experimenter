@@ -10,7 +10,7 @@ from py_experimenter.utils import load_config
 
 
 class DatabaseConnectorMYSQL(DatabaseConnector):
-    _write_to_database_seperator = "', '"
+    _write_to_database_separator = "', '"
 
     def __init__(self, config: ConfigParser, credential_path):
         credentials = load_config(credential_path)
@@ -42,7 +42,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             self.execute(cursor, "SHOW DATABASES")
             databases = [database[0] for database in self.fetchall(cursor)]
 
-            if not self._database_name in databases:
+            if self._database_name not in databases:
                 self.execute(cursor, f"CREATE DATABASE {self._database_name}")
                 self.commit(connection)
             self.close_connection(connection)
@@ -61,7 +61,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             raise DatabaseConnectionError(err)
 
     def _table_exists(self, cursor):
-        self.execute(cursor, f"SHOW TABLES LIKE '{self._get_tablename_for_queary()}'")
+        self.execute(cursor, f"SHOW TABLES LIKE '{self._get_tablename_for_query()}'")
         return self.fetchall(cursor)
 
     def _create_table(self, cursor, columns):
@@ -71,7 +71,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         except Exception as err:
             raise TableError(f'Error when creating table: {err}')
 
-    def _get_tablename_for_queary(self):
+    def _get_tablename_for_query(self):
         return DatabaseConnectorMYSQL.escape_sql_chars(self._table_name)[0]
 
     def _table_has_correct_structure(self, cursor, typed_fields):
@@ -93,7 +93,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         return escaped_args
 
     def _get_existing_rows(self, column_names):
-        def _remove_double_witespaces(existing_rows):
+        def _remove_double_whitespaces(existing_rows):
             return [' '.join(row.split()) for row in existing_rows]
 
         def _remove_string_markers(existing_rows):
@@ -104,7 +104,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         self.execute(cursor, f"SELECT {column_names} FROM {self._table_name}")
         existing_rows = list(map(np.array2string, np.array(self.fetchall(cursor))))
         existing_rows = _remove_string_markers(existing_rows)
-        existing_rows = _remove_double_witespaces(existing_rows)
+        existing_rows = _remove_double_whitespaces(existing_rows)
         self.close_connection(connection)
         return existing_rows
 

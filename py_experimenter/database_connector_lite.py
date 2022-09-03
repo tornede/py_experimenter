@@ -9,7 +9,7 @@ from py_experimenter.py_experimenter_exceptions import DatabaseConnectionError
 
 
 class DatabaseConnectorLITE(DatabaseConnector):
-    _write_to_database_seperator = "','"
+    _write_to_database_separator = "','"
 
     def _extract_credentials(self):
         return dict(database=f'{self._database_name}.db')
@@ -69,8 +69,8 @@ class DatabaseConnectorLITE(DatabaseConnector):
         return existing_rows
 
     def get_structure_from_table(self, cursor):
-        def _get_columnnames_from_entries(entries):
+        def _get_column_names_from_entries(entries):
             return [entry[1] for entry in entries]
         self.execute(cursor, f"PRAGMA table_info({(self._table_name)})")
-        column_names = _get_columnnames_from_entries(self.fetchall(cursor))
+        column_names = _get_column_names_from_entries(self.fetchall(cursor))
         return column_names
