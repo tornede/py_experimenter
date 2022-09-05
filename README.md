@@ -1,268 +1,203 @@
 # PyExperimenter
-The PyExperimenter is a tool for the automatic execution of e.g., machine learning experiments. The only requirement for these experiments is that they can be run in a single function. It works with either sqlite or mysql databases.
 
-The execution of different experiment configurations is coordinated by a database and the results are published to the same database.
+The `PyExperimenter` is a tool for the automatic execution of experiments, e.g. for machine learning (ML), capturing corresponding results in a unified manner in a database. It is designed based on the assumption that an experiment is uniquely defined by certain inputs, i.e., experiment parameters, and a function computing the results of the experiment based on these input parameters. The set of experiments to be executed can be defined through a configuration file listing the domains of each experiment parameter, or manually through code. Based on the set of experiments defined by the user, `PyExperimenter` creates a table in the database featuring all experiments identified by their input parameter values and additional information such as the execution status. Once this table has been created, `PyExperimenter` can be run on any machine, including a distributed cluster. Each `PyExperimenter` instance automatically pulls open experiments from the database, executes the experiment function provided by the user with the corresponding experiment parameters defining the experiment and writes back the results computed by the function. Possible errors arising during the execution are logged in the database. After all experiments are done, the experiment evaluation table can be easily extracted, e.g. averaging over different seeds.
 
-To execute an experiment with different parameter combinations, the parameters are written into the database. Then multiple threads are started that execute the experiment with the parameter combinations from the database. Lastly, the results are written to the database. Errors that occur during execution are also captured by the written to the database.
 
-## Installation and Configuration
-To install the package via pip using the command
+## Installation
+
+The `PyExperimenter` module can be easily installed via PyPI, requirements can be found in the [requirements file](requirements.txt). 
+
 ```
 pip install py-experimenter
 ```
-You can then import the PyExperimenter by using
+
+## General Workflow
+
+The following steps are necessary to execute the `PyExperimenter`:
+1. Create the [experiment configuration file](#experiment-configuration-file), defining the database provider and the table structure.
+    - In case the database provider is `MySQL`, additionally a [database configuration file](#database-configuration-file) has to be created.
+3. Define the [experiment function](#defining-the-experiment-function), computing the experiment result based on the input parameters.
+4. [Execute the experiments](#executing-the-pyexperimenter), writing the results into the database table.
+5. Finally, the results of different experiment configurations can be viewed in the database table, or [extracted to a LaTeX table](#obtain-results).
+
+Detailed examples of most functionality can be found in the [`examples` folder of the repository](examples/). A complete example of the general usage of `PyExperimenter` can be found in [examples/example_general_usage.ipynb](examples/example_general_usage.ipynb). 
+
+
+--- 
+
+## Experiment Configuration File
+The experiment configuration file is primarily used to define the database backend, as well as execution parameters, i.e. keyfields, and result fields.
+
+```conf
+[PY_EXPERIMENTER]
+provider = sqlite 
+database = database_name
+table = table_name 
+
+keyfields = dataset, cross_validation_splits:int, seed:int, kernel
+dataset = iris
+cross_validation_splits = 5
+seed = 2:10:2 
+kernel = linear, poly, rbf, sigmoid
+
+cpu.max = 5 
+
+resultfields = pipeline:LONGTEXT, train_f1:DECIMAL, train_accuracy:DECIMAL, test_f1:DECIMAL, test_accuracy:DECIMAL
+resultfields.timestamps = false
+
+[CUSTOM] 
+path = sample_data
 ```
-from py_experimenter import PyExperimenter
-```
 
-## Workflow
-To execute an experiment the following steps are taken
-1. The [configuration file](#configuration-file) is read.
-2. A database connection is established, and a table (structure defined in the [configuration file](#configuration-file) is created.
-3. The [table is filled](#filling-the-database-with-parameter-combinations) with different experiment configurations.
-4. An [experiment is started](#execution) with parameter combinations from the database (on different threads).
-5. The results of different experiment configurations are written to the database.
+- `provider`: Either `sqlite` or `mysql`. In case of `mysql` an additional [database configuration file](#database-configuration-file) has to be created.
+- `database`: The name of the database.
+- `table`: The name of the table to write the experiment information into.
+- `keyfields`: The columns of the table that will define the execution of the experiments. Optionally, the field types can be attached. For each keyfield, an additional entry to the config file with the same name has to be added, which defines the domain of the keyfield.
+- `resultfields`: The columns of the table that will store the results of the execution of the experiments. Optionally, the field types can be attached. 
+- `resultfields.timestamps`: Boolean defining if additional timestamp columns are needed for each resultfield.
 
-Note that multiple experiments can be run at the same time (steps four and five).
+Both keyfields and resultfields can have further annotations for the data type. This is done by attaching `:<TYPE>` to the according fields. If no data type is explicitly specified, `VARCHAR(255)` is used.
 
-## Configuration File
-The configuration file is used to define the database credentials, as well as the settings for PyExperimenter.
-In addition, the user can define parameter configurations here, which are passed to the executing function during execution.
+Keyfields of the experiment configuration, that do not have to be explicitly defined in the list of keyfields, are:
+- `cpu.max (int)`: The maximum number of CPUs allowed for each experiment execution. 
 
-Each configuration file consists of three sections: `DATABASE`, `PY_EXPERIMENTER`, and `CUSTOM`. Note that the sections `DATABASE` and `PY_EXPERIMENTER` are mandatory while the `CUSTOM` section is optional.
-In the following, we will go through these sections and go into more detail about the individual configuration parameters.
+Additionally, the user can define which values the keyfields can take on. Usually this is done with a comma separated list of strings or numbers. In the example above, the key field `kernel` can be any of the four given values: `linear`, `poly`, `rbf`, or `sigmoid`. Note that strings are neither allowed to contain any quotation marks nor whitespace. 
 
-#### DATABASE
-The database section contains information on the database to which results, potential errors, and meta information of the experiments are written.
-```
-[DATABASE]
-provider=<sqlite or mysql>
-database=<databasename>
-table=<tablename>
-```
-You can use `sqlite` as well as `mysql` as a database provider. If you choose to use mysql you need an additional credential file 
+As this manual definition can be a tedious task, especially for a list of integers, there is the option to define the start and the end of the list, together with the step size in the form: `start:end:stepsize`. In the example above, `seed` is meant to be `2, 4, 6, 8, 10`, but instead of the explicit list `2:10:2` is given.
+
+Optionally, custom configurations can be defined under the `CUSTOM` section, which will be ignored when creating or filling the database, but can provide fixed parameters for the actual execution of experiments. A common example is the path to some folder in which the data is located. 
+
+----
+
+## Database Configuration File
+When working with `MySQL` as a database provider, an additional database configuration file is needed, containing the credentials for accessing the database:
 ```
 [CREDENTIALS]
-host=<host>
-user=<user>
-password=<password>
-```
-that holds further information on the database. Since sqlite utilizes a local database the information is only needed for mysql.
-
-Note that the table is automatically generated by PyExperimenter. However, a different name for both the database and table can be passed at a later time
-
-#### PY_EXPERIMENTER
-In this section of the configuration, the experiment is defined.
-```
-[PY_EXPERIMENTER]
-cpu.max = <number_of_cpus>
-
-keyfields = <keyfieldname1>, <keyfieldname2:int(3)>
-
-<keyfieldname1>=A,B,C (example configuration for <keyfieldname1>)
-<keyfieldname2>=1,2,3 (example configuration for <keyfieldname2>)
-
-resultfields = <resultfield1>, <resultfield2:LONGTEXT>
-```
-First, the number of CPUs that you want to use to run the experiments in parallel must be specified. This is a mandatory parameter.
-
-Then a list of keyfields is defined. These are the parameters that are passed to the experiment for execution. This is also mandatory. 
-
-It is optional to also initialize said keyfields. To do this, all possible values are assigned to the respective `keyfield`, separated by commas. The interpretation of these keyfield values is explained [here](#filling-the-database-with-parameter-combinations).
-
-Lastly, a list of resultfields is defined which are filled when the experiment is executed.
-
-Note that both the `keyfields` and the `resultfields` can be assigned a data type.
-These must be defined in SQL notation separated from the field name by a colon.
-If no data type is explicitly specified, `VARCHAR(255)` is used.
-
-#### CUSTOM
-In the last (optional) section you can define your configurations. These are also passed to the experiment. However, while the values given in the keyfields change from experiment to experiment, the custom values are fixed for all experiments.
-```
-[CUSTOM]
-custom.setting1=<value>
-custom.setting2=<value>
+host = <host>
+user = <user>
+password = <password>
 ```
 
-## Connecting to the Database
-As mentioned above we can connect to either sqlite or mysql databases.
+By default, this file is located at `config/database_credentials.cfg`. If this is not the case, the according path has to be explicitly given when [executing the `PyExperimenter`](#executing-the-pyexperimenter). 
 
+--- 
 
-To establish a connection to the database with sqlite
-```python3
-PyExperimenter(config_file, table_name, database_name)
-```
-is called with the following parameters:
-- `config_file` refers to the position of the aforementioned configuration file. 
-- `table_name` is an optional parameter. If given it overwrites the table name given in the configuration file.
-- `database_name` is an optional parameter. If given it overwrites the database name in the configuration file. 
+## Defining the Experiment Function
+The execution of a single experiment has to be defined within a function. The function is called with the `keyfields` of a database entry. The results are meant to be processed to be written into the database, i.e. as `resultfields`. 
 
-To establish a connection to the database with mysql
-```python3
-PyExperimenter(config_file, credential_path, table_name, database_name)
-```
-is called with the parameter `credential_path` as an additional parameter. This path refers to the [credential file](#database) mentioned above.
-
-For both sqlite and mysql, the parameters are then used to connect to the database at `database_name` and create a table with the name `table_name` according to the structure in the configuration file at `config_file`. If there is already a table with the name `table_name` in the database two things can happen:
-1. If the table has the same structure nothing happens.
-2. If the table has a different structure `TableHasWrongStructureError` is raised.
-
-## Filling the Database with Parameter Combinations
-When you want to fill the database with the structure
-
-| parameter 1  | parameter 2  |  ...  |   status    |   machine    | creation date | start date | end date  |   error    |
-| :----------: | :----------: | :---: | :---------: | :----------: | :-----------: | :--------: | :-------: | :--------: |
-| some value 1 | some value 2 |  ...  | some status | some machine |   some date   | some date  | some date | some error |
-
-(where parameter 1, parameter 2,... are the parameters that are given to the experiment, and the other parameters are meta information) you have three options to do this:
-
-1. Use `fill_table_from_config` ([here](#fill-table-from-configuration))
-2. Use `experimenter.fill_table_with_rows` ([here](#fill-table-with-rows))
-3. Use `experimenter.fill_table_from_combination`([here](#fill-table-from-combination))
-
-
-### Fill Table from Configuration
-The simplest way to fill the database is using `experimenter.fill_table_from_config`. Here the parameter definitions from the [configuration file](#configuration-file) are utilized.
-
-When the config has the keyfields
-
-```
-keyfields = parameter_1, parameter_2
-```
-and parameter options
-```
-parameter_1=A,C 
-parameter_2=1,2,3 
-```
-the resulting parameter configurations are the cartesian product of the possible parameters, e.g.,
-| parameter_1 | parameter_2 |
-| :---------: | :---------: |
-|      A      |      1      |
-|      A      |      2      |
-|      A      |      3      |
-|      B      |      1      |
-|      B      |      2      |
-|      B      |      3      |
-
-
-### Fill Table with Rows
-The second way to fill the database is using `experimenter.fill_table_with_rows`, where one defines all rows in the function call as a list of dictionaries.
 
 ```python
-experimenter.fill_table_with_rows(
-    [
-        {'parameter_1': 'A', 'parameter_2': '1'},
-        {'parameter_1': 'A', 'parameter_2': '3'},
-        {'parameter_1': 'B', 'parameter_2': '2'},
-    ]
-)
-```
-therefore leads to:
+import os
+from py_experimenter.result_processor import ResultProcessor
 
-| parameter_1 | parameter_2 |
-| :---------: | :---------: |
-|      A      |      1      |
-|      A      |      3      |
-|      B      |      2      |
-### Fill Table from Combination
-The last way to fill the database is using `experimenter.fill_table_from_combination`. This is essentially a combination of [the first option](#fill-table-from-configuration), and [the second option](#fill-table-with-rows).
+def run_experiment(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+    # Extracting given parameters
+    seed = keyfields['seed']
+    path = os.path.join(custom_config['path'], keyfields['dataset'])
 
-If you have 4 keyfields
+    # Do some stuff here
+
+    # Write intermediate results to database    
+    resultfields = {
+        'pipeline': pipeline, 
+        'train_f1': train_f1_micro),
+        'train_accuracy': train_accuracy}
+    result_processor.process_results(resultfields)
+
+    # Do more some stuff here
+
+    # Write final results to database
+    resultfields = {
+        'test_f1': np.mean(scores['test_f1_micro']),
+        'test_accuracy': np.mean(scores['test_accuracy'])}
+    result_processor.process_results(resultfields)
 ```
-keyfields=parameter_1, parameter_2, parameter_3, parameter_4
-```
-to fill and want to write all possible combinations of `parameter_1` and `parameter_2` in the database but only fixed combinations of `parameter_3` and `parameter_4` you can use
+
+---
+
+## Executing the PyExperimenter
+The actual execution of the `PyExperimenter` only needs a few lines of code. Please make sure that you have created the [experiment configuration file](#experiment-configuration-file). Below the core functionality is elaborated on.
+
 
 ```python
-experimenter.fill_table_from_combination(
-    parameters = {
-        'parameter_1': ['A','B'],
-        'parameter_2': ['C','D'],
+import logging
+from py_experimenter.experimenter import PyExperimenter
+
+logging.basicConfig(level=logging.INFO)
+
+experimenter = PyExperimenter()
+experimenter.fill_table_from_config()
+experimenter.execute(run_experiment, max_experiments=-1, random_order=True)
+```
+
+### Creating a PyExperimenter
+A `PyExperimenter` can be created without any further information, assuming the [experiment configuration file](#experiment-configuration-file) can be accessed at its default location.
+
+```python 
+experimenter = PyExperimenter()
+```
+
+Additionally, further information can be given to the `PyExperimenter`: 
+- `config_file`: The path of the [experiment configuration file](#experiment-configuration-file). Default: `config/configuration.cfg`
+- `credential_path`: The path of the [database credentials file](#database-configuration-file). Default: `config/database_credentials.cfg`
+- `database_name`: The name of the database to manage the experiments.
+- `table_name`: The name of the database table to manage the experiments.
+- `name`: The name of the experimenter, which will be added to the database table of each executed experiment by this `PyExperimenter`. If using parallel HPC, this is meant to be used for the job ID, so that the according log file can easily be found.
+
+### Fill Database Table Based on the Configuration File
+The database table can be filled with the cartesian product of the keyfields defined in the [experiment configuration file](#experiment-configuration-file).
+```python 
+experimenter.fill_table_from_config()
+```
+
+### Fill Table with Specific Rows
+Alternatively, or additionally, specific rows can be added to the table. Note that `rows` is a list of dicts, where each dict has to contain a value for each keyfield. A more complex example example featuring a conditional experiment grid using this approach can be found in the [repository (examples/example_conditional_grid.ipynb)](examples/example_conditional_grid.ipynb).
+
+```python 
+experimenter.fill_table_with_rows(rows=[
+    {
+        'dataset': 'new_data', 
+        'cross_validation_splits': 4, 
+        'seed': 42, 
+        'kernel': 'poly'
     },
-    fixed_parameter_combinations = [
-        {
-            'parameter_3': 'E',
-            'parameter_4': 'F',
-        },
-        {
-            'parameter_3': 'H',
-            'parameter_4': 'F',
-        },
-    ]
-)
+    {
+        'dataset': 'new_data_2', 
+        'cross_validation_splits': 4, 
+        'seed': 24, 
+        'kernel': 'poly'
+    }
+])
 ```
-which leads to the cartesian product of the options for parameter 1, options for parameter 2, and combinations of parameters 3 and 4.
-| parameter_1 | parameter_2 | parameter_3 | parameter_4 |
-| :---------: | :---------: | :---------: | :---------: |
-|      A      |      C      |      E      |      F      |
-|      A      |      C      |      H      |      F      |
-|      A      |      D      |      E      |      F      |
-|      A      |      D      |      H      |      F      |
-|      B      |      C      |      E      |      F      |
-|      B      |      C      |      H      |      F      |
-|      B      |      D      |      E      |      F      |
-|      B      |      D      |      H      |      F      |
 
+### Execute Experiments
+An experiment can be executed given:
+- `run_experiment` is the [experiment funtion](#defining-the-experiment-function) described above.
+- `max_experiments` determines how many experiments will be executed by this `PyExperimenter`. If set to `-1`, it will execute experiments in a sequential fashion until no more open experiments are available.
+- `random_order` determines if the order in which experiments are selected for execution should be random. This is especially important to be turned on, if the execution is parallelized, e.g. on an HPC cluster.  
 
-
-## Execution
-To execute experiments you need to define the experiment as a function and then start said function with the experimenter. How this is done is explained in the following two paragraphs.
-### Definition of an Experiment
-To execute an experiment it needs to be put into a function like
 ```python
-def own_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
-    # run the experiment with the given value for the sin and cos function
-    sin_result = sin(parameters['value'])
-    cos_result = cos(parameters['value'])
-
-    # write the result in dict with the resultfield as key
-    result = {'sin': sin_result, 'cos': cos_result}
-
-    # send the result to the database
-    result_processor.process_results(result)
+experimenter.execute(run_experiment, max_experiments=-1, random_order=True)
 ```
 
-that has three keyfields:
-1. `parameters`: A dictionary that holds all values given in the table. The keys are the keyfield names defined in the configuration file.
-2. `result_processor`: is an object of class `ResultProcessor` which processes the results and writes them to the database. To write one (or multiple) result(s) to the database, create a dictionary of `resultfieldname` and `value` pairs. After that call the `process_results()` method of the `ResultProcessor` and pass the dictionary as an argument to write the results to the database. You can call this method multiple times during the execution of your experiment. Note that you can only write to `resultfields` defined in the [configuration file](#configuration-file). If a dictionary has other keys not defined in the configuration file, the results will not be written to the database.
-3. `custom_fields`: A dictionary that holds the values given in [CUSTOM] in the configuration.  Note that this parameter is needed even if you have not set your custom configurations.
+### Reset Experiments
+Experiments can be reset based on their status. Therefore, the table rows having a given status will be deleted, and corresponding new rows without results will be created. 
 
-### Execution of an Experiment 
-To execute the experiment `experimenter.execute(own_function)` needs to be called. It will only run experiments from the database table with the status `created`. This ensures that each experiment is executed only once. After an experiment is started, the status of this experiment is set to `running` and the experiment is started as a new thread. If the experiment is finished without any errors, the status will be set to `done`. However, if errors occur during execution, the status changes to `error`, and the respective error message is written to the database. In both cases, after the termination of one experiment, the next one is executed.
 ```python
-# run all experiments (parameter combinations from the database)
-experimenter.execute(own_function)
+experimenter.reset_experiments(status='error')
 ```
-When experiments have been executed, the user can check the database to see if any errors occurred during execution. If this is the case, he can fix the error, delete the experiments where the error occurred from the database and run the `PyExperimenter` again. The deleted experiments will then be automatically recreated and executed. All already successfully executed experiments are not affected by this.
 
-#### Execute Specific Number of Experiments / Execute in Random Order
-You can specify a specific number of experiments to execute as well as if the experiments should
-be executed in random order. 
+Each database table contains a `status` column, summarizing the current state of an experiment. The following exist: 
+- `created`: All parameters for the experiment are defined and the experiment is ready for execution.
+- `running`: The experiment is currently in execution.
+- `done`: The execution of the experiment terminated without interruption and the results are written into the database
+- `error`: An error occurred during execution, which is also logged into the database.
+
+### Obtain Results
+The current content of the database table can be obtained as `pandas.Dataframe`. This can be used to generate a result table and export it to LaTeX.
+
 ```python
-experimenter.execute(own_function, max_experiments=10, random_order=True)
+result_table = experimenter.get_table()
+result_table = result_table.groupby(['dataset']).mean()[['seed']]
+print(result_table.to_latex(columns=['seed'], index_names=['dataset']))
 ```
-
-## Database Entries
-All experiments are written to the database, defined in the configuration file. In the following, we will see what such a database table generated by PyExperimenter could look like. The first columns are the keyfields followed by the resultfields, defined in the configuration file. These columns are followed by the `status` and the `machine`, the former indicating the status of the experiment and the latter the id of the machine on which the experiment was run. Note that with the configuration `cpu.max = 1`, the experiments are run on only one machine, so the machine id is identical for each experiment. The status values for the `status` column are as follows:
-- `created`: All parameters for the experiment instance are defined, and the instance is ready for execution.
-- `running`: The instance of the experiment is currently in execution.
-- `done`: The execution of the experiment instance is finished, and the results are written in the database without any errors.
-- `error`: An error occurred during execution.
-
-This is followed by the `creation_date`, `start_date` and `end_date` columns, which contain the creation, start and end times. The last column contains the error message of the exercise. If no error occurred, this column contains the entry `NULL`.
-
-### Get Database Entries to Python Code
-The PyExperimenter also enables you to get a pandas.DataFrame from the given data
-```python
-results_table = experimenter.get_results_table()
-```
-which can be used for further evaluation of the experiment results. For this further evaluation, we recommend the use of the function
-```python
-results_table.to_latex()
-```
-with the various keyword arguments descirbed in <a href = "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_latex.html"> the documentation </a>.
-
-Note that the column types of the resulting dataframe are dependent on the types in the sql-table (and therefore on the types in the [configuration file](#configuration-file)).
-
-## Examples
-In the `examples` folder, you can find examples for most of the functionality explained here. Note that to execute mysql examples you need to adapt the [configuration file](#configuration-file).
