@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 #this_directory = Path(__file__).parent
 #long_description = (this_directory / "PYPIREADME.md").read_text()
 
-VERSION = '0.0.4'
+VERSION = '1.0.0'
 
 setup(
     name="py_experimenter",
