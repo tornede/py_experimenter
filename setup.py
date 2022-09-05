@@ -11,7 +11,7 @@ setup(
     name="py_experimenter",
     version=VERSION,
     author="Tanja Tornede, Alexander Tornede, Lukas Fehring, Lukas Gehring, Helena Graf, Jonas Hanselle, Marcel Wever, Felix Mohr",
-    author_email="tanja.tornede@upb.de",
+    author_email="tanja.tornede@upb.de, alexander.tornede@upb.de, fehring2@mail.uni-paderborn.de, helena.graf@upb.de, jonas.hanselle@upb.de, marcel.wever@ifi.lmu.de, felix.mohr@unisabana.edu.co",    
     description="""
         The PyExperimenter is a tool for the automatic execution of experiments, e.g. for machine learning (ML), capturing corresponding results in a unified manner in a database.
     """,
