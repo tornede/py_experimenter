@@ -1,0 +1,55 @@
+{
+	"autoDocstring.docstringFormat": "sphinx",
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": true,
+	},
+	"editor.formatOnSave": true,
+	"python.formatting.autopep8Args": [
+		"--max-line-length=150"
+	],
+	"python.linting.enabled": false,
+	"python.linting.pylintEnabled": false,
+	"python.linting.pylintUseMinimalCheckers": false,
+	"python.sortImports.args": [
+		"--src=${workspaceFolder}",
+		"--line-length=150",
+	],
+	"python.testing.nosetestsEnabled": false,
+	"python.testing.pytestArgs": [
+		"test"
+	],
+	"python.testing.pytestEnabled": true,
+	"python.testing.unittestEnabled": false,
+	"restructuredtext.languageServer.disabled": true,
+	"restructuredtext.preview.docutil.disabled": true,
+	"restructuredtext.preview.scrollEditorWithPreview": false,
+	"cSpell.words": [
+		"cpus",
+		"dbconnector",
+		"gethostname",
+		"iterrows",
+		"keyfield",
+		"keyfields",
+		"meshgrid",
+		"resultfields",
+		"Tanja",
+		"timestep",
+		"Tornede"
+	],
+	"terminal.integrated.env.linux": {
+		"PYTHONPATH": "${workspaceFolder}"
+	},
+	"jupyter.notebookFileRoot": "${workspaceFolder}",
+	"restructuredtext.confPath": "${workspaceFolder}\\docs",
+	"python.pythonPath": "~/anaconda3/envs/py-experimenter",
+	"python.linting.banditEnabled": false,
+	"python.linting.flake8Enabled": false,
+	"python.linting.mypyEnabled": false,
+	"python.linting.pycodestyleEnabled": false,
+	"python.formatting.provider": "autopep8",
+	"files.watcherExclude": {
+		"**/.git/objects/**": true,
+		"**/.git/subtree-cache/**": true,
+		"**/node_modules/*/**": true
+	}
+}
