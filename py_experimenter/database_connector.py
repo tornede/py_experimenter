@@ -143,10 +143,7 @@ class DatabaseConnector(abc.ABC):
         if len(combinations) == 0:
             raise EmptyFillDatabaseCallError("No combinations to execute found.")
 
-        column_names = np.array2string(np.array(keyfield_names), separator=',') \
-            .replace('[', '') \
-            .replace(']', '') \
-            .replace("'", "")
+        column_names = ','.join(combinations[0].keys())
 
         existing_rows = self._get_existing_rows(column_names)
 
