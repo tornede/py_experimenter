@@ -29,27 +29,24 @@ affiliations:
    index: 2
  - name: Universidad de La Sabana, Chia, Cundinamarca, Colombia
    index: 3
-date: 16 August 2022
+date: 13 Oktober 2022
 bibliography: paper.bib
 
 ---
 
 # Summary
 
-The `PyExperimenter` is a tool for the automatic execution of, e.g. machine learning (ML) experiments and capturing corresponding results in a unified manner in a database. It supports both sqlite or mysql backends. The experiments to conduct can be defined via a configuration file or in custom way through code. Based on that, a table with initial properties, e.g. different seeds for an ML algorithm, is filled. During execution, a custom defined function requested to compute the results for a single row of the table. Those results, e.g. performances, can be added to the table at the end of the execution. Errors occurring during the execution are logged in the database. Afterwards, experiment evaluation tables can be easily extracted, e.g. averaging over different seeds. 
+The `PyExperimenter` is a tool for the automatic execution of experiments, e.g. for machine learning (ML), capturing corresponding results in a unified manner in a database. It is designed based on the assumption that an experiment is uniquely defined by certain inputs, i.e., experiment parameters, and a function computing the results of the experiment based on these input parameters. The set of experiments to be executed can be defined through a configuration file listing the domains of each experiment parameter, or manually through code. Based on the set of experiments defined by the user, `PyExperimenter` creates a table in the database featuring all experiments identified by their input parameter values and additional information such as the execution status. Once this table has been created, `PyExperimenter` can be run on any machine, including a distributed cluster. Each `PyExperimenter` instance automatically pulls open experiments from the database, executes the experiment function provided by the user with the corresponding experiment parameters defining the experiment and writes back the results computed by the function. Possible errors arising during the execution are logged in the database. After all experiments are done, the experiment evaluation table can be easily extracted, e.g. averaging over different seeds. A general schema of the usage of the `PyExperimenter` can be found in Figure 1. 
 
-`PyExperimenter` is designed to be parallelized. The level of parallelization is defined by the overall number of available threads divided by the parallelization of the custom function. In case of no parallelization of the custom function, the number of available threads decided the maximal possible parallelization.
+![General usage schema of `PyExperimenter`](usage.png){ width=80% }
 
 
 # Statement of Need
 
 `PyExperimenter` is a Python package supporting easy execution of multiple experiments differing only in their parametrizations. `PyExperimenter` was designed to be used by machine learning researchers and according students, but is not limited to those. The general structure of the project allows using `PyExperimenter` also for other types of experiments, as long as the execution requires the same code parameterized in a different way.  
 
-Compared to other solutions [@mlflow; @wandb], `PyExperimenter` is very lightweight and has only a handful of dependencies. Furthermore it is designed to support simple but effective configurations. 
+Compared to other solutions [@mlflow; @wandb], `PyExperimenter` is very lightweight and has only a handful of dependencies. Furthermore it is designed to support simple but effective configurations.
 
-
-# Example Usage
-ToDo
 
 # Acknowledgements
 
