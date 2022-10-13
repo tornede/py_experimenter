@@ -47,6 +47,26 @@ The `PyExperimenter` is a tool for the automatic execution of experiments, e.g. 
 
 Compared to other solutions [@mlflow; @wandb], `PyExperimenter` is very lightweight and has only a handful of dependencies. Furthermore it is designed to support simple but effective configurations.
 
+## Statement of Need? 
+
+In comparison to existing experiment-tracking tools, the core features of PyEperimenter are
+
+- full control over the results database
+- customizable creation of experiments based on parameters
+- experiment runners pulling experiments from the database
+
+Allowing users to have full control over the database in which the results are stored lets them modify the results storage to their specific use-case, which might not fit into the standard stencil of results storage and retrieval of other tools, which are often optimized regarding ease-of-use with incremental, e.g. neural models at the cost of flexibility. At the same time, desired results tables and fields are created by the tool, which, together with the experiment creation and retrieval methods, offers an advantage over a completely manual database administration. [NO NEED TO LEARN QUERY LANGUAGE; JUST USE DB]
+
+[WHICH TOOLS ALLOW FULL CONTROL OF DB]
+[THESE OTHER TOOLS DO NOT OFFER THE FOLLOWING INVERTED CONCEPT OF EXPERIMENT CREATION]
+
+[INVERTED FLOW]
+
+In some capacity, there are tools like [WANDB] which offer this inverted setup, although in a limited way. With [WANDB], sweeps that evaluate a number of different configurations as specified by [SPECIFICATION] can be carried out. However, there are only two search methods: grid search and bayesian optimization, and the number of agents carrying out evaluations for the sweep is also limited to 20 as of now.
+
+[OTHER TOOLS ALLOWING INVERTED FLOWS?]
+
+[LIGHT-WEIGHTEDNESS OF PYEXPERIMENTER]
 
 # Acknowledgements
 
