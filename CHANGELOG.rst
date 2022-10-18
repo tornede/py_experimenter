@@ -1,9 +1,12 @@
-# Changelog
+=========
+Changelog
+=========
 
+v1.0.0 (04/09/2022)
+===================
 
-## v1.0.0 (04/09/2022)
-
-### Feature
+Feature
+-------
 
 - Restructured the experiment configuration file.
     - Added shortcut for a longer list of integers as keyfields.
@@ -17,47 +20,53 @@
 - Improved error handling.
 - Updated and extended the README file according to all changes. 
 
-### Examples
+Examples
+--------
 
 - Added a Jupyter notebook explaining the general usage of the `PyExperimenter`. 
 - Added a Jupyter notebook explaining how to fill the database table with a conditional experiment grid. 
 
-### Fix
+Fix
+---
 
 - Added checked when resetting a table, that only missing rows are added and no duplicated rows are created.
 - Fixed writing of string containing quotation marks to the database table.
 
-### Tests
-
+Tests
+-----
 - Added tests for all key components of `PyExperimenter`.
 
 
-## v0.0.6 (01/03/2022)
+v0.0.6 (01/03/2022)
+===================
 
 - No summary available.
 
 
-## v0.0.5 (17/01/2022)
+v0.0.5 (17/01/2022)
+===================
 
 - No summary available.
 
 
-## v0.0.4 (02/11/2021)
+v0.0.4 (02/11/2021)
+===================
 
 - No summary available.
 
 
-## v0.0.3 (20/10/2021)
-
+v0.0.3 (20/10/2021)
+===================
 - No summary available.
 
 
-## v0.0.2 (20/10/2021)
-
+v0.0.2 (20/10/2021)
+===================
 - No summary available.
 
 
-## v0.0.1 (14/10/2021)
+v0.0.1 (14/10/2021)
+===================
 
 - First release of `PyExperimenter`
 - No summary available.

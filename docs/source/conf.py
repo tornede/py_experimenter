@@ -14,9 +14,9 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+from recommonmark.parser import CommonMarkParser
 
 # -- Project information -----------------------------------------------------
-
 project = 'PyExperimenter'
 copyright = '2022, Tanja Tornede, Alexander Tornede, Lukas Gehring, Lukas Fehring, Helena Graf, Jonas Hanselle, Marcel Wever, Felix Mohr'
 author = 'Tanja Tornede, Alexander Tornede, Lukas Gehring, Lukas Fehring, Helena Graf, Jonas Hanselle, Marcel Wever, Felix Mohr'
@@ -31,7 +31,10 @@ release = '1.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc'
+    'sphinx.ext.autodoc',
+    'recommonmark',
+    'nbsphinx',
+    'sphinx_gallery.load_style'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -46,6 +49,7 @@ exclude_patterns = [
     '.DS_Store'
 ]
 
+source_suffix = ['.rst', '.md']
 
 # -- Options for HTML output -------------------------------------------------
 
