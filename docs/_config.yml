@@ -4,4 +4,4 @@ plugins:
 
 title: PyExperimenter
 description: Automatic execution of experiments, capturing corresponding results in a unified manner in a database.
-logo: py-experimenter.logo.png
+logo: py-experimenter-logo.png
