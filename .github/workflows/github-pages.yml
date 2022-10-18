@@ -14,8 +14,21 @@ jobs:
         python-version: 3.8
     - name: Install Python modules
       run: pip install recommonmark nbsphinx sphinx_gallery pandoc
-    - name: Install Pandoc
-      run: brew install pandoc
+    - name: Setup pandoc
+      # You may pin to the exact commit or the version.
+      # uses: nikeee/setup-pandoc@65d1fee002ea71e0d2a1c39bfa392c4e7ceba563
+      uses: nikeee/setup-pandoc@v1
+      with:
+        # Exact version of pandoc to use. 
+        # You can find available versions here: https://github.com/jgm/pandoc/releases
+
+        pandoc-version: latest # optional, default is latest
+        # This option defaults to the workflow scoped GitHub Token.
+        # It is used to not hit the rate limit while determining the 'latest' version of pandoc.
+        # If you need to specify a different token to be used, you can use this option.
+        # We expect that normal users typically don't have to do that.
+
+        token: ${{ github.token }} # optional, default is ${{ github.token }}
     - name: Install ReadTheDocs Theme
       run: pip install sphinx-rtd-theme
     - uses: actions/checkout@master
