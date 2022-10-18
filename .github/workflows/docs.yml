@@ -13,9 +13,7 @@ jobs:
       with:
         python-version: 3.8
     - name: Install ReadTheDocs Theme
-      run: |
-        pip install sphinx-rtd-theme
-    - uses: actions/setup-python@v2
+      run: pip install sphinx-rtd-theme
     - uses: actions/checkout@master
       with:
         fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
