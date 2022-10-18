@@ -7,6 +7,7 @@
   <title>Welcome to PyExperimenter’s documentation! &mdash; PyExperimenter 1.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/sg_gallery.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -17,10 +18,11 @@
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation" href="usage/installation.html" /> 
+    <link rel="next" title="General Workflow" href="sites/workflow.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,9 +40,19 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sites/workflow.html">General Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sites/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sites/usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sites/examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sites/how-to-contribute.html">How to contribute</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About PyExperimenter</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sites/authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sites/licence.html">Licence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sites/changelog.html">Changelog</a></li>
 </ul>
 
         </div>
@@ -67,14 +79,73 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <a class="reference internal image-reference" href="_images/py-experimenter-logo.png"><img alt="PyExperimenter" class="align-right" src="_images/py-experimenter-logo.png" style="width: 200px;" /></a>
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<a class="reference internal image-reference" href="_images/py-experimenter-logo.png"><img alt="PyExperimenter" class="align-right" src="_images/py-experimenter-logo.png" style="width: 200px;" /></a>
 <section id="welcome-to-pyexperimenter-s-documentation">
 <h1>Welcome to PyExperimenter’s documentation!<a class="headerlink" href="#welcome-to-pyexperimenter-s-documentation" title="Permalink to this heading"></a></h1>
 <p>The <cite>PyExperimenter</cite> is a tool for the automatic execution of experiments, e.g. for machine learning (ML), capturing corresponding results in a unified manner in a database. It is designed based on the assumption that an experiment is uniquely defined by certain inputs, i.e., experiment parameters, and a function computing the results of the experiment based on these input parameters. The set of experiments to be executed can be defined through a configuration file listing the domains of each experiment parameter, or manually through code. Based on the set of experiments defined by the user, <cite>PyExperimenter</cite> creates a table in the database featuring all experiments identified by their input parameter values and additional information such as the execution status. Once this table has been created, <cite>PyExperimenter</cite> can be run on any machine, including a distributed cluster. Each <cite>PyExperimenter</cite> instance automatically pulls open experiments from the database, executes the experiment function provided by the user with the corresponding experiment parameters defining the experiment and writes back the results computed by the function. Possible errors arising during the execution are logged in the database. After all experiments are done, the experiment evaluation table can be easily extracted, e.g. averaging over different seeds.</p>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sites/workflow.html">General Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sites/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sites/usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sites/usage.html#experiment-configuration-file">Experiment Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sites/usage.html#database-configuration-file">Database Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sites/usage.html#defining-the-experiment-function">Defining the Experiment Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sites/usage.html#executing-the-pyexperimenter">Executing the PyExperimenter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sites/examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sites/examples/example_general_usage.html">General Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sites/examples/example_conditional_grid.html">Conditional Parameter Grids</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sites/how-to-contribute.html">How to contribute</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">About PyExperimenter</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sites/authors.html">Authors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sites/authors.html#core-development-team">Core Development Team</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sites/authors.html#contributions">Contributions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sites/licence.html">Licence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sites/changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sites/changelog.html#v1-0-0-04-09-2022">v1.0.0 (04/09/2022)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sites/changelog.html#v0-0-6-01-03-2022">v0.0.6 (01/03/2022)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sites/changelog.html#v0-0-5-17-01-2022">v0.0.5 (17/01/2022)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sites/changelog.html#v0-0-4-02-11-2021">v0.0.4 (02/11/2021)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sites/changelog.html#v0-0-3-20-10-2021">v0.0.3 (20/10/2021)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sites/changelog.html#v0-0-2-20-10-2021">v0.0.2 (20/10/2021)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sites/changelog.html#v0-0-1-14-10-2021">v0.0.1 (14/10/2021)</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
@@ -95,7 +166,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="usage/installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sites/workflow.html" class="btn btn-neutral float-right" title="General Workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

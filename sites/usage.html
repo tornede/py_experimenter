@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; PyExperimenter 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="examples/index.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyExperimenter
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">General Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#experiment-configuration-file">Experiment Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database-configuration-file">Database Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#defining-the-experiment-function">Defining the Experiment Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#executing-the-pyexperimenter">Executing the PyExperimenter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-pyexperimenter">Creating a PyExperimenter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fill-database-table-based-on-the-configuration-file">Fill Database Table Based on the Configuration File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fill-table-with-specific-rows">Fill Table with Specific Rows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#execute-experiments">Execute Experiments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reset-experiments">Reset Experiments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#obtain-results">Obtain Results</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-contribute.html">How to contribute</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About PyExperimenter</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyExperimenter</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/sites/usage.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
+<section id="experiment-configuration-file">
+<h2>Experiment Configuration File<a class="headerlink" href="#experiment-configuration-file" title="Permalink to this heading"></a></h2>
+<p>The experiment configuration file is primarily used to define the database backend, as well as execution parameters, i.e. keyfields, and result fields.</p>
+<div class="highlight-conf notranslate"><div class="highlight"><pre><span></span>[PY_EXPERIMENTER]
+provider = sqlite 
+database = database_name
+table = table_name 
+
+keyfields = dataset, cross_validation_splits:int, seed:int, kernel
+dataset = iris
+cross_validation_splits = 5
+seed = 2:10:2 
+kernel = linear, poly, rbf, sigmoid
+
+cpu.max = 5 
+
+resultfields = pipeline:LONGTEXT, train_f1:DECIMAL, train_accuracy:DECIMAL, test_f1:DECIMAL, test_accuracy:DECIMAL
+resultfields.timestamps = false
+
+[CUSTOM] 
+path = sample_data
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">provider</span></code>: Either <code class="docutils literal notranslate"><span class="pre">sqlite</span></code> or <code class="docutils literal notranslate"><span class="pre">mysql</span></code>. In case of <code class="docutils literal notranslate"><span class="pre">mysql</span></code> an additional <a class="reference external" href="#database-configuration-file">database configuration file</a> has to be created.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">database</span></code>: The name of the database.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">table</span></code>: The name of the table to write the experiment information into.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keyfields</span></code>: The columns of the table that will define the execution of the experiments. Optionally, the field types can be attached. For each keyfield, an additional entry to the config file with the same name has to be added, which defines the domain of the keyfield.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resultfields</span></code>: The columns of the table that will store the results of the execution of the experiments. Optionally, the field types can be attached.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resultfields.timestamps</span></code>: Boolean defining if additional timestamp columns are needed for each resultfield.</p></li>
+</ul>
+<p>Both keyfields and resultfields can have further annotations for the data type. This is done by attaching <code class="docutils literal notranslate"><span class="pre">:&lt;TYPE&gt;</span></code> to the according fields. If no data type is explicitly specified, <code class="docutils literal notranslate"><span class="pre">VARCHAR(255)</span></code> is used.</p>
+<p>Keyfields of the experiment configuration, that do not have to be explicitly defined in the list of keyfields, are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cpu.max</span> <span class="pre">(int)</span></code>: The maximum number of CPUs allowed for each experiment execution.</p></li>
+</ul>
+<p>Additionally, the user can define which values the keyfields can take on. Usually this is done with a comma separated list of strings or numbers. In the example above, the key field <code class="docutils literal notranslate"><span class="pre">kernel</span></code> can be any of the four given values: <code class="docutils literal notranslate"><span class="pre">linear</span></code>, <code class="docutils literal notranslate"><span class="pre">poly</span></code>, <code class="docutils literal notranslate"><span class="pre">rbf</span></code>, or <code class="docutils literal notranslate"><span class="pre">sigmoid</span></code>. Note that strings are neither allowed to contain any quotation marks nor whitespace.</p>
+<p>As this manual definition can be a tedious task, especially for a list of integers, there is the option to define the start and the end of the list, together with the step size in the form: <code class="docutils literal notranslate"><span class="pre">start:end:stepsize</span></code>. In the example above, <code class="docutils literal notranslate"><span class="pre">seed</span></code> is meant to be <code class="docutils literal notranslate"><span class="pre">2,</span> <span class="pre">4,</span> <span class="pre">6,</span> <span class="pre">8,</span> <span class="pre">10</span></code>, but instead of the explicit list <code class="docutils literal notranslate"><span class="pre">2:10:2</span></code> is given.</p>
+<p>Optionally, custom configurations can be defined under the <code class="docutils literal notranslate"><span class="pre">CUSTOM</span></code> section, which will be ignored when creating or filling the database, but can provide fixed parameters for the actual execution of experiments. A common example is the path to some folder in which the data is located.</p>
+</section>
+<hr class="docutils" />
+<section id="database-configuration-file">
+<h2>Database Configuration File<a class="headerlink" href="#database-configuration-file" title="Permalink to this heading"></a></h2>
+<p>When working with <code class="docutils literal notranslate"><span class="pre">MySQL</span></code> as a database provider, an additional database configuration file is needed, containing the credentials for accessing the database:</p>
+<div class="highlight-conf notranslate"><div class="highlight"><pre><span></span>[CREDENTIALS]
+host = &lt;host&gt;
+user = &lt;user&gt;
+password = &lt;password&gt;
+</pre></div>
+</div>
+<p>By default, this file is located at <code class="docutils literal notranslate"><span class="pre">config/database_credentials.cfg</span></code>. If this is not the case, the according path has to be explicitly given when <a class="reference external" href="#executing-the-pyexperimenter">executing the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code></a>.</p>
+</section>
+<hr class="docutils" />
+<section id="defining-the-experiment-function">
+<h2>Defining the Experiment Function<a class="headerlink" href="#defining-the-experiment-function" title="Permalink to this heading"></a></h2>
+<p>The execution of a single experiment has to be defined within a function. The function is called with the <code class="docutils literal notranslate"><span class="pre">keyfields</span></code> of a database entry. The results are meant to be processed to be written into the database, i.e. as <code class="docutils literal notranslate"><span class="pre">resultfields</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">py_experimenter.result_processor</span> <span class="kn">import</span> <span class="n">ResultProcessor</span>
+
+<span class="k">def</span> <span class="nf">run_experiment</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="c1"># Extracting given parameters</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="n">keyfields</span><span class="p">[</span><span class="s1">&#39;seed&#39;</span><span class="p">]</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">custom_fields</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">],</span> <span class="n">keyfields</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">])</span>
+
+    <span class="c1"># Do some stuff here</span>
+
+    <span class="c1"># Write intermediate results to database    </span>
+    <span class="n">resultfields</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;pipeline&#39;</span><span class="p">:</span> <span class="n">pipeline</span><span class="p">,</span> 
+        <span class="s1">&#39;train_f1&#39;</span><span class="p">:</span> <span class="n">train_f1_micro</span><span class="p">,</span>
+        <span class="s1">&#39;train_accuracy&#39;</span><span class="p">:</span> <span class="n">train_accuracy</span><span class="p">}</span>
+    <span class="n">result_processor</span><span class="o">.</span><span class="n">process_results</span><span class="p">(</span><span class="n">resultfields</span><span class="p">)</span>
+
+    <span class="c1"># Do more some stuff here</span>
+
+    <span class="c1"># Write final results to database</span>
+    <span class="n">resultfields</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;test_f1&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;test_f1_micro&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;test_accuracy&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;test_accuracy&#39;</span><span class="p">])}</span>
+    <span class="n">result_processor</span><span class="o">.</span><span class="n">process_results</span><span class="p">(</span><span class="n">resultfields</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="executing-the-pyexperimenter">
+<h2>Executing the PyExperimenter<a class="headerlink" href="#executing-the-pyexperimenter" title="Permalink to this heading"></a></h2>
+<p>The actual execution of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> only needs a few lines of code. Please make sure that you have created the <a class="reference external" href="#experiment-configuration-file">experiment configuration file</a>. Below the core functionality is elaborated on.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">py_experimenter.experimenter</span> <span class="kn">import</span> <span class="n">PyExperimenter</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">()</span>
+<span class="n">experimenter</span><span class="o">.</span><span class="n">fill_table_from_config</span><span class="p">()</span>
+<span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">run_experiment</span><span class="p">,</span> <span class="n">max_experiments</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="creating-a-pyexperimenter">
+<h3>Creating a PyExperimenter<a class="headerlink" href="#creating-a-pyexperimenter" title="Permalink to this heading"></a></h3>
+<p>A <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> can be created without any further information, assuming the <a class="reference external" href="#experiment-configuration-file">experiment configuration file</a> can be accessed at its default location.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Additionally, further information can be given to the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config_file</span></code>: The path of the <a class="reference external" href="#experiment-configuration-file">experiment configuration file</a>. Default: <code class="docutils literal notranslate"><span class="pre">config/configuration.cfg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">credential_path</span></code>: The path of the <a class="reference external" href="#database-configuration-file">database credentials file</a>. Default: <code class="docutils literal notranslate"><span class="pre">config/database_credentials.cfg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">database_name</span></code>: The name of the database to manage the experiments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">table_name</span></code>: The name of the database table to manage the experiments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The name of the experimenter, which will be added to the database table of each executed experiment by this <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>. If using parallel HPC, this is meant to be used for the job ID, so that the according log file can easily be found.</p></li>
+</ul>
+</section>
+<section id="fill-database-table-based-on-the-configuration-file">
+<h3>Fill Database Table Based on the Configuration File<a class="headerlink" href="#fill-database-table-based-on-the-configuration-file" title="Permalink to this heading"></a></h3>
+<p>The database table can be filled with the cartesian product of the keyfields defined in the <a class="reference external" href="#experiment-configuration-file">experiment configuration file</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">fill_table_from_config</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="fill-table-with-specific-rows">
+<h3>Fill Table with Specific Rows<a class="headerlink" href="#fill-table-with-specific-rows" title="Permalink to this heading"></a></h3>
+<p>Alternatively, or additionally, specific rows can be added to the table. Note that <code class="docutils literal notranslate"><span class="pre">rows</span></code> is a list of dicts, where each dict has to contain a value for each keyfield. A more complex example example featuring a conditional experiment grid using this approach can be found in the <a class="reference external" href="examples">examples section</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">fill_table_with_rows</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;dataset&#39;</span><span class="p">:</span> <span class="s1">&#39;new_data&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;cross_validation_splits&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> 
+        <span class="s1">&#39;seed&#39;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> 
+        <span class="s1">&#39;kernel&#39;</span><span class="p">:</span> <span class="s1">&#39;poly&#39;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;dataset&#39;</span><span class="p">:</span> <span class="s1">&#39;new_data_2&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;cross_validation_splits&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> 
+        <span class="s1">&#39;seed&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> 
+        <span class="s1">&#39;kernel&#39;</span><span class="p">:</span> <span class="s1">&#39;poly&#39;</span>
+    <span class="p">}</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="execute-experiments">
+<h3>Execute Experiments<a class="headerlink" href="#execute-experiments" title="Permalink to this heading"></a></h3>
+<p>An experiment can be executed given:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">run_experiment</span></code> is the <a class="reference external" href="#defining-the-experiment-function">experiment funtion</a> described above.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_experiments</span></code> determines how many experiments will be executed by this <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>. If set to <code class="docutils literal notranslate"><span class="pre">-1</span></code>, it will execute experiments in a sequential fashion until no more open experiments are available.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">random_order</span></code> determines if the order in which experiments are selected for execution should be random. This is especially important to be turned on, if the execution is parallelized, e.g. on an HPC cluster.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">run_experiment</span><span class="p">,</span> <span class="n">max_experiments</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="reset-experiments">
+<h3>Reset Experiments<a class="headerlink" href="#reset-experiments" title="Permalink to this heading"></a></h3>
+<p>Experiments can be reset based on their status. Therefore, the table rows having a given status will be deleted, and corresponding new rows without results will be created.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">reset_experiments</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each database table contains a <code class="docutils literal notranslate"><span class="pre">status</span></code> column, summarizing the current state of an experiment. The following exist:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">created</span></code>: All parameters for the experiment are defined and the experiment is ready for execution.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">running</span></code>: The experiment is currently in execution.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">done</span></code>: The execution of the experiment terminated without interruption and the results are written into the database</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">error</span></code>: An error occurred during execution, which is also logged into the database.</p></li>
+</ul>
+</section>
+<section id="obtain-results">
+<h3>Obtain Results<a class="headerlink" href="#obtain-results" title="Permalink to this heading"></a></h3>
+<p>The current content of the database table can be obtained as <code class="docutils literal notranslate"><span class="pre">pandas.Dataframe</span></code>. This can be used to generate a result table and export it to LaTeX.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result_table</span> <span class="o">=</span> <span class="n">experimenter</span><span class="o">.</span><span class="n">get_table</span><span class="p">()</span>
+<span class="n">result_table</span> <span class="o">=</span> <span class="n">result_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;dataset&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()[[</span><span class="s1">&#39;seed&#39;</span><span class="p">]]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result_table</span><span class="o">.</span><span class="n">to_latex</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;seed&#39;</span><span class="p">],</span> <span class="n">index_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples/index.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Tanja Tornede, Alexander Tornede, Lukas Gehring, Lukas Fehring, Helena Graf, Jonas Hanselle, Marcel Wever, Felix Mohr.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
