@@ -13,7 +13,7 @@ jobs:
       with:
         python-version: 3.8
     - name: Install Markdown parser
-      run: pip install recommonmark, nbsphinx, sphinx_gallery, pandoc
+      run: pip install recommonmark nbsphinx sphinx_gallery pandoc
     - name: Install ReadTheDocs Theme
       run: pip install sphinx-rtd-theme
     - uses: actions/checkout@master
