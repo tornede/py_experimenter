@@ -22,6 +22,7 @@ The `PyExperimenter` is a tool for the automatic execution of experiments, e.g. 
    sites/usage
    sites/examples/index
    sites/how-to-contribute
+   sites/help
 
 
 .. toctree::
