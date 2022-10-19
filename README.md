@@ -7,7 +7,7 @@ The `PyExperimenter` is a tool for the automatic execution of experiments, e.g. 
 For more details check out the [`PyExperimenter` documentation](https://tornede.github.io/py_experimenter/):
 
 - [Installation](https://tornede.github.io/py_experimenter/installation.html)
-- [Quick start](https://tornede.github.io/py_experimenter/examples/example_general_usage.html)
+- [Example](https://tornede.github.io/py_experimenter/examples/example_general_usage.html)
 - [License](https://tornede.github.io/py_experimenter/license.html)
 
 ![General schema of `PyExperimenter`.](docs/source/_static/workflow.png)
