@@ -8,6 +8,7 @@
    :alt: PyExperimenter
    :align: right
 
+
 Welcome to PyExperimenter's documentation!
 ==========================================
 
@@ -21,9 +22,9 @@ The `PyExperimenter` is a tool for the automatic execution of experiments, e.g. 
    installation
    usage
    examples/index
+   autoapi/index
    how-to-contribute
    help
-
 
 .. toctree::
    :maxdepth: 2
@@ -32,6 +33,7 @@ The `PyExperimenter` is a tool for the automatic execution of experiments, e.g. 
    authors
    licence
    changelog
+   Repository <https://github.com/tornede/py_experimenter/>
 
 
 Indices and tables

@@ -32,6 +32,7 @@ release = '1.0'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'autoapi.extension',
     'recommonmark',
     'nbsphinx',
     'sphinx_gallery.load_style'
@@ -64,3 +65,6 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = [
     '_static'
 ]
+
+# -- Options for API ---------------------------------------------------------
+autoapi_dirs = ['../../py_experimenter']
