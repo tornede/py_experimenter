@@ -64,15 +64,17 @@ The contribution workflow for the `PyExperimenter` is based on the fork-and-bran
         git switch develop
         git checkout -b <feature_branch_name>
 
-5. Install requirements: Make sure to install all requirements.
+5. Install the development environment using `poetry <poetry_>`_
 
-   .. literalinclude:: ../../requirements.txt
-   
-   Preferably into a newly created `anaconda environment <anaconda_>`_. 
+    .. code-block::
 
-   .. code-block:: 
+          poetry install
 
-        conda create --name py_experimenter python=3.8
+   or using an editable install using pip.
+
+    .. code-block::
+
+          pip install -e .
 
 
 6. Check tests: Before working on any changes, please make sure that all unit tests are working correctly. Therefore, navigate into the git project folder and execute all unit tests.
@@ -143,3 +145,4 @@ Afterwards, go to the `PyExperimenter GitHub Pull Requests <github_py_experiment
 .. _github_py_experimenter_issues: https://github.com/tornede/py_experimenter/issues
 .. _github_py_experimenter_pulls: https://github.com/tornede/py_experimenter/pulls
 .. _create_database_credential_file: https://tornede.github.io/py_experimenter/usage.html#database-credential-file
+.. _poetry: https://python-poetry.org/
