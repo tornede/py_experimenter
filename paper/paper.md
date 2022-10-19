@@ -30,7 +30,7 @@ authors:
 affiliations:
  - name: Department of Computer Science, Paderborn University, Germany
    index: 1
- - name: Institut of Informatics, University of Munich, Germany
+ - name: MCML, Institut for Informatics, LMU Munich, Germany
    index: 2
  - name: Universidad de La Sabana, Chia, Cundinamarca, Colombia
    index: 3
