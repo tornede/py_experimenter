@@ -10,4 +10,4 @@ The following steps are necessary to execute the `PyExperimenter`:
 
 ![General schema of `PyExperimenter`.][workflow]
 
-[workflow]: ../_static/workflow.png
+[workflow]: _static/workflow.png

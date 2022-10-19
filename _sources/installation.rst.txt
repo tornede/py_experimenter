@@ -10,4 +10,4 @@ The `PyExperimenter` module can be easily installed via PyPI:
 
 Thereby, the following requirements are automatically installed:
 
-.. literalinclude:: ../../../requirements.txt
+.. literalinclude:: ../../requirements.txt

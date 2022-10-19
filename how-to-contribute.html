@@ -5,23 +5,23 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>How to Contribute &mdash; PyExperimenter 1.0 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/sg_gallery.css" type="text/css" />
   <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
+    <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Need Help?" href="help.html" />
     <link rel="prev" title="Conditional Parameter Grids" href="examples/example_conditional_grid.html" /> 
 </head>
@@ -31,10 +31,10 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> PyExperimenter
+            <a href="index.html" class="icon icon-home"> PyExperimenter
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -48,7 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to Contribute</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#create-issue">Create Issue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-an-issue">Creating an Issue</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#fork-project">Fork Project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#extend-unit-tests">Extend Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#update-documentation">Update Documentation</a></li>
@@ -70,17 +70,17 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">PyExperimenter</a>
+          <a href="index.html">PyExperimenter</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
       <li>How to Contribute</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/sites/how-to-contribute.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/how-to-contribute.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -114,10 +114,10 @@
 </style>
 <section id="how-to-contribute">
 <span id="contribute"></span><h1>How to Contribute<a class="headerlink" href="#how-to-contribute" title="Permalink to this heading"></a></h1>
-<p>We would apreciate seeing you contributing to the <cite>PyExperimenter</cite>. If you have any new idea or have found a bug, please first make sure to check the existing <a class="reference external" href="https://github.com/tornede/py_experimenter/issues">GitHub Issues</a>. In case someone else have had a similar idea or has found the same bug, you could give further feedback on how to improve. Otherwise, please <a class="reference internal" href="#contribute-create-issue"><span class="std std-ref">create an according issue</span></a>. You are planning to work on this issue yourself, or you have found another issue you would like to work on? Great! Directly create a comment stating what exactly you are planning to do and <a class="reference internal" href="#contribute-fork-project"><span class="std std-ref">fork the project</span></a>.</p>
-<p>At the end, please make sure that you also <a class="reference internal" href="#contribute-unit-tests"><span class="std std-ref">extended the unit tests</span></a> and that all unit tests are working correctly. Additionally, please <a class="reference internal" href="#contribute-update-documentation"><span class="std std-ref">update the documentation</span></a> according to your changes. Afterall, <a class="reference internal" href="#contribute-pull-request"><span class="std std-ref">create a pull request</span></a> and mention the issue on which the changes are based, which contain important information for the review.</p>
-<section id="create-issue">
-<span id="contribute-create-issue"></span><h2>Create Issue<a class="headerlink" href="#create-issue" title="Permalink to this heading"></a></h2>
+<p>We would appreciate seeing you contributing to the <cite>PyExperimenter</cite>. If you have any new idea or have found a bug, please first make sure to check the existing <a class="reference external" href="https://github.com/tornede/py_experimenter/issues">GitHub Issues</a>. In case someone else have had a similar idea or has found the same bug, you could give further feedback on how to improve. Otherwise, please <a class="reference internal" href="#contribute-create-issue"><span class="std std-ref">create an according issue</span></a>. You are planning to work on this issue yourself, or you have found another issue you would like to work on? Great! Directly create a comment stating what exactly you are planning to do and <a class="reference internal" href="#contribute-fork-project"><span class="std std-ref">fork the project</span></a>.</p>
+<p>At the end, please make sure that you also <a class="reference internal" href="#contribute-unit-tests"><span class="std std-ref">extended the unit tests</span></a> and that all unit tests are working correctly. Additionally, please <a class="reference internal" href="#contribute-update-documentation"><span class="std std-ref">update the documentation</span></a> according to your changes. At the very end, <a class="reference internal" href="#contribute-pull-request"><span class="std std-ref">create a pull request</span></a> and mention the issue on which the changes are based, which contains important information for the review.</p>
+<section id="creating-an-issue">
+<span id="contribute-create-issue"></span><h2>Creating an Issue<a class="headerlink" href="#creating-an-issue" title="Permalink to this heading"></a></h2>
 <p>A GitHub issue should contain any information that is needed that a third person understands the problem (in case of a bug) or the vision of a new feature. To create an issue</p>
 <ol class="arabic simple">
 <li><p>Go to the <a class="reference external" href="https://github.com/tornede/py_experimenter/issues">GitHub Issues</a>.</p></li>
@@ -125,9 +125,9 @@
 <li><p>Give all neccessary information about the issue, depending on if it is a bug or an improvement.</p></li>
 </ol>
 <dl class="simple">
-<dt>Bug Report</dt><dd><p>Give a step-by-step description of what you have done and where the bug occures, so that it is reproducable. Please also provide the code that produced the bug. Additionally, give some assumption what you think the problem is. And add the <code class="docutils literal notranslate"><span class="pre">bug</span></code> label to your issue.</p>
+<dt>Bug Report</dt><dd><p>Give a step-by-step description of what you have done and where the bug occurs, so that it is reproducible. Please also provide the code that produced the bug. Additionally, give some assumption what you think the problem is. And add the <code class="docutils literal notranslate"><span class="pre">bug</span></code> label to your issue.</p>
 </dd>
-<dt>Improvement</dt><dd><p>Describe detailed the vision of the improvement, how it should be used and how it should work. Please also provide a code example of the usability of the new method / feature. And add the <code class="docutils literal notranslate"><span class="pre">enhancement</span></code> label to your issue.</p>
+<dt>Improvement</dt><dd><p>In detail describe the vision of the improvement, how it should be used and how it should work. Please also provide a code example of the usability of the new method / feature. And add the <code class="docutils literal notranslate"><span class="pre">enhancement</span></code> label to your issue.</p>
 </dd>
 <dt>Help</dt><dd><p>Describe the problem you are facing and provice a code example (is suitable). And add the <code class="docutils literal notranslate"><span class="pre">help</span> <span class="pre">wanted</span></code> label to your issue.</p>
 </dd>
@@ -137,8 +137,8 @@
 <span id="contribute-fork-project"></span><h2>Fork Project<a class="headerlink" href="#fork-project" title="Permalink to this heading"></a></h2>
 <p>The contribution workflow for the <cite>PyExperimenter</cite> is based on the fork-and-branch git workflow as described in this <a class="reference external" href="https://blog.scottlowe.org/2015/01/27/using-fork-branch-git-workflow/">blog post</a>. The general steps are as follows:</p>
 <ol class="arabic">
-<li><p>Fork the GitHub Repository: Log in to GitHub, go to the <a class="reference external" href="https://github.com/tornede/py_experimenter/">PyExperimenter GitHub repository</a> and click on <code class="docutils literal notranslate"><span class="pre">Fork</span></code> button in the top right corner.</p></li>
-<li><p>Clone your GitHub Repository Fork: On your local machine, go into the folder where you want to clone the repository and clone your fork using the following command, but please ensure to replace <code class="docutils literal notranslate"><span class="pre">&lt;username&gt;</span></code>.</p>
+<li><p>Fork the GitHub repository: Log in to GitHub, go to the <a class="reference external" href="https://github.com/tornede/py_experimenter/">PyExperimenter GitHub repository</a> and click on <code class="docutils literal notranslate"><span class="pre">Fork</span></code> button in the top right corner.</p></li>
+<li><p>Clone your GitHub repository Fork: On your local machine, go into the folder where you want to clone the repository and clone your fork using the following command, but please ensure to replace <code class="docutils literal notranslate"><span class="pre">&lt;username&gt;</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/&lt;</span><span class="n">username</span><span class="o">&gt;/</span><span class="n">py_experimenter</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
@@ -168,7 +168,7 @@
 </pre></div>
 </div>
 </li>
-<li><p>Check Tests: Before working on any changes, please make sure that all unit tests are working correctly. Therefore, navigate into the git project folder and execute all unit tests.</p>
+<li><p>Check tests: Before working on any changes, please make sure that all unit tests are working correctly. Therefore, navigate into the git project folder and execute all unit tests.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span>
 </pre></div>
 </div>
@@ -189,7 +189,7 @@
 </section>
 <section id="update-documentation">
 <span id="contribute-update-documentation"></span><h2>Update Documentation<a class="headerlink" href="#update-documentation" title="Permalink to this heading"></a></h2>
-<p>The documentation of the <cite>PyExperimenter</cite> is key to all users to understand the functionality and the usability. Therefore, the documentation should be updated according to the changes, which is located in the <code class="docutils literal notranslate"><span class="pre">docs</span></code> folder of the project. Please check that the documentation can be build by first generating it locally. Therefore, navigate into the git project folder and execute shinx. The builded website can be found in the project folder <code class="docutils literal notranslate"><span class="pre">output/documentation/</span></code>.</p>
+<p>The documentation of the <cite>PyExperimenter</cite> is key to all users to understand the functionality and the usability. Therefore, the documentation should be updated according to the changes. It is located in the <code class="docutils literal notranslate"><span class="pre">docs</span></code> folder of the project. Please check that the documentation can be built by first generating it locally. Therefore, navigate into the git project folder and execute shinx. The builded website can be found in the project folder <code class="docutils literal notranslate"><span class="pre">output/documentation/</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">html</span> <span class="n">docs</span><span class="o">/</span><span class="n">source</span><span class="o">/</span> <span class="n">output</span><span class="o">/</span><span class="n">documentation</span><span class="o">/</span>
 </pre></div>
 </div>
