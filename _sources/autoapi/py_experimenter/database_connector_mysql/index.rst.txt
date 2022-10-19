@@ -1,0 +1,66 @@
+:py:mod:`py_experimenter.database_connector_mysql`
+==================================================
+
+.. py:module:: py_experimenter.database_connector_mysql
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL
+
+
+
+
+.. py:class:: DatabaseConnectorMYSQL(config: configparser.ConfigParser, credential_path)
+
+   Bases: :py:obj:`py_experimenter.database_connector.DatabaseConnector`
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+   .. py:attribute:: _write_to_database_separator
+      :annotation: = ', '
+
+      
+
+   .. py:method:: _test_connection()
+
+
+   .. py:method:: _create_database_if_not_existing()
+
+
+   .. py:method:: _extract_credentials()
+
+
+   .. py:method:: connect(credentials=None)
+
+
+   .. py:method:: _table_exists(cursor)
+
+
+   .. py:method:: _create_table(cursor, columns)
+
+
+   .. py:method:: _get_tablename_for_query()
+
+
+   .. py:method:: _table_has_correct_structure(cursor, typed_fields)
+
+
+   .. py:method:: escape_sql_chars(*args)
+      :staticmethod:
+
+
+   .. py:method:: _get_existing_rows(column_names)
+
+
+   .. py:method:: get_structure_from_table(cursor)
+
+
+

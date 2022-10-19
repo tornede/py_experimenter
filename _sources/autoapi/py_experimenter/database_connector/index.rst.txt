@@ -1,0 +1,117 @@
+:py:mod:`py_experimenter.database_connector`
+============================================
+
+.. py:module:: py_experimenter.database_connector
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   py_experimenter.database_connector.DatabaseConnector
+
+
+
+
+.. py:class:: DatabaseConnector(_config)
+
+   Bases: :py:obj:`abc.ABC`
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+   .. py:method:: _extract_credentials()
+      :abstractmethod:
+
+
+   .. py:method:: _test_connection()
+      :abstractmethod:
+
+
+   .. py:method:: connect()
+      :abstractmethod:
+
+
+   .. py:method:: close_connection(connection)
+
+
+   .. py:method:: commit(connection) -> None
+
+
+   .. py:method:: execute(cursor, sql_statement)
+
+
+   .. py:method:: cursor(connection)
+
+
+   .. py:method:: fetchall(cursor)
+
+
+   .. py:method:: create_table_if_not_existing() -> None
+
+      Check if tables does exist. If not, a new table will be created.
+      :param mysql_connection: mysql_connector to the database
+      :param table_name: name of the table from the config
+      :param experiment_config: experiment section of the config file
+
+
+   .. py:method:: _exclude_fixed_columns(columns: List[str]) -> List[str]
+
+
+   .. py:method:: _table_exists(cursor)
+      :abstractmethod:
+
+
+   .. py:method:: _create_table(cursor, columns)
+      :abstractmethod:
+
+
+   .. py:method:: _table_has_correct_structure(cursor, typed_fields)
+      :abstractmethod:
+
+
+   .. py:method:: escape_sql_chars()
+      :classmethod:
+
+
+   .. py:method:: fill_table(parameters=None, fixed_parameter_combinations=None) -> None
+
+
+   .. py:method:: _check_combination_in_existing_rows(combination, existing_rows, keyfield_names) -> bool
+
+
+   .. py:method:: _get_existing_rows(column_names)
+      :abstractmethod:
+
+
+   .. py:method:: get_keyfield_values_to_execute() -> List[dict]
+
+
+   .. py:method:: _write_to_database(keys, values) -> None
+
+      Write new row(s) to database
+      :param keys: Column names
+      :param values: Values for column names
+
+
+   .. py:method:: _update_database(keys, values, where)
+
+
+   .. py:method:: not_executed_yet(where) -> bool
+
+
+   .. py:method:: delete_experiments_with_status(status)
+
+
+   .. py:method:: get_structure_from_table(cursor)
+      :abstractmethod:
+
+
+   .. py:method:: get_table() -> pandas.DataFrame
+
+
+

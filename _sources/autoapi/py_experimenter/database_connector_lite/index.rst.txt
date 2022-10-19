@@ -1,0 +1,57 @@
+:py:mod:`py_experimenter.database_connector_lite`
+=================================================
+
+.. py:module:: py_experimenter.database_connector_lite
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   py_experimenter.database_connector_lite.DatabaseConnectorLITE
+
+
+
+
+.. py:class:: DatabaseConnectorLITE
+
+   Bases: :py:obj:`py_experimenter.database_connector.DatabaseConnector`
+
+   .. py:attribute:: _write_to_database_separator
+      :annotation: = ','
+
+      
+
+   .. py:method:: _extract_credentials()
+
+
+   .. py:method:: _test_connection()
+
+
+   .. py:method:: connect()
+
+
+   .. py:method:: _table_exists(cursor) -> bool
+
+
+   .. py:method:: _create_table(cursor, columns)
+
+
+   .. py:method:: _table_has_correct_structure(cursor, typed_fields) -> List[str]
+
+
+   .. py:method:: escape_sql_chars(*args)
+      :staticmethod:
+
+
+   .. py:method:: _get_existing_rows(column_names)
+
+
+   .. py:method:: get_structure_from_table(cursor)
+
+
+

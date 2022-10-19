@@ -1,0 +1,93 @@
+:py:mod:`py_experimenter.experimenter`
+======================================
+
+.. py:module:: py_experimenter.experimenter
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   py_experimenter.experimenter.PyExperimenter
+
+
+
+
+.. py:class:: PyExperimenter(config_file: str = os.path.join('config', 'configuration.cfg'), credential_path: str = os.path.join('config', 'database_credentials.cfg'), table_name: str = None, database_name: str = None, name='PyExperimenter')
+
+   Module that connects the execution of different machine learning experiments with a database.
+
+   .. py:method:: set_config_value(section_name: str, key: str, value: str) -> None
+
+      Sets a value in the configuration file. If the section does not exist, it is created.
+      :param section_name: Name of the section in the configuration file.
+      :param key: Name of the key in the configuration file.
+      :param value: Value to set.
+
+
+   .. py:method:: get_config_value(section_name: str, key: str) -> str
+
+
+   .. py:method:: has_option(section_name: str, key: str) -> bool
+
+
+   .. py:method:: _valid_configuration(_config: configparser, credential_path=None) -> bool
+      :staticmethod:
+
+      This method checks if the configuration is valid.
+
+
+   .. py:method:: fill_table_from_combination(fixed_parameter_combinations: List[dict] = None, parameters: dict = None) -> None
+
+      Create (if not exist) and fill table in database with parameter combinations. If there are already entries in
+      the table, only parameter combinations for which there is no entry in the database will be added. The status
+      of this parameter combination is set to 'created'.
+
+      The combinations are calculated as follows: the cartesian product of the parameters and fixed_parameter_combinations.
+      parameter1 X parameter2 X {fixed_parameter_combination1, fixed_parameter_combination2, ...}
+
+      If the combinations of fixed_parameter_combinations, parameters, and config_parameters do not match the
+      keyfields given in the config file, an error is raised.
+
+      param parameters: Dictionary with parameters that are used for the cartesian product
+      param fixed_parameter_combinations: List of fixed parameter combinations.
+
+
+   .. py:method:: fill_table_from_config() -> None
+
+      Create (if not exist) and fill table in database with parameter combinations. If there are already entries in
+      the table, only parameter combinations for which there is no entry in the database will be added. The status
+      of this parameter combination is set to 'created'.
+
+
+   .. py:method:: fill_table_with_rows(rows: List[dict]) -> None
+
+
+   .. py:method:: execute(approach, max_experiments: int = -1, random_order=False) -> None
+
+      Execute approach for max_experiment parameter combinations that are in the database and have status 'created'.
+      If the execution was successful, the status is changed to done and the results are written into the database. 
+      If an errors that occurs during execution the status is changed to error and the error is written into the database.
+
+      :param approach: Function to execute an experiment.
+      :param max_experiments: Max number of experiments to execute. If max_experiments is -1, all experiments are executed.
+      :param random_order:  Execute experiments in a random order.
+
+
+   .. py:method:: get_table() -> pandas.DataFrame
+
+
+   .. py:method:: execution_wrapper(approach, custom_fields: dict, keyfields, result_processor: py_experimenter.result_processor.ResultProcessor)
+
+
+   .. py:method:: reset_experiments(status='error') -> None
+
+
+   .. py:method:: _extract_row_from_entries(keyfields, entries)
+
+
+

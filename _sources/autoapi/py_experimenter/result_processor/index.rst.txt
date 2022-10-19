@@ -1,0 +1,79 @@
+:py:mod:`py_experimenter.result_processor`
+==========================================
+
+.. py:module:: py_experimenter.result_processor
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   py_experimenter.result_processor.ResultProcessor
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   py_experimenter.result_processor.result_logger
+   py_experimenter.result_processor.formatter
+   py_experimenter.result_processor.file_handler
+
+
+.. py:data:: result_logger
+   
+
+   
+
+.. py:data:: formatter
+   
+
+   
+
+.. py:data:: file_handler
+   
+
+   
+
+.. py:class:: ResultProcessor(_config: dict, credential_path, table_name: str, condition: dict, result_fields: List[str])
+
+   Class for processing the results from an experiment. Use this class whenever you want to write results to the
+   database.
+
+   .. py:method:: process_results(results: dict) -> None
+
+      Process results from the experiment and write them to the database. You can call this method, whenever you
+      want to write results to the database.
+      :param results: Dictionary with result field name and result value pairs.
+
+
+   .. py:method:: _add_timestamps_to_results(results: dict, time: datetime.datetime) -> List[Tuple[str, object]]
+      :staticmethod:
+
+
+   .. py:method:: _change_status(status)
+
+
+   .. py:method:: _write_error(error_msg)
+
+
+   .. py:method:: _set_machine(machine_id)
+
+
+   .. py:method:: _set_name(name)
+
+
+   .. py:method:: _not_executed_yet() -> bool
+
+
+   .. py:method:: _valid_result_fields(result_fields)
+
+
+
