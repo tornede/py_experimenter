@@ -11,16 +11,21 @@ authors:
     orcid: 0000-0002-2415-2186
     affiliation: 1
   - name: Lukas Fehring
+    orcid: 0000-0001-8057-4650
     affiliation: 1
   - name: Lukas Gehring
     affiliation: 1
   - name: Helena Graf
+    orcid: 0000-0001-9447-0609
     affiliation: 1
   - name: Jonas Hanselle
+    orcid: 0000-0002-1231-4985
     affiliation: 1
   - name: Marcel Wever
+    orcid: 0000-0001-9782-6818
     affiliation: 2
-  - name: Felix Mohr
+  - name: Felix Mohr 
+    orcid: 0000-0002-9293-2424
     affiliation: 3
 affiliations:
  - name: Department of Computer Science, Paderborn University, Germany
@@ -29,7 +34,7 @@ affiliations:
    index: 2
  - name: Universidad de La Sabana, Chia, Cundinamarca, Colombia
    index: 3
-date: 13 Oktober 2022
+date: 19 Oktober 2022
 bibliography: paper.bib
 
 ---
