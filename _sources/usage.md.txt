@@ -36,9 +36,9 @@ Both keyfields and resultfields can have further annotations for the data type. 
 
 Keyfields of the experiment configuration, that do not have to be explicitly defined in the list of keyfields, are:
 
-- `cpu.max (int)`: The maximum number of CPUs allowed for each experiment execution. 
+- `cpu.max (int)`: The maximum number of experiments that will be executed in parallel.
 
-Additionally, the user can define which values the keyfields can take on. Usually this is done with a comma separated list of strings or numbers. In the example above, the key field `kernel` can be any of the four given values: `linear`, `poly`, `rbf`, or `sigmoid`. Note that strings are neither allowed to contain any quotation marks nor whitespace. 
+Additionally, the user can define which values the keyfields can take on. Usually this is done with a comma separated list of strings or numbers. In the example above, the key field `kernel` can be any of the four given values: `linear`, `poly`, `rbf`, or `sigmoid`. Note that strings are neither allowed to contain any quotation marks nor whitespace.
 
 As this manual definition can be a tedious task, especially for a list of integers, there is the option to define the start and the end of the list, together with the step size in the form: `start:end:stepsize`. In the example above, `seed` is meant to be `2, 4, 6, 8, 10`, but instead of the explicit list `2:10:2` is given.
 
@@ -99,10 +99,7 @@ def run_experiment(keyfields: dict, result_processor: ResultProcessor, custom_fi
 The actual execution of the `PyExperimenter` only needs a few lines of code. Please make sure that you have created the [experiment configuration file](#experiment-configuration-file). Below the core functionality is elaborated on.
 
 ```python
-import logging
 from py_experimenter.experimenter import PyExperimenter
-
-logging.basicConfig(level=logging.INFO)
 
 experimenter = PyExperimenter()
 experimenter.fill_table_from_config()
