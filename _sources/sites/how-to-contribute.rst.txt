@@ -24,10 +24,13 @@ A GitHub issue should contain any information that is needed that a third person
 3. Give all neccessary information about the issue, depending on if it is a bug or an improvement.
    
 Bug Report
-        Give a step-by-step description of what you have done and where the bug occures, so that it is reproducable. Please also provide the code that produced the bug. Additionally, give some assumption what you think the problem is. 
+        Give a step-by-step description of what you have done and where the bug occures, so that it is reproducable. Please also provide the code that produced the bug. Additionally, give some assumption what you think the problem is. And add the ``bug`` label to your issue.
 
 Improvement
-        Describe detailed the vision of the improvement, how it should be used and how it should work. Please also provide a code example of the usability of the new method / feature. 
+        Describe detailed the vision of the improvement, how it should be used and how it should work. Please also provide a code example of the usability of the new method / feature. And add the ``enhancement`` label to your issue.
+
+Help 
+        Describe the problem you are facing and provice a code example (is suitable). And add the ``help wanted`` label to your issue.
 
 
 
