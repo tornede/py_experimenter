@@ -31,7 +31,7 @@ The `PyExperimenter` is a tool for the automatic execution of experiments, e.g. 
    :caption: About PyExperimenter
    
    authors
-   licence
+   license
    changelog
    Repository <https://github.com/tornede/py_experimenter/>
 
