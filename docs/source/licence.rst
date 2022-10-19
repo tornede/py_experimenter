@@ -2,4 +2,4 @@
 Licence
 =================
 
-.. literalinclude:: ../../../LICENCE
+.. literalinclude:: ../../LICENCE
