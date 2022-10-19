@@ -13,7 +13,7 @@ jobs:
       with:
         python-version: 3.8
     - name: Install Python modules
-      run: pip install recommonmark nbsphinx sphinx_gallery pandoc
+      run: pip install recommonmark nbsphinx sphinx_gallery pandoc sphinx-autoapi
     - name: Setup pandoc
       # You may pin to the exact commit or the version.
       # uses: nikeee/setup-pandoc@65d1fee002ea71e0d2a1c39bfa392c4e7ceba563
