@@ -90,6 +90,73 @@ The contribution workflow for the `PyExperimenter` is based on the fork-and-bran
         git push origin <feature_branch_name>
 
 
+.. _use_poetry:
+
+How to use Poetry
+-----------------
+
+`Poetry <poetry_>`_ is a dependency management and packaging tool for Python.
+It allows to declare the dependencies of your projects and it will manage
+(install / update) them for you.
+It also allows to build a package which can be uploaded to a package repository and installed via ``pip``.
+For installation instructions, please refer to the `Poetry documentation <poetry_docs_>`_.
+
+If you checked out the `PyExperimenter` repository, you can install the development
+environment using Poetry. Therefore, navigate into the git project folder and execute
+the following command:
+
+   .. code-block::
+
+        poetry install
+
+To activate the virtual environment, execute the following command:
+
+   .. code-block::
+
+        poetry shell
+
+Other than that, you can run commands using ``poetry run``. For example, to run the unit
+tests, execute the following command:
+
+   .. code-block::
+
+        poetry run pytest
+
+You can add a new core dependency using the following command:
+
+   .. code-block::
+
+        poetry add <package_name>
+
+This will add the latest version of the package to the ``pyproject.toml`` file.
+If you want to add a specific version, you can use the following command:
+
+   .. code-block::
+
+        poetry add <package_name>>=<version>
+
+A development dependency can be added using the following command:
+
+   .. code-block::
+
+        poetry add --dev <package_name>
+
+The ``poetry.lock`` file will be updated automatically, when doing so. If you want to
+update the ``poetry.lock`` file manually, you can use the following command:
+
+   .. code-block::
+
+        poetry update
+
+Finally, if you want to build a package, you can use the following command:
+
+   .. code-block::
+
+        poetry build
+
+This will create a ``dist`` folder containing the built package.
+
+There are also other useful commands, which you can find in the `Poetry documentation <poetry_docs_>`_.
 
 .. _contribute_unit_tests:
 
@@ -146,3 +213,4 @@ Afterwards, go to the `PyExperimenter GitHub Pull Requests <github_py_experiment
 .. _github_py_experimenter_pulls: https://github.com/tornede/py_experimenter/pulls
 .. _create_database_credential_file: https://tornede.github.io/py_experimenter/usage.html#database-credential-file
 .. _poetry: https://python-poetry.org/
+.. _poetry_docs: https://python-poetry.org/docs/
