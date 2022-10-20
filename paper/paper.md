@@ -11,34 +11,45 @@ authors:
     orcid: 0000-0002-2415-2186
     affiliation: 1
   - name: Lukas Fehring
+    orcid: 0000-0001-8057-4650
     affiliation: 1
   - name: Lukas Gehring
     affiliation: 1
   - name: Helena Graf
+    orcid: 0000-0001-9447-0609
     affiliation: 1
   - name: Jonas Hanselle
+    orcid: 0000-0002-1231-4985
     affiliation: 1
   - name: Marcel Wever
+    orcid: 0000-0001-9782-6818
     affiliation: 2
-  - name: Felix Mohr
+  - name: Felix Mohr 
+    orcid: 0000-0002-9293-2424
     affiliation: 3
 affiliations:
  - name: Department of Computer Science, Paderborn University, Germany
    index: 1
- - name: Institut of Informatics, University of Munich, Germany
+ - name: MCML, Institut for Informatics, LMU Munich, Germany
    index: 2
  - name: Universidad de La Sabana, Chia, Cundinamarca, Colombia
    index: 3
-date: 13 Oktober 2022
+date: 19 Oktober 2022
 bibliography: paper.bib
 
 ---
 
 # Summary
 
-The `PyExperimenter` is a tool for the automatic execution of experiments, e.g. for machine learning (ML), capturing corresponding results in a unified manner in a database. It is designed based on the assumption that an experiment is uniquely defined by certain inputs, i.e., experiment parameters, and a function computing the results of the experiment based on these input parameters. The set of experiments to be executed can be defined through a configuration file listing the domains of each experiment parameter, or manually through code. Those experiment parameters define the experiment grid, based on which the `PyExperimenter` setups the experiment table in the database featuring all experiments identified by their input parameter values and additional information such as the execution status. Once this table has been created, `PyExperimenter` can be run on any machine, including a distributed cluster. Each `PyExperimenter` instance automatically pulls open experiments from the database, executes the experiment function provided by the user with the corresponding experiment parameters defining the experiment and writes back the experiment results computed by the function. Possible errors arising during the execution are logged in the database. In case of failed experiments or other circumstances, a subset of the experiments can be easily reset and executed again. After all experiments are done, the experiment evaluation table can be easily extracted, e.g. averaging over different seeds. A general schema of the `PyExperimenter` can be found in Figure 1.
+Executing parameterized experiments, e.g. for machine learning (ML), and capturing their results is a task that should be well prepared.
+Thereby, any overhead should be avoided, i.e., having to create multiple configuration files to run an experiment with different seeds, or having to extract information from a log file.
+The `PyExperimenter` is a tool for the automatic execution of experiments, e.g. for machine learning (ML), capturing corresponding results in a unified manner in a database. 
+The experiments to be executed are defined in advance. All information about an experiment are stored in the database, starting with the configuration, followed by a continously updated status, and closed by the results of the experiment. This allows a parallelization of the execution of experiments, only limited by the number of possible parallel open database connections.
+
 
 ![General schema of `PyExperimenter`.](usage.png)
+
+A general schema of the `PyExperimenter` can be found in Figure 1. The `PyExperimenter` is designed based on the assumption that an experiment is uniquely defined by certain inputs, i.e., experiment parameters, and a function computing the results of the experiment based on these input parameters. The set of experiments to be executed can be defined through a configuration file listing the domains of each experiment parameter, or manually through code. Those experiment parameters define the experiment grid, based on which the `PyExperimenter` setups the experiment table in the database featuring all experiments identified by their input parameter values and additional information such as the execution status. Once this table has been created, `PyExperimenter` can be run on any machine, including a distributed cluster. Each `PyExperimenter` instance automatically pulls open experiments from the database, executes the experiment function provided by the user with the corresponding experiment parameters defining the experiment and writes back the experiment results computed by the function. Possible errors arising during the execution are logged in the database. In case of failed experiments or other circumstances, a subset of the experiments can be easily reset and executed again. After all experiments are done, the experiment evaluation table can be easily extracted, e.g. averaging over different seeds.
 
 
 # Related Work
