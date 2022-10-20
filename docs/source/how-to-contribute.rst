@@ -99,6 +99,13 @@ To provide a good usability of the `PyExperimenter` it is mandatory to extend an
 
         pytest
 
+All tests except one should will succeed without any adaptions. But the test for the mysql provider needs credentials to a mysql database. 
+
+.. code-block::
+
+        test/test_run_experiments/test_run_mysql_experiment.py
+
+If you have a mysql database available, `create a database configuration file <create_database_config_file_>`_ with the according information and execute the tests again. This time, all tests should succeed without further adaptions.
 
 
 .. _contribute_update_documentation:
@@ -134,3 +141,4 @@ Afterwards, go to the `PyExperimenter GitHub Pull Requests <github_py_experiment
 .. _github_py_experimenter: https://github.com/tornede/py_experimenter/
 .. _github_py_experimenter_issues: https://github.com/tornede/py_experimenter/issues
 .. _github_py_experimenter_pulls: https://github.com/tornede/py_experimenter/pulls
+.. _create_database_config_file: https://tornede.github.io/py_experimenter/usage.html#database-configuration-file
