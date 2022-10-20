@@ -189,6 +189,11 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span>
 </pre></div>
 </div>
+<p>All tests except one should will succeed without any adaptions. But the test for the mysql provider needs credentials to a mysql database.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">test</span><span class="o">/</span><span class="n">test_run_experiments</span><span class="o">/</span><span class="n">test_run_mysql_experiment</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>If you have a mysql database available, <a class="reference external" href="https://tornede.github.io/py_experimenter/usage.html#database-configuration-file">create a database configuration file</a> with the according information and execute the tests again. This time, all tests should succeed without further adaptions.</p>
 </section>
 <section id="update-documentation">
 <span id="contribute-update-documentation"></span><h2>Update Documentation<a class="headerlink" href="#update-documentation" title="Permalink to this heading"></a></h2>
