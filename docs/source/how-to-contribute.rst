@@ -140,7 +140,7 @@ A development dependency can be added using the following command:
 
    .. code-block::
 
-        poetry add --dev <package_name>
+        poetry add --group dev <package_name>
 
 The ``poetry.lock`` file will be updated automatically, when doing so. If you want to
 update the ``poetry.lock`` file manually, you can use the following command:
