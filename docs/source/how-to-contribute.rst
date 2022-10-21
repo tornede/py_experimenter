@@ -134,7 +134,7 @@ If you want to add a specific version, you can use the following command:
 
    .. code-block::
 
-        poetry add <package_name>>=<version>
+        poetry add "<package_name>>=<version>"
 
 A development dependency can be added using the following command:
 
