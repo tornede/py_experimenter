@@ -1,38 +1,55 @@
-@software{mlflow,
-  title     = {MLflow},
-  author    = {mlflow},
-  url       = {https://github.com/mlflow/mlflow},
-  year      = {2018},
-  publisher = {GitHub},
-  journal   = {GitHub repository}
+@software{pandas,
+    author       = {The pandas development team},
+    title        = {pandas-dev/pandas: Pandas},
+    month        = feb,
+    year         = 2020,
+    publisher    = {Zenodo},
+    version      = {latest},
+    doi          = {10.5281/zenodo.3509134},
+    url          = {https://doi.org/10.5281/zenodo.3509134}
+}
+
+@article{mlflow,
+  title={Accelerating the machine learning lifecycle with MLflow.},
+  author={Zaharia, Matei and Chen, Andrew and Davidson, Aaron and Ghodsi, Ali and Hong, Sue Ann and Konwinski, Andy and Murching, Siddharth and Nykodym, Tomas and Ogilvie, Paul and Parkhe, Mani and others},
+  journal={IEEE Data Eng. Bull.},
+  volume={41},
+  number={4},
+  pages={39--45},
+  year={2018}
 }
 
 @misc{wandb,
-  title   = {Experiment Tracking with Weights and Biases},
-  urldate = {2022-10-20},
-  url     = {https://www.wandb.com/},
-  author  = {Biewald, Lukas}
+title = {Experiment Tracking with Weights and Biases},
+year = {2020},
+note = {Software available from wandb.com},
+url={https://www.wandb.com/},
+author = {Biewald, Lukas},
 }
 
 @misc{clearml,
-  title   = {CleaML},
-  urldate = {2022-10-20},
-  url     = {https://www.clear.ml/},
-  author  = {{Allegro AI}}
+title = {ClearML - Your entire MLOps stack in one open-source tool},
+year = {2019},
+note = {Software available from http://github.com/allegroai/clearml},
+url={https://clear.ml/},
+author = {ClearML},
 }
 
 @misc{polyaxon,
-  title   = {Polyaxon},
-  urldate = {2022-10-20},
-  url     = {https://www.polyaxon.com/},
-  author  = {{Polyaxon}}
+  title             = {Polyaxon: Cloud native machine learning platform},
+  howpublished      = {Web page},
+  year              = {2018},
+  note              = {Software available from polyaxon.com},
+  url               = {https://github.com/polyaxon/polyaxon},
+  author            = {Mourafiq, Mourad},
 }
 
 @misc{comet,
-  title   = {Comet},
+  title   = {Comet.ML},
   urldate = {2022-10-20},
   url     = {https://www.comet.com/},
-  author  = {{Comet ML, Inc.}}
+  year = 2021,
+  author  = {{Comet ML Inc.}}
 }
 
 @misc{tensorboard,
@@ -83,18 +100,81 @@
   year   = {2015}
 }
 
-@misc{aim,
-  title   = {Aim},
-  urldate = {2022-10-20},
-  url     = {https://aimstack.io},
-  author  = {Arakelyan Gor and Soghomonyan, Gevorg and {The Aim team}}
+@software{aim,
+  author       = {Gor Arakelyan and
+                  Albert Torosyan and
+                  Arsen Alkamyan and
+                  mihran113 and
+                  Vardges Hovhannisyan and
+                  Ruben Karapetyan and
+                  Gev and
+                  Karo and
+                  Ruben Aprikyan and
+                  Arthur and
+                  Karen Hambardzumyan and
+                  Hamik Hambardzumyan and
+                  Mikael Manukyan and
+                  aramaim and
+                  Jialin Wu and
+                  Khazhak Galstyan and
+                  James Jiao and
+                  Tatevv and
+                  Xingkai Yu and
+                  bhaveshk658 and
+                  fetz236 and
+                  Amin Salarkia and
+                  Andrey Kudryavtsev and
+                  Arvind and
+                  Blue Tyson and
+                  Flaviu Vadan and
+                  Lukáš Koucký and
+                  ManeSah and
+                  Mateen Ulhaq},
+  title        = {Aim},
+  month        = may,
+  year         = 2022,
+  publisher    = {Zenodo},
+  version      = {v3.9.3},
+  doi          = {10.5281/zenodo.6536395},
+  url          = {https://doi.org/10.5281/zenodo.6536395}
 }
 
-@misc{dvc,
-  title   = {Data Version Control - DVC},
-  urldate = {2022-10-20},
-  url     = {https://dvc.org/},
-  author  = {{iterative.ai}}
+@software{dvc,
+  author       = {Ruslan Kuprieiev and
+                  skshetry and
+                  Dmitry Petrov and
+                  Paweł Redzyński and
+                  Peter Rowlands (변기호) and
+                  Casper da Costa-Luis and
+                  Alexander Schepanovski and
+                  Ivan Shcheklein and
+                  Gao and
+                  Batuhan Taskaya and
+                  Jorge Orpinel and
+                  David de la Iglesia Castro and
+                  Fábio Santos and
+                  Ronan Lamy and
+                  Aman Sharma and
+                  daniele and
+                  Dave Berenbaum and
+                  Zhanibek and
+                  Dani Hodovic and
+                  Nikita Kodenko and
+                  Andrew Grigorev and
+                  Earl and
+                  Nabanita Dash and
+                  George Vyshnya and
+                  maykulkarni and
+                  Max Hora and
+                  Vera and
+                  Sanidhya Mangal},
+  title        = {DVC: Data Version Control - Git for Data \& Models},
+  month        = oct,
+  year         = 2022,
+  publisher    = {Zenodo},
+  version      = {2.33.0},
+  doi          = {10.5281/zenodo.7264816},
+  url          = {https://doi.org/10.5281/zenodo.7264816}
 }
 
 @inproceedings{sacred,
@@ -107,10 +187,11 @@
 }
 
 @misc{guildai,
-  title   = {Guild.AI},
-  urldate = {2022-10-20},
-  url     = {https://guild.ai/},
-  author  = {TensorHub, Inc.}
+  title   = {GuildAI: Simple Reproducibility in Machine Learning},
+  author  = {Garrett Smith},
+  publisher = {SysML Conference},
+  year = 2019,
+  url     = {https://guild.ai/}
 }
 
 @software{neptune,
