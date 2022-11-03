@@ -173,4 +173,4 @@ def test_set_config_values(create_database_if_not_existing_mock, mock_fn, config
 )
 def test_valid_configuration(config_file, valid):
     config_file = utils.load_config(config_file)
-    assert PyExperimenter._valid_configuration(config_file, CREDENTIAL_PATH) == valid
+    assert PyExperimenter._is_valid_configuration(config_file, CREDENTIAL_PATH) == valid

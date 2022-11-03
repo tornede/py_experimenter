@@ -6,7 +6,7 @@ import socket
 import traceback
 from configparser import NoSectionError
 from random import shuffle
-from typing import List
+from typing import Callable, List
 
 import pandas as pd
 
@@ -19,7 +19,7 @@ from py_experimenter.result_processor import ResultProcessor
 
 class PyExperimenter:
     """
-    Module that connects the execution of different machine learning experiments with a database.
+    Module handling the initialization, execution and collection of experiments and their results.
     """
 
     def __init__(self,
@@ -29,16 +29,24 @@ class PyExperimenter:
                  database_name: str = None,
                  name='PyExperimenter'):
         """
-        Initialize PyExperimenter with the configuration file. If table_name or database_name are given they overwrite the
-        values in the configuration file.
+        Initializes the PyExperimenter with the given information.
 
-        :param config_file: Path to the configuration file. Defaults to 'config/configuration.cfg'.
-        :param table_name: Name of the table in the database. If None, the table name is taken from the configuration file. Defaults to None.
-        :param database_name: Name of the database. If None, the database name is taken from the configuration file. Defaults to None.
+        :param config_file: The path to the experiment configuration file. Defaults to 'config/configuration.cfg'.
+        :type config_file: str, optional
+        :param credential_path: The path to the database configuration file storing the credentials for the database connection, i.e., host, user and password. Defaults to 'config/database_credentials.cfg'.
+        :type credential_path: str, optional
+        :param table_name: The name of the database table. If None, the table table name is taken from the experiment configuration file. Defaults to None.
+        :type table_name: str, optional
+        :param database_name: The name of the database. If None, the database name is taken from the experiment configuration file. Defaults to None.
+        :type database_name: str, optional
+        :param name: The name of the PyExperimenter, which will be logged in the according column in the database table. Defaults to 'PyExperimenter'.
+        :type name: str, optional
+        :raises InvalidConfigError: If either the experiment or database configuration are missing mandatory information.
+        :raises ValueError: If an unsupported or unknown database connection provider is given.
         """
         self._config = utils.load_config(config_file)
         self._credential_path = credential_path
-        if not PyExperimenter._valid_configuration(self._config, credential_path):
+        if not PyExperimenter._is_valid_configuration(self._config, credential_path):
             raise InvalidConfigError('Invalid configuration')
 
         if table_name is not None:
@@ -61,26 +69,60 @@ class PyExperimenter:
 
     def set_config_value(self, section_name: str, key: str, value: str) -> None:
         """
-        Sets a value in the configuration file. If the section does not exist, it is created.
-        :param section_name: Name of the section in the configuration file.
-        :param key: Name of the key in the configuration file.
-        :param value: Value to set.
+        Modifies the experiment configuration so that within the given `section_name` the value of the given `key` is overridden, 
+        or created if it is not existing beforehand.
+
+        :param section_name: The name of the section of the experiment configuration in which a value should be set.
+        :type section_name: str
+        :param key: The name of the key within the given section of the experiment configuration in which a value should be set.
+        :type key: str
+        :param value: The value of the key within the given section of the experiment configuration that should be set.
+        :type value: str
         """
+        
         if not self._config.has_section(section_name):
             self._config.add_section(section_name)
         self._config.set(section_name, key, value)
-        PyExperimenter._valid_configuration(self._config, self._credential_path)
+        PyExperimenter._is_valid_configuration(self._config, self._credential_path)
 
     def get_config_value(self, section_name: str, key: str) -> str:
+        """
+        Returns the value of the experiment configuration for the given `key`. 
+
+        :param section_name: The name of the section of the experiment configuration of which a value should be returned.
+        :type section_name: str
+        :param key: The name of the key within the given section of the experiment configuration of which a value should be returned
+        :type key: str
+        :return: The value of the `key` field of the experiment configuration within the section having `section_name`.
+        :rtype: str
+        """
         return self._config.get(section_name, key)
 
     def has_option(self, section_name: str, key: str) -> bool:
+        """
+        Checks whether the experiment configuration contains the given `key` within the section called `section_name`.
+
+        :param section_name: The name of the section of the experiment configuration of which the `key` should be checked.
+        :type section_name: str
+        :param key: The name of the key to check within the given section.
+        :type key: str
+        :return: True if the given `key` is contained in the experiment configuration within the section called `section_name`.
+        :rtype: bool
+        """
         return self._config.has_option(section_name, key)
 
     @ staticmethod
-    def _valid_configuration(_config: configparser, credential_path=None) -> bool:
+    def _is_valid_configuration(_config: configparser, credential_path: str = None) -> bool:
         """
-        This method checks if the configuration is valid.
+        Checks whether the given experiment configuration is valid, i.e., it contains all necessary fields, 
+        and in case of a mysql database provider, that the database credentials are available.
+
+        :param _config: The experiment configuration.
+        :type _config: configparser
+        :param credential_path: The path to the database configuration file, i.e., the file defining the host, user and password. Defaults to None.
+        :type credential_path: str, optional
+        :return: True if the experiment configuration contains all necessary fields.
+        :rtype: bool
         """
         if not _config.has_section('PY_EXPERIMENTER'):
             return False
@@ -110,18 +152,42 @@ class PyExperimenter:
 
     def fill_table_from_combination(self, fixed_parameter_combinations: List[dict] = None, parameters: dict = None) -> None:
         """
-        Create (if not exist) and fill table in database with parameter combinations. If there are already entries in
-        the table, only parameter combinations for which there is no entry in the database will be added. The status
-        of this parameter combination is set to 'created'.
-
-        The combinations are calculated as follows: the cartesian product of the parameters and fixed_parameter_combinations.
-        parameter1 X parameter2 X {fixed_parameter_combination1, fixed_parameter_combination2, ...}
-
-        If the combinations of fixed_parameter_combinations, parameters, and config_parameters do not match the
-        keyfields given in the config file, an error is raised.
-
-        param parameters: Dictionary with parameters that are used for the cartesian product
-        param fixed_parameter_combinations: List of fixed parameter combinations.
+        Adds rows to the database table based on the given information.
+        
+        First the existense of the database table is checked. If it does not exist, the database table is created 
+        based on the information from the experiment configuration file the `PyExperimenter` has been initialized. 
+        
+        Afterwards, the database table is filled. Therefore, the cartesian product of all `parameters` and the 
+        `fixed_parameter_combinations` is build, where each combination will make up a row in the database table.
+        Note that only those rows are added which parameter combinations are not already existing. For each added
+        row the status will be set to 'created'. If any parameter of the combinations (rows) does not match the 
+        keyfields from the experiment configuration, an error is raised. 
+        
+        In the following, an example call of this method is given:
+        
+        >>> fill_table_from_combination(
+        >>>    fixed_parameter_combinations = [ { a:1, a2:2 }, { a:2, a2:4 } ],
+        >>>    parameters = { b:[1,2], c:['cat', 'dog']}
+        >>> )
+        
+        The according table with three columns [a, a2, b] is filled with the following rows:
+        
+        >>> [
+        >>>     { a:1, a2:2, b:1, c:'cat' },
+        >>>     { a:1, a2:2, b:1, c:'dog' },
+        >>>     { a:1, a2:2, b:2, c:'cat' },
+        >>>     { a:1, a2:2, b:2, c:'dog' },
+        >>>     { a:2, a2:4, b:1, c:'cat' },
+        >>>     { a:2, a2:4, b:1, c:'dog' },
+        >>>     { a:2, a2:4, b:2, c:'cat' },
+        >>>     { a:2, a2:4, b:2, c:'dog' }
+        >>> ]
+        
+        :param fixed_parameter_combinations: List of predefined parameter combinations (dict), which have specific 
+            conditions that cannot be expressed via the usual list of possible parameter values. Defaults to None.
+        :type fixed_parameter_combinations: List[dict], optional
+        :param parameters: Dictionary of parameters and their lists of possible values. Defaults to None.
+        :type parameters: dict, optional
         """
 
         self._dbconnector.create_table_if_not_existing()
@@ -131,15 +197,39 @@ class PyExperimenter:
 
     def fill_table_from_config(self) -> None:
         """
-        Create (if not exist) and fill table in database with parameter combinations. If there are already entries in
-        the table, only parameter combinations for which there is no entry in the database will be added. The status
-        of this parameter combination is set to 'created'.
+        Adds rows to the database table based on the experiment configuration file.
+        
+        First the existense of the database table is checked. If it does not exist, the database table is created 
+        based on the information from the experiment configuration file the `PyExperimenter` has been initialized. 
+        
+        Afterwards, the database table is filled. Therefore, the cartesian product of all `keyfields` from the 
+        experiment configuration file is build, where each combination will make up a row in the database table.
+        Note that only those rows are added which parameter combinations are not already existing. For each added
+        row the status will be set to 'created'. 
         """
+        
         self._dbconnector.create_table_if_not_existing()
         parameters = utils.get_keyfield_data(self._config)
         self._dbconnector.fill_table(parameters=parameters)
 
     def fill_table_with_rows(self, rows: List[dict]) -> None:
+        """
+        Adds rows to the database table based on the given list of `rows`.
+        
+        First the existense of the database table is checked. If it does not exist, the database table is created 
+        based on the information from the experiment configuration file the `PyExperimenter` has been initialized. 
+
+        Afterwards, the database table is filled with the list of `rows`. Note that only those rows are added which 
+        parameter combinations are not already existing. For each added row the status will be set to 'created'. 
+        If any parameter of `rows` does not match the keyfields from the experiment configuration, an error is raised. 
+        
+        :param rows: A list of rows, where each entry is made up of a dict containing a key-value-pair for each `keyfield`
+            of the experiment configuration file.
+        :type rows: List[dict]
+        :raises ValueError: If any key of any row in `rows` does not match the `keyfields` from the experiment 
+            configuration file
+        """
+        
         self._dbconnector.create_table_if_not_existing()
         keyfield_names = utils.get_keyfield_names(self._config)
         for row in rows:
@@ -147,17 +237,32 @@ class PyExperimenter:
                 raise ValueError('The keyfields in the config file do not match the keyfields in the rows')
         self._dbconnector.fill_table(fixed_parameter_combinations=rows)
 
-    def execute(self, approach, max_experiments: int = -1, random_order=False) -> None:
+    def execute(self, approach: Callable[[dict, dict, ResultProcessor]], max_experiments: int = -1, random_order=False) -> None:
         """
-        Execute approach for max_experiment parameter combinations that are in the database and have status 'created'.
-        If the execution was successful, the status is changed to done and the results are written into the database. 
-        If an errors that occurs during execution the status is changed to error and the error is written into the database.
+        Pulls open experiments from the database table and executes them.
+        
+        First the keyfield values of as many open experiments as given via `max_experiments` are pulled from the 
+        database table. An experiment is considered to be open if its status is 'created'. In case of `random_order`, 
+        they are not selected based on their consecutive experiment ID, but rather chosen randomly. Therefore the 
+        parallel pull of the same experiment ID from two instantiations of the `PyExperimenter` is avoided. 
+        
+        Afterwards, the given `approach` is executed for each set of keyfield values, changing its status to `running`.
+        Results can be written to the database table all the time via the `ResultProcessor` that is given as parameter
+        to the `approach`. If the execution was successful, the status of the according experiment is set to `done`.
+        Otherwise, if an error occured during the execution, the status is changed to `error` and the raised error is
+        logged to the database table. 
 
-        :param approach: Function to execute an experiment.
-        :param max_experiments: Max number of experiments to execute. If max_experiments is -1, all experiments are executed.
-        :param random_order:  Execute experiments in a random order.
+        :param approach: The function that should be executed with the different parametrizations.
+        :type approach: Callable[[dict, dict, ResultProcessor]]
+        :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments 
+            should be executed, -1 can be used. Defaults to -1. 
+        :type max_experiments: int, optional
+        :param random_order: Decided if the experiments to be executed are chosen consecutive by its experiment ID (`False`) 
+            or completely at random (`True`). Defaults to False.
+        :type random_order: bool, optional
+        :raises InvalidValuesInConfiguration: If any value of the experiment parameters is of wrong type.
         """
-
+        
         logging.info("Start execution of approaches...")
         keyfield_values = self._dbconnector.get_keyfield_values_to_execute()
 
@@ -185,9 +290,33 @@ class PyExperimenter:
         logging.info("All executions finished")
 
     def get_table(self) -> pd.DataFrame:
+        """
+        Returns the database table as `Pandas.DataFrame`. 
+
+        :return: The database table as `Pandas.DataFrame`. 
+        :rtype: pd.DataFrame
+        """
+        
         return self._dbconnector.get_table()
 
-    def execution_wrapper(self, approach, custom_fields: dict, keyfields, result_processor: ResultProcessor):
+    def execution_wrapper(self, approach: Callable[[dict, dict, ResultProcessor]], custom_fields: dict, keyfields: dict, result_processor: ResultProcessor):
+        """
+        Executes the given `approach` with the given `custom_fields`, `keyfields` and the according `result_processor`. 
+        Thereby, the status is set accordingly:
+        
+        * `running` when the execution of the experiment is started.
+        * `error` if something went wrong during the execution.
+        * `done` if the execution finished successfully.
+
+        :param approach: The function that should be executed with the different parametrizations.
+        :type approach: Callable[[dict, dict, ResultProcessor]]
+        :param custom_fields: The custom field values to execute the `approach` with.
+        :type custom_fields: dict
+        :param keyfields: The keyfield values to execute the `approach` with. 
+        :type keyfields: dict
+        :param result_processor: The `ResultProcessor` that is responsible to update the database table.
+        :type result_processor: ResultProcessor
+        """
         if result_processor._not_executed_yet():
             result_processor._change_status('running')
             result_processor._set_name(self.name)
@@ -203,14 +332,36 @@ class PyExperimenter:
             else:
                 result_processor._change_status('done')
 
-    def reset_experiments(self, status= 'error') -> None:        
+    def reset_experiments(self, status= 'error') -> None:
+        """
+        Deletes the experiments of the database table having the given status and adds the according keyfields as new rows.
+        
+        * `created` when the experiment is added to the database table, execution has not started.
+        * `running` when the execution of the experiment has been started.
+        * `error` if something went wrong during the execution, i.e., an exception is raised
+        * `done` if the execution finished successfully.
+
+        :param status: The status of experiments that should be reset. Defaults to 'error'.
+        :type status: str, optional
+        """
         keyfields,entries = self._dbconnector.delete_experiments_with_status(status)
         rows = self._extract_row_from_entries(keyfields, entries)
         if rows:
             self.fill_table_with_rows(rows)
         logging.info(f"{len(rows)} experiments with status {status} were reset")
         
-    def _extract_row_from_entries(self, keyfields, entries):
+    def _extract_row_from_entries(self, keyfields: List[str], entries: List[List[str]]) -> List[dict]:
+        """
+        Creates a list of rows based on the given `keyfields` having values as defined in the given `entries`. 
+
+        :param keyfields: The list of `keyfields` of the database table. 
+        :type keyfields: List[str]
+        :param entries: List of lists of values for the keyfields (in same order than the given `keyfields`). 
+        :type entries: List[List[str]]
+        :return: A list of rows based on the given `keyfields` and `entries`.
+        :rtype: List[dict]
+        """
+        
         return [{k:value for k,value in zip(keyfields, entry)}
                 for entry in entries]
 
