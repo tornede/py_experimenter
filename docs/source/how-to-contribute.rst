@@ -59,6 +59,7 @@ The contribution workflow for the `PyExperimenter` is based on the fork-and-bran
    
    .. code-block:: 
 
+        git fetch --all
         git branch -v -a
         git switch develop
         git checkout -b <feature_branch_name>
