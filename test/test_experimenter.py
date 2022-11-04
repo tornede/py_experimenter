@@ -91,11 +91,11 @@ def test_init(create_database_if_not_existing_mock, mock_fn, config_file, table_
 
     assert experimenter.get_config_value('PY_EXPERIMENTER', 'table') == expected_table_name
     assert experimenter.get_config_value('PY_EXPERIMENTER', 'database') == expected_database_name
-    assert experimenter._dbconnector.__class__ == expected_db_connector_class
+    assert experimenter.dbconnector.__class__ == expected_db_connector_class
 
 
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '__init__')
-@patch.object(experimenter.PyExperimenter, '_valid_configuration')
+@patch.object(experimenter.PyExperimenter, '_is_valid_configuration')
 @pytest.mark.parametrize(
     'config_file, section_name, key, expected_value',
     [

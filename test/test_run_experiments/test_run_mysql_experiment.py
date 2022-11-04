@@ -21,25 +21,25 @@ def own_function(keyfields: dict, result_processor: ResultProcessor, custom_fiel
 
 
 def check_done_entries(experimenter, amount_of_entries):
-    connection = experimenter._dbconnector.connect()
-    cursor = experimenter._dbconnector.cursor(connection)
-    cursor.execute(f"SELECT * FROM {experimenter._dbconnector._table_name} WHERE status = 'done'")
+    connection = experimenter.dbconnector.connect()
+    cursor = experimenter.dbconnector.cursor(connection)
+    cursor.execute(f"SELECT * FROM {experimenter.dbconnector._table_name} WHERE status = 'done'")
     entries = cursor.fetchall()
 
     assert amount_of_entries == len(entries)
 
-    experimenter._dbconnector.close_connection(connection)
+    experimenter.dbconnector.close_connection(connection)
 
 
 def delete_existing_table(experimenter):
-    connection = experimenter._dbconnector.connect()
-    cursor = experimenter._dbconnector.cursor(connection)
+    connection = experimenter.dbconnector.connect()
+    cursor = experimenter.dbconnector.cursor(connection)
     try:
-        cursor.execute(f"DROP TABLE {experimenter._dbconnector._table_name}")
-        experimenter._dbconnector.commit(connection)
-        experimenter._dbconnector.close_connection(connection)
+        cursor.execute(f"DROP TABLE {experimenter.dbconnector._table_name}")
+        experimenter.dbconnector.commit(connection)
+        experimenter.dbconnector.close_connection(connection)
     except ProgrammingError as e:
-        experimenter._dbconnector.close_connection(connection)
+        experimenter.dbconnector.close_connection(connection)
         logging.warning(e)
 
 
@@ -54,35 +54,35 @@ def test_run_all_mqsql_experiments():
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, 1)
 
-    connection = experimenter._dbconnector.connect()
-    cursor = experimenter._dbconnector.cursor(connection)
-    cursor.execute(f"SELECT * FROM {experimenter._dbconnector._table_name} WHERE status = 'done'")
+    connection = experimenter.dbconnector.connect()
+    cursor = experimenter.dbconnector.cursor(connection)
+    cursor.execute(f"SELECT * FROM {experimenter.dbconnector._table_name} WHERE status = 'done'")
     entries = cursor.fetchall()
 
     assert len(entries) == 1
     entries_without_metadata = entries[0][:3] + (entries[0][4],) + entries[0][6:7] + entries[0][8:10] + (entries[0][-1],)
     assert entries_without_metadata == (1, 1, 1, 'done', 'PyExperimenter', '0.8414709848078965', '0.5403023058681398', None)
-    experimenter._dbconnector.close_connection(connection)
+    experimenter.dbconnector.close_connection(connection)
 
     experimenter = PyExperimenter(config_file=config_file)
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, -1)
     check_done_entries(experimenter, 30)
-    connection = experimenter._dbconnector.connect()
-    cursor = experimenter._dbconnector.cursor(connection)
-    cursor.execute(f"DELETE FROM {experimenter._dbconnector._table_name} WHERE ID = 1")
-    experimenter._dbconnector.commit(connection)
-    experimenter._dbconnector.close_connection(connection)
+    connection = experimenter.dbconnector.connect()
+    cursor = experimenter.dbconnector.cursor(connection)
+    cursor.execute(f"DELETE FROM {experimenter.dbconnector._table_name} WHERE ID = 1")
+    experimenter.dbconnector.commit(connection)
+    experimenter.dbconnector.close_connection(connection)
     check_done_entries(experimenter, 29)
 
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, -1)
     check_done_entries(experimenter, 30)
-    connection = experimenter._dbconnector.connect()
-    cursor = experimenter._dbconnector.cursor(connection)
-    cursor.execute(f"SELECT ID FROM {experimenter._dbconnector._table_name}")
+    connection = experimenter.dbconnector.connect()
+    cursor = experimenter.dbconnector.cursor(connection)
+    cursor.execute(f"SELECT ID FROM {experimenter.dbconnector._table_name}")
     entries = cursor.fetchall()
-    experimenter._dbconnector.close_connection(connection)
+    experimenter.dbconnector.close_connection(connection)
 
     assert len(entries) == 30
     assert set(range(2, 32)) == set(entry[0] for entry in entries)
