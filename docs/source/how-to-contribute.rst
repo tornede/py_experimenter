@@ -70,13 +70,6 @@ The contribution workflow for the `PyExperimenter` is based on the fork-and-bran
 
           poetry install
 
-   or using an editable install using pip.
-
-    .. code-block::
-
-          pip install -e .
-          pip install -r requirements-dev.txt
-
 
 6. Check tests: Before working on any changes, please make sure that all unit tests are working correctly. Therefore, navigate into the git project folder and execute all unit tests.
    
@@ -148,7 +141,6 @@ update the ``poetry.lock`` file manually, you can use the following command:
    .. code-block::
 
         poetry update
-        poetry export -o requirements-dev.txt --only dev
 
 Finally, if you want to build a package, you can use the following command:
 
