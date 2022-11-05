@@ -44,7 +44,7 @@ bibliography: paper.bib
 
 # Summary
 
-`PyExperimenter` is a tool to facilitate the setup, documentation, execution, and subsequent evaluation of results from an empirical study of algorithms and to reduce manual effort significantly. It was designed to be used by researchers in the field of artificial intelligence, but is not limited to those.
+`PyExperimenter` is a tool to facilitate the setup, documentation, execution, and subsequent evaluation of results from an empirical study of algorithms and in particular is designed to reduce the involved manual effort significantly. It was designed to be used by researchers in the field of artificial intelligence, but is not limited to those.
 
 The empirical analysis of algorithms is often accompanied by the execution of algorithms for different inputs and variants of the algorithms (specified via parameters) and the measurement of non-functional properties. Since the individual evaluations are usually independent of each other, the evaluation can be performed in a distributed manner on an HPC system. However, setting up, documenting, and evaluating the results of such a study is often file-based. Usually, this requires extensive manual work to create configuration files for the inputs or to read and aggregate measured results from a report file. In addition, monitoring and restarting individual executions is tedious and time-consuming. 
 
