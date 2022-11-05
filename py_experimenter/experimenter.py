@@ -155,14 +155,15 @@ class PyExperimenter:
         """
         Adds rows to the database table based on the given information.
         
-        First the existense of the database table is checked. If it does not exist, the database table is created 
-        based on the information from the experiment configuration file the `PyExperimenter` has been initialized. 
+        First the existence of the database table is checked. If it does not exist, the database table is created 
+        based on the information from the experiment configuration file the `PyExperimenter` has been initialized 
+        from. 
         
-        Afterwards, the database table is filled. Therefore, the cartesian product of all `parameters` and the 
-        `fixed_parameter_combinations` is build, where each combination will make up a row in the database table.
-        Note that only those rows are added which parameter combinations are not already existing. For each added
-        row the status will be set to 'created'. If any parameter of the combinations (rows) does not match the 
-        keyfields from the experiment configuration, an error is raised. 
+        Afterwards, the database table is filled. To this end, the cartesian product of all `parameters` and the 
+        `fixed_parameter_combinations` is built, where each combination will make up a row in the database table.
+        Note that only those rows are added whose parameter combinations do not already exist in the database table.
+        For each added row the status is set to 'created'. If any parameter of the combinations (rows) does not 
+        match the keyfields from the experiment configuration, an error is raised. 
         
         In the following, an example call of this method is given:
         
@@ -171,7 +172,7 @@ class PyExperimenter:
         >>>    parameters = { b:[1,2], c:['cat', 'dog']}
         >>> )
         
-        The according table with three columns [a, a2, b] is filled with the following rows:
+        The according table with four columns [a, a2, b, c] is filled with the following rows:
         
         >>> [
         >>>     { a:1, a2:2, b:1, c:'cat' },
@@ -199,13 +200,13 @@ class PyExperimenter:
         """
         Adds rows to the database table based on the experiment configuration file.
         
-        First the existense of the database table is checked. If it does not exist, the database table is created 
+        First the existence of the database table is checked. If it does not exist, the database table is created 
         based on the information from the experiment configuration file the `PyExperimenter` has been initialized. 
         
-        Afterwards, the database table is filled. Therefore, the cartesian product of all `keyfields` from the 
+        Afterwards, the database table is filled. To this end, the cartesian product of all `keyfields` from the 
         experiment configuration file is build, where each combination will make up a row in the database table.
-        Note that only those rows are added which parameter combinations are not already existing. For each added
-        row the status will be set to 'created'. 
+        Note that only those rows are added whose parameter combinations do not already exist in the table. For each added
+        row the status is set to 'created'. 
         """
         self.dbconnector.create_table_if_not_existing()
         parameters = utils.get_keyfield_data(self.config)
@@ -215,11 +216,11 @@ class PyExperimenter:
         """
         Adds rows to the database table based on the given list of `rows`.
         
-        First the existense of the database table is checked. If it does not exist, the database table is created 
+        First the existence of the database table is checked. If it does not exist, the database table is created 
         based on the information from the experiment configuration file the `PyExperimenter` has been initialized. 
 
-        Afterwards, the database table is filled with the list of `rows`. Note that only those rows are added which 
-        parameter combinations are not already existing. For each added row the status will be set to 'created'. 
+        Afterwards, the database table is filled with the list of `rows`. Note that only those rows are added whose 
+        parameter combinations do not already exist in the table. For each added row the status will is to 'created'. 
         If any parameter of `rows` does not match the keyfields from the experiment configuration, an error is raised. 
         
         :param rows: A list of rows, where each entry is made up of a dict containing a key-value-pair for each `keyfield`
@@ -241,9 +242,9 @@ class PyExperimenter:
         
         First the keyfield values of as many open experiments as given via `max_experiments` are pulled from the 
         database table. An experiment is considered to be open if its status is 'created'. In case of `random_order`, 
-        they are not selected based on their consecutive experiment ID, but rather chosen randomly. Therefore the 
-        parallel pull of the same experiment ID from two instantiations of the `PyExperimenter` is avoided. 
-        
+        they are not selected based on their consecutive experiment ID, but rather chosen randomly. This slims the 
+        chances of two instantiations of `PyExperimenter` pulling the same experiment ID at the same time.
+
         Afterwards, the given `approach` is executed for each set of keyfield values, changing its status to `running`.
         Results can be written to the database table all the time via the `ResultProcessor` that is given as parameter
         to the `approach`. If the execution was successful, the status of the according experiment is set to `done`.
@@ -283,7 +284,7 @@ class PyExperimenter:
             custom_fields = [None for _ in keyfield_values]
 
         with concurrent.futures.ProcessPoolExecutor(max_workers=cpus) as executor:
-            executor.map(self.execution_wrapper, approaches, custom_fields, keyfield_values, result_processors)
+            executor.map(self._execution_wrapper, approaches, custom_fields, keyfield_values, result_processors)
         logging.info("All executions finished")
 
     def get_table(self) -> pd.DataFrame:
@@ -295,7 +296,7 @@ class PyExperimenter:
         """
         return self.dbconnector.get_table()
 
-    def execution_wrapper(self, approach: Callable[[dict, dict, ResultProcessor], None], custom_fields: dict, keyfields: dict, result_processor: ResultProcessor):
+    def _execution_wrapper(self, approach: Callable[[dict, dict, ResultProcessor], None], custom_fields: dict, keyfields: dict, result_processor: ResultProcessor):
         """
         Executes the given `approach` with the given `custom_fields`, `keyfields` and the according `result_processor`. 
         Thereby, the status is set accordingly:
@@ -340,24 +341,12 @@ class PyExperimenter:
         :param status: The status of experiments that should be reset. Defaults to 'error'.
         :type status: str, optional
         """
-        keyfields,entries = self.dbconnector.delete_experiments_with_status(status)
-        rows = self._extract_row_from_entries(keyfields, entries)
+        def get_dict_for_keyfields_and_rows(keyfields: List[str], rows: List[List[str]]) -> List[dict]:
+            return [{key:value for key, value in zip(keyfields, row)} for row in rows]
+        
+        keyfields, rows = self.dbconnector.delete_experiments_with_status(status)
+        rows = get_dict_for_keyfields_and_rows(keyfields, rows)
         if rows:
             self.fill_table_with_rows(rows)
         logging.info(f"{len(rows)} experiments with status {status} were reset")
-        
-    def _extract_row_from_entries(self, keyfields: List[str], entries: List[List[str]]) -> List[dict]:
-        """
-        Creates a list of rows based on the given `keyfields` having values as defined in the given `entries`. 
-
-        :param keyfields: The list of `keyfields` of the database table. 
-        :type keyfields: List[str]
-        :param entries: List of lists of values for the keyfields (in same order than the given `keyfields`). 
-        :type entries: List[List[str]]
-        :return: A list of rows based on the given `keyfields` and `entries`.
-        :rtype: List[dict]
-        """
-        return [{k:value for k,value in zip(keyfields, entry)}
-                for entry in entries]
-
     
