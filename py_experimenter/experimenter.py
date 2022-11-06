@@ -76,8 +76,8 @@ class PyExperimenter:
 
     def set_config_value(self, section_name: str, key: str, value: str) -> None:
         """
-        Modifies the experiment configuration so that within the given `section_name` the value of the given `key` 
-        is overwritten, or created if it was not existing beforehand.
+        Modifies the experiment configuration so that within the given `section_name` the value of the  property identified by
+        the given `key` is overwritten, or created if it was not existing beforehand.
 
         :param section_name: The name of the section of the experiment configuration in which a value should be set.
         :type section_name: str
