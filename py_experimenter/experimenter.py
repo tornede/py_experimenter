@@ -277,7 +277,7 @@ class PyExperimenter:
         :param random_order: Indicates whether the experiments to be executed are chosen consecutively by its experiment 
             ID (`False`) or in a randomized fashion (`True`). Defaults to False.
         :type random_order: bool, optional
-        :raises InvalidValuesInConfiguration: If any value of the experiment parameters is of wrong type.
+        :raises InvalidValuesInConfiguration: If any value of the experiment parameters is of wrong data type.
         """
         logging.info("Start execution of experiment_functions...")
         keyfield_values = self.dbconnector.get_keyfield_values_to_execute()
