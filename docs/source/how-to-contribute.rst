@@ -64,20 +64,27 @@ The contribution workflow for the `PyExperimenter` is based on the fork-and-bran
         git switch develop
         git checkout -b <feature_branch_name>
 
-5. Install the development environment using `poetry <poetry_>`_
+5. Create an environment for the development, e.g. using `Anaconda <anaconda_>`_.
+
+   .. code-block:: 
+
+        conda create -n py-experimenter-env python=3.9 
+        conda activate py-experimenter-env
+
+6. Install the development environment using :ref:`poetry <use_poetry>`.
    
    .. code-block::
 
         poetry install
 
 
-6. Check tests: Before working on any changes, please make sure that all unit tests are working correctly. Therefore, navigate into the git project folder and execute all unit tests.
+7. Check tests: Before working on any changes, please make sure that all unit tests are working correctly. Therefore, navigate into the git project folder and execute all unit tests.
    
    .. code-block:: 
 
         pytest
 
-7. Finally you can start working on the planned changes! At any time, you can push your changes to the ``origin`` remote. 
+8. Finally you can start working on the planned changes! At any time, you can push your changes to the ``origin`` remote. 
    
    .. code-block:: 
 
@@ -191,7 +198,7 @@ Afterwards, go to the `PyExperimenter GitHub Pull Requests <github_py_experiment
 3. Reference the according issue you either created or have selected at the very beginning.
 
 
-.. _anaconda: https://conda.io/
+.. _anaconda: https://docs.anaconda.com/anaconda/install/
 .. _fork_and_branch_workflow: https://blog.scottlowe.org/2015/01/27/using-fork-branch-git-workflow/
 .. _github_py_experimenter: https://github.com/tornede/py_experimenter/
 .. _github_py_experimenter_issues: https://github.com/tornede/py_experimenter/issues
