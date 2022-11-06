@@ -5,7 +5,7 @@
 How to Contribute
 ==================
 
-We would appreciate seeing you contributing to the `PyExperimenter`. If you have any new idea or have found a bug, please first make sure to check the existing `GitHub Issues <github_py_experimenter_issues_>`_. In case someone else have had a similar idea or has found the same bug, you could give further feedback on how to improve. Otherwise, please :ref:`create an according issue <contribute_create_issue>`. You are planning to work on this issue yourself, or you have found another issue you would like to work on? Great! Directly create a comment stating what exactly you are planning to do and :ref:`fork the project <contribute_fork_project>`. 
+We would appreciate seeing you contributing to the `PyExperimenter`. If you have any new idea or have found a bug, please first make sure to check the existing `GitHub Issues <github_py_experimenter_issues_>`_. In case someone else have had a similar idea or has found the same bug, you could give further feedback on how to improve. Otherwise, please :ref:`create an according issue <contribute_create_issue>`. You are planning to work on this issue yourself, or you have found another issue you would like to work on? Great! Directly create a comment stating what exactly you are planning to do and :ref:`setup the development workflow <contribute_fork_project>`.
 
 At the end, please make sure that you also :ref:`extended the unit tests <contribute_unit_tests>` and that all unit tests are working correctly. Additionally, please :ref:`update the documentation <contribute_update_documentation>` according to your changes. At the very end, :ref:`create a pull request <contribute_pull_request>` and mention the issue on which the changes are based, which contains important information for the review.
 
@@ -36,14 +36,14 @@ Help
 
 .. _contribute_fork_project:
 
-Fork Project
--------------
+Setup Development Workflow
+---------------------------
 
-The contribution workflow for the `PyExperimenter` is based on the fork-and-branch git workflow as described in this `blog post <fork_and_branch_workflow_>`_. The general steps are as follows:
+The development workflow for the `PyExperimenter` is based on the fork-and-branch git workflow as described in this `blog post <fork_and_branch_workflow_>`_. The general steps are as follows:
 
-1. Fork the GitHub repository: Log in to GitHub, go to the `PyExperimenter GitHub repository <github_py_experimenter_>`_ and click on ``Fork`` button in the top right corner.
+1. Fork the GitHub repository: Log into GitHub, go to the `PyExperimenter GitHub repository <github_py_experimenter_>`_ and click on ``Fork`` button in the top right corner.
    
-2. Clone your GitHub repository Fork: On your local machine, go into the folder where you want to clone the repository and clone your fork using the following command, but please ensure to replace ``<username>``.
+2. Clone your GitHub repository fork: On your local machine, go into the folder where you want to clone the repository and clone your fork using the following command, but please ensure to replace ``<username>``.
    
    .. code-block:: 
 
@@ -71,20 +71,31 @@ The contribution workflow for the `PyExperimenter` is based on the fork-and-bran
         conda create -n py-experimenter-env python=3.9 
         conda activate py-experimenter-env
 
-6. Install the development environment using :ref:`poetry <use_poetry>`.
+6. Install the development dependencies using :ref:`poetry <use_poetry>`.
    
    .. code-block::
 
         poetry install
 
+7. Make sure to install `pandoc` separately in your anaconda environment `as this article suggests <pandoc_installation_>`_.
 
-7. Check tests: Before working on any changes, please make sure that all unit tests are working correctly. Therefore, navigate into the git project folder and execute all unit tests.
+   .. code-block::
+
+        conda install pandoc
+
+8. Check tests: Before working on any changes, please make sure that all unit tests are working correctly. Therefore, navigate into the git project folder and execute all unit tests.
    
    .. code-block:: 
 
         pytest
 
-8. Finally you can start working on the planned changes! At any time, you can push your changes to the ``origin`` remote. 
+9. In case some tests are not succeeding due to `ValueError`s of `numpy`, try to update that dependency manually and execute the tests again (step 8).
+
+   .. code-block::
+
+        pip install numpy --upgrade
+
+10. Finally you can start working on the planned changes! At any time, you can push your changes to the ``origin`` remote.
    
    .. code-block:: 
 
@@ -96,43 +107,29 @@ The contribution workflow for the `PyExperimenter` is based on the fork-and-bran
 How to use Poetry
 -----------------
 
-`Poetry <poetry_>`_ is a dependency management and packaging tool for Python. It allows to declare the dependencies of your projects and it will manage (install / update) them for you. It also allows to build a package which can be uploaded to a package repository and installed via ``pip``. For installation instructions, please refer to the `Poetry documentation <poetry_docs_>`_.
+`Poetry <poetry_>`_ is a dependency management and packaging tool for Python. It allows to declare the dependencies of your projects and it will manage (install / update) them for you. It also allows to build a package which can be uploaded to a package repository and installed via ``pip``. For installation instructions and further useful commands than the ones listed below, please refer to the `Poetry documentation <poetry_docs_>`_.
 
-If you checked out the `PyExperimenter` repository, you can install the development environment using Poetry. Therefore, navigate into the git project folder and execute the following command:
+If you checked out the `PyExperimenter` repository, you can install the development dependencies using Poetry. To this end, navigate into the git project folder and execute the following command:
 
 .. code-block::
 
         poetry install
 
-To activate the virtual environment, execute the following command:
-
-.. code-block::
-
-        poetry shell
-
-Other than that, you can run commands using ``poetry run``. For example, to run the unit tests, execute the following command:
-
-.. code-block::
-
-        poetry run pytest
-
-You can add a new core dependency using the following command:
+You can add a new core dependency that is needed to use `PyExperimenter` using the first of the following commands, which will add the latest version of the package to the ``pyproject.toml`` file. If you want to add a specific version, you can use the second following command:
 
 .. code-block::
 
         poetry add <package_name>
-
-This will add the latest version of the package to the ``pyproject.toml`` file. If you want to add a specific version, you can use the following command:
-
-.. code-block::
-        
+        # or
         poetry add "<package_name>>=<version>"
 
-A development dependency can be added using the following command:
+A development dependency can be added using the following command, which will add the latest or the given version of the package to the `dev` dependency group:
 
 .. code-block::
 
         poetry add --group dev <package_name>
+        # or
+        poetry add --group dev "<package_name>>=<version>"
 
 The ``poetry.lock`` file will be updated automatically, when doing so. If you want to update the ``poetry.lock`` file manually, you can use the following command:
 
@@ -140,15 +137,11 @@ The ``poetry.lock`` file will be updated automatically, when doing so. If you wa
 
         poetry update
 
-Finally, if you want to build a package, you can use the following command:
+Finally, if you want to build a package, you can use the following command, which will create a ``dist`` folder containing the built package:
 
 .. code-block::
 
         poetry build
-
-This will create a ``dist`` folder containing the built package.
-
-There are also other useful commands, which you can find in the `Poetry documentation <poetry_docs_>`_.
 
 .. _contribute_unit_tests:
 
@@ -204,5 +197,6 @@ Afterwards, go to the `PyExperimenter GitHub Pull Requests <github_py_experiment
 .. _github_py_experimenter_issues: https://github.com/tornede/py_experimenter/issues
 .. _github_py_experimenter_pulls: https://github.com/tornede/py_experimenter/pulls
 .. _create_database_credential_file: https://tornede.github.io/py_experimenter/usage.html#database-credential-file
+.. _pandoc_installation: https://stackoverflow.com/questions/62398231/building-docs-fails-due-to-missing-pandoc
 .. _poetry: https://python-poetry.org/
 .. _poetry_docs: https://python-poetry.org/docs/

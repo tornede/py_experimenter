@@ -29,6 +29,7 @@ python = "^3.7"
 numpy = ">=1.15"
 pandas = ">=1.0"
 mysql-connector-python = ">=8.0"
+jupyterlab = "^3.5.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.0"
