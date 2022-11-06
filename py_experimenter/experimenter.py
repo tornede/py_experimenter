@@ -254,7 +254,7 @@ class PyExperimenter:
                 raise ValueError('The keyfields in the config file do not match the keyfields in the rows')
         self.dbconnector.fill_table(fixed_parameter_combinations=rows)
 
-    def execute(self, approach: Callable[[dict, dict, ResultProcessor], None], max_experiments: int = -1, random_order=False) -> None:
+    def execute(self, experiment_function: Callable[[dict, dict, ResultProcessor], None], max_experiments: int = -1, random_order=False) -> None:
         """
         Pulls open experiments from the database table and executes them.
         
@@ -263,14 +263,14 @@ class PyExperimenter:
         they are not selected based on their consecutive experiment ID, but rather chosen randomly. This slims the 
         chances of two instantiations of `PyExperimenter` pulling the same experiment ID at the same time.
 
-        Afterwards, the given `approach` is executed for each set of keyfield values, changing its status to 
+        Afterwards, the given `experiment_function` is executed for each set of keyfield values, changing its status to 
         `running`. Results can be continuously written to the database during the execution via the `ResultProcessor` 
-        that is given as parameter to the `approach`. If the execution was successful, the status of the corresponding 
+        that is given as parameter to the `experiment_function`. If the execution was successful, the status of the corresponding 
         experiment is set to `done`. Otherwise, if an error occured during the execution, the status is changed to 
         `error` and the raised error is logged to the database table. 
 
-        :param approach: The function that should be executed with the different parametrizations.
-        :type approach: Callable[[dict, dict, ResultProcessor], None]
+        :param experiment_function: The function that should be executed with the different parametrizations.
+        :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
         :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments 
             should be executed, -1 can be used. Defaults to -1. 
         :type max_experiments: int, optional
@@ -279,7 +279,7 @@ class PyExperimenter:
         :type random_order: bool, optional
         :raises InvalidValuesInConfiguration: If any value of the experiment parameters is of wrong type.
         """
-        logging.info("Start execution of approaches...")
+        logging.info("Start execution of experiment_functions...")
         keyfield_values = self.dbconnector.get_keyfield_values_to_execute()
 
         if random_order:
@@ -295,14 +295,14 @@ class PyExperimenter:
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
         result_processors = [ResultProcessor(self.config, self.database_credential_file_path, table_name=table_name, condition=p,
                                              result_fields=result_field_names) for p in keyfield_values]
-        approaches = [approach for _ in keyfield_values]
+        experiment_functions = [experiment_function for _ in keyfield_values]
         try:
             custom_fields = [dict(self.config.items('CUSTOM')) for _ in keyfield_values]
         except NoSectionError:
             custom_fields = [None for _ in keyfield_values]
 
         with concurrent.futures.ProcessPoolExecutor(max_workers=cpus) as executor:
-            executor.map(self._execution_wrapper, approaches, custom_fields, keyfield_values, result_processors)
+            executor.map(self._execution_wrapper, experiment_functions, custom_fields, keyfield_values, result_processors)
         logging.info("All executions finished")
 
     def get_table(self) -> pd.DataFrame:
@@ -314,20 +314,20 @@ class PyExperimenter:
         """
         return self.dbconnector.get_table()
 
-    def _execution_wrapper(self, approach: Callable[[dict, dict, ResultProcessor], None], custom_fields: dict, keyfields: dict, result_processor: ResultProcessor):
+    def _execution_wrapper(self, experiment_function: Callable[[dict, dict, ResultProcessor], None], custom_fields: dict, keyfields: dict, result_processor: ResultProcessor):
         """
-        Executes the given `approach` with the given `custom_fields`, `keyfields` and the according `result_processor`. 
+        Executes the given `experiment_function` with the given `custom_fields`, `keyfields` and the according `result_processor`. 
         Thereby, the status is set accordingly:
         
         * `running` when the execution of the experiment has been started, but not yet finished.
         * `error` if an exception was raised during the execution of the experiment.
         * `done` if the execution of the experiment has finished successfully.
 
-        :param approach: The function that should be executed with the different parametrizations.
-        :type approach: Callable[[dict, dict, ResultProcessor], None]
-        :param custom_fields: The custom field values to execute the `approach` with.
+        :param experiment_function: The function that should be executed with the different parametrizations.
+        :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
+        :param custom_fields: The custom field values to execute the `experiment_function` with.
         :type custom_fields: dict
-        :param keyfields: The keyfield values to execute the `approach` with. 
+        :param keyfields: The keyfield values to execute the `experiment_function` with. 
         :type keyfields: dict
         :param result_processor: The `ResultProcessor` that is responsible to update the database table.
         :type result_processor: ResultProcessor
@@ -337,8 +337,8 @@ class PyExperimenter:
             result_processor._set_name(self.name)
             result_processor._set_machine(socket.gethostname())
             try:
-                logging.debug(f"Start of approach on process {socket.gethostname()}")
-                approach(keyfields, result_processor, custom_fields)
+                logging.debug(f"Start of experiment_function on process {socket.gethostname()}")
+                experiment_function(keyfields, result_processor, custom_fields)
             except Exception:
                 error_msg = traceback.format_exc()
                 logging.error(error_msg)
