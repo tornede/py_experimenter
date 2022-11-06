@@ -105,7 +105,7 @@ All tests except one should will succeed without any adaptions. But the test for
 
         test/test_run_experiments/test_run_mysql_experiment.py
 
-If you have a mysql database available, `create a database configuration file <create_database_config_file_>`_ with the according information and execute the tests again. This time, all tests should succeed without further adaptions.
+If you have a mysql database available, `create a database credential file <create_database_credential_file_>`_ with the according information and execute the tests again. This time, all tests should succeed without further adaptions.
 
 
 .. _contribute_update_documentation:
@@ -141,4 +141,4 @@ Afterwards, go to the `PyExperimenter GitHub Pull Requests <github_py_experiment
 .. _github_py_experimenter: https://github.com/tornede/py_experimenter/
 .. _github_py_experimenter_issues: https://github.com/tornede/py_experimenter/issues
 .. _github_py_experimenter_pulls: https://github.com/tornede/py_experimenter/pulls
-.. _create_database_config_file: https://tornede.github.io/py_experimenter/usage.html#database-configuration-file
+.. _create_database_credential_file: https://tornede.github.io/py_experimenter/usage.html#database-credential-file

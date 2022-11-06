@@ -25,7 +25,7 @@ resultfields.timestamps = false
 path = sample_data
 ```
 
-- `provider`: Either `sqlite` or `mysql`. In case of `mysql` an additional [database configuration file](#database-configuration-file) has to be created.
+- `provider`: Either `sqlite` or `mysql`. In case of `mysql` an additional [database credential file](#database-credential-file) has to be created.
 - `database`: The name of the database.
 - `table`: The name of the table to write the experiment information into.
 - `keyfields`: The columns of the table that will define the execution of the experiments. Optionally, the field types can be attached. For each keyfield, an additional entry to the config file with the same name has to be added, which defines the domain of the keyfield.
@@ -46,9 +46,9 @@ Optionally, custom configurations can be defined under the `CUSTOM` section, whi
 
 ---
 
-## Database Configuration File
+## Database Credential File
 
-When working with `MySQL` as a database provider, an additional database configuration file is needed, containing the credentials for accessing the database:
+When working with `MySQL` as a database provider, an additional database credential file is needed, containing the credentials for accessing the database:
 
 ```conf
 [CREDENTIALS]
@@ -117,7 +117,7 @@ experimenter = PyExperimenter()
 Additionally, further information can be given to the `PyExperimenter`:
 
 - `experiment_configuration_file_path`: The path of the [experiment configuration file](#experiment-configuration-file). Default: `config/configuration.cfg`
-- `database_credential_file_path`: The path of the [database credentials file](#database-configuration-file). Default: `config/database_credentials.cfg`
+- `database_credential_file_path`: The path of the [database credential file](#database-credential-file). Default: `config/database_credentials.cfg`
 - `database_name`: The name of the database to manage the experiments.
 - `table_name`: The name of the database table to manage the experiments.
 - `name`: The name of the experimenter, which will be added to the database table of each executed experiment by this `PyExperimenter`. If using parallel HPC, this is meant to be used for the job ID, so that the according log file can easily be found.
