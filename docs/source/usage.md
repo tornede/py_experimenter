@@ -116,8 +116,8 @@ experimenter = PyExperimenter()
 
 Additionally, further information can be given to the `PyExperimenter`:
 
-- `config_file`: The path of the [experiment configuration file](#experiment-configuration-file). Default: `config/configuration.cfg`
-- `credential_path`: The path of the [database credentials file](#database-configuration-file). Default: `config/database_credentials.cfg`
+- `experiment_configuration_file_path`: The path of the [experiment configuration file](#experiment-configuration-file). Default: `config/configuration.cfg`
+- `database_credential_file_path`: The path of the [database credentials file](#database-configuration-file). Default: `config/database_credentials.cfg`
 - `database_name`: The name of the database to manage the experiments.
 - `table_name`: The name of the database table to manage the experiments.
 - `name`: The name of the experimenter, which will be added to the database table of each executed experiment by this `PyExperimenter`. If using parallel HPC, this is meant to be used for the job ID, so that the according log file can easily be found.
@@ -180,7 +180,7 @@ Each database table contains a `status` column, summarizing the current state of
 
 ### Obtain Results
 
-The current content of the database table can be obtained as `pandas.Dataframe`. This can be used to generate a result table and export it to LaTeX.
+The current content of the database table can be obtained as `pandas.DataFrame`. This can be used to generate a result table and export it to LaTeX.
 
 ```python
 result_table = experimenter.get_table()

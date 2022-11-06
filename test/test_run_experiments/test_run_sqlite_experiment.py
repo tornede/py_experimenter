@@ -45,7 +45,7 @@ def delete_existing_table(experimenter):
 
 def test_run_all_sqlite_experiments():
     logging.basicConfig(level=logging.DEBUG)
-    experimenter= PyExperimenter(config_file=os.path.join('test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg'))
+    experimenter= PyExperimenter(experiment_configuration_file_path=os.path.join('test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg'))
     delete_existing_table(experimenter)
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, 1)
@@ -60,7 +60,7 @@ def test_run_all_sqlite_experiments():
     assert entries_without_metadata == (1, 1, 1, 'done', 'PyExperimenter', '0.8414709848078965', '0.5403023058681398', None)
     experimenter.dbconnector.close_connection(connection)
 
-    experimenter= PyExperimenter(config_file=os.path.join('test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg'))
+    experimenter= PyExperimenter(experiment_configuration_file_path=os.path.join('test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg'))
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, -1)
     check_done_entries(experimenter, 30)

@@ -44,9 +44,9 @@ def delete_existing_table(experimenter):
 
 
 def test_run_all_mqsql_experiments():
-    config_file = os.path.join('test', 'test_run_experiments', 'test_run_mysql_experiment_config.cfg')
+    experiment_configuration_file_path = os.path.join('test', 'test_run_experiments', 'test_run_mysql_experiment_config.cfg')
     logging.basicConfig(level=logging.DEBUG)
-    experimenter = PyExperimenter(config_file=config_file)
+    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path)
     try:
         delete_existing_table(experimenter)
     except ProgrammingError as e:
@@ -64,7 +64,7 @@ def test_run_all_mqsql_experiments():
     assert entries_without_metadata == (1, 1, 1, 'done', 'PyExperimenter', '0.8414709848078965', '0.5403023058681398', None)
     experimenter.dbconnector.close_connection(connection)
 
-    experimenter = PyExperimenter(config_file=config_file)
+    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path)
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, -1)
     check_done_entries(experimenter, 30)

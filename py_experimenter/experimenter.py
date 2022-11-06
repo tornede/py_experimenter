@@ -23,30 +23,30 @@ class PyExperimenter:
     """
 
     def __init__(self,
-                 config_file: str = os.path.join('config', 'configuration.cfg'),
-                 credential_path: str = os.path.join('config', 'database_credentials.cfg'),
+                 experiment_configuration_file_path: str = os.path.join('config', 'configuration.cfg'),
+                 database_credential_file_path: str = os.path.join('config', 'database_credentials.cfg'),
                  table_name: str = None,
                  database_name: str = None,
                  name='PyExperimenter'):
         """
         Initializes the PyExperimenter with the given information.
 
-        :param config_file: The path to the experiment configuration file. Defaults to 'config/configuration.cfg'.
-        :type config_file: str, optional
-        :param credential_path: The path to the database configuration file storing the credentials for the database connection, i.e., host, user and password. Defaults to 'config/database_credentials.cfg'.
-        :type credential_path: str, optional
-        :param table_name: The name of the database table, if given it will overwrite the one given in the `config_file`. If None, the table table name is taken from the experiment configuration file. Defaults to None.
+        :param experiment_configuration_file_path: The path to the experiment configuration file. Defaults to 'config/configuration.cfg'.
+        :type experiment_configuration_file_path: str, optional
+        :param database_credential_file_path: The path to the database configuration file storing the credentials for the database connection, i.e., host, user and password. Defaults to 'config/database_credentials.cfg'.
+        :type database_credential_file_path: str, optional
+        :param table_name: The name of the database table, if given it will overwrite the one given in the `experiment_configuration_file_path`. If None, the table table name is taken from the experiment configuration file. Defaults to None.
         :type table_name: str, optional
-        :param database_name: The name of the database, if given it will overwrite the one given in the `config_file`. If None, the database name is taken from the experiment configuration file. Defaults to None.
+        :param database_name: The name of the database, if given it will overwrite the one given in the `experiment_configuration_file_path`. If None, the database name is taken from the experiment configuration file. Defaults to None.
         :type database_name: str, optional
         :param name: The name of the PyExperimenter, which will be logged in the according column in the database table. Defaults to 'PyExperimenter'.
         :type name: str, optional
         :raises InvalidConfigError: If either the experiment or database configuration are missing mandatory information.
         :raises ValueError: If an unsupported or unknown database connection provider is given.
         """
-        self.config = utils.load_config(config_file)
-        self.credential_path = credential_path
-        if not PyExperimenter._is_valid_configuration(self.config, credential_path):
+        self.config = utils.load_config(experiment_configuration_file_path)
+        self.database_credential_file_path = database_credential_file_path
+        if not PyExperimenter._is_valid_configuration(self.config, database_credential_file_path):
             raise InvalidConfigError('Invalid configuration')
 
         if table_name is not None:
@@ -55,13 +55,13 @@ class PyExperimenter:
             self.config.set('PY_EXPERIMENTER', 'database', database_name)
         self.name= name
 
-        self.config_file = config_file
+        self.experiment_configuration_file_path = experiment_configuration_file_path
         self.timestamp_on_result_fields = utils.timestamps_for_result_fields(self.config)
 
         if self.config['PY_EXPERIMENTER']['provider'] == 'sqlite':
             self.dbconnector = DatabaseConnectorLITE(self.config)
         elif self.config['PY_EXPERIMENTER']['provider'] == 'mysql':
-            self.dbconnector = DatabaseConnectorMYSQL(self.config, credential_path)
+            self.dbconnector = DatabaseConnectorMYSQL(self.config, database_credential_file_path)
         else:
             raise ValueError('The provider indicated in the config file is not supported')
 
@@ -82,7 +82,7 @@ class PyExperimenter:
         if not self.config.has_section(section_name):
             self.config.add_section(section_name)
         self.config.set(section_name, key, value)
-        PyExperimenter._is_valid_configuration(self.config, self.credential_path)
+        PyExperimenter._is_valid_configuration(self.config, self.database_credential_file_path)
 
     def get_config_value(self, section_name: str, key: str) -> str:
         """
@@ -282,7 +282,7 @@ class PyExperimenter:
         except ValueError:
             raise InvalidValuesInConfiguration('cpu.max must be an integer')
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
-        result_processors = [ResultProcessor(self.config, self.credential_path, table_name=table_name, condition=p,
+        result_processors = [ResultProcessor(self.config, self.database_credential_file_path, table_name=table_name, condition=p,
                                              result_fields=result_field_names) for p in keyfield_values]
         approaches = [approach for _ in keyfield_values]
         try:
