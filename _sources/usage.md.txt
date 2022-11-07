@@ -25,7 +25,7 @@ resultfields.timestamps = false
 path = sample_data
 ```
 
-- `provider`: Either `sqlite` or `mysql`. In case of `mysql` an additional [database configuration file](#database-configuration-file) has to be created.
+- `provider`: Either `sqlite` or `mysql`. In case of `mysql` an additional [database credential file](#database-credential-file) has to be created.
 - `database`: The name of the database.
 - `table`: The name of the table to write the experiment information into.
 - `keyfields`: The columns of the table that will define the execution of the experiments. Optionally, the field types can be attached. For each keyfield, an additional entry to the config file with the same name has to be added, which defines the domain of the keyfield.
@@ -46,9 +46,9 @@ Optionally, custom configurations can be defined under the `CUSTOM` section, whi
 
 ---
 
-## Database Configuration File
+## Database Credential File
 
-When working with `MySQL` as a database provider, an additional database configuration file is needed, containing the credentials for accessing the database:
+When working with `MySQL` as a database provider, an additional database credential file is needed, containing the credentials for accessing the database:
 
 ```conf
 [CREDENTIALS]
@@ -116,8 +116,8 @@ experimenter = PyExperimenter()
 
 Additionally, further information can be given to the `PyExperimenter`:
 
-- `config_file`: The path of the [experiment configuration file](#experiment-configuration-file). Default: `config/configuration.cfg`
-- `credential_path`: The path of the [database credentials file](#database-configuration-file). Default: `config/database_credentials.cfg`
+- `experiment_configuration_file_path`: The path of the [experiment configuration file](#experiment-configuration-file). Default: `config/configuration.cfg`
+- `database_credential_file_path`: The path of the [database credential file](#database-credential-file). Default: `config/database_credentials.cfg`
 - `database_name`: The name of the database to manage the experiments.
 - `table_name`: The name of the database table to manage the experiments.
 - `name`: The name of the experimenter, which will be added to the database table of each executed experiment by this `PyExperimenter`. If using parallel HPC, this is meant to be used for the job ID, so that the according log file can easily be found.
@@ -153,15 +153,20 @@ experimenter.fill_table_with_rows(rows=[
 
 ### Execute Experiments
 
-An experiment can be executed given:
+An experiment can be executed easily with the following call:
 
-- `run_experiment` is the [experiment funtion](#defining-the-experiment-function) described above.
+```python
+experimenter.execute(
+    experiment_function = run_experiment, 
+    max_experiments = -1, 
+    random_order = True
+)
+```
+
+- `experiment_function` is the [experiment funtion](#defining-the-experiment-function) described above.
 - `max_experiments` determines how many experiments will be executed by this `PyExperimenter`. If set to `-1`, it will execute experiments in a sequential fashion until no more open experiments are available.
 - `random_order` determines if the order in which experiments are selected for execution should be random. This is especially important to be turned on, if the execution is parallelized, e.g. on an HPC cluster.  
 
-```python
-experimenter.execute(run_experiment, max_experiments=-1, random_order=True)
-```
 
 ### Reset Experiments
 
@@ -180,7 +185,7 @@ Each database table contains a `status` column, summarizing the current state of
 
 ### Obtain Results
 
-The current content of the database table can be obtained as `pandas.Dataframe`. This can be used to generate a result table and export it to LaTeX.
+The current content of the database table can be obtained as `pandas.DataFrame`. This can be used to generate a result table and export it to LaTeX.
 
 ```python
 result_table = experimenter.get_table()

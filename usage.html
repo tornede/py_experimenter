@@ -48,7 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#experiment-configuration-file">Experiment Configuration File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#database-configuration-file">Database Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database-credential-file">Database Credential File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#defining-the-experiment-function">Defining the Experiment Function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#executing-the-pyexperimenter">Executing the PyExperimenter</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#creating-a-pyexperimenter">Creating a PyExperimenter</a></li>
@@ -148,7 +148,7 @@ path = sample_data
 </pre></div>
 </div>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">provider</span></code>: Either <code class="docutils literal notranslate"><span class="pre">sqlite</span></code> or <code class="docutils literal notranslate"><span class="pre">mysql</span></code>. In case of <code class="docutils literal notranslate"><span class="pre">mysql</span></code> an additional <a class="reference external" href="#database-configuration-file">database configuration file</a> has to be created.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">provider</span></code>: Either <code class="docutils literal notranslate"><span class="pre">sqlite</span></code> or <code class="docutils literal notranslate"><span class="pre">mysql</span></code>. In case of <code class="docutils literal notranslate"><span class="pre">mysql</span></code> an additional <a class="reference external" href="#database-credential-file">database credential file</a> has to be created.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">database</span></code>: The name of the database.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">table</span></code>: The name of the table to write the experiment information into.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">keyfields</span></code>: The columns of the table that will define the execution of the experiments. Optionally, the field types can be attached. For each keyfield, an additional entry to the config file with the same name has to be added, which defines the domain of the keyfield.</p></li>
@@ -165,9 +165,9 @@ path = sample_data
 <p>Optionally, custom configurations can be defined under the <code class="docutils literal notranslate"><span class="pre">CUSTOM</span></code> section, which will be ignored when creating or filling the database, but can provide fixed parameters for the actual execution of experiments. A common example is the path to some folder in which the data is located.</p>
 </section>
 <hr class="docutils" />
-<section id="database-configuration-file">
-<h2>Database Configuration File<a class="headerlink" href="#database-configuration-file" title="Permalink to this heading"></a></h2>
-<p>When working with <code class="docutils literal notranslate"><span class="pre">MySQL</span></code> as a database provider, an additional database configuration file is needed, containing the credentials for accessing the database:</p>
+<section id="database-credential-file">
+<h2>Database Credential File<a class="headerlink" href="#database-credential-file" title="Permalink to this heading"></a></h2>
+<p>When working with <code class="docutils literal notranslate"><span class="pre">MySQL</span></code> as a database provider, an additional database credential file is needed, containing the credentials for accessing the database:</p>
 <div class="highlight-conf notranslate"><div class="highlight"><pre><span></span>[CREDENTIALS]
 host = &lt;host&gt;
 user = &lt;user&gt;
@@ -226,8 +226,8 @@ password = &lt;password&gt;
 </div>
 <p>Additionally, further information can be given to the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">config_file</span></code>: The path of the <a class="reference external" href="#experiment-configuration-file">experiment configuration file</a>. Default: <code class="docutils literal notranslate"><span class="pre">config/configuration.cfg</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">credential_path</span></code>: The path of the <a class="reference external" href="#database-configuration-file">database credentials file</a>. Default: <code class="docutils literal notranslate"><span class="pre">config/database_credentials.cfg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">experiment_configuration_file_path</span></code>: The path of the <a class="reference external" href="#experiment-configuration-file">experiment configuration file</a>. Default: <code class="docutils literal notranslate"><span class="pre">config/configuration.cfg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">database_credential_file_path</span></code>: The path of the <a class="reference external" href="#database-credential-file">database credential file</a>. Default: <code class="docutils literal notranslate"><span class="pre">config/database_credentials.cfg</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">database_name</span></code>: The name of the database to manage the experiments.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">table_name</span></code>: The name of the database table to manage the experiments.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The name of the experimenter, which will be added to the database table of each executed experiment by this <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>. If using parallel HPC, this is meant to be used for the job ID, so that the according log file can easily be found.</p></li>
@@ -262,15 +262,19 @@ password = &lt;password&gt;
 </section>
 <section id="execute-experiments">
 <h3>Execute Experiments<a class="headerlink" href="#execute-experiments" title="Permalink to this heading"></a></h3>
-<p>An experiment can be executed given:</p>
+<p>An experiment can be executed easily with the following call:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+    <span class="n">experiment_function</span> <span class="o">=</span> <span class="n">run_experiment</span><span class="p">,</span> 
+    <span class="n">max_experiments</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+    <span class="n">random_order</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">run_experiment</span></code> is the <a class="reference external" href="#defining-the-experiment-function">experiment funtion</a> described above.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">experiment_function</span></code> is the <a class="reference external" href="#defining-the-experiment-function">experiment funtion</a> described above.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">max_experiments</span></code> determines how many experiments will be executed by this <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>. If set to <code class="docutils literal notranslate"><span class="pre">-1</span></code>, it will execute experiments in a sequential fashion until no more open experiments are available.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">random_order</span></code> determines if the order in which experiments are selected for execution should be random. This is especially important to be turned on, if the execution is parallelized, e.g. on an HPC cluster.</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">run_experiment</span><span class="p">,</span> <span class="n">max_experiments</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
 </section>
 <section id="reset-experiments">
 <h3>Reset Experiments<a class="headerlink" href="#reset-experiments" title="Permalink to this heading"></a></h3>
@@ -288,7 +292,7 @@ password = &lt;password&gt;
 </section>
 <section id="obtain-results">
 <h3>Obtain Results<a class="headerlink" href="#obtain-results" title="Permalink to this heading"></a></h3>
-<p>The current content of the database table can be obtained as <code class="docutils literal notranslate"><span class="pre">pandas.Dataframe</span></code>. This can be used to generate a result table and export it to LaTeX.</p>
+<p>The current content of the database table can be obtained as <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>. This can be used to generate a result table and export it to LaTeX.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result_table</span> <span class="o">=</span> <span class="n">experimenter</span><span class="o">.</span><span class="n">get_table</span><span class="p">()</span>
 <span class="n">result_table</span> <span class="o">=</span> <span class="n">result_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;dataset&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()[[</span><span class="s1">&#39;seed&#39;</span><span class="p">]]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result_table</span><span class="o">.</span><span class="n">to_latex</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;seed&#39;</span><span class="p">],</span> <span class="n">index_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">]))</span>

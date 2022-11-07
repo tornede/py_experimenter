@@ -160,7 +160,7 @@
       "source": [
         "from py_experimenter.experimenter import PyExperimenter\n",
         "\n",
-        "experimenter = PyExperimenter(config_file=os.path.join('config', 'configuration.cfg'), name='example_notebook')"
+        "experimenter = PyExperimenter(experiment_configuration_file_path=os.path.join('config', 'configuration.cfg'), name='example_notebook')"
       ]
     },
     {

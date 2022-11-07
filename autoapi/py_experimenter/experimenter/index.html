@@ -138,79 +138,255 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.experimenter.PyExperimenter" title="py_experimenter.experimenter.PyExperimenter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyExperimenter</span></code></a></p></td>
-<td><p>Module that connects the execution of different machine learning experiments with a database.</p></td>
+<td><p>Module handling the initialization, execution and collection of experiments and their respective results.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.experimenter.</span></span><span class="sig-name descname"><span class="pre">PyExperimenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">os.path.join('config',</span> <span class="pre">'configuration.cfg')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credential_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">os.path.join('config',</span> <span class="pre">'database_credentials.cfg')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PyExperimenter'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter" title="Permalink to this definition"></a></dt>
-<dd><p>Module that connects the execution of different machine learning experiments with a database.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.experimenter.</span></span><span class="sig-name descname"><span class="pre">PyExperimenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_configuration_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">os.path.join('config',</span> <span class="pre">'configuration.cfg')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_credential_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">os.path.join('config',</span> <span class="pre">'database_credentials.cfg')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PyExperimenter'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter" title="Permalink to this definition"></a></dt>
+<dd><p>Module handling the initialization, execution and collection of experiments and their respective results.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.set_config_value">
 <span class="sig-name descname"><span class="pre">set_config_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.set_config_value" title="Permalink to this definition"></a></dt>
-<dd><p>Sets a value in the configuration file. If the section does not exist, it is created.
-:param section_name: Name of the section in the configuration file.
-:param key: Name of the key in the configuration file.
-:param value: Value to set.</p>
+<dd><p>Modifies the experiment configuration so that within the given <cite>section_name</cite> the value of the  property identified by
+the given <cite>key</cite> is overwritten, or created if it was not existing beforehand.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>section_name</strong> (<em>str</em>) – The name of the section of the experiment configuration in which a value should be set.</p></li>
+<li><p><strong>key</strong> (<em>str</em>) – The name of the key identifying the property within the given section whose value should be set.</p></li>
+<li><p><strong>value</strong> (<em>str</em>) – The value which should be set to the property identified by the given key in the given section.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../py_experimenter_exceptions/index.html#py_experimenter.py_experimenter_exceptions.InvalidConfigError" title="py_experimenter.py_experimenter_exceptions.InvalidConfigError"><strong>InvalidConfigError</strong></a> – If the modified configuration either misses, or has invalid information.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.get_config_value">
 <span class="sig-name descname"><span class="pre">get_config_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.get_config_value" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Returns the value of the property of the experiment configuration identified by the given key. If the <cite>key</cite>
+is not contained within the section, an exception is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>section_name</strong> (<em>str</em>) – The name of the section containing the property whose value should be returned.</p></li>
+<li><p><strong>key</strong> (<em>str</em>) – The name of the key identifying the property within the given section of the experiment
+configuration of which a value should be returned.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The value of the property identified by the given key within the section <cite>section_name</cite> of the
+experiment configuration.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>NoOptionError</strong> – If the section called <cite>section_name</cite> is not part of the experiment configuration, or
+the <cite>key</cite> is not contained within that section.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.has_option">
 <span class="sig-name descname"><span class="pre">has_option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.has_option" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Checks whether the experiment configuration contains a property identified by the given ‘key’ within the
+section called ‘section_name’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>section_name</strong> (<em>str</em>) – The name of the section of the experiment configuration of which the <cite>key</cite> should be
+checked.</p></li>
+<li><p><strong>key</strong> (<em>str</em>) – The name of the key to check within the given section.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if the given <cite>key</cite> is contained in the experiment configuration within the section called
+<cite>section_name</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter._valid_configuration">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_valid_configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credential_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._valid_configuration" title="Permalink to this definition"></a></dt>
-<dd><p>This method checks if the configuration is valid.</p>
+<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter._is_valid_configuration">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_is_valid_configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_credential_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._is_valid_configuration" title="Permalink to this definition"></a></dt>
+<dd><p>Checks whether the given experiment configuration is valid, i.e., it contains all necessary fields, the database provider
+is either mysql or sqlite, and in case of a mysql database provider, that the database credentials are available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_config</strong> (<em>configparser</em>) – The experiment configuration.</p></li>
+<li><p><strong>database_credential_file_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to the database configuration file, i.e., the file defining
+the host, user and password. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if the experiment configuration contains all necessary fields.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.fill_table_from_combination">
 <span class="sig-name descname"><span class="pre">fill_table_from_combination</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fixed_parameter_combinations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.fill_table_from_combination" title="Permalink to this definition"></a></dt>
-<dd><p>Create (if not exist) and fill table in database with parameter combinations. If there are already entries in
-the table, only parameter combinations for which there is no entry in the database will be added. The status
-of this parameter combination is set to ‘created’.</p>
-<p>The combinations are calculated as follows: the cartesian product of the parameters and fixed_parameter_combinations.
-parameter1 X parameter2 X {fixed_parameter_combination1, fixed_parameter_combination2, …}</p>
-<p>If the combinations of fixed_parameter_combinations, parameters, and config_parameters do not match the
-keyfields given in the config file, an error is raised.</p>
-<p>param parameters: Dictionary with parameters that are used for the cartesian product
-param fixed_parameter_combinations: List of fixed parameter combinations.</p>
+<dd><p>Adds rows to the database table based on the given information.</p>
+<p>First the existence of the database table is checked. If it does not exist, the database table is created
+based on the information in the experiment configuration file the <cite>PyExperimenter</cite> has been initialized
+with.</p>
+<p>Afterwards, the database table is filled. To this end, the cartesian product of all <cite>parameters</cite> and the
+<cite>fixed_parameter_combinations</cite> is built, where each combination will make up a row in the database table.
+Note that only rows are added whose parameter combinations do not already exist in the database table.
+For each added row the status is set to ‘created’. If any parameter of the combinations (rows) does not
+match the keyfields from the experiment configuration, an error is raised.</p>
+<p>In the following, an example call of this method is given:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fill_table_from_combination</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="n">fixed_parameter_combinations</span> <span class="o">=</span> <span class="p">[</span> <span class="p">{</span> <span class="n">a</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="n">a2</span><span class="p">:</span><span class="mi">2</span> <span class="p">},</span> <span class="p">{</span> <span class="n">a</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="n">a2</span><span class="p">:</span><span class="mi">4</span> <span class="p">}</span> <span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span> <span class="n">b</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">c</span><span class="p">:[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;dog&#39;</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The according table with four columns [a, a2, b, c] is filled with the following rows:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span> <span class="n">a</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="n">a2</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span><span class="s1">&#39;cat&#39;</span> <span class="p">},</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span> <span class="n">a</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="n">a2</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span><span class="s1">&#39;dog&#39;</span> <span class="p">},</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span> <span class="n">a</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="n">a2</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span><span class="s1">&#39;cat&#39;</span> <span class="p">},</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span> <span class="n">a</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="n">a2</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span><span class="s1">&#39;dog&#39;</span> <span class="p">},</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span> <span class="n">a</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="n">a2</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span><span class="s1">&#39;cat&#39;</span> <span class="p">},</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span> <span class="n">a</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="n">a2</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span><span class="s1">&#39;dog&#39;</span> <span class="p">},</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span> <span class="n">a</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="n">a2</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span><span class="s1">&#39;cat&#39;</span> <span class="p">},</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span> <span class="n">a</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="n">a2</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span><span class="s1">&#39;dog&#39;</span> <span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fixed_parameter_combinations</strong> (<em>List</em><em>[</em><em>dict</em><em>]</em><em>, </em><em>optional</em>) – List of predefined parameter combinations (each of type dict).
+Defaults to None.</p></li>
+<li><p><strong>parameters</strong> (<em>dict</em><em>, </em><em>optional</em>) – Dictionary of parameters and their lists of possible values. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../py_experimenter_exceptions/index.html#py_experimenter.py_experimenter_exceptions.ParameterCombinationError" title="py_experimenter.py_experimenter_exceptions.ParameterCombinationError"><strong>ParameterCombinationError</strong></a> – If any parameter of the combinations (rows) does not match the keyfields
+from the experiment configuration.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.fill_table_from_config">
 <span class="sig-name descname"><span class="pre">fill_table_from_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.fill_table_from_config" title="Permalink to this definition"></a></dt>
-<dd><p>Create (if not exist) and fill table in database with parameter combinations. If there are already entries in
-the table, only parameter combinations for which there is no entry in the database will be added. The status
-of this parameter combination is set to ‘created’.</p>
+<dd><p>Adds rows to the database table based on the experiment configuration file.</p>
+<p>First the existence of the database table is checked. If it does not exist, the database table is created
+based on the information from the experiment configuration file the <cite>PyExperimenter</cite> has been initialized
+with.</p>
+<p>Afterwards, the database table is filled. To this end, the cartesian product of all <cite>keyfields</cite> from the
+experiment configuration file is build, where each combination will make up a row in the database table.
+Note that only rows are added whose parameter combinations do not already exist in the table. For each
+added row the status is set to ‘created’. If the <cite>keyfield</cite> values do not match their respective types an
+error is raised.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.fill_table_with_rows">
 <span class="sig-name descname"><span class="pre">fill_table_with_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.fill_table_with_rows" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Adds rows to the database table based on the given list of <cite>rows</cite>.</p>
+<p>First the existence of the database table is checked. If it does not exist, the database table is created
+based on the information from the experiment configuration file the <cite>PyExperimenter</cite> has been initialized with.</p>
+<p>Afterwards, the database table is filled with the list of <cite>rows</cite>. Note that only rows are added whose
+parameter combinations do not already exist in the table. For each added row the status will is to ‘created’.
+If any parameter of <cite>rows</cite> does not match the keyfields from the experiment configuration, an error is
+raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rows</strong> (<em>List</em><em>[</em><em>dict</em><em>]</em>) – A list of rows, where each entry is made up of a dict containing a key-value-pair for each
+<cite>keyfield</cite> of the experiment configuration file.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any key of any row in <cite>rows</cite> does not match the <cite>keyfields</cite> from the experiment
+configuration file</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.execute">
-<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">approach</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_experiments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.execute" title="Permalink to this definition"></a></dt>
-<dd><p>Execute approach for max_experiment parameter combinations that are in the database and have status ‘created’.
-If the execution was successful, the status is changed to done and the results are written into the database.
-If an errors that occurs during execution the status is changed to error and the error is written into the database.</p>
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><span class="pre">py_experimenter.result_processor.ResultProcessor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_experiments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.execute" title="Permalink to this definition"></a></dt>
+<dd><p>Pulls open experiments from the database table and executes them.</p>
+<p>First the keyfield values of as many open experiments as given via <cite>max_experiments</cite> are pulled from the
+database table. An experiment is considered to be open if its status is ‘created’. In case of <cite>random_order</cite>,
+they are not selected based on their consecutive experiment ID, but rather chosen randomly. This slims the
+chances of two instantiations of <cite>PyExperimenter</cite> pulling the same experiment ID at the same time. The
+amount of cpus (defined in the configuration file) determines the amount of jobs run in parallel.</p>
+<p>Afterwards, the given <cite>experiment_function</cite> is executed for each set of keyfield values, changing its status to
+<cite>running</cite>. Results can be continuously written to the database during the execution via the <cite>ResultProcessor</cite>
+that is given as parameter to the <cite>experiment_function</cite>. If the execution was successful, the status of the corresponding
+experiment is set to <cite>done</cite>. Otherwise, if an error occurred during the execution, the status is changed to
+<cite>error</cite> and the raised error is logged to the database table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>approach</strong> – Function to execute an experiment.</p></li>
-<li><p><strong>max_experiments</strong> – Max number of experiments to execute. If max_experiments is -1, all experiments are executed.</p></li>
-<li><p><strong>random_order</strong> – Execute experiments in a random order.</p></li>
+<li><p><strong>experiment_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>dict</em><em>, </em><em>dict</em><em>, </em><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><em>ResultProcessor</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – The function that should be executed with the different parametrizations.</p></li>
+<li><p><strong>max_experiments</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of experiments to be executed by this <cite>PyExperimenter</cite>. If all experiments
+should be executed, -1 can be used. Defaults to -1.</p></li>
+<li><p><strong>random_order</strong> (<em>bool</em><em>, </em><em>optional</em>) – Indicates whether the experiments to be executed are chosen consecutively by its experiment
+ID (<cite>False</cite>) or in a randomized fashion (<cite>True</cite>). Defaults to False.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../py_experimenter_exceptions/index.html#py_experimenter.py_experimenter_exceptions.InvalidValuesInConfiguration" title="py_experimenter.py_experimenter_exceptions.InvalidValuesInConfiguration"><strong>InvalidValuesInConfiguration</strong></a> – If any value of the experiment parameters is of wrong data type.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter._execution_wrapper">
+<span class="sig-name descname"><span class="pre">_execution_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><span class="pre">py_experimenter.result_processor.ResultProcessor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyfields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_processor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><span class="pre">py_experimenter.result_processor.ResultProcessor</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._execution_wrapper" title="Permalink to this definition"></a></dt>
+<dd><p>Executes the given <cite>experiment_function</cite> with the given <cite>custom_fields</cite>, <cite>keyfields</cite> and the according <cite>result_processor</cite>.
+Thereby, the status is set accordingly:</p>
+<ul class="simple">
+<li><p><cite>running</cite> when the execution of the experiment has been started, but not yet finished.</p></li>
+<li><p><cite>error</cite> if an exception was raised during the execution of the experiment.</p></li>
+<li><p><cite>done</cite> if the execution of the experiment has finished successfully.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>experiment_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>dict</em><em>, </em><em>dict</em><em>, </em><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><em>ResultProcessor</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – The function that should be executed with the different parametrizations.</p></li>
+<li><p><strong>custom_fields</strong> (<em>dict</em>) – The custom field values to execute the <cite>experiment_function</cite> with.</p></li>
+<li><p><strong>keyfields</strong> (<em>dict</em>) – The keyfield values to execute the <cite>experiment_function</cite> with.</p></li>
+<li><p><strong>result_processor</strong> (<a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><em>ResultProcessor</em></a>) – The <cite>ResultProcessor</cite> that is responsible to update the database table.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.reset_experiments">
+<span class="sig-name descname"><span class="pre">reset_experiments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.reset_experiments" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the experiments of the database table having the given <cite>status</cite>. Afterwards, all rows that have been
+deleted from the database table are added to the table again featuring <cite>created</cite> as a status. Experiments
+to reset can be selected based on the following status:</p>
+<ul class="simple">
+<li><p><cite>created</cite> when the experiment is added to the database table, execution has not started.</p></li>
+<li><p><cite>running</cite> when the execution of the experiment has been started.</p></li>
+<li><p><cite>error</cite> if something went wrong during the execution, i.e., an exception is raised</p></li>
+<li><p><cite>done</cite> if the execution finished successfully.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>status</strong> (<em>str</em>) – The status of experiments that should be reset.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -218,22 +394,16 @@ If an errors that occurs during execution the status is changed to error and the
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.get_table">
 <span class="sig-name descname"><span class="pre">get_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.get_table" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.execution_wrapper">
-<span class="sig-name descname"><span class="pre">execution_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">approach</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyfields</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_processor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><span class="pre">py_experimenter.result_processor.ResultProcessor</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.execution_wrapper" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.reset_experiments">
-<span class="sig-name descname"><span class="pre">reset_experiments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'error'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.reset_experiments" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter._extract_row_from_entries">
-<span class="sig-name descname"><span class="pre">_extract_row_from_entries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyfields</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._extract_row_from_entries" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Returns the database table as <cite>Pandas.DataFrame</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The database table as <cite>Pandas.DataFrame</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

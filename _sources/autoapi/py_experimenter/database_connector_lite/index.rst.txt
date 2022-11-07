@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: DatabaseConnectorLITE(_config)
+.. py:class:: DatabaseConnectorLITE(database_credential_file_path)
 
    Bases: :py:obj:`py_experimenter.database_connector.DatabaseConnector`
 

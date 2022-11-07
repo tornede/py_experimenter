@@ -168,7 +168,7 @@
    "source": [
     "from py_experimenter.experimenter import PyExperimenter\n",
     "\n",
-    "experimenter = PyExperimenter(config_file=os.path.join('config', 'configuration_cond.cfg'), name=\"SVM_experimenter_01\")"
+    "experimenter = PyExperimenter(experiment_configuration_file_path=os.path.join('config', 'configuration_cond.cfg'), name=\"SVM_experimenter_01\")"
    ]
   },
   {
