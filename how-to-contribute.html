@@ -80,8 +80,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>How to Contribute</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">How to Contribute</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/how-to-contribute.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -152,7 +152,8 @@
 </div>
 </li>
 <li><p>Create branch: Make sure that all branches are locally available and switch to the <code class="docutils literal notranslate"><span class="pre">develop</span></code> branch. Then create a new branch for your changes, but please ensure to replace <code class="docutils literal notranslate"><span class="pre">&lt;feature_branch_name&gt;</span></code> with some meaningful name.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">a</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">fetch</span> <span class="o">--</span><span class="nb">all</span>
+<span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">a</span>
 <span class="n">git</span> <span class="n">switch</span> <span class="n">develop</span>
 <span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="o">&lt;</span><span class="n">feature_branch_name</span><span class="o">&gt;</span>
 </pre></div>
