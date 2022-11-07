@@ -39,7 +39,7 @@ Help
 Setup Development Workflow
 ---------------------------
 
-The development workflow for the `PyExperimenter` is based on the fork-and-branch git workflow as described in this `blog post <fork_and_branch_workflow_>`_. The general steps are as follows:
+The development workflow for the ``PyExperimenter`` is based on the fork-and-branch git workflow as described in this `blog post <fork_and_branch_workflow_>`_. The general steps are as follows:
 
 1. Fork the GitHub repository: Log into GitHub, go to the `PyExperimenter GitHub repository <github_py_experimenter_>`_ and click on ``Fork`` button in the top right corner.
    
@@ -49,7 +49,7 @@ The development workflow for the `PyExperimenter` is based on the fork-and-branc
 
         git clone https://github.com/<username>/py_experimenter.git
 
-3. Add `PyExperimenter` remote: Add the original `PyExperimenter` repository as additional remote.
+3. Add ``PyExperimenter`` remote: Add the original ``PyExperimenter`` repository as additional remote.
    
    .. code-block:: 
 
@@ -89,7 +89,7 @@ The development workflow for the `PyExperimenter` is based on the fork-and-branc
 
         pytest
 
-9. In case some tests are not succeeding due to `ValueError`s of `numpy`, try to update that dependency manually and execute the tests again (step 8).
+9. In case some tests are not succeeding due to ``ValueError``s of ``numpy``, try to update that dependency manually and execute the tests again (step 8).
 
    .. code-block::
 
@@ -107,15 +107,17 @@ The development workflow for the `PyExperimenter` is based on the fork-and-branc
 How to use Poetry
 -----------------
 
-`Poetry <poetry_>`_ is a dependency management and packaging tool for Python. It allows to declare the dependencies of your projects and it will manage (install / update) them for you. It also allows to build a package which can be uploaded to a package repository and installed via ``pip``. For installation instructions and further useful commands than the ones listed below, please refer to the `Poetry documentation <poetry_docs_>`_.
+`Poetry <poetry_>`_ is a dependency management and packaging tool for Python. It allows to declare the dependencies of your projects and it will manage (install / update) them for you. It also allows to build a package which can be uploaded to a package repository and installed via ``pip``. 
 
-If you checked out the `PyExperimenter` repository, you can install the development dependencies using Poetry. To this end, navigate into the git project folder and execute the following command:
+For installation instructions and further useful commands than the ones listed below, please refer to the `Poetry documentation <poetry_docs_>`_. Please make sure to follow the described steps: do NOT use ``pip`` or ``conda`` for installation of Poetry itself, and make sure to add Poetry to your PATH. 
+
+If you checked out the ``PyExperimenter`` repository, you can install the development dependencies using Poetry. To this end, navigate into the git project folder and execute the following command:
 
 .. code-block::
 
         poetry install
 
-You can add a new core dependency that is needed to use `PyExperimenter` using the first of the following commands, which will add the latest version of the package to the ``pyproject.toml`` file. If you want to add a specific version, you can use the second following command:
+You can add a new core dependency that is needed to use ``PyExperimenter`` using the first of the following commands, which will add the latest version of the package to the ``pyproject.toml`` file. If you want to add a specific version, you can use the second following command:
 
 .. code-block::
 
@@ -123,7 +125,7 @@ You can add a new core dependency that is needed to use `PyExperimenter` using t
         # or
         poetry add "<package_name>>=<version>"
 
-A development dependency can be added using the following command, which will add the latest or the given version of the package to the `dev` dependency group:
+A development dependency can be added using the following command, which will add the latest or the given version of the package to the ``dev`` dependency group:
 
 .. code-block::
 
@@ -148,7 +150,7 @@ Finally, if you want to build a package, you can use the following command, whic
 Extend Unit Tests 
 ------------------
 
-To provide a good usability of the `PyExperimenter` it is mandatory to extend and update the unit tests for all changes. The tests are located in the ``test`` folder of the project, using the same folder structure than the actual code. Additionally, it is important to execute all unit tests to ensure no other functionality has been affected. Therefore, navigate into the git project folder and execute all unit tests.
+To provide a good usability of the ``PyExperimenter`` it is mandatory to extend and update the unit tests for all changes. The tests are located in the ``test`` folder of the project, using the same folder structure than the actual code. Additionally, it is important to execute all unit tests to ensure no other functionality has been affected. Therefore, navigate into the git project folder and execute all unit tests.
 
 .. code-block:: 
 
@@ -168,7 +170,7 @@ If you have a mysql database available, `create a database credential file <crea
 Update Documentation
 ---------------------
 
-The documentation of the `PyExperimenter` is key to all users to understand the functionality and the usability. Therefore, the documentation should be updated according to the changes. It is located in the ``docs`` folder of the project. Please check that the documentation can be built by first generating it locally. Therefore, navigate into the git project folder and execute shinx. The builded website can be found in the project folder ``output/documentation/``.
+The documentation of the ``PyExperimenter`` is key to all users to understand the functionality and the usability. Therefore, the documentation should be updated according to the changes. It is located in the ``docs`` folder of the project. Please check that the documentation can be built by first generating it locally. Therefore, navigate into the git project folder and execute shinx. The builded website can be found in the project folder ``output/documentation/``.
 
 .. code-block::
 
