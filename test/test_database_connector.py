@@ -47,8 +47,8 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
     close_connection_mock.return_value = None
     table_exists_mock.return_value = True
     table_has_correct_structure_mock.return_value = True
-    config = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
-    database_connector = DatabaseConnectorMYSQL(config, credential_path=os.path.join(
+    experiment_configuration_file_path = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
+    database_connector = DatabaseConnectorMYSQL(experiment_configuration_file_path, database_credential_file_path=os.path.join(
         'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
     database_connector.create_table_if_not_existing()
     create_table_string = create_table_string = ('CREATE TABLE test_table (ID int NOT NULL AUTO_INCREMENT, value int DEFAULT NULL,exponent int DEFAULT NULL,'
@@ -65,7 +65,7 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
 
 
 @pytest.mark.parametrize(
-    'config_file, parameters, fixed_parameter_combination, write_to_database_keys, write_to_database_values',
+    'experiment_configuration_file_path, parameters, fixed_parameter_combination, write_to_database_keys, write_to_database_values',
     [
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {'value': [1, 2], 'exponent': [3, 4]},
@@ -116,7 +116,7 @@ def test_fill_table(
         test_connection_mock,
         get_existing_rows_mock,
         write_to_database_mock,
-        config_file,
+        experiment_configuration_file_path,
         parameters,
         fixed_parameter_combination,
         write_to_database_keys,
@@ -126,9 +126,10 @@ def test_fill_table(
     get_existing_rows_mock.return_value = []
     write_to_database_mock.return_value = None
 
-    config = load_config(config_file)
-    database_connector = DatabaseConnectorMYSQL(config, credential_path=os.path.join(
-        'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
+    experiment_configuration = load_config(experiment_configuration_file_path)
+    database_connector = DatabaseConnectorMYSQL(
+        experiment_configuration, 
+        database_credential_file_path=os.path.join('test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
     database_connector.fill_table(parameters, fixed_parameter_combination)
     args = write_to_database_mock.call_args_list
 
