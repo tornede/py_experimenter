@@ -65,7 +65,7 @@ Those parameters define the experiment grid, based on which `PyExperimenter` set
 Once this table has been created, a `PyExperimenter` instance can be run on any machine, including a distributed system.
 Each instance automatically pulls open experiments from the database, executes the function provided by the user with the corresponding parameters defining the experiment and writes back the results computed by the function.
 Errors arising during the execution are logged in the database.
-In case of failed experiments or if desired otherwise, a subset of the experiments can be easily reset and restarted.
+In case of failed experiments or if desired otherwise, a subset of the experiments can be reset and restarted easily.
 After all experiments are done, results can be jointly exported as a Pandas DataFrame [@pandas] for further processing, such as generating a LaTeX table averaging over different seeds.
 
 ## Statement of Need
