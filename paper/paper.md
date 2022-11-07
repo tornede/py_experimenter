@@ -24,20 +24,20 @@ authors:
   - name: Jonas Hanselle
     orcid: 0000-0002-1231-4985
     affiliation: 1
-  - name: Marcel Wever
-    orcid: 0000-0001-9782-6818
-    affiliation: 2
   - name: Felix Mohr 
     orcid: 0000-0002-9293-2424
+    affiliation: 2
+  - name: Marcel Wever
+    orcid: 0000-0001-9782-6818
     affiliation: 3
 affiliations:
  - name: Department of Computer Science, Paderborn University, Germany
    index: 1
- - name: MCML, Institut for Informatics, LMU Munich, Germany
-   index: 2
  - name: Universidad de La Sabana, Chia, Cundinamarca, Colombia
+   index: 2
+ - name: MCML, Institut for Informatics, LMU Munich, Germany
    index: 3
-date: 4 November 2022
+date: 7 November 2022
 bibliography: paper.bib
 
 ---
