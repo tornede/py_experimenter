@@ -82,7 +82,7 @@ In contrast, `PyExperimenter` follows an inverted workflow.
 Instead of experiment runners registering experiments to a tracking entity such as a tracking server or database, the experiments are predefined and runners are pulling open experiments from a database.
 Similarly, ClearML [@clearml] and Polyaxon [@polyaxon] support a more generic workflow where experiments are first enqueued in a central orchestration server and agents can then pull tasks from the queue to execute them.
 However, both are much more heavyweight than `PyExperimenter` regarding the implementation of both the agents and backend-features. 
-Moreover, they are neither free nor completely open-source.
+Moreover, they are neither completely free nor completely open-source.
 
 In addition to the inverted workflow, a core property of `PyExperimenter` is that the user has direct access to the experiment database, which is usually not the case for alternative tools.
 This allows users to view, analyze and modify both the experiment inputs and results directly in the database, although not having to deal with the setup of the database itself.
