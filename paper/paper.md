@@ -1,5 +1,5 @@
 ---
-title: 'PyExperimenter: easily execute experiments and track results'
+title: 'PyExperimenter: Easily distribute experiments and track results'
 tags:
   - Python
 authors:
@@ -29,27 +29,44 @@ affiliations:
    index: 2
  - name: Universidad de La Sabana, Chia, Cundinamarca, Colombia
    index: 3
-date: 16 August 2022
+date: 13 Oktober 2022
 bibliography: paper.bib
 
 ---
 
 # Summary
 
-The `PyExperimenter` is a tool for the automatic execution of, e.g. machine learning (ML) experiments and capturing corresponding results in a unified manner in a database. It supports both sqlite or mysql backends. The experiments to conduct can be defined via a configuration file or in custom way through code. Based on that, a table with initial properties, e.g. different seeds for an ML algorithm, is filled. During execution, a custom defined function requested to compute the results for a single row of the table. Those results, e.g. performances, can be added to the table at the end of the execution. Errors occurring during the execution are logged in the database. Afterwards, experiment evaluation tables can be easily extracted, e.g. averaging over different seeds. 
+The `PyExperimenter` is a tool for the automatic execution of experiments, e.g. for machine learning (ML), capturing corresponding results in a unified manner in a database. It is designed based on the assumption that an experiment is uniquely defined by certain inputs, i.e., experiment parameters, and a function computing the results of the experiment based on these input parameters. The set of experiments to be executed can be defined through a configuration file listing the domains of each experiment parameter, or manually through code. Those experiment parameters define the experiment grid, based on which the `PyExperimenter` setups the experiment table in the database featuring all experiments identified by their input parameter values and additional information such as the execution status. Once this table has been created, `PyExperimenter` can be run on any machine, including a distributed cluster. Each `PyExperimenter` instance automatically pulls open experiments from the database, executes the experiment function provided by the user with the corresponding experiment parameters defining the experiment and writes back the experiment results computed by the function. Possible errors arising during the execution are logged in the database. In case of failed experiments or other circumstances, a subset of the experiments can be easily reset and executed again. After all experiments are done, the experiment evaluation table can be easily extracted, e.g. averaging over different seeds. A general schema of the `PyExperimenter` can be found in Figure 1.
 
-`PyExperimenter` is designed to be parallelized. The level of parallelization is defined by the overall number of available threads divided by the parallelization of the custom function. In case of no parallelization of the custom function, the number of available threads decided the maximal possible parallelization.
+![General schema of `PyExperimenter`.](usage.png)
 
 
-# Statement of Need
+# Related Work
 
 `PyExperimenter` is a Python package supporting easy execution of multiple experiments differing only in their parametrizations. `PyExperimenter` was designed to be used by machine learning researchers and according students, but is not limited to those. The general structure of the project allows using `PyExperimenter` also for other types of experiments, as long as the execution requires the same code parameterized in a different way.  
 
-Compared to other solutions [@mlflow; @wandb], `PyExperimenter` is very lightweight and has only a handful of dependencies. Furthermore it is designed to support simple but effective configurations. 
+Compared to other solutions [@mlflow; @wandb], `PyExperimenter` is very lightweight and has only a handful of dependencies. Furthermore it is designed to support simple but effective configurations.
 
+## Statement of Need? 
 
-# Example Usage
-ToDo
+In comparison to existing experiment-tracking tools, the core features of PyEperimenter are
+
+- full control over the results database
+- customizable creation of experiments based on parameters
+- experiment runners pulling experiments from the database
+
+Allowing users to have full control over the database in which the results are stored lets them modify the results storage to their specific use-case, which might not fit into the standard stencil of results storage and retrieval of other tools, which are often optimized regarding ease-of-use with incremental, e.g. neural models at the cost of flexibility. At the same time, desired results tables and fields are created by the tool, which, together with the experiment creation and retrieval methods, offers an advantage over a completely manual database administration. [NO NEED TO LEARN QUERY LANGUAGE; JUST USE DB]
+
+[WHICH TOOLS ALLOW FULL CONTROL OF DB]
+[THESE OTHER TOOLS DO NOT OFFER THE FOLLOWING INVERTED CONCEPT OF EXPERIMENT CREATION]
+
+[INVERTED FLOW]
+
+In some capacity, there are tools like [WANDB] which offer this inverted setup, although in a limited way. With [WANDB], sweeps that evaluate a number of different configurations as specified by [SPECIFICATION] can be carried out. However, there are only two search methods: grid search and bayesian optimization, and the number of agents carrying out evaluations for the sweep is also limited to 20 as of now.
+
+[OTHER TOOLS ALLOWING INVERTED FLOWS?]
+
+[LIGHT-WEIGHTEDNESS OF PYEXPERIMENTER]
 
 # Acknowledgements
 

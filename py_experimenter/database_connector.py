@@ -12,13 +12,13 @@ from py_experimenter.py_experimenter_exceptions import DatabaseConnectionError, 
 
 class DatabaseConnector(abc.ABC):
 
-    def __init__(self, _config):
-        self._config = _config
-        self._table_name = self._config.get('PY_EXPERIMENTER', 'table')
-        self._database_name = self._config.get('PY_EXPERIMENTER', 'database')
+    def __init__(self, database_credential_file_path):
+        self.database_credential_file_path = database_credential_file_path
+        self.table_name = self.database_credential_file_path.get('PY_EXPERIMENTER', 'table')
+        self.database_name = self.database_credential_file_path.get('PY_EXPERIMENTER', 'database')
 
-        self._db_credentials = self._extract_credentials()
-        self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
+        self.database_credentials = self._extract_credentials()
+        self.timestamp_on_result_fields = utils.timestamps_for_result_fields(self.database_credential_file_path)
 
         self._test_connection()
 
@@ -65,18 +65,12 @@ class DatabaseConnector(abc.ABC):
             raise DatabaseConnectionError(f'error \n{e}\n raised when fetching all rows from database.')
 
     def create_table_if_not_existing(self) -> None:
-        """
-        Check if tables does exist. If not, a new table will be created.
-        :param mysql_connection: mysql_connector to the database
-        :param table_name: name of the table from the config
-        :param experiment_config: experiment section of the config file
-        """
         logging.debug("Create table if not exist")
 
-        keyfields = utils.get_keyfields(self._config)
-        resultfields = utils.get_resultfields(self._config)
+        keyfields = utils.get_keyfields(self.database_credential_file_path)
+        resultfields = utils.get_resultfields(self.database_credential_file_path)
 
-        if self._timestamp_on_result_fields:
+        if self.timestamp_on_result_fields:
             resultfields = utils.add_timestep_result_columns(resultfields)
 
         connection = self.connect()
@@ -108,10 +102,10 @@ class DatabaseConnector(abc.ABC):
         self.close_connection(connection)
 
     def _exclude_fixed_columns(self, columns: List[str]) -> List[str]:
-        amount_of_keyfields = len(utils.get_keyfield_names(self._config))
-        amount_of_result_fields = len(utils.get_result_field_names(self._config))
+        amount_of_keyfields = len(utils.get_keyfield_names(self.database_credential_file_path))
+        amount_of_result_fields = len(utils.get_result_field_names(self.database_credential_file_path))
 
-        if self._timestamp_on_result_fields:
+        if self.timestamp_on_result_fields:
             amount_of_result_fields *= 2
 
         return columns[1:amount_of_keyfields + 1] + columns[-amount_of_result_fields - 2:-2]
@@ -137,7 +131,7 @@ class DatabaseConnector(abc.ABC):
         parameters = parameters if parameters is not None else {}
         fixed_parameter_combinations = fixed_parameter_combinations if fixed_parameter_combinations is not None else []
 
-        keyfield_names = utils.get_keyfield_names(self._config)
+        keyfield_names = utils.get_keyfield_names(self.database_credential_file_path)
         combinations = utils.combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations)
 
         if len(combinations) == 0:
@@ -173,11 +167,11 @@ class DatabaseConnector(abc.ABC):
         pass
 
     def get_keyfield_values_to_execute(self) -> List[dict]:
-        keyfield_names = utils.get_keyfield_names(self._config)
+        keyfield_names = utils.get_keyfield_names(self.database_credential_file_path)
 
         execute_condition = "status='created'"
 
-        stmt = f"SELECT {', '.join(keyfield_names)} FROM {self._table_name} WHERE {execute_condition}"
+        stmt = f"SELECT {', '.join(keyfield_names)} FROM {self.table_name} WHERE {execute_condition}"
 
         connection = self.connect()
         cursor = self.cursor(connection)
@@ -197,15 +191,10 @@ class DatabaseConnector(abc.ABC):
         return keyfield_values
 
     def _write_to_database(self, keys, values) -> None:
-        """
-        Write new row(s) to database
-        :param keys: Column names
-        :param values: Values for column names
-        """
         keys = ", ".join(keys)
         values = "'" + self.__class__._write_to_database_separator.join([str(value) for value in values]) + "'"
 
-        stmt = f"INSERT INTO {self._table_name} ({keys}) VALUES ({values})"
+        stmt = f"INSERT INTO {self.table_name} ({keys}) VALUES ({values})"
 
         connection = self.connect()
         cursor = self.cursor(connection)
@@ -220,13 +209,13 @@ class DatabaseConnector(abc.ABC):
             connection = self.connect()
             cursor = self.cursor(connection)
             for key, value in zip(keys, values):
-                stmt = f"UPDATE {self._table_name} SET {key}='{value}' WHERE {where}"
+                stmt = f"UPDATE {self.table_name} SET {key}='{value}' WHERE {where}"
                 self.execute(cursor, stmt)
             self.commit(connection)
 
         except Exception as err:
             logging.error(err)
-            stmt = """UPDATE %s SET error="%s" WHERE %s""" % (self._table_name, err, where)
+            stmt = """UPDATE %s SET error="%s" WHERE %s""" % (self.table_name, err, where)
             self.execute(cursor, stmt)
             self.commit(connection)
         else:
@@ -239,7 +228,7 @@ class DatabaseConnector(abc.ABC):
             connection = self.connect()
             cursor = self.cursor(connection)
 
-            stmt = "SELECT status FROM %s WHERE %s" % (self._table_name, where)
+            stmt = "SELECT status FROM %s WHERE %s" % (self.table_name, where)
 
             self.execute(cursor, stmt)
             for result in cursor:
@@ -255,7 +244,7 @@ class DatabaseConnector(abc.ABC):
     def delete_experiments_with_status(self, status):
         def _get_keyfields_from_columns(column_names, entries):
             df = pd.DataFrame(entries, columns=column_names)
-            keyfields = utils.get_keyfield_names(self._config)
+            keyfields = utils.get_keyfield_names(self.database_credential_file_path)
             entries = df[keyfields].values.tolist()
             return keyfields, entries
 
@@ -263,10 +252,10 @@ class DatabaseConnector(abc.ABC):
         cursor = self.cursor(connection)
         column_names = self.get_structure_from_table(cursor)
 
-        self.execute(cursor, f"SELECT * FROM {self._table_name} WHERE status='{status}'")
+        self.execute(cursor, f"SELECT * FROM {self.table_name} WHERE status='{status}'")
         entries = cursor.fetchall()
         column_names, entries = _get_keyfields_from_columns(column_names, entries)
-        self.execute(cursor, f"DELETE FROM {self._table_name} WHERE status='{status}'")
+        self.execute(cursor, f"DELETE FROM {self.table_name} WHERE status='{status}'")
         self.commit(connection)
         self.close_connection(connection)
 
@@ -278,7 +267,7 @@ class DatabaseConnector(abc.ABC):
 
     def get_table(self) -> pd.DataFrame:
         connection = self.connect()
-        query = f"SELECT * FROM {self._table_name}"
+        query = f"SELECT * FROM {self.table_name}"
         df = pd.read_sql(query, connection)
         self.close_connection(connection)
         return df
