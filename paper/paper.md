@@ -66,7 +66,7 @@ Once this table has been created, a `PyExperimenter` instance can be run on any 
 Each instance automatically pulls open experiments from the database, executes the function provided by the user with the corresponding parameters defining the experiment and writes back the results computed by the function.
 Errors arising during the execution are logged in the database.
 In case of failed experiments or if desired otherwise, a subset of the experiments can be reset and restarted easily.
-After all experiments are done, results can be jointly exported as a Pandas DataFrame [@pandas] for further processing, such as generating a LaTeX table averaging over different seeds.
+After all experiments are done, results can be jointly exported as a Pandas DataFrame [@pandas] for further processing, such as generating a LaTeX table averaging results of randomized computations over different seeds.
 
 ## Statement of Need
 The recent advances in artificial intelligence have uncovered a need for experiment tracking functionality, leading to the emergence of several tools addressing this issue.
