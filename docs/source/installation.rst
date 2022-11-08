@@ -8,6 +8,7 @@ The `PyExperimenter` module can be easily installed via PyPI:
 
         pip install py-experimenter
 
-Thereby, the following requirements are automatically installed:
+Thereby, the following dependencies are automatically installed:
 
-.. literalinclude:: ../../requirements.txt
+.. literalinclude:: ../../pyproject.toml
+    :language: toml
