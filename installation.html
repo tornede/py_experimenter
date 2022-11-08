@@ -114,12 +114,53 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">py</span><span class="o">-</span><span class="n">experimenter</span>
 </pre></div>
 </div>
-<p>Thereby, the following requirements are automatically installed:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mysql</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span>
-<span class="n">numpy</span>
-<span class="n">pandas</span>
-<span class="n">pytest</span>
-<span class="n">mock</span>
+<p>Thereby, the following dependencies are automatically installed:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[tool.poetry]</span><span class="w"></span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;py-experimenter&quot;</span><span class="w"></span>
+<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1.0.0&quot;</span><span class="w"></span>
+<span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;The PyExperimenter is a tool for the automatic execution of experiments, e.g. for machine learning (ML), capturing corresponding results in a unified manner in a database.&quot;</span><span class="w"></span>
+<span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;Tanja Tornede &lt;tanja.tornede@upb.de&gt;&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;Alexander Tornede &lt;alexander.tornede@upb.de&gt;&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;Lukas Fehring &lt;fehring2@mail.uni-paderborn.de&gt;&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;Lukas Gehring&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;Helena Graf &lt;helena.graf@upb.de&gt;&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;Jonas Hanselle &lt;jonas.hanselle@upb.de&gt;&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;Marcel Wever &lt;marcel.wever@ifi.lmu.de&gt;&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;Felix Mohr &lt;felix.mohr@unisabana.edu.co&gt;&quot;</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
+<span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;MIT&quot;</span><span class="w"></span>
+<span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;README.md&quot;</span><span class="w"></span>
+<span class="n">repository</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;https://github.com/tornede/py_experimenter&quot;</span><span class="w"></span>
+<span class="n">packages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[{</span><span class="n">include</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;py_experimenter&quot;</span><span class="p">}]</span><span class="w"></span>
+<span class="n">keywords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;python&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;experiments&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;database&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;executor&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">classifiers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;Development Status :: 5 - Production/Stable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;Intended Audience :: Developers&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;Intended Audience :: Science/Research&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;Topic :: Scientific/Engineering :: Artificial Intelligence&quot;</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
+
+<span class="k">[tool.poetry.dependencies]</span><span class="w"></span>
+<span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.7&quot;</span><span class="w"></span>
+<span class="n">numpy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&gt;=1.15&quot;</span><span class="w"></span>
+<span class="n">pandas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&gt;=1.0&quot;</span><span class="w"></span>
+<span class="n">mysql-connector-python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&gt;=8.0&quot;</span><span class="w"></span>
+<span class="n">jupyterlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.5.0&quot;</span><span class="w"></span>
+
+<span class="k">[tool.poetry.group.dev.dependencies]</span><span class="w"></span>
+<span class="n">pytest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&gt;=7.0&quot;</span><span class="w"></span>
+<span class="n">mock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&gt;=4.0&quot;</span><span class="w"></span>
+<span class="n">sphinx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&gt;=5.0&quot;</span><span class="w"></span>
+<span class="n">nbsphinx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.8.9&quot;</span><span class="w"></span>
+<span class="n">sphinx-gallery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.11.1&quot;</span><span class="w"></span>
+<span class="n">sphinx-autoapi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&gt;=2.0.0&quot;</span><span class="w"></span>
+<span class="n">sphinx-rtd-theme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&gt;=1.0.0&quot;</span><span class="w"></span>
+<span class="n">recommonmark</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.7.1&quot;</span><span class="w"></span>
+
+<span class="k">[build-system]</span><span class="w"></span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;poetry-core&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;poetry.core.masonry.api&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
