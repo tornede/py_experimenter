@@ -89,7 +89,7 @@ The development workflow for the ``PyExperimenter`` is based on the fork-and-bra
 
         pytest
 
-9. In case some tests are not succeeding due to ``ValueError``s of ``numpy``, try to update that dependency manually and execute the tests again (step 8).
+9. In case some tests are not succeeding due to ``ValueError`` of ``numpy``, try to update that dependency manually and execute the tests again (step 8).
 
    .. code-block::
 
