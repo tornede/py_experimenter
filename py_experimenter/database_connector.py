@@ -7,7 +7,8 @@ import numpy as np
 import pandas as pd
 
 from py_experimenter import utils
-from py_experimenter.py_experimenter_exceptions import DatabaseConnectionError, EmptyFillDatabaseCallError, TableHasWrongStructureError
+from py_experimenter.py_experimenter_exceptions import (DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperiemntsLeftError,
+                                                        TableHasWrongStructureError)
 
 
 class DatabaseConnector(abc.ABC):
@@ -166,12 +167,15 @@ class DatabaseConnector(abc.ABC):
     def _get_existing_rows(self, column_names):
         pass
 
-    def get_keyfield_values_to_execute(self) -> List[dict]:
+    def get_keyfield_values_to_execute(self, random_order: bool) -> List[dict]:
         keyfield_names = utils.get_keyfield_names(self.database_credential_file_path)
 
         execute_condition = "status='created'"
-
         stmt = f"SELECT {', '.join(keyfield_names)} FROM {self.table_name} WHERE {execute_condition}"
+        #todo change status
+        if random_order:
+            stmt += " ORDER BY RAND()"
+        stmt += " LIMIT 1"
 
         connection = self.connect()
         cursor = self.cursor(connection)
@@ -182,11 +186,11 @@ class DatabaseConnector(abc.ABC):
             raise DatabaseConnectionError(f'error \n {e} raised. \n Please check if fill_table() was called correctly.')
         keyfield_name_value_pairs = pd.DataFrame(self.fetchall(cursor))
         if keyfield_name_value_pairs.empty:
-            return []
+            raise NoExperiemntsLeftError("No experiments left to execute")
         keyfield_name_value_pairs.columns = [i[0] for i in cursor.description]
         self.close_connection(connection)
 
-        keyfield_values = [dict(parameter.to_dict()) for _, parameter in keyfield_name_value_pairs.iterrows()]
+        keyfield_values = dict(zip(keyfield_name_value_pairs.columns, keyfield_name_value_pairs.iloc[0]))
 
         return keyfield_values
 

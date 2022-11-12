@@ -3,17 +3,17 @@ import configparser
 import logging
 import os
 import socket
+import threading
 import traceback
 from configparser import NoSectionError
-from random import shuffle
-from typing import Callable, List
+from typing import Callable, Dict, List
 
 import pandas as pd
 
 from py_experimenter import utils
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
-from py_experimenter.py_experimenter_exceptions import InvalidConfigError, InvalidValuesInConfiguration
+from py_experimenter.py_experimenter_exceptions import InvalidConfigError, InvalidValuesInConfiguration, NoExperiemntsLeftError
 from py_experimenter.result_processor import ResultProcessor
 
 
@@ -111,6 +111,17 @@ class PyExperimenter:
         """
         return self.config.get(section_name, key)
 
+    def has_section(self, section_name: str) -> bool:
+        """
+        Checks whether the experiment configuration contains a section with the given name.
+
+        :param section_name: The name of the section which should be checked for existence.
+        :type section_name: str
+        :return: True if the section exists, False otherwise.
+        :rtype: bool
+        """
+        return self.config.has_section(section_name)
+
     def has_option(self, section_name: str, key: str) -> bool:
         """
         Checks whether the experiment configuration contains a property identified by the given 'key' within the 
@@ -122,7 +133,7 @@ class PyExperimenter:
         :param key: The name of the key to check within the given section.
         :type key: str
         :return: True if the given `key` is contained in the experiment configuration within the section called 
-            `section_name`.
+            `section_name`. False otherwise.
         :rtype: bool
         """
         return self.config.has_option(section_name, key)
@@ -256,7 +267,7 @@ class PyExperimenter:
                 raise ValueError('The keyfields in the config file do not match the keyfields in the rows')
         self.dbconnector.fill_table(fixed_parameter_combinations=rows)
 
-    def execute(self, experiment_function: Callable[[dict, dict, ResultProcessor], None], max_number_experiments_to_execute: int = -1, random_order=False) -> None:
+    def execute(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None], max_number_experiments_to_execute: int = -1, random_order=False) -> None:
         """
         Pulls open experiments from the database table and executes them.
 
@@ -283,35 +294,52 @@ class PyExperimenter:
         :raises InvalidValuesInConfiguration: If any value of the experiment parameters is of wrong data type.
         """
         logging.info("Start execution of experiment_functions...")
-        keyfield_values = self.dbconnector.get_keyfield_values_to_execute()
 
-        if random_order:
-            shuffle(keyfield_values)
-
-        if 0 <= max_number_experiments_to_execute < len(keyfield_values):
-            keyfield_values = keyfield_values[:max_number_experiments_to_execute]
-        result_field_names = utils.get_result_field_names(self.config)
         try:
-            cpus = int(self.config['PY_EXPERIMENTER']['number_parallel_experiments'])
+            number_parallel_experiments = int(self.config['PY_EXPERIMENTER']['number_parallel_experiments'])
         except ValueError:
             raise InvalidValuesInConfiguration('number_parallel_experiments must be an integer')
-        table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
-        result_processors = [ResultProcessor(self.config, self.database_credential_file_path, table_name=table_name, condition=p,
-                                             result_fields=result_field_names) for p in keyfield_values]
-        experiment_functions = [experiment_function for _ in keyfield_values]
-        try:
-            custom_fields = [dict(self.config.items('CUSTOM')) for _ in keyfield_values]
-        except NoSectionError:
-            custom_fields = [None for _ in keyfield_values]
+        if not max_number_experiments_to_execute == -1:
+            global experiments_to_execute
+            experiments_to_execute = threading.Semaphore(max_number_experiments_to_execute)
 
-        with concurrent.futures.ProcessPoolExecutor(max_workers=cpus) as executor:
-            executor.map(self._execution_wrapper, experiment_functions, custom_fields, keyfield_values, result_processors)
+        with concurrent.futures.ProcessPoolExecutor(max_workers=number_parallel_experiments) as executor:
+            for _ in range(number_parallel_experiments):
+                executor.submit(self._worker_thread, experiment_function, random_order, max_number_experiments_to_execute)
         logging.info("All executions finished")
+
+    def _worker_thread(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None], random_order: bool, max_number_experiments_to_execute: int) -> None:
+        while True:
+            if max_number_experiments_to_execute == -1:
+                finished = False
+            else:
+                global experiments_to_execute
+                finished = not experiments_to_execute.acquire(blocking=False)
+                #todo two processes can pull experiments at the same time
+            if finished:
+                return
+            
+            try:
+                keyfield_values = self.dbconnector.get_keyfield_values_to_execute(random_order)
+            except NoExperiemntsLeftError:
+                logging.info("No experiments left to execute")
+                return
+            
+            result_field_names = utils.get_result_field_names(self.config)
+            
+            if self.has_section('CUSTOM'):
+                custom_fields = dict(self.config.items('CUSTOM'))
+            else:
+                custom_fields = None
+                
+            table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
+            result_processor = ResultProcessor(self.config, self.database_credential_file_path, table_name=table_name, condition = keyfield_values, result_fields=result_field_names)
+            self._execution_wrapper(experiment_function, keyfield_values, custom_fields, result_processor)
 
     def _execution_wrapper(self,
                            experiment_function: Callable[[dict, dict, ResultProcessor], None],
-                           custom_fields: dict,
                            keyfields: dict,
+                           custom_fields: dict,
                            result_processor: ResultProcessor) -> None:
         """
         Executes the given `experiment_function` with the given `custom_fields`, `keyfields` and the according `result_processor`. 
