@@ -162,7 +162,7 @@ class PyExperimenter:
                     f'Error in config file: DATABASE section must contain host, user, and password since provider is {_config["DATABASE"]["provider"]}')
                 return False
 
-        if not {'cpu.max', 'keyfields',
+        if not {'number_parallel_experiments', 'keyfields',
                 'resultfields'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
             return False
         return True
@@ -292,9 +292,9 @@ class PyExperimenter:
             keyfield_values = keyfield_values[:max_experiments]
         result_field_names = utils.get_result_field_names(self.config)
         try:
-            cpus = int(self.config['PY_EXPERIMENTER']['cpu.max'])
+            cpus = int(self.config['PY_EXPERIMENTER']['number_parallel_experiments'])
         except ValueError:
-            raise InvalidValuesInConfiguration('cpu.max must be an integer')
+            raise InvalidValuesInConfiguration('number_parallel_experiments must be an integer')
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
         result_processors = [ResultProcessor(self.config, self.database_credential_file_path, table_name=table_name, condition=p,
                                              result_fields=result_field_names) for p in keyfield_values]

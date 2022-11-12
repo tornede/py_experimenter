@@ -16,7 +16,7 @@ cross_validation_splits = 5
 seed = 2:10:2 
 kernel = linear, poly, rbf, sigmoid
 
-cpu.max = 5 
+number_parallel_experiments = 5 
 
 resultfields = pipeline:LONGTEXT, train_f1:DECIMAL, train_accuracy:DECIMAL, test_f1:DECIMAL, test_accuracy:DECIMAL
 resultfields.timestamps = false
@@ -36,7 +36,7 @@ Both keyfields and resultfields can have further annotations for the data type. 
 
 Keyfields of the experiment configuration, that do not have to be explicitly defined in the list of keyfields, are:
 
-- `cpu.max (int)`: The maximum number of experiments that will be executed in parallel.
+- `number_parallel_experiments (int)`: The maximum number of experiments that will be executed in parallel.
 
 Additionally, the user can define which values the keyfields can take on. Usually this is done with a comma separated list of strings or numbers. In the example above, the key field `kernel` can be any of the four given values: `linear`, `poly`, `rbf`, or `sigmoid`. Note that strings are neither allowed to contain any quotation marks nor whitespace.
 
