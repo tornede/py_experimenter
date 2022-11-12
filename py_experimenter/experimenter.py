@@ -256,11 +256,11 @@ class PyExperimenter:
                 raise ValueError('The keyfields in the config file do not match the keyfields in the rows')
         self.dbconnector.fill_table(fixed_parameter_combinations=rows)
 
-    def execute(self, experiment_function: Callable[[dict, dict, ResultProcessor], None], max_experiments: int = -1, random_order=False) -> None:
+    def execute(self, experiment_function: Callable[[dict, dict, ResultProcessor], None], max_number_experiments_to_execute: int = -1, random_order=False) -> None:
         """
         Pulls open experiments from the database table and executes them.
 
-        First the keyfield values of as many open experiments as given via `max_experiments` are pulled from the 
+        First the keyfield values of as many open experiments as given via `max_number_experiments_to_execute` are pulled from the 
         database table. An experiment is considered to be open if its status is 'created'. In case of `random_order`, 
         they are not selected based on their consecutive experiment ID, but rather chosen randomly. This slims the 
         chances of two instantiations of `PyExperimenter` pulling the same experiment ID at the same time. The 
@@ -274,9 +274,9 @@ class PyExperimenter:
 
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
-        :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments 
+        :param max_number_experiments_to_execute: The number of experiments to be executed by this `PyExperimenter`. If all experiments 
             should be executed, -1 can be used. Defaults to -1. 
-        :type max_experiments: int, optional
+        :type max_number_experiments_to_execute: int, optional
         :param random_order: Indicates whether the experiments to be executed are chosen consecutively by its experiment 
             ID (`False`) or in a randomized fashion (`True`). Defaults to False.
         :type random_order: bool, optional
@@ -288,8 +288,8 @@ class PyExperimenter:
         if random_order:
             shuffle(keyfield_values)
 
-        if 0 <= max_experiments < len(keyfield_values):
-            keyfield_values = keyfield_values[:max_experiments]
+        if 0 <= max_number_experiments_to_execute < len(keyfield_values):
+            keyfield_values = keyfield_values[:max_number_experiments_to_execute]
         result_field_names = utils.get_result_field_names(self.config)
         try:
             cpus = int(self.config['PY_EXPERIMENTER']['number_parallel_experiments'])
