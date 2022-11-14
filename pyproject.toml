@@ -14,6 +14,7 @@ authors = [
 ]
 license = "MIT"
 readme = "README.md"
+documentation = "https://tornede.github.io/py_experimenter/"
 repository = "https://github.com/tornede/py_experimenter"
 packages = [{include = "py_experimenter"}]
 keywords = ["python", "experiments", "database", "executor"]
