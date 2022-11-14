@@ -1,3 +1,7 @@
+[![doc](https://img.shields.io/badge/doc-success-success)](https://tornede.github.io/py_experimenter)
+[![pypi](https://img.shields.io/pypi/v/py_experimenter)](https://pypi.org/project/py-experimenter/)
+[![GitHub](https://img.shields.io/github/license/tornede/py_experimenter)](https://tornede.github.io/py_experimenter/license.html)
+
 <img src="docs/source/_static/py-experimenter-logo.png" alt="PyExperimenter Logo: Python biting a database" width="200px"/>
 
 # PyExperimenter
@@ -20,4 +24,3 @@ For more details check out the [`PyExperimenter` documentation](https://tornede.
 
 - [Installation](https://tornede.github.io/py_experimenter/installation.html)
 - [Examples](https://tornede.github.io/py_experimenter/examples/example_general_usage.html)
-- [License](https://tornede.github.io/py_experimenter/license.html)
