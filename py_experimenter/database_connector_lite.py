@@ -29,6 +29,17 @@ class DatabaseConnectorLITE(DatabaseConnector):
         except Error as err:
             raise DatabaseConnectionError(err)
 
+    def _grab_experiment(self, random_order):
+        with connect(**self.database_credentials) as connection:
+            try:
+                cursor = self.cursor(connection)
+                experiment_id, description, values = self._execute_queries(connection, cursor, random_order)
+            except Exception as err:
+                connection.rollback()
+                raise err
+
+        return experiment_id, description, values
+
     def _table_exists(self, cursor) -> bool:
         self.execute(cursor, f"SELECT name FROM sqlite_master WHERE type='table';")
         table_names = self.fetchall(cursor)

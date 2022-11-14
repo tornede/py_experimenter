@@ -38,7 +38,7 @@ class TableHasWrongStructureError(TableError):
     pass
 
 
-class NoExperiemntsLeftError(PyExperimenterError):
+class NoExperimentsLeftError(PyExperimenterError):
     pass
 
 

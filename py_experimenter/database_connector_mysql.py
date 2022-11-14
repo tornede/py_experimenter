@@ -60,6 +60,9 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         except Error as err:
             raise DatabaseConnectionError(err)
 
+    def start_transaction(self, connection, readonly=False):
+        connection.start_transaction(readonly=readonly)
+
     def _table_exists(self, cursor):
         self.execute(cursor, f"SHOW TABLES LIKE '{self._get_tablename_for_query()}'")
         return self.fetchall(cursor)
@@ -81,6 +84,19 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         columns = self._exclude_fixed_columns([k[0] for k in self.fetchall(cursor)])
         config_columns = [k[0] for k in typed_fields]
         return set(columns) == set(config_columns)
+
+    def _grab_experiment(self, random_order):
+        try:
+            connection = self.connect()
+            cursor = self.cursor(connection)
+            self.start_transaction(connection, readonly=False)
+            experiment_id, description, values = self._execute_queries(connection, cursor, random_order)
+        except Exception as err:
+            connection.rollback()
+            raise err
+        self.close_connection(connection)
+        
+        return experiment_id, description, values
 
     @staticmethod
     def escape_sql_chars(*args):
