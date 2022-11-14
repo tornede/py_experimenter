@@ -4,7 +4,7 @@
 
 The experiment configuration file is primarily used to define the database backend, as well as execution parameters, i.e. keyfields, and result fields.
 
-```conf
+```
 [PY_EXPERIMENTER]
 provider = sqlite 
 database = database_name
@@ -50,7 +50,7 @@ Optionally, custom configurations can be defined under the `CUSTOM` section, whi
 
 When working with `MySQL` as a database provider, an additional database credential file is needed, containing the credentials for accessing the database:
 
-```conf
+```
 [CREDENTIALS]
 host = <host>
 user = <user>
