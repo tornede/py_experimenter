@@ -5,7 +5,7 @@
 Need Help?
 =================
 
-At some point of usage of the `PyExperimenter` you don't know how to continue?
+At some point of usage of the ``PyExperimenter`` you don't know how to continue?
 
 1. Check the :ref:`examples <examples>`, maybe you can find a suitable solution. 
 2. Check the `GitHub Issues <github_py_experimenter_issues_>`_, maybe someone else has been in a similar situation. 
