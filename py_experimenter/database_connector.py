@@ -1,9 +1,8 @@
 import abc
 import logging
 from datetime import datetime
-from typing import List
+from typing import List, Tuple
 
-import numpy as np
 import pandas as pd
 
 from py_experimenter import utils
@@ -169,15 +168,15 @@ class DatabaseConnector(abc.ABC):
 
     def get_experiment_configuration(self, random_order: bool):
         try:
-            experiment_id, description, values = self._grab_experiment(random_order)
+            experiment_id, description, values = self._pull_open_experiment(random_order)
         except IndexError as e:
             raise NoExperimentsLeftError("No experiments left to execute")
         except Exception as e:
             raise DatabaseConnectionError(f'error \n {e} raised. \n Please check if fill_table() was called correctly.')
-        
+
         return experiment_id, dict(zip([i[0] for i in description], *values))
 
-    def _execute_queries(self, connection, cursor, random_order):
+    def _execute_queries(self, connection, cursor, random_order) ->Tuple[int, List, List]:
         if random_order:
             order_by = "RAND()"
         else:
@@ -188,14 +187,15 @@ class DatabaseConnector(abc.ABC):
         self.execute(cursor, select_experiment)
         experiment_id = self.fetchall(cursor)[0][0]
         self.execute(cursor, alter_experiment.format(self.table_name, experiment_id))
-        self.execute(cursor, select_keyfields.format(','.join(utils.get_keyfield_names(self.database_credential_file_path)), self.table_name, experiment_id))
+        self.execute(cursor, select_keyfields.format(','.join(utils.get_keyfield_names(
+            self.database_credential_file_path)), self.table_name, experiment_id))
         values = self.fetchall(cursor)
         self.commit(connection)
-        description = cursor.description 
+        description = cursor.description
         return experiment_id, description, values
 
     @abc.abstractmethod
-    def _grab_experiment(self):
+    def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
         pass
 
     def _write_to_database(self, keys, values) -> None:

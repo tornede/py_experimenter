@@ -1,5 +1,6 @@
 import logging
 from configparser import ConfigParser
+from typing import Tuple, List
 
 import numpy as np
 from mysql.connector import Error, connect
@@ -60,7 +61,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         except Error as err:
             raise DatabaseConnectionError(err)
 
-    def start_transaction(self, connection, readonly=False):
+    def _start_transaction(self, connection, readonly=False):
         connection.start_transaction(readonly=readonly)
 
     def _table_exists(self, cursor):
@@ -85,11 +86,11 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         config_columns = [k[0] for k in typed_fields]
         return set(columns) == set(config_columns)
 
-    def _grab_experiment(self, random_order):
+    def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
         try:
             connection = self.connect()
             cursor = self.cursor(connection)
-            self.start_transaction(connection, readonly=False)
+            self._start_transaction(connection, readonly=False)
             experiment_id, description, values = self._execute_queries(connection, cursor, random_order)
         except Exception as err:
             connection.rollback()

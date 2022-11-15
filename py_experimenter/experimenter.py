@@ -286,7 +286,7 @@ class PyExperimenter:
         parameter to the `experiment_function`. If the execution was successful, the status of the corresponding 
         experiment is set to `done`. Otherwise, if an error occurred during the execution, the status is changed to 
         `error` and the raised error is logged to the database table.
-        
+
         Note that errors that occur before or after the execution of the `experiment_function` are logged via the function
         `_handle_error`.
 
@@ -306,7 +306,7 @@ class PyExperimenter:
             raise InvalidValuesInConfiguration('n_jobs must be an integer')
 
         with Manager() as manager:
-            if max_experiments != -1:
+            if max_experiments >= 0:
                 semaphore = manager.Semaphore(max_experiments)
             else:
                 semaphore = None
@@ -325,7 +325,7 @@ class PyExperimenter:
 
         Each worker repeatedly executes the function `_execution_wrapper`. When either all experiments or `max_experiments`
         are started, the worker processes are stopped. The `max_experiments` is coordinated via a semaphore.
-        
+
         If an error occurs before or after the execution of the `experiment_function`, the error is logged via the function `_handle_error`.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
@@ -336,12 +336,17 @@ class PyExperimenter:
         :param semaphore: A semaphore that is used to limit the number of experiments that are executed by this `PyExperimenter`.
         :type semaphore: multiprocessing.Semaphore or None
         """
-        while True:
-            if semaphore is not None:
-                experiment_left = semaphore.acquire(blocking=False)
-                if not experiment_left:
-                    return
-            self._execution_wrapper(experiment_function, random_order)
+        def is_max_experiments_started():
+            if semaphore is None:
+                return False
+            else:
+                return not semaphore.acquire(blocking=False)
+
+        while not is_max_experiments_started():
+            try:
+                self._execution_wrapper(experiment_function, random_order)
+            except NoExperimentsLeftError as e:
+                break
 
     def _handle_error(self, error: Exception):
         """
@@ -385,7 +390,7 @@ class PyExperimenter:
                                            condition=keyfield_values, result_fields=result_field_names)
         result_processor._set_name(self.name)
         result_processor._set_machine(socket.gethostname())
-        
+
         try:
             logging.debug(f"Start of experiment_function on process {socket.gethostname()}")
             experiment_function(keyfield_values, result_processor, custom_fields)

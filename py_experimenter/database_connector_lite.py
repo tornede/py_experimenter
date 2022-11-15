@@ -1,6 +1,6 @@
 import logging
 from sqlite3 import Error, connect
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
 
@@ -29,7 +29,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
         except Error as err:
             raise DatabaseConnectionError(err)
 
-    def _grab_experiment(self, random_order):
+    def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
         with connect(**self.database_credentials) as connection:
             try:
                 cursor = self.cursor(connection)
