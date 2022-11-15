@@ -271,21 +271,24 @@ class PyExperimenter:
         """
         Starts the execution of experiments.
 
-        To that end as many worker process as specified in the experiment configuration file are started. Each worker
-        repeatedly executes the function `_execution_wrapper`. When either all experiments or `max_number_experiments_to_execute`
-        are started, the workers are stopped. If `max_number_experiments_to_execute` is set to -1, all experiments
-        are executed. If not the number of experiments to be executed is coordinated via a semaphore.
+        To that end as many processes as specified in the experiment configuration file are started. The workers' behavior
+        is specified in the function `_execution_worker`. Mainly each worker repeatedly calls the function `_execution_wrapper` 
+        until either all experiments or `max_number_experiments_to_execute` are started. If limited the amount of experiments
+        is coordinated via a `multiprocessing.semaphore`.
 
         In `_execution_wrapper` one of the open experiments is selected from the table and its status is set to running.
         This is done within one transaction to insure that no other process can select the same experiment. An experiment is
-        considered to be open if its status is 'created'. In case of `random_order`, the experiment is not selected based on their its
-        experiment ID, but rather chosen randomly.
+        considered to be open if its status is 'created'. In case of `random_order`, the experiment is not selected based on its
+        `id`, but randomly.
 
-        Afterwards, the given `experiment_function` is executed on the keyfield values defined in the table.
-        Results can be continuously written to the database during the execution via the `ResultProcessor` 
-        that is given as parameter to the `experiment_function`. If the execution was successful, the status of the corresponding 
+        After pulling an experiment, the given `experiment_function` is executed on the keyfield values defined in the table.
+        Results can be continuously written to the database during the execution via the `ResultProcessor` that is given as 
+        parameter to the `experiment_function`. If the execution was successful, the status of the corresponding 
         experiment is set to `done`. Otherwise, if an error occurred during the execution, the status is changed to 
-        `error` and the raised error is logged to the database table. 
+        `error` and the raised error is logged to the database table.
+        
+        Note that errors that occur before or after the execution of the `experiment_function` are logged via the function
+        `_handle_error`.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
@@ -322,6 +325,8 @@ class PyExperimenter:
 
         Each worker repeatedly executes the function `_execution_wrapper`. When either all experiments or `max_number_experiments_to_execute`
         are started, the worker processes are stopped. The `max_number_experiments_to_execute` is coordinated via a semaphore.
+        
+        If an error occurs before or after the execution of the `experiment_function`, the error is logged via the function `_handle_error`.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
@@ -338,7 +343,13 @@ class PyExperimenter:
                     return
             self._execution_wrapper(experiment_function, random_order)
 
-    def _handle_error(self, error):  # todo docstring
+    def _handle_error(self, error: Exception):
+        """
+        Gets called if an error occurs in a worker process. Simply logs the error.
+
+        :param error: Error that occurred in a worker process.
+        :type error: Exception
+        """
         logging.error(error)
 
     def _execution_wrapper(self,
@@ -346,14 +357,15 @@ class PyExperimenter:
                            random_order: bool) -> None:
         """
         Executes the given `experiment_function` on one experiment. To that end, one of the open experiments is selected (randomly
-        if `random_order` = True). Then the `experiment_function` is executed on the keyfield values defined in the table.
+        if `random_order` = True). Then the `experiment_function` is executed on its keyfield values defined in the table.
         In this function the status of the experiment is continuously updated. The experiment can have the following states:
 
         * `running` when the execution of the experiment has been started, but not yet finished.
         * `error` if an exception was raised during the execution of the experiment.
         * `done` if the execution of the experiment has finished successfully.
 
-        If an error occurs during the execution of the experiment, it is logged to the `error` column in the table.
+        If an error occurs during the execution of the experiment, it is logged to the `error` column in the table. If an 
+        error occurs before or after the execution of the `experiment_function`, it is logged via the function `_handle_error`.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
