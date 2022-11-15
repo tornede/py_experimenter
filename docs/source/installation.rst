@@ -4,7 +4,7 @@
 Installation
 =================
 
-The ``PyExperimenter`` module can be easily installed via PyPI: 
+The ``PyExperimenter`` package can be easily installed via PyPI: 
 
 .. code-block:: 
 
