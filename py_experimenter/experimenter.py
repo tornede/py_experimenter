@@ -269,26 +269,22 @@ class PyExperimenter:
                 max_experiments: int = -1,
                 random_order=False) -> None:
         """
-        Starts the execution of experiments.
+        Pulls open experiments from the database table and executes them.
 
-        To that end as many processes as specified in the experiment configuration file are started. The workers' behavior
-        is specified in the function `_execution_worker`. Mainly each worker repeatedly calls the function `_execution_wrapper` 
-        until either all experiments or `max_experiments` are started. If limited the amount of experiments
-        is coordinated via a `multiprocessing.semaphore`.
+        To that end as many processes as specified in the experiment configuration file are started. Each process
+        repeatedly pulls experiments from the table until either the table is empty or the maximum number of
+        experiments `max_experiments` has been started. If `max_experiments` is set to -1, all experiments in the
+        table are executed. The parameter `random_order` can be used to pull experiments in random order from the
+        database.
+        
+        After pulling an experiment `experiment_function` is executed on its keyfield values, as defined in the table. 
+        Results can be continuously written to the database during the execution via the `ResultProcessor`
+        that is given as parameter to the `experiment_function`. If the execution was successful, the status of the corresponding 
+        experiment is set to `done`. Otherwise, if an error occurred during the execution, the status is changed to  `error`
+        and the raised error is logged to the database table.
 
-        In `_execution_wrapper` one of the open experiments is selected from the table and its status is set to running.
-        This is done within one transaction to insure that no other process can select the same experiment. An experiment is
-        considered to be open if its status is 'created'. In case of `random_order`, the experiment is not selected based on its
-        `id`, but randomly.
-
-        After pulling an experiment, the given `experiment_function` is executed on the keyfield values defined in the table.
-        Results can be continuously written to the database during the execution via the `ResultProcessor` that is given as 
-        parameter to the `experiment_function`. If the execution was successful, the status of the corresponding 
-        experiment is set to `done`. Otherwise, if an error occurred during the execution, the status is changed to 
-        `error` and the raised error is logged to the database table.
-
-        Note that errors that occur before or after the execution of the `experiment_function` are logged via the function
-        `_handle_error`.
+        Note that errors that occur before or after the execution of the `experiment_function` are logged according to the local
+        logging configuration and do not appear in the table.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
@@ -323,17 +319,20 @@ class PyExperimenter:
         """
         Handles the execution of experiments in worker processes.
 
-        Each worker repeatedly executes the function `_execution_wrapper`. When either all experiments or `max_experiments`
-        are started, the worker processes are stopped. The `max_experiments` is coordinated via a semaphore.
+        Each worker repeatedly checks whether there are experiments left ot execute. If so an experiment is pulled from the database
+        and `experiment_function` is called on its keyfield values. During the execution, the experiment status is set to `running`.
+        After execution, the status is set to `done` if the execution was successful, otherwise it is set to `error` and the raised
+        error is logged to the database table.
 
-        If an error occurs before or after the execution of the `experiment_function`, the error is logged via the function `_handle_error`.
+        If an error occurs before or after the execution of the `experiment_function`, the error is logged according to the local
+        logging configuration and does not appear in the table.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
         :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments 
             should be executed, -1 can be used. Defaults to -1. 
         :type max_experiments: int, optional
-        :param semaphore: A semaphore that is used to limit the number of experiments that are executed by this `PyExperimenter`.
+        :param semaphore: A semaphore that is used to limit the number of experiments that are executed.
         :type semaphore: multiprocessing.Semaphore or None
         """
         def is_max_experiments_started():
@@ -350,7 +349,7 @@ class PyExperimenter:
 
     def _handle_error(self, error: Exception):
         """
-        Gets called if an error occurs in a worker process. Simply logs the error.
+        Logs an error that occurred in a worker process.
 
         :param error: Error that occurred in a worker process.
         :type error: Exception
@@ -384,7 +383,7 @@ class PyExperimenter:
         custom_fields = dict(self.config.items('CUSTOM')) if self.has_section('CUSTOM') else None
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
 
-        experiment_id, keyfield_values = self.dbconnector.get_experiment_configuration(random_order)
+        _, keyfield_values = self.dbconnector.get_experiment_configuration(random_order)
 
         result_processor = ResultProcessor(self.config, self.database_credential_file_path, table_name=table_name,
                                            condition=keyfield_values, result_fields=result_field_names)
