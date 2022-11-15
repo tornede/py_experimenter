@@ -376,19 +376,16 @@ class PyExperimenter:
         :raises DatabaseConnectionError: If an error occurred during the connection to the database.
         """
         result_field_names = utils.get_result_field_names(self.config)
-        if self.has_section('CUSTOM'):
-            custom_fields = dict(self.config.items('CUSTOM'))
-        else:
-            custom_fields = None
+        custom_fields = dict(self.config.items('CUSTOM')) if self.has_section('CUSTOM') else None
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
 
         experiment_id, keyfield_values = self.dbconnector.get_experiment_configuration(random_order)
 
         result_processor = ResultProcessor(self.config, self.database_credential_file_path, table_name=table_name,
                                            condition=keyfield_values, result_fields=result_field_names)
-
         result_processor._set_name(self.name)
         result_processor._set_machine(socket.gethostname())
+        
         try:
             logging.debug(f"Start of experiment_function on process {socket.gethostname()}")
             experiment_function(keyfield_values, result_processor, custom_fields)
