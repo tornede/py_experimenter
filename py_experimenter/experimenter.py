@@ -171,7 +171,7 @@ class PyExperimenter:
                     f'Error in config file: DATABASE section must contain host, user, and password since provider is {_config["DATABASE"]["provider"]}')
                 return False
 
-        if not {'number_parallel_experiments', 'keyfields',
+        if not {'n_jobs', 'keyfields',
                 'resultfields'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
             return False
         return True
@@ -266,14 +266,14 @@ class PyExperimenter:
         self.dbconnector.fill_table(fixed_parameter_combinations=rows)
 
     def execute(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None],
-                max_number_experiments_to_execute: int = -1,
+                max_experiments: int = -1,
                 random_order=False) -> None:
         """
         Starts the execution of experiments.
 
         To that end as many processes as specified in the experiment configuration file are started. The workers' behavior
         is specified in the function `_execution_worker`. Mainly each worker repeatedly calls the function `_execution_wrapper` 
-        until either all experiments or `max_number_experiments_to_execute` are started. If limited the amount of experiments
+        until either all experiments or `max_experiments` are started. If limited the amount of experiments
         is coordinated via a `multiprocessing.semaphore`.
 
         In `_execution_wrapper` one of the open experiments is selected from the table and its status is set to running.
@@ -292,26 +292,26 @@ class PyExperimenter:
 
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
-        :param max_number_experiments_to_execute: The number of experiments to be executed by this `PyExperimenter`. If all experiments 
+        :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments 
             should be executed, -1 can be used. Defaults to -1. 
-        :type max_number_experiments_to_execute: int, optional
+        :type max_experiments: int, optional
         :param random_order: Indicates whether the experiments to be executed are chosen consecutively by its experiment 
             ID (`False`) or in a randomized fashion (`True`). Defaults to False.
         :type random_order: bool, optional
         :raises InvalidValuesInConfiguration: If any value of the experiment parameters is of wrong data type.
         """
         try:
-            number_parallel_experiments = int(self.config['PY_EXPERIMENTER']['number_parallel_experiments'])
+            n_jobs = int(self.config['PY_EXPERIMENTER']['n_jobs'])
         except ValueError:
-            raise InvalidValuesInConfiguration('number_parallel_experiments must be an integer')
+            raise InvalidValuesInConfiguration('n_jobs must be an integer')
 
         with Manager() as manager:
-            if max_number_experiments_to_execute != -1:
-                semaphore = manager.Semaphore(max_number_experiments_to_execute)
+            if max_experiments != -1:
+                semaphore = manager.Semaphore(max_experiments)
             else:
                 semaphore = None
-            with Pool(number_parallel_experiments) as pool:
-                for _ in range(number_parallel_experiments):
+            with Pool(n_jobs) as pool:
+                for _ in range(n_jobs):
                     pool.apply_async(self._execution_worker, args=(experiment_function, random_order, semaphore),
                                      error_callback=self._handle_error)
                 pool.close()
@@ -323,16 +323,16 @@ class PyExperimenter:
         """
         Handles the execution of experiments in worker processes.
 
-        Each worker repeatedly executes the function `_execution_wrapper`. When either all experiments or `max_number_experiments_to_execute`
-        are started, the worker processes are stopped. The `max_number_experiments_to_execute` is coordinated via a semaphore.
+        Each worker repeatedly executes the function `_execution_wrapper`. When either all experiments or `max_experiments`
+        are started, the worker processes are stopped. The `max_experiments` is coordinated via a semaphore.
         
         If an error occurs before or after the execution of the `experiment_function`, the error is logged via the function `_handle_error`.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
-        :param max_number_experiments_to_execute: The number of experiments to be executed by this `PyExperimenter`. If all experiments 
+        :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments 
             should be executed, -1 can be used. Defaults to -1. 
-        :type max_number_experiments_to_execute: int, optional
+        :type max_experiments: int, optional
         :param semaphore: A semaphore that is used to limit the number of experiments that are executed by this `PyExperimenter`.
         :type semaphore: multiprocessing.Semaphore or None
         """

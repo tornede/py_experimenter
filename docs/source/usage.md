@@ -16,7 +16,7 @@ cross_validation_splits = 5
 seed = 2:10:2 
 kernel = linear, poly, rbf, sigmoid
 
-number_parallel_experiments = 5 
+n_jobs = 5 
 
 resultfields = pipeline:LONGTEXT, train_f1:DECIMAL, train_accuracy:DECIMAL, test_f1:DECIMAL, test_accuracy:DECIMAL
 resultfields.timestamps = false
@@ -36,7 +36,7 @@ Both keyfields and resultfields can have further annotations for the data type. 
 
 Keyfields of the experiment configuration, that do not have to be explicitly defined in the list of keyfields, are:
 
-- `number_parallel_experiments (int)`: The maximum number of experiments that will be executed in parallel.
+- `n_jobs (int)`: The maximum number of experiments that will be executed in parallel.
 
 Additionally, the user can define which values the keyfields can take on. Usually this is done with a comma separated list of strings or numbers. In the example above, the key field `kernel` can be any of the four given values: `linear`, `poly`, `rbf`, or `sigmoid`. Note that strings are neither allowed to contain any quotation marks nor whitespace.
 
@@ -103,7 +103,7 @@ from py_experimenter.experimenter import PyExperimenter
 
 experimenter = PyExperimenter()
 experimenter.fill_table_from_config()
-experimenter.execute(run_experiment, max_number_experiments_to_execute=-1, random_order=True)
+experimenter.execute(run_experiment, max_experiments=-1, random_order=True)
 ```
 
 ### Creating a PyExperimenter
@@ -158,13 +158,13 @@ An experiment can be executed easily with the following call:
 ```python
 experimenter.execute(
     experiment_function = run_experiment, 
-    max_number_experiments_to_execute = -1, 
+    max_experiments = -1, 
     random_order = True
 )
 ```
 
 - `experiment_function` is the [experiment funtion](#defining-the-experiment-function) described above.
-- `max_number_experiments_to_execute` determines how many experiments will be executed by this `PyExperimenter`. If set to `-1`, it will execute experiments in a sequential fashion until no more open experiments are available.
+- `max_experiments` determines how many experiments will be executed by this `PyExperimenter`. If set to `-1`, it will execute experiments in a sequential fashion until no more open experiments are available.
 - `random_order` determines if the order in which experiments are selected for execution should be random. This is especially important to be turned on, if the execution is parallelized, e.g. on an HPC cluster.  
 
 

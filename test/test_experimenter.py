@@ -108,7 +108,7 @@ def test_init(create_database_if_not_existing_mock, mock_fn, config_file, table_
         (
             os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
             'PY_EXPERIMENTER',
-            'number_parallel_experiments',
+            'n_jobs',
             '5',
         ),
         (
@@ -139,7 +139,7 @@ def test_get_config_values(mock_valid_config, mcok_database_connector_init, conf
         (
             os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
             'PY_EXPERIMENTER',
-            'number_parallel_experiments',
+            'n_jobs',
             '5',
         ),
         (
