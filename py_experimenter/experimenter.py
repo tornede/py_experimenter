@@ -11,7 +11,7 @@ import pandas as pd
 from py_experimenter import utils
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
-from py_experimenter.py_experimenter_exceptions import InvalidConfigError, InvalidValuesInConfiguration, NoExperimentsLeftError
+from py_experimenter.py_experimenter_exceptions import InvalidConfigError, InvalidValuesInConfiguration, NoExperimentsLeftException
 from py_experimenter.result_processor import ResultProcessor
 
 
@@ -298,10 +298,10 @@ class PyExperimenter:
         :raises InvalidValuesInConfiguration: If any value of the experiment parameters is of wrong data type.
         """
         try:
-            n_jobs = int(self.config['PY_EXPERIMENTER']['n_jobs'])
+            n_jobs = int(self.config['PY_EXPERIMENTER']['n_jobs']) if self.has_option('PY_EXPERIMENTER', 'n_jobs') else 1
         except ValueError:
-            raise InvalidValuesInConfiguration('n_jobs must be an integer')
-
+            InvalidValuesInConfiguration('n_jobs must be an integer')
+            
         with Manager() as manager:
             if max_experiments >= 0:
                 semaphore = manager.Semaphore(max_experiments)
@@ -339,16 +339,16 @@ class PyExperimenter:
         :param semaphore: A semaphore that is used to limit the number of experiments that are executed.
         :type semaphore: multiprocessing.Semaphore or None
         """
-        def is_max_experiments_started():
+        def _is_max_experiments_started():
             if semaphore is None:
                 return False
             else:
                 return not semaphore.acquire(blocking=False)
 
-        while not is_max_experiments_started():
+        while not _is_max_experiments_started():
             try:
                 self._execution_wrapper(experiment_function, random_order)
-            except NoExperimentsLeftError as e:
+            except NoExperimentsLeftException:
                 break
 
     def _handle_error(self, error: Exception):

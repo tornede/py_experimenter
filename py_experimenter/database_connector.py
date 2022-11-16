@@ -6,7 +6,7 @@ from typing import List, Tuple
 import pandas as pd
 
 from py_experimenter import utils
-from py_experimenter.py_experimenter_exceptions import (DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperimentsLeftError,
+from py_experimenter.py_experimenter_exceptions import (DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperimentsLeftException,
                                                         TableHasWrongStructureError)
 
 
@@ -170,7 +170,7 @@ class DatabaseConnector(abc.ABC):
         try:
             experiment_id, description, values = self._pull_open_experiment(random_order)
         except IndexError as e:
-            raise NoExperimentsLeftError("No experiments left to execute")
+            raise NoExperimentsLeftException("No experiments left to execute")
         except Exception as e:
             raise DatabaseConnectionError(f'error \n {e} raised. \n Please check if fill_table() was called correctly.')
 
