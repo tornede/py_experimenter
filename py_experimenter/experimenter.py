@@ -339,13 +339,13 @@ class PyExperimenter:
         :param semaphore: A semaphore that is used to limit the number of experiments that are executed.
         :type semaphore: multiprocessing.Semaphore or None
         """
-        def _is_max_experiments_started():
+        def is_max_experiments_started():
             if semaphore is None:
                 return False
             else:
                 return not semaphore.acquire(blocking=False)
 
-        while not _is_max_experiments_started():
+        while not is_max_experiments_started():
             try:
                 self._execution_wrapper(experiment_function, random_order)
             except NoExperimentsLeftException:
