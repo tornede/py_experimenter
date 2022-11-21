@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "py-experimenter"
+version = "1.1.0"
+description = "The PyExperimenter is a tool for the automatic execution of experiments, e.g. for machine learning (ML), capturing corresponding results in a unified manner in a database."
+authors = [
+    "Tanja Tornede <tanja.tornede@upb.de>",
+    "Alexander Tornede <alexander.tornede@upb.de>",
+    "Lukas Fehring <fehring2@mail.uni-paderborn.de>",
+    "Lukas Gehring",
+    "Helena Graf <helena.graf@upb.de>",
+    "Jonas Hanselle <jonas.hanselle@upb.de>",
+    "Marcel Wever <marcel.wever@ifi.lmu.de>",
+    "Felix Mohr <felix.mohr@unisabana.edu.co>"
+]
+license = "MIT"
+readme = "README.md"
+documentation = "https://tornede.github.io/py_experimenter/"
+repository = "https://github.com/tornede/py_experimenter"
+packages = [{include = "py_experimenter"}]
+keywords = ["python", "experiments", "database", "executor"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9"
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+numpy = ">=1.15"
+pandas = ">=1.0"
+mysql-connector-python = ">=8.0"
+jupyterlab = "^3.5.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=7.0"
+mock = ">=4.0"
+sphinx = ">=5.0"
+nbsphinx = "^0.8.9"
+sphinx-gallery = "^0.11.1"
+sphinx-autoapi = ">=2.0.0"
+sphinx-rtd-theme = ">=1.0.0"
+recommonmark = "^0.7.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

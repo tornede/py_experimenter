@@ -3,7 +3,7 @@ import re
 
 import pytest
 
-from py_experimenter.py_experimenter_exceptions import ConfigError, NoConfigFileError, ParameterCombinationError
+from py_experimenter.exceptions import ConfigError, NoConfigFileError, ParameterCombinationError
 from py_experimenter.utils import (_generate_int_data, add_timestep_result_columns, combine_fill_table_parameters, get_fields, get_keyfield_data,
                                    get_keyfield_names, get_keyfields, get_resultfields, load_config, timestamps_for_result_fields)
 
@@ -17,7 +17,7 @@ from py_experimenter.utils import (_generate_int_data, add_timestep_result_colum
                  'provider': 'mysql',
                  'database': 'py_experimenter',
                  'table': 'test_table',
-                 'cpu.max': '5',
+                 'n_jobs': '5',
                  'keyfields': 'value:int, exponent:int',
                  'resultfields': 'sin, cos',
                  'value': '1,2,3,4,5,6,7,8,9,10',
@@ -31,7 +31,7 @@ from py_experimenter.utils import (_generate_int_data, add_timestep_result_colum
                  'provider': 'mysql',
                  'database': 'py_experimenter',
                  'table': 'test_table_mysql_with_wrong_syntax',
-                 'cpu.max': '5',
+                 'n_jobs': '5',
                  'keyfields': 'value:int, exponent:int,',
                  'resultfields': 'sin, cos',
                  'value': '1,2,3,4,5,6,7,8,9,10',
@@ -45,7 +45,7 @@ from py_experimenter.utils import (_generate_int_data, add_timestep_result_colum
                  'provider': 'mysql',
                  'database': 'py_experimenter',
                  'table': 'test_table_without_keyfields',
-                 'cpu.max': '5',
+                 'n_jobs': '5',
                  'keyfields': '',
                  'resultfields': 'sin, cos',
                  'value': '1,2,3,4,5,6,7,8,9,10',
@@ -60,7 +60,7 @@ from py_experimenter.utils import (_generate_int_data, add_timestep_result_colum
                  'provider': 'sqlite',
                  'database': 'py_experimenter',
                  'table': 'test_table_sqlite',
-                 'cpu.max': '5',
+                 'n_jobs': '5',
                  'keyfields': 'datasetName, internal_performance_measure, featureObjectiveMeasure, seed:int(3)',
                  'resultfields': 'final_pipeline:LONGTEXT, internal_performance:int(3), performance_asymmetric_loss',
                  'datasetname': 'A,B,C',

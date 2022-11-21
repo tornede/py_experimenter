@@ -138,3 +138,5 @@ dmypy.json
 # todo
 todo.md
 config/database_credentials.cfg
+config/example*.cfg
+output/

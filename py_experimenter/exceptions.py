@@ -38,6 +38,10 @@ class TableHasWrongStructureError(TableError):
     pass
 
 
+class NoExperimentsLeftException(PyExperimenterError):
+    pass
+
+
 class ConfigError(PyExperimenterError):
     pass
 

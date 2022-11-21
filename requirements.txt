@@ -1,5 +1,0 @@
-mysql-connector-python
-numpy
-pandas
-pytest
-mock

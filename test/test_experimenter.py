@@ -91,11 +91,11 @@ def test_init(create_database_if_not_existing_mock, mock_fn, config_file, table_
 
     assert experimenter.get_config_value('PY_EXPERIMENTER', 'table') == expected_table_name
     assert experimenter.get_config_value('PY_EXPERIMENTER', 'database') == expected_database_name
-    assert experimenter._dbconnector.__class__ == expected_db_connector_class
+    assert experimenter.dbconnector.__class__ == expected_db_connector_class
 
 
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '__init__')
-@patch.object(experimenter.PyExperimenter, '_valid_configuration')
+@patch.object(experimenter.PyExperimenter, '_is_valid_configuration')
 @pytest.mark.parametrize(
     'config_file, section_name, key, expected_value',
     [
@@ -108,7 +108,7 @@ def test_init(create_database_if_not_existing_mock, mock_fn, config_file, table_
         (
             os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
             'PY_EXPERIMENTER',
-            'cpu.max',
+            'n_jobs',
             '5',
         ),
         (
@@ -139,7 +139,7 @@ def test_get_config_values(mock_valid_config, mcok_database_connector_init, conf
         (
             os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
             'PY_EXPERIMENTER',
-            'cpu.max',
+            'n_jobs',
             '5',
         ),
         (
@@ -167,10 +167,10 @@ def test_set_config_values(create_database_if_not_existing_mock, mock_fn, config
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'sqlite_test_file.cfg'), True),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'test_config_with_disallowed_characters.cfg'), True),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'invalid_config_1.cfg'), False),
-        (os.path.join('test', 'test_config_files', 'load_config_test_file', 'invalid_config_2.cfg'), False),
+        (os.path.join('test', 'test_config_files', 'load_config_test_file', 'invalid_config_2.cfg'), True),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'invalid_config_3.cfg'), False),
     ]
 )
 def test_valid_configuration(config_file, valid):
     config_file = utils.load_config(config_file)
-    assert PyExperimenter._valid_configuration(config_file, CREDENTIAL_PATH) == valid
+    assert PyExperimenter._is_valid_configuration(config_file, CREDENTIAL_PATH) == valid
