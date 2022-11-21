@@ -13,8 +13,8 @@ Submodules
    database_connector/index.rst
    database_connector_lite/index.rst
    database_connector_mysql/index.rst
+   exceptions/index.rst
    experimenter/index.rst
-   py_experimenter_exceptions/index.rst
    result_processor/index.rst
    utils/index.rst
 

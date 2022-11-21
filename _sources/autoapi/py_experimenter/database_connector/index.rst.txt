@@ -83,7 +83,18 @@ Classes
       :abstractmethod:
 
 
-   .. py:method:: get_keyfield_values_to_execute() -> List[dict]
+   .. py:method:: get_experiment_configuration(random_order: bool)
+
+
+   .. py:method:: _execute_queries(connection, cursor, random_order) -> Tuple[int, List, List]
+
+
+   .. py:method:: random_order_string()
+      :staticmethod:
+
+
+   .. py:method:: _pull_open_experiment(random_order) -> Tuple[int, List, List]
+      :abstractmethod:
 
 
    .. py:method:: _write_to_database(keys, values) -> None

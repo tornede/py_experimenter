@@ -127,24 +127,24 @@
 <section id="experiment-configuration-file">
 <h2>Experiment Configuration File<a class="headerlink" href="#experiment-configuration-file" title="Permalink to this heading"></a></h2>
 <p>The experiment configuration file is primarily used to define the database backend, as well as execution parameters, i.e. keyfields, and result fields.</p>
-<div class="highlight-conf notranslate"><div class="highlight"><pre><span></span>[PY_EXPERIMENTER]
-provider = sqlite 
-database = database_name
-table = table_name 
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">PY_EXPERIMENTER</span><span class="p">]</span>
+<span class="n">provider</span> <span class="o">=</span> <span class="n">sqlite</span> 
+<span class="n">database</span> <span class="o">=</span> <span class="n">database_name</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">table_name</span> 
 
-keyfields = dataset, cross_validation_splits:int, seed:int, kernel
-dataset = iris
-cross_validation_splits = 5
-seed = 2:10:2 
-kernel = linear, poly, rbf, sigmoid
+<span class="n">keyfields</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">cross_validation_splits</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">kernel</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">iris</span>
+<span class="n">cross_validation_splits</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">2</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">2</span> 
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">linear</span><span class="p">,</span> <span class="n">poly</span><span class="p">,</span> <span class="n">rbf</span><span class="p">,</span> <span class="n">sigmoid</span>
 
-cpu.max = 5 
+<span class="n">n_jobs</span> <span class="o">=</span> <span class="mi">5</span> 
 
-resultfields = pipeline:LONGTEXT, train_f1:DECIMAL, train_accuracy:DECIMAL, test_f1:DECIMAL, test_accuracy:DECIMAL
-resultfields.timestamps = false
+<span class="n">resultfields</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">:</span><span class="n">LONGTEXT</span><span class="p">,</span> <span class="n">train_f1</span><span class="p">:</span><span class="n">DECIMAL</span><span class="p">,</span> <span class="n">train_accuracy</span><span class="p">:</span><span class="n">DECIMAL</span><span class="p">,</span> <span class="n">test_f1</span><span class="p">:</span><span class="n">DECIMAL</span><span class="p">,</span> <span class="n">test_accuracy</span><span class="p">:</span><span class="n">DECIMAL</span>
+<span class="n">resultfields</span><span class="o">.</span><span class="n">timestamps</span> <span class="o">=</span> <span class="n">false</span>
 
-[CUSTOM] 
-path = sample_data
+<span class="p">[</span><span class="n">CUSTOM</span><span class="p">]</span> 
+<span class="n">path</span> <span class="o">=</span> <span class="n">sample_data</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -158,7 +158,7 @@ path = sample_data
 <p>Both keyfields and resultfields can have further annotations for the data type. This is done by attaching <code class="docutils literal notranslate"><span class="pre">:&lt;TYPE&gt;</span></code> to the according fields. If no data type is explicitly specified, <code class="docutils literal notranslate"><span class="pre">VARCHAR(255)</span></code> is used.</p>
 <p>Keyfields of the experiment configuration, that do not have to be explicitly defined in the list of keyfields, are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">cpu.max</span> <span class="pre">(int)</span></code>: The maximum number of experiments that will be executed in parallel.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_jobs</span> <span class="pre">(int)</span></code>: The maximum number of experiments that will be executed in parallel.</p></li>
 </ul>
 <p>Additionally, the user can define which values the keyfields can take on. Usually this is done with a comma separated list of strings or numbers. In the example above, the key field <code class="docutils literal notranslate"><span class="pre">kernel</span></code> can be any of the four given values: <code class="docutils literal notranslate"><span class="pre">linear</span></code>, <code class="docutils literal notranslate"><span class="pre">poly</span></code>, <code class="docutils literal notranslate"><span class="pre">rbf</span></code>, or <code class="docutils literal notranslate"><span class="pre">sigmoid</span></code>. Note that strings are neither allowed to contain any quotation marks nor whitespace.</p>
 <p>As this manual definition can be a tedious task, especially for a list of integers, there is the option to define the start and the end of the list, together with the step size in the form: <code class="docutils literal notranslate"><span class="pre">start:end:stepsize</span></code>. In the example above, <code class="docutils literal notranslate"><span class="pre">seed</span></code> is meant to be <code class="docutils literal notranslate"><span class="pre">2,</span> <span class="pre">4,</span> <span class="pre">6,</span> <span class="pre">8,</span> <span class="pre">10</span></code>, but instead of the explicit list <code class="docutils literal notranslate"><span class="pre">2:10:2</span></code> is given.</p>
@@ -168,13 +168,13 @@ path = sample_data
 <section id="database-credential-file">
 <h2>Database Credential File<a class="headerlink" href="#database-credential-file" title="Permalink to this heading"></a></h2>
 <p>When working with <code class="docutils literal notranslate"><span class="pre">MySQL</span></code> as a database provider, an additional database credential file is needed, containing the credentials for accessing the database:</p>
-<div class="highlight-conf notranslate"><div class="highlight"><pre><span></span>[CREDENTIALS]
-host = &lt;host&gt;
-user = &lt;user&gt;
-password = &lt;password&gt;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">CREDENTIALS</span><span class="p">]</span>
+<span class="n">host</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">host</span><span class="o">&gt;</span>
+<span class="n">user</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">user</span><span class="o">&gt;</span>
+<span class="n">password</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">password</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<p>By default, this file is located at <code class="docutils literal notranslate"><span class="pre">config/database_credentials.cfg</span></code>. If this is not the case, the according path has to be explicitly given when <a class="reference external" href="#executing-the-pyexperimenter">executing the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code></a>.</p>
+<p>By default, this file is located at <code class="docutils literal notranslate"><span class="pre">config/database_credentials.cfg</span></code>. If this is not the case, the according path has to be explicitly given when <a class="reference external" href="#executing-the-pyexperimenter">executing <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code></a>.</p>
 </section>
 <hr class="docutils" />
 <section id="defining-the-experiment-function">
@@ -210,7 +210,7 @@ password = &lt;password&gt;
 <hr class="docutils" />
 <section id="executing-the-pyexperimenter">
 <h2>Executing the PyExperimenter<a class="headerlink" href="#executing-the-pyexperimenter" title="Permalink to this heading"></a></h2>
-<p>The actual execution of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> only needs a few lines of code. Please make sure that you have created the <a class="reference external" href="#experiment-configuration-file">experiment configuration file</a>. Below the core functionality is elaborated on.</p>
+<p>The actual execution of <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> only needs a few lines of code. Please make sure that you have created the <a class="reference external" href="#experiment-configuration-file">experiment configuration file</a>. Below the core functionality is elaborated on.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">py_experimenter.experimenter</span> <span class="kn">import</span> <span class="n">PyExperimenter</span>
 
 <span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">()</span>
@@ -224,7 +224,7 @@ password = &lt;password&gt;
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Additionally, further information can be given to the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>:</p>
+<p>Additionally, further information can be given to <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">experiment_configuration_file_path</span></code>: The path of the <a class="reference external" href="#experiment-configuration-file">experiment configuration file</a>. Default: <code class="docutils literal notranslate"><span class="pre">config/configuration.cfg</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">database_credential_file_path</span></code>: The path of the <a class="reference external" href="#database-credential-file">database credential file</a>. Default: <code class="docutils literal notranslate"><span class="pre">config/database_credentials.cfg</span></code></p></li>

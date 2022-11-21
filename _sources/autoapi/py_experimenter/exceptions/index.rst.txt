@@ -1,7 +1,7 @@
-:py:mod:`py_experimenter.py_experimenter_exceptions`
-====================================================
+:py:mod:`py_experimenter.exceptions`
+====================================
 
-.. py:module:: py_experimenter.py_experimenter_exceptions
+.. py:module:: py_experimenter.exceptions
 
 
 Module Contents
@@ -73,6 +73,13 @@ Module Contents
 .. py:exception:: TableHasWrongStructureError
 
    Bases: :py:obj:`TableError`
+
+   Common base class for all non-exit exceptions.
+
+
+.. py:exception:: NoExperimentsLeftException
+
+   Bases: :py:obj:`PyExperimenterError`
 
    Common base class for all non-exit exceptions.
 

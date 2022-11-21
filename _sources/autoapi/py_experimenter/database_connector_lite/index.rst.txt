@@ -38,6 +38,9 @@ Classes
    .. py:method:: connect()
 
 
+   .. py:method:: _pull_open_experiment(random_order) -> Tuple[int, List, List]
+
+
    .. py:method:: _table_exists(cursor) -> bool
 
 
@@ -48,6 +51,10 @@ Classes
 
 
    .. py:method:: escape_sql_chars(*args)
+      :staticmethod:
+
+
+   .. py:method:: random_order_string()
       :staticmethod:
 
 

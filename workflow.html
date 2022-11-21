@@ -110,6 +110,16 @@
 </style>
 <section id="general-workflow">
 <h1>General Workflow<a class="headerlink" href="#general-workflow" title="Permalink to this heading"></a></h1>
+<p>A general schema of <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> can be found in the Figure below.
+<code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> is designed based on the assumption that an experiment is uniquely defined by certain inputs, i.e., parameters, and a function computing the results of the experiment based on these parameters.
+The set of experiments to be executed can be defined through a configuration file listing the domains of each parameter, or manually through code.
+Those parameters define the experiment grid, based on which <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> setups the table in the database featuring all experiments with their input parameter values and additional information such as the execution status.
+Once this table has been created, a <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> instance can be run on any machine, including a distributed system.
+Each instance automatically pulls open experiments from the database, executes the function provided by the user with the corresponding parameters defining the experiment and writes back the results computed by the function.
+Errors arising during the execution are logged in the database.
+In case of failed experiments or if desired otherwise, a subset of the experiments can be reset and restarted easily.
+After all experiments are done, results can be jointly exported as a <code class="docutils literal notranslate"><span class="pre">Pandas</span> <span class="pre">DataFrame</span></code> for further processing, such as generating a LaTeX table averaging results of randomized computations over different seeds.</p>
+<p><img alt="General schema of PyExperimenter." src="_images/workflow.png" /></p>
 <p>The following steps are necessary to execute the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>:</p>
 <ol class="simple">
 <li><p>Create the <a class="reference external" href="usage.html#experiment-configuration-file">experiment configuration file</a>, defining the database provider and the table structure.</p>
@@ -121,7 +131,6 @@
 <li><p><a class="reference external" href="usage.html#executing-the-pyexperimenter">Execute the experiments</a>, writing the results into the database table.</p></li>
 <li><p>Finally, the results of different experiment configurations can be viewed in the database table, or <a class="reference external" href="usage.html#obtain-results">extracted to a LaTeX table</a>.</p></li>
 </ol>
-<p><img alt="General schema of PyExperimenter." src="_images/workflow.png" /></p>
 </section>
 
 

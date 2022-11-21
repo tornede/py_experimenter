@@ -38,6 +38,9 @@ Classes
    .. py:method:: connect(credentials=None)
 
 
+   .. py:method:: _start_transaction(connection, readonly=False)
+
+
    .. py:method:: _table_exists(cursor)
 
 
@@ -50,7 +53,14 @@ Classes
    .. py:method:: _table_has_correct_structure(cursor, typed_fields)
 
 
+   .. py:method:: _pull_open_experiment(random_order) -> Tuple[int, List, List]
+
+
    .. py:method:: escape_sql_chars(*args)
+      :staticmethod:
+
+
+   .. py:method:: random_order_string()
       :staticmethod:
 
 
