@@ -1,12 +1,13 @@
 import abc
 import logging
 from datetime import datetime
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 import pandas as pd
 
 from py_experimenter import utils
 from py_experimenter.exceptions import DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperimentsLeftException, TableHasWrongStructureError
+from py_experimenter.experiment_status import ExperimentStatus
 
 
 class DatabaseConnector(abc.ABC):
@@ -149,7 +150,7 @@ class DatabaseConnector(abc.ABC):
             if self._check_combination_in_existing_rows(combination, existing_rows, keyfield_names):
                 continue
             values = list(combination.values())
-            values.append("created")
+            values.append(ExperimentStatus.CREATED.value)
             values.append("%s" % time.strftime("%m/%d/%Y, %H:%M:%S"))
 
             self._write_to_database(column_names.split(', '), values)
@@ -175,17 +176,17 @@ class DatabaseConnector(abc.ABC):
 
         return experiment_id, dict(zip([i[0] for i in description], *values))
 
-    def _execute_queries(self, connection, cursor, random_order) ->Tuple[int, List, List]:
+    def _execute_queries(self, connection, cursor, random_order) -> Tuple[int, List, List]:
         if random_order:
             order_by = self.__class__.random_order_string()
         else:
             order_by = "id"
         select_experiment = f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;"
-        alter_experiment = "UPDATE {} SET status = 'running' WHERE id = {};"
+        alter_experiment = "UPDATE {} SET status = '{}' WHERE id = {};"
         select_keyfields = "SELECT {} FROM {} WHERE id = {};"
         self.execute(cursor, select_experiment)
         experiment_id = self.fetchall(cursor)[0][0]
-        self.execute(cursor, alter_experiment.format(self.table_name, experiment_id))
+        self.execute(cursor, alter_experiment.format(self.table_name, ExperimentStatus.RUNNING.value, experiment_id))
         self.execute(cursor, select_keyfields.format(','.join(utils.get_keyfield_names(
             self.database_credential_file_path)), self.table_name, experiment_id))
         values = self.fetchall(cursor)
@@ -196,7 +197,7 @@ class DatabaseConnector(abc.ABC):
     @abc.abstractstaticmethod
     def random_order_string():
         pass
- 
+
     @abc.abstractmethod
     def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
         pass
@@ -252,29 +253,64 @@ class DatabaseConnector(abc.ABC):
             connection.close()
             return not_executed
 
-    def delete_experiments_with_status(self, status):
+    def reset_experiments(self, *states: str) -> None:
+        def get_dict_for_keyfields_and_rows(keyfields: List[str], rows: List[List[str]]) -> List[dict]:
+            return [{key: value for key, value in zip(keyfields, row)} for row in rows]
+
+        for state in states:
+            keyfields, rows = self._pop_experiments_with_status(state)
+            rows = get_dict_for_keyfields_and_rows(keyfields, rows)
+            if rows:
+                self.fill_table(fixed_parameter_combinations=rows)
+        logging.info(f"{len(rows)} experiments with status {' '.join(list(states))} were reset")
+
+    def _pop_experiments_with_status(self, status: Optional[str] = None) -> Tuple[List[str], List[List]]:
+        if status == ExperimentStatus.ALL.value:
+            condition = None
+        else:
+            condition = f" WHERE status = '{status}'"
+
+        column_names, entries = self._get_experiments_with_condition(condition)
+        self._delete_experiments_with_condition(condition)
+        return column_names, entries
+
+    def _get_experiments_with_condition(self, condition: Optional[str] = None) -> Tuple[List[str], List[List]]:
         def _get_keyfields_from_columns(column_names, entries):
             df = pd.DataFrame(entries, columns=column_names)
             keyfields = utils.get_keyfield_names(self.database_credential_file_path)
             entries = df[keyfields].values.tolist()
             return keyfields, entries
-
         connection = self.connect()
         cursor = self.cursor(connection)
-        column_names = self.get_structure_from_table(cursor)
 
-        self.execute(cursor, f"SELECT * FROM {self.table_name} WHERE status='{status}'")
-        entries = cursor.fetchall()
+        query = f"SELECT * FROM {self.table_name}"
+        query += condition if condition is not None else ''
+        self.execute(cursor, query)
+        entries = self.fetchall(cursor)
+        column_names = self.get_structure_from_table(cursor)
         column_names, entries = _get_keyfields_from_columns(column_names, entries)
-        self.execute(cursor, f"DELETE FROM {self.table_name} WHERE status='{status}'")
-        self.commit(connection)
-        self.close_connection(connection)
 
         return column_names, entries
+
+    def _delete_experiments_with_condition(self, condition: Optional[str] = None) -> None:
+        connection = self.connect()
+        cursor = self.cursor(connection)
+        query = f'DELETE FROM {self.table_name}'
+        query += condition if condition is not None else ''
+        self.execute(cursor, query)
+        self.commit(connection)
+        self.close_connection(connection)
 
     @abc.abstractmethod
     def get_structure_from_table(self, cursor):
         pass
+
+    def drop_table(self) -> None:
+        connection = self.connect()
+        cursor = self.cursor(connection)
+        query = f'DROP TABLE IF EXISTS {self.table_name}'
+        self.execute(cursor, query)
+        self.commit(connection)
 
     def get_table(self) -> pd.DataFrame:
         connection = self.connect()

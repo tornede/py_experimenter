@@ -31,22 +31,16 @@ def check_done_entries(experimenter, amount_of_entries):
     experimenter.dbconnector.close_connection(connection)
 
 
-def delete_existing_table(experimenter):
-    connection= experimenter.dbconnector.connect()
-    cursor= experimenter.dbconnector.cursor(connection)
-    try:
-        cursor.execute("DROP TABLE IF EXISTS test_table")
-        experimenter.dbconnector.commit(connection)
-        experimenter.dbconnector.close_connection(connection)
-    except ProgrammingError:
-        experimenter.dbconnector.close_connection(connection)
-        logging.warning("Table test_table does not exist")
+
 
 
 def test_run_all_sqlite_experiments():
     logging.basicConfig(level=logging.DEBUG)
     experimenter= PyExperimenter(experiment_configuration_file_path=os.path.join('test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg'))
-    delete_existing_table(experimenter)
+    try:
+        experimenter.drop_table()
+    except Exception:
+        pass
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, 1)
 

@@ -12,6 +12,7 @@ from py_experimenter import utils
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
 from py_experimenter.exceptions import InvalidConfigError, InvalidValuesInConfiguration, NoExperimentsLeftException
+from py_experimenter.experiment_status import ExperimentStatus
 from py_experimenter.result_processor import ResultProcessor
 
 
@@ -404,32 +405,30 @@ class PyExperimenter:
             error_msg = traceback.format_exc()
             logging.error(error_msg)
             result_processor._write_error(error_msg)
-            result_processor._change_status('error')
+            result_processor._change_status(ExperimentStatus.ERROR.value)
         else:
-            result_processor._change_status('done')
+            result_processor._change_status(ExperimentStatus.DONE.value)
 
-    def reset_experiments(self, status) -> None:
+    def reset_experiments(self, *states: str) -> None:
         """
         Deletes the experiments of the database table having the given `status`. Afterwards, all rows that have been 
         deleted from the database table are added to the table again featuring `created` as a status. Experiments 
-        to reset can be selected based on the following status: 
+        to reset can be selected based on the following status definition: 
 
-        * `created` when the experiment is added to the database table, execution has not started.
-        * `running` when the execution of the experiment has been started.
-        * `error` if something went wrong during the execution, i.e., an exception is raised
-        * `done` if the execution finished successfully.
-
-        :param status: The status of experiments that should be reset.
-        :type status: str
+        :param status: The status of experiments that should be reset. Either `created`, `running`, `error`, `done`, or `all`.
+            Note that states is a variable length argument, so multiple states can be given.	
+           :type status: str
         """
-        def get_dict_for_keyfields_and_rows(keyfields: List[str], rows: List[List[str]]) -> List[dict]:
-            return [{key: value for key, value in zip(keyfields, row)} for row in rows]
+        if not states:
+            logging.warning('No states given to reset experiments. No experiments are reset.')
+        else:
+            self.dbconnector.reset_experiments(*states)
 
-        keyfields, rows = self.dbconnector.delete_experiments_with_status(status)
-        rows = get_dict_for_keyfields_and_rows(keyfields, rows)
-        if rows:
-            self.fill_table_with_rows(rows)
-        logging.info(f"{len(rows)} experiments with status {status} were reset")
+    def drop_table(self) -> None:
+        """
+        Drops the table defined in the configuration file.
+        """
+        self.dbconnector.drop_table()
 
     def get_table(self) -> pd.DataFrame:
         """
@@ -438,4 +437,4 @@ class PyExperimenter:
         :return: The database table as `Pandas.DataFrame`. 
         :rtype: pd.DataFrame
         """
-        return self.dbconnector.get_table()
+        return self.dbconnector._get_experiments_with_condition()

@@ -31,24 +31,12 @@ def check_done_entries(experimenter, amount_of_entries):
     experimenter.dbconnector.close_connection(connection)
 
 
-def delete_existing_table(experimenter):
-    connection = experimenter.dbconnector.connect()
-    cursor = experimenter.dbconnector.cursor(connection)
-    try:
-        cursor.execute(f"DROP TABLE {experimenter.dbconnector.table_name}")
-        experimenter.dbconnector.commit(connection)
-        experimenter.dbconnector.close_connection(connection)
-    except ProgrammingError as e:
-        experimenter.dbconnector.close_connection(connection)
-        logging.warning(e)
-
-
 def test_run_all_mqsql_experiments():
     experiment_configuration_file_path = os.path.join('test', 'test_run_experiments', 'test_run_mysql_experiment_config.cfg')
     logging.basicConfig(level=logging.DEBUG)
     experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path)
     try:
-        delete_existing_table(experimenter)
+        experimenter.drop_table()
     except ProgrammingError as e:
         logging.warning(e)
     experimenter.fill_table_from_config()
