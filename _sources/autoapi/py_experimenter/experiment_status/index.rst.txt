@@ -1,0 +1,53 @@
+:py:mod:`py_experimenter.experiment_status`
+===========================================
+
+.. py:module:: py_experimenter.experiment_status
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   py_experimenter.experiment_status.ExperimentStatus
+
+
+
+
+.. py:class:: ExperimentStatus
+
+   Bases: :py:obj:`enum.Enum`
+
+   Generic enumeration.
+
+   Derive from this class to define new enumerations.
+
+   .. py:attribute:: CREATED
+      :annotation: = created
+
+      
+
+   .. py:attribute:: RUNNING
+      :annotation: = running
+
+      
+
+   .. py:attribute:: DONE
+      :annotation: = done
+
+      
+
+   .. py:attribute:: ERROR
+      :annotation: = error
+
+      
+
+   .. py:attribute:: ALL
+      :annotation: = all
+
+      
+
+

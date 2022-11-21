@@ -256,19 +256,20 @@ Classes
       :raises DatabaseConnectionError: If an error occurred during the connection to the database.
 
 
-   .. py:method:: reset_experiments(status) -> None
+   .. py:method:: reset_experiments(*states: str) -> None
 
       Deletes the experiments of the database table having the given `status`. Afterwards, all rows that have been 
       deleted from the database table are added to the table again featuring `created` as a status. Experiments 
-      to reset can be selected based on the following status: 
+      to reset can be selected based on the following status definition: 
 
-      * `created` when the experiment is added to the database table, execution has not started.
-      * `running` when the execution of the experiment has been started.
-      * `error` if something went wrong during the execution, i.e., an exception is raised
-      * `done` if the execution finished successfully.
+      :param status: The status of experiments that should be reset. Either `created`, `running`, `error`, `done`, or `all`.
+          Note that `states` is a variable length argument, so multiple states can be given as a list.        
+         :type status: str
 
-      :param status: The status of experiments that should be reset.
-      :type status: str
+
+   .. py:method:: delete_table() -> None
+
+      Drops the table defined in the configuration file.
 
 
    .. py:method:: get_table() -> pandas.DataFrame

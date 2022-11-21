@@ -106,11 +106,23 @@ Classes
    .. py:method:: not_executed_yet(where) -> bool
 
 
-   .. py:method:: delete_experiments_with_status(status)
+   .. py:method:: reset_experiments(*states: str) -> None
+
+
+   .. py:method:: _pop_experiments_with_status(status: Optional[str] = None) -> Tuple[List[str], List[List]]
+
+
+   .. py:method:: _get_experiments_with_condition(condition: Optional[str] = None) -> Tuple[List[str], List[List]]
+
+
+   .. py:method:: _delete_experiments_with_condition(condition: Optional[str] = None) -> None
 
 
    .. py:method:: get_structure_from_table(cursor)
       :abstractmethod:
+
+
+   .. py:method:: delete_table() -> None
 
 
    .. py:method:: get_table() -> pandas.DataFrame

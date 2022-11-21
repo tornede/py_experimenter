@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="py_experimenter.result_processor" href="../result_processor/index.html" />
-    <link rel="prev" title="py_experimenter.exceptions" href="../exceptions/index.html" /> 
+    <link rel="prev" title="py_experimenter.experiment_status" href="../experiment_status/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,6 +55,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../database_connector_lite/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector_lite</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../database_connector_mysql/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector_mysql</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../exceptions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.exceptions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../experiment_status/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.experiment_status</span></code></a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.experimenter</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../result_processor/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.result_processor</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.utils</span></code></a></li>
@@ -439,21 +440,30 @@ ID (<cite>False</cite>) or in a randomized fashion (<cite>True</cite>). Defaults
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.reset_experiments">
-<span class="sig-name descname"><span class="pre">reset_experiments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.reset_experiments" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">reset_experiments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.reset_experiments" title="Permalink to this definition"></a></dt>
 <dd><p>Deletes the experiments of the database table having the given <cite>status</cite>. Afterwards, all rows that have been
 deleted from the database table are added to the table again featuring <cite>created</cite> as a status. Experiments
-to reset can be selected based on the following status:</p>
-<ul class="simple">
-<li><p><cite>created</cite> when the experiment is added to the database table, execution has not started.</p></li>
-<li><p><cite>running</cite> when the execution of the experiment has been started.</p></li>
-<li><p><cite>error</cite> if something went wrong during the execution, i.e., an exception is raised</p></li>
-<li><p><cite>done</cite> if the execution finished successfully.</p></li>
-</ul>
+to reset can be selected based on the following status definition:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>status</strong> (<em>str</em>) – The status of experiments that should be reset.</p>
+<dd class="field-odd"><p><strong>status</strong> – <dl class="simple">
+<dt>The status of experiments that should be reset. Either <cite>created</cite>, <cite>running</cite>, <cite>error</cite>, <cite>done</cite>, or <cite>all</cite>.</dt><dd><p>Note that <cite>states</cite> is a variable length argument, so multiple states can be given as a list.</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">type status</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.delete_table">
+<span class="sig-name descname"><span class="pre">delete_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.delete_table" title="Permalink to this definition"></a></dt>
+<dd><p>Drops the table defined in the configuration file.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -480,7 +490,7 @@ to reset can be selected based on the following status:</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../exceptions/index.html" class="btn btn-neutral float-left" title="py_experimenter.exceptions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../experiment_status/index.html" class="btn btn-neutral float-left" title="py_experimenter.experiment_status" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../result_processor/index.html" class="btn btn-neutral float-right" title="py_experimenter.result_processor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

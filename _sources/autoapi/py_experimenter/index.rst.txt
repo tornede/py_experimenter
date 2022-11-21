@@ -14,6 +14,7 @@ Submodules
    database_connector_lite/index.rst
    database_connector_mysql/index.rst
    exceptions/index.rst
+   experiment_status/index.rst
    experimenter/index.rst
    result_processor/index.rst
    utils/index.rst
