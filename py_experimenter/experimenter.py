@@ -416,7 +416,7 @@ class PyExperimenter:
         to reset can be selected based on the following status definition: 
 
         :param status: The status of experiments that should be reset. Either `created`, `running`, `error`, `done`, or `all`.
-            Note that states is a variable length argument, so multiple states can be given.	
+            Note that `states` is a variable length argument, so multiple states can be given as a list.	
            :type status: str
         """
         if not states:
@@ -437,4 +437,4 @@ class PyExperimenter:
         :return: The database table as `Pandas.DataFrame`. 
         :rtype: pd.DataFrame
         """
-        return self.dbconnector._get_experiments_with_condition()
+        return self.dbconnector.get_table()
