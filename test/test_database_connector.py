@@ -1,4 +1,3 @@
-
 import datetime
 import os
 
@@ -9,6 +8,7 @@ from mock import patch
 from py_experimenter import database_connector, database_connector_mysql
 from py_experimenter.database_connector import DatabaseConnector
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
+from py_experimenter.experiment_status import ExperimentStatus
 from py_experimenter.utils import load_config
 
 
@@ -72,26 +72,26 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
          [],
          ['value,exponent,status,creation_date'],
          [
-             [1, 3, 'created'],
-             [1, 4, 'created'],
-             [2, 3, 'created'],
-             [2, 4, 'created']
+             [1, 3, ExperimentStatus.CREATED.value],
+             [1, 4, ExperimentStatus.CREATED.value],
+             [2, 3, ExperimentStatus.CREATED.value],
+             [2, 4, ExperimentStatus.CREATED.value]
         ]),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {},
          [{'value': 1, 'exponent': 3}, {'value': 1, 'exponent': 4}],
          ['value,exponent,status,creation_date'],
          [
-             [1, 3, 'created'],
-             [1, 4, 'created'],
+             [1, 3, ExperimentStatus.CREATED.value],
+             [1, 4, ExperimentStatus.CREATED.value],
         ]),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], },
          [{'exponent': 3, 'other_value': 5}],
          ['value,exponent,other_value,status,creation_date'],
          [
-             [1, 3, 5, 'created'],
-             [2, 3, 5, 'created'],
+             [1, 3, 5, ExperimentStatus.CREATED.value],
+             [2, 3, 5, ExperimentStatus.CREATED.value],
         ]
         ),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
@@ -99,10 +99,10 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
          [{'other_value': 5}],
          ['value,exponent,other_value,status,creation_date'],
          [
-             [1, 3, 5, 'created'],
-             [1, 4, 5, 'created'],
-             [2, 3, 5, 'created'],
-             [2, 4, 5, 'created'],
+             [1, 3, 5, ExperimentStatus.CREATED.value],
+             [1, 4, 5, ExperimentStatus.CREATED.value],
+             [2, 3, 5, ExperimentStatus.CREATED.value],
+             [2, 4, 5, ExperimentStatus.CREATED.value],
         ]
         ),
     ]
@@ -128,7 +128,7 @@ def test_fill_table(
 
     experiment_configuration = load_config(experiment_configuration_file_path)
     database_connector = DatabaseConnectorMYSQL(
-        experiment_configuration, 
+        experiment_configuration,
         database_credential_file_path=os.path.join('test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
     database_connector.fill_table(parameters, fixed_parameter_combination)
     args = write_to_database_mock.call_args_list
@@ -141,3 +141,86 @@ def test_fill_table(
         assert datetime_from_string_argument.day == datetime.datetime.now().day
         assert datetime_from_string_argument.hour == datetime.datetime.now().hour
         assert datetime_from_string_argument.minute - datetime.datetime.now().minute <= 2
+
+
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_test_connection')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'connect')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'close_connection')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'cursor')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'execute')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'commit')
+def test_delete_experiments_with_condition(commit_mock, execute_mock, cursor_mock, close_conenction_mock, connect_mock, create_database_if_not_existing_mock, _test_connection_mock):
+    create_database_if_not_existing_mock.return_value = None
+    _test_connection_mock.return_value = None
+    connect_mock.return_value = None
+    close_conenction_mock.return_value = None
+    execute_mock.return_value = None
+    cursor_mock.return_value = None
+    commit_mock.return_value = None
+
+    experiment_configuration_file_path = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
+    database_connector = DatabaseConnectorMYSQL(
+        experiment_configuration_file_path,
+        database_credential_file_path=os.path.join(
+            'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
+    )
+
+    database_connector._delete_experiments_with_condition(f'WHERE status = "{ExperimentStatus.CREATED.value}"')
+
+    args = execute_mock.call_args_list
+    assert len(args) == 1
+    assert args[0][0][1] == f'DELETE FROM test_table WHERE status = "{ExperimentStatus.CREATED.value}"'
+
+
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_test_connection')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'connect')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'cursor')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'execute')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'commit')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'fetchall')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'get_structure_from_table')
+def test_get_experiments_with_condition(get_structture_from_table_mock, fetchall_mock, commit_mock, execute_mock, cursor_mock, connect_mock, create_database_if_not_existing_mock, _test_connection_mock):
+    create_database_if_not_existing_mock.return_value = None
+    _test_connection_mock.return_value = None
+    connect_mock.return_value = None
+    execute_mock.return_value = None
+    cursor_mock.return_value = None
+    commit_mock.return_value = None
+    fetchall_mock.return_value = [(1, 2,), ]
+    get_structture_from_table_mock.return_value = ['value', 'exponent']
+    experiment_configuration_file_path = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
+    database_connector = DatabaseConnectorMYSQL(
+        experiment_configuration_file_path,
+        database_credential_file_path=os.path.join(
+            'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
+    )
+    database_connector._get_experiments_with_condition(f'WHERE status = "{ExperimentStatus.CREATED.value}"')
+
+    assert execute_mock.call_args_list[0][0][1] == f'SELECT * FROM test_table WHERE status = "{ExperimentStatus.CREATED.value}"'
+
+
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_test_connection')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'connect')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'cursor')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'execute')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'commit')
+def test_delete_table(commit_mock, execute_mock, cursor_mock, connect_mock, create_database_if_not_existing_mock, _test_connection_mock):
+    create_database_if_not_existing_mock.return_value = None
+    _test_connection_mock.return_value = None
+    connect_mock.return_value = None
+    execute_mock.return_value = None
+    cursor_mock.return_value = None
+    commit_mock.return_value = None
+    experiment_configuration_file_path = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
+    database_connector = DatabaseConnectorMYSQL(
+        experiment_configuration_file_path,
+        database_credential_file_path=os.path.join(
+            'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
+    )
+    database_connector.delete_table()
+
+    assert execute_mock.call_count == 1
+    assert execute_mock.call_args[0][1] == 'DROP TABLE IF EXISTS test_table'
