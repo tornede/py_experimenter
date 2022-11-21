@@ -96,7 +96,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             connection.rollback()
             raise err
         self.close_connection(connection)
-        
+
         return experiment_id, description, values
 
     @staticmethod
@@ -108,6 +108,10 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             else:
                 escaped_args.append(arg)
         return escaped_args
+    
+    @staticmethod
+    def random_order_string():
+        return 'RAND()'
 
     def _get_existing_rows(self, column_names):
         def _remove_double_whitespaces(existing_rows):

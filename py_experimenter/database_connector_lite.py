@@ -68,6 +68,10 @@ class DatabaseConnectorLITE(DatabaseConnector):
                 modified_args.append(arg)
         return modified_args
 
+    @staticmethod
+    def random_order_string():
+        return 'RANDOM()'
+
     def _get_existing_rows(self, column_names):
         def _remove_string_markers(row):
             return row.replace("'", "")

@@ -177,7 +177,7 @@ class DatabaseConnector(abc.ABC):
 
     def _execute_queries(self, connection, cursor, random_order) ->Tuple[int, List, List]:
         if random_order:
-            order_by = "RAND()"
+            order_by = self.__class__.random_order_string()
         else:
             order_by = "id"
         select_experiment = f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;"
@@ -193,6 +193,10 @@ class DatabaseConnector(abc.ABC):
         description = cursor.description
         return experiment_id, description, values
 
+    @abc.abstractstaticmethod
+    def random_order_string():
+        pass
+ 
     @abc.abstractmethod
     def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
         pass

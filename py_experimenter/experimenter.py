@@ -171,8 +171,7 @@ class PyExperimenter:
                     f'Error in config file: DATABASE section must contain host, user, and password since provider is {_config["DATABASE"]["provider"]}')
                 return False
 
-        if not {'n_jobs', 'keyfields',
-                'resultfields'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
+        if not {'keyfields','resultfields'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
             return False
         return True
 
