@@ -18,10 +18,10 @@ Feature
     - Added all dependencies for PyExperimenter itself as well as for the development.
 - Updated Experiment Handling
     - The experiment configuration field ``cpu.max`` was renamed to ``n_jobs``. 
-    - ``PyExperimenter.execute()`` now spawns as many workers as defined by ``j_jobs``.
+    - ``PyExperimenter.execute()`` now spawns as many workers as defined by ``n_jobs``.
     - The open experiment will not be pulled once in advance, but within each call of the ``PyExperimenter._execution_wrapper()``. This is completely handled by the ``SELECT`` call, including the ``randomize`` (if given), and limits the results to ``1``. In the same transaction of pulling an open experiment, its status is set to ``running``. 
     - An open experiment is only pulled if ``max_experiments`` has not been reached (except for ``-1``).
-- File holding all exceptions was renamed.
+- File holding all exceptions was renamed to ``exceptions.py``.
 - Modified functionality to reset experiments
     - Added Enum ``ExperimentStatus``.
     - Modified ``experimenter.reset_experiments()`` to be able to get
