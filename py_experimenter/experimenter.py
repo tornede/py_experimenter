@@ -1,19 +1,17 @@
-import concurrent.futures
 import configparser
 import logging
 import os
 import socket
 import traceback
-from configparser import NoSectionError
-from random import shuffle
-from typing import Callable, List
+from multiprocessing import Manager, Pool, Semaphore
+from typing import Callable, Dict, List, Optional
 
 import pandas as pd
 
 from py_experimenter import utils
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
-from py_experimenter.py_experimenter_exceptions import InvalidConfigError, InvalidValuesInConfiguration
+from py_experimenter.exceptions import InvalidConfigError, InvalidValuesInConfiguration, NoExperimentsLeftException
 from py_experimenter.result_processor import ResultProcessor
 
 
@@ -111,6 +109,17 @@ class PyExperimenter:
         """
         return self.config.get(section_name, key)
 
+    def has_section(self, section_name: str) -> bool:
+        """
+        Checks whether the experiment configuration contains a section with the given name.
+
+        :param section_name: The name of the section which should be checked for existence.
+        :type section_name: str
+        :return: True if the section exists, False otherwise.
+        :rtype: bool
+        """
+        return self.config.has_section(section_name)
+
     def has_option(self, section_name: str, key: str) -> bool:
         """
         Checks whether the experiment configuration contains a property identified by the given 'key' within the 
@@ -122,7 +131,7 @@ class PyExperimenter:
         :param key: The name of the key to check within the given section.
         :type key: str
         :return: True if the given `key` is contained in the experiment configuration within the section called 
-            `section_name`.
+            `section_name`. False otherwise.
         :rtype: bool
         """
         return self.config.has_option(section_name, key)
@@ -162,8 +171,7 @@ class PyExperimenter:
                     f'Error in config file: DATABASE section must contain host, user, and password since provider is {_config["DATABASE"]["provider"]}')
                 return False
 
-        if not {'cpu.max', 'keyfields',
-                'resultfields'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
+        if not {'keyfields','resultfields'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
             return False
         return True
 
@@ -256,94 +264,149 @@ class PyExperimenter:
                 raise ValueError('The keyfields in the config file do not match the keyfields in the rows')
         self.dbconnector.fill_table(fixed_parameter_combinations=rows)
 
-    def execute(self, experiment_function: Callable[[dict, dict, ResultProcessor], None], max_experiments: int = -1, random_order=False) -> None:
+    def execute(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None],
+                max_experiments: int = -1,
+                random_order=False) -> None:
         """
         Pulls open experiments from the database table and executes them.
 
-        First the keyfield values of as many open experiments as given via `max_experiments` are pulled from the 
-        database table. An experiment is considered to be open if its status is 'created'. In case of `random_order`, 
-        they are not selected based on their consecutive experiment ID, but rather chosen randomly. This slims the 
-        chances of two instantiations of `PyExperimenter` pulling the same experiment ID at the same time. The 
-        amount of cpus (defined in the configuration file) determines the amount of jobs run in parallel. 
+        First as many worker are spawned and started as specified with `n_jobs` in the experiment configuration file. 
+        If `n_jobs` is not given, a single worker is spawned. Each worker then repeatedly pulls an open experiment from 
+        the table until the maximum number of experiments `max_experiments` have been executed. In case of `random_order`, 
+        the next open experiment to be executed is not selected based on its consecutive experiment ID, but rather 
+        chosen randomly from the table. With the pull the status of the experiment is set to `running`. 
+        
+        After pulling an experiment, `experiment_function` is executed with keyfield values of the pulled open 
+        experiment. Results can be continuously written to the database during the execution via `ResultProcessor`
+        that is given as parameter to `experiment_function`. If the execution was successful, the status of the 
+        corresponding experiment is set to `done`. Otherwise, if an error occurred during the execution, the status is 
+        changed to  `error` and the raised error is logged to the database table.
 
-        Afterwards, the given `experiment_function` is executed for each set of keyfield values, changing its status to 
-        `running`. Results can be continuously written to the database during the execution via the `ResultProcessor` 
-        that is given as parameter to the `experiment_function`. If the execution was successful, the status of the corresponding 
-        experiment is set to `done`. Otherwise, if an error occurred during the execution, the status is changed to 
-        `error` and the raised error is logged to the database table. 
+        Note that only errors raised within `experiment_function` are logged in to the database table. Therefore all 
+        errors raised before or after the execution of `experiment_function` are logged according to the local
+        logging configuration and do not appear in the table.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
-        :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
+        :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
         :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments 
-            should be executed, -1 can be used. Defaults to -1. 
+            should be executed, set this to `-1`. Defaults to `-1`. 
         :type max_experiments: int, optional
         :param random_order: Indicates whether the experiments to be executed are chosen consecutively by its experiment 
-            ID (`False`) or in a randomized fashion (`True`). Defaults to False.
+            ID (`False`) or in a randomized fashion (`True`). Defaults to `False`.
         :type random_order: bool, optional
         :raises InvalidValuesInConfiguration: If any value of the experiment parameters is of wrong data type.
         """
-        logging.info("Start execution of experiment_functions...")
-        keyfield_values = self.dbconnector.get_keyfield_values_to_execute()
-
-        if random_order:
-            shuffle(keyfield_values)
-
-        if 0 <= max_experiments < len(keyfield_values):
-            keyfield_values = keyfield_values[:max_experiments]
-        result_field_names = utils.get_result_field_names(self.config)
         try:
-            cpus = int(self.config['PY_EXPERIMENTER']['cpu.max'])
+            n_jobs = int(self.config['PY_EXPERIMENTER']['n_jobs']) if self.has_option('PY_EXPERIMENTER', 'n_jobs') else 1
         except ValueError:
-            raise InvalidValuesInConfiguration('cpu.max must be an integer')
-        table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
-        result_processors = [ResultProcessor(self.config, self.database_credential_file_path, table_name=table_name, condition=p,
-                                             result_fields=result_field_names) for p in keyfield_values]
-        experiment_functions = [experiment_function for _ in keyfield_values]
-        try:
-            custom_fields = [dict(self.config.items('CUSTOM')) for _ in keyfield_values]
-        except NoSectionError:
-            custom_fields = [None for _ in keyfield_values]
+            InvalidValuesInConfiguration('n_jobs must be an integer')
+            
+        with Manager() as manager:
+            if max_experiments >= 0:
+                semaphore = manager.Semaphore(max_experiments)
+            else:
+                semaphore = None
+                
+            with Pool(n_jobs) as pool:
+                for _ in range(n_jobs):
+                    pool.apply_async(self._execution_worker, 
+                                     args=(experiment_function, random_order, semaphore),
+                                     error_callback=self._handle_error)
+                pool.close()
+                pool.join()
 
-        with concurrent.futures.ProcessPoolExecutor(max_workers=cpus) as executor:
-            executor.map(self._execution_wrapper, experiment_functions, custom_fields, keyfield_values, result_processors)
-        logging.info("All executions finished")
+        logging.info("All configured executions finished.")
+
+    def _execution_worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None], random_order, semaphore: Optional[Semaphore]) -> None:
+        """
+        Handles the execution of experiments of a single worker.
+
+        Each worker repeatedly checks whether the maximum number of experiments to execute is reached. If not, an experiment 
+        is pulled from the database table, setting its status to `running`, and `experiment_function` is called on its keyfield 
+        values. After execution, the status is set to `done` if the execution was successful, otherwise it is set to `error` 
+        and the raised error is logged to the database table.
+
+        Note that only errors raised within `experiment_function` are logged in to the database table. Therefore all 
+        errors raised before or after the execution of `experiment_function` are logged according to the local
+        logging configuration and do not appear in the table.
+
+        :param experiment_function: The function that should be executed with the different parametrizations.
+        :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
+        :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments 
+            should be executed, set this to `-1`. Defaults to `-1`. 
+        :type max_experiments: int, optional
+        :param semaphore: A semaphore that is used to limit the number of experiments that are executed.
+        :type semaphore: multiprocessing.Semaphore or None
+        """
+        def is_max_experiments_started():
+            if semaphore is None:
+                return False
+            else:
+                return not semaphore.acquire(blocking=False)
+
+        while not is_max_experiments_started():
+            try:
+                self._execution_wrapper(experiment_function, random_order)
+            except NoExperimentsLeftException:
+                break
+
+    def _handle_error(self, error: Exception):
+        """
+        Logs an error. 
+
+        :param error: Error that should be logged.
+        :type error: Exception
+        """
+        logging.error(error)
 
     def _execution_wrapper(self,
                            experiment_function: Callable[[dict, dict, ResultProcessor], None],
-                           custom_fields: dict,
-                           keyfields: dict,
-                           result_processor: ResultProcessor) -> None:
+                           random_order: bool) -> None:
         """
-        Executes the given `experiment_function` with the given `custom_fields`, `keyfields` and the according `result_processor`. 
-        Thereby, the status is set accordingly:
+        Executes the given `experiment_function` on one open experiment. To that end, one of the open experiments is pulled
+        (randomly if `random_order` = True) from the database table. Then `experiment_function` is executed on the keyfield 
+        values of the pulled experiment. 
+        
+        Thereby, the status of the experiment is continuously updated. The experiment can have the following states:
 
-        * `running` when the execution of the experiment has been started, but not yet finished.
+        * `running` when the experiment has been pulled from the database table, which will be executed directly afterwards.
         * `error` if an exception was raised during the execution of the experiment.
         * `done` if the execution of the experiment has finished successfully.
 
+        Errors raised during the execution of `experiment_function` are logged to the `error` column in the database table. 
+        Note that only errors raised within `experiment_function` are logged in to the database table. Therefore all errors 
+        raised before or after the execution of `experiment_function` are logged according to the local logging configuration 
+        and do not appear in the table.
+
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
-        :param custom_fields: The custom field values to execute the `experiment_function` with.
-        :type custom_fields: dict
-        :param keyfields: The keyfield values to execute the `experiment_function` with. 
-        :type keyfields: dict
-        :param result_processor: The `ResultProcessor` that is responsible to update the database table.
-        :type result_processor: ResultProcessor
+        :param random_order: Indicates whether the experiments to be executed are chosen consecutively by its experiment 
+            ID (`False`) or in a randomized fashion (`True`). Defaults to `False`.
+        :type random_order: bool, optional
+        :raises NoExperimentsLeftError: If there are no experiments left to be executed.
+        :raises DatabaseConnectionError: If an error occurred during the connection to the database.
         """
-        if result_processor._not_executed_yet():
-            result_processor._change_status('running')
-            result_processor._set_name(self.name)
-            result_processor._set_machine(socket.gethostname())
-            try:
-                logging.debug(f"Start of experiment_function on process {socket.gethostname()}")
-                experiment_function(keyfields, result_processor, custom_fields)
-            except Exception:
-                error_msg = traceback.format_exc()
-                logging.error(error_msg)
-                result_processor._write_error(error_msg)
-                result_processor._change_status('error')
-            else:
-                result_processor._change_status('done')
+        _, keyfield_values = self.dbconnector.get_experiment_configuration(random_order)
+        
+        result_field_names = utils.get_result_field_names(self.config)
+        custom_fields = dict(self.config.items('CUSTOM')) if self.has_section('CUSTOM') else None
+        table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
+
+        result_processor = ResultProcessor(self.config, self.database_credential_file_path, table_name=table_name,
+                                           condition=keyfield_values, result_fields=result_field_names)
+        result_processor._set_name(self.name)
+        result_processor._set_machine(socket.gethostname())
+
+        try:
+            logging.debug(f"Start of experiment_function on process {socket.gethostname()}")
+            experiment_function(keyfield_values, result_processor, custom_fields)
+        except Exception:
+            error_msg = traceback.format_exc()
+            logging.error(error_msg)
+            result_processor._write_error(error_msg)
+            result_processor._change_status('error')
+        else:
+            result_processor._change_status('done')
 
     def reset_experiments(self, status) -> None:
         """

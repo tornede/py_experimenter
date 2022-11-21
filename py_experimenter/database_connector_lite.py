@@ -1,11 +1,11 @@
 import logging
 from sqlite3 import Error, connect
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
 
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.py_experimenter_exceptions import DatabaseConnectionError
+from py_experimenter.exceptions import DatabaseConnectionError
 
 
 class DatabaseConnectorLITE(DatabaseConnector):
@@ -28,6 +28,17 @@ class DatabaseConnectorLITE(DatabaseConnector):
             return connect(**self.database_credentials)
         except Error as err:
             raise DatabaseConnectionError(err)
+
+    def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
+        with connect(**self.database_credentials) as connection:
+            try:
+                cursor = self.cursor(connection)
+                experiment_id, description, values = self._execute_queries(connection, cursor, random_order)
+            except Exception as err:
+                connection.rollback()
+                raise err
+
+        return experiment_id, description, values
 
     def _table_exists(self, cursor) -> bool:
         self.execute(cursor, f"SELECT name FROM sqlite_master WHERE type='table';")
@@ -56,6 +67,10 @@ class DatabaseConnectorLITE(DatabaseConnector):
             else:
                 modified_args.append(arg)
         return modified_args
+
+    @staticmethod
+    def random_order_string():
+        return 'RANDOM()'
 
     def _get_existing_rows(self, column_names):
         def _remove_string_markers(row):

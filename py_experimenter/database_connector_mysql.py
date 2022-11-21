@@ -1,11 +1,12 @@
 import logging
 from configparser import ConfigParser
+from typing import List, Tuple
 
 import numpy as np
 from mysql.connector import Error, connect
 
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.py_experimenter_exceptions import DatabaseConnectionError, DatabaseCreationError, TableError
+from py_experimenter.exceptions import DatabaseConnectionError, DatabaseCreationError, TableError
 from py_experimenter.utils import load_config
 
 
@@ -60,6 +61,9 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         except Error as err:
             raise DatabaseConnectionError(err)
 
+    def _start_transaction(self, connection, readonly=False):
+        connection.start_transaction(readonly=readonly)
+
     def _table_exists(self, cursor):
         self.execute(cursor, f"SHOW TABLES LIKE '{self._get_tablename_for_query()}'")
         return self.fetchall(cursor)
@@ -82,6 +86,19 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         config_columns = [k[0] for k in typed_fields]
         return set(columns) == set(config_columns)
 
+    def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
+        try:
+            connection = self.connect()
+            cursor = self.cursor(connection)
+            self._start_transaction(connection, readonly=False)
+            experiment_id, description, values = self._execute_queries(connection, cursor, random_order)
+        except Exception as err:
+            connection.rollback()
+            raise err
+        self.close_connection(connection)
+
+        return experiment_id, description, values
+
     @staticmethod
     def escape_sql_chars(*args):
         escaped_args = []
@@ -91,6 +108,10 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             else:
                 escaped_args.append(arg)
         return escaped_args
+    
+    @staticmethod
+    def random_order_string():
+        return 'RAND()'
 
     def _get_existing_rows(self, column_names):
         def _remove_double_whitespaces(existing_rows):

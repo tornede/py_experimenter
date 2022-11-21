@@ -1,13 +1,12 @@
 import abc
 import logging
 from datetime import datetime
-from typing import List
+from typing import List, Tuple
 
-import numpy as np
 import pandas as pd
 
 from py_experimenter import utils
-from py_experimenter.py_experimenter_exceptions import DatabaseConnectionError, EmptyFillDatabaseCallError, TableHasWrongStructureError
+from py_experimenter.exceptions import DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperimentsLeftException, TableHasWrongStructureError
 
 
 class DatabaseConnector(abc.ABC):
@@ -30,7 +29,7 @@ class DatabaseConnector(abc.ABC):
     def _test_connection(self):
         pass
 
-    @ abc.abstractmethod
+    @abc.abstractmethod
     def connect(self):
         pass
 
@@ -166,29 +165,41 @@ class DatabaseConnector(abc.ABC):
     def _get_existing_rows(self, column_names):
         pass
 
-    def get_keyfield_values_to_execute(self) -> List[dict]:
-        keyfield_names = utils.get_keyfield_names(self.database_credential_file_path)
-
-        execute_condition = "status='created'"
-
-        stmt = f"SELECT {', '.join(keyfield_names)} FROM {self.table_name} WHERE {execute_condition}"
-
-        connection = self.connect()
-        cursor = self.cursor(connection)
-
+    def get_experiment_configuration(self, random_order: bool):
         try:
-            self.execute(cursor, stmt)
+            experiment_id, description, values = self._pull_open_experiment(random_order)
+        except IndexError as e:
+            raise NoExperimentsLeftException("No experiments left to execute")
         except Exception as e:
             raise DatabaseConnectionError(f'error \n {e} raised. \n Please check if fill_table() was called correctly.')
-        keyfield_name_value_pairs = pd.DataFrame(self.fetchall(cursor))
-        if keyfield_name_value_pairs.empty:
-            return []
-        keyfield_name_value_pairs.columns = [i[0] for i in cursor.description]
-        self.close_connection(connection)
 
-        keyfield_values = [dict(parameter.to_dict()) for _, parameter in keyfield_name_value_pairs.iterrows()]
+        return experiment_id, dict(zip([i[0] for i in description], *values))
 
-        return keyfield_values
+    def _execute_queries(self, connection, cursor, random_order) ->Tuple[int, List, List]:
+        if random_order:
+            order_by = self.__class__.random_order_string()
+        else:
+            order_by = "id"
+        select_experiment = f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;"
+        alter_experiment = "UPDATE {} SET status = 'running' WHERE id = {};"
+        select_keyfields = "SELECT {} FROM {} WHERE id = {};"
+        self.execute(cursor, select_experiment)
+        experiment_id = self.fetchall(cursor)[0][0]
+        self.execute(cursor, alter_experiment.format(self.table_name, experiment_id))
+        self.execute(cursor, select_keyfields.format(','.join(utils.get_keyfield_names(
+            self.database_credential_file_path)), self.table_name, experiment_id))
+        values = self.fetchall(cursor)
+        self.commit(connection)
+        description = cursor.description
+        return experiment_id, description, values
+
+    @abc.abstractstaticmethod
+    def random_order_string():
+        pass
+ 
+    @abc.abstractmethod
+    def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
+        pass
 
     def _write_to_database(self, keys, values) -> None:
         keys = ", ".join(keys)
