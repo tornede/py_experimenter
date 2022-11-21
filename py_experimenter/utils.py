@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 import numpy as np
 
-from py_experimenter.py_experimenter_exceptions import ConfigError, NoConfigFileError, ParameterCombinationError
+from py_experimenter.exceptions import ConfigError, NoConfigFileError, ParameterCombinationError
 
 
 def load_config(path):

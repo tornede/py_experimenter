@@ -5,7 +5,7 @@ from typing import List, Tuple
 import numpy as np
 
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.py_experimenter_exceptions import DatabaseConnectionError
+from py_experimenter.exceptions import DatabaseConnectionError
 
 
 class DatabaseConnectorLITE(DatabaseConnector):

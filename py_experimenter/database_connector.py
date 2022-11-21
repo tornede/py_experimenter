@@ -6,8 +6,7 @@ from typing import List, Tuple
 import pandas as pd
 
 from py_experimenter import utils
-from py_experimenter.py_experimenter_exceptions import (DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperimentsLeftException,
-                                                        TableHasWrongStructureError)
+from py_experimenter.exceptions import DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperimentsLeftException, TableHasWrongStructureError
 
 
 class DatabaseConnector(abc.ABC):

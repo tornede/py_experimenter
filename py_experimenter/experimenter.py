@@ -11,7 +11,7 @@ import pandas as pd
 from py_experimenter import utils
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
-from py_experimenter.py_experimenter_exceptions import InvalidConfigError, InvalidValuesInConfiguration, NoExperimentsLeftException
+from py_experimenter.exceptions import InvalidConfigError, InvalidValuesInConfiguration, NoExperimentsLeftException
 from py_experimenter.result_processor import ResultProcessor
 
 

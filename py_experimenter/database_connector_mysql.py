@@ -1,12 +1,12 @@
 import logging
 from configparser import ConfigParser
-from typing import Tuple, List
+from typing import List, Tuple
 
 import numpy as np
 from mysql.connector import Error, connect
 
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.py_experimenter_exceptions import DatabaseConnectionError, DatabaseCreationError, TableError
+from py_experimenter.exceptions import DatabaseConnectionError, DatabaseCreationError, TableError
 from py_experimenter.utils import load_config
 
 

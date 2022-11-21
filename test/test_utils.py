@@ -3,7 +3,7 @@ import re
 
 import pytest
 
-from py_experimenter.py_experimenter_exceptions import ConfigError, NoConfigFileError, ParameterCombinationError
+from py_experimenter.exceptions import ConfigError, NoConfigFileError, ParameterCombinationError
 from py_experimenter.utils import (_generate_int_data, add_timestep_result_columns, combine_fill_table_parameters, get_fields, get_keyfield_data,
                                    get_keyfield_names, get_keyfields, get_resultfields, load_config, timestamps_for_result_fields)
 

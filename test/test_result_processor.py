@@ -6,7 +6,7 @@ from mock import patch
 from py_experimenter import database_connector, database_connector_lite, database_connector_mysql, utils
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
-from py_experimenter.py_experimenter_exceptions import InvalidConfigError, InvalidResultFieldError
+from py_experimenter.exceptions import InvalidConfigError, InvalidResultFieldError
 from py_experimenter.result_processor import ResultProcessor
 
 CREDENTIAL_PATH = os.path.join('test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
