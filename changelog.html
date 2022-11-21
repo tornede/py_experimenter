@@ -56,11 +56,18 @@
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#v1-0-0-04-09-2022">v1.0.0 (04/09/2022)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v1-1-0-21-11-2022">v1.1.0 (21/11/2022)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#feature">Feature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#fix">Fix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-0-0-04-09-2022">v1.0.0 (04/09/2022)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Feature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Fix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#v0-0-6-01-03-2022">v0.0.6 (01/03/2022)</a></li>
@@ -124,10 +131,94 @@
 </style>
 <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading"></a></h1>
-<section id="v1-0-0-04-09-2022">
-<h2>v1.0.0 (04/09/2022)<a class="headerlink" href="#v1-0-0-04-09-2022" title="Permalink to this heading"></a></h2>
+<section id="v1-1-0-21-11-2022">
+<h2>v1.1.0 (21/11/2022)<a class="headerlink" href="#v1-1-0-21-11-2022" title="Permalink to this heading"></a></h2>
 <section id="feature">
 <h3>Feature<a class="headerlink" href="#feature" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Improve Documentation</dt><dd><ul>
+<li><p>Added documentation using Sphinx, therefore a workflow was created to build and push the website.</p></li>
+<li><p>The build documentation will be pushed to a separate branch <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code>.</p></li>
+<li><p>The API of the class PyExperimenter has been updated to be accessible via documentation.</p></li>
+<li><p>Updated README to refer to the documentation.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Converted project to pyproject.toml using Poetry</dt><dd><ul>
+<li><p>Created pyproject.toml via Poetry.</p></li>
+<li><p>Added all dependencies for PyExperimenter itself as well as for the development.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Updated Experiment Handling</dt><dd><ul>
+<li><p>The experiment configuration field <code class="docutils literal notranslate"><span class="pre">cpu.max</span></code> was renamed to <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PyExperimenter.execute()</span></code> now spawns as many workers as defined by <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>.</p></li>
+<li><p>The open experiment will not be pulled once in advance, but within each call of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter._execution_wrapper()</span></code>. This is completely handled by the <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> call, including the <code class="docutils literal notranslate"><span class="pre">randomize</span></code> (if given), and limits the results to <code class="docutils literal notranslate"><span class="pre">1</span></code>. In the same transaction of pulling an open experiment, its status is set to <code class="docutils literal notranslate"><span class="pre">running</span></code>.</p></li>
+<li><p>An open experiment is only pulled if <code class="docutils literal notranslate"><span class="pre">max_experiments</span></code> has not been reached (except for <code class="docutils literal notranslate"><span class="pre">-1</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>File holding all exceptions was renamed to <code class="docutils literal notranslate"><span class="pre">exceptions.py</span></code>.</p></li>
+<li><dl class="simple">
+<dt>Modified functionality to reset experiments</dt><dd><ul>
+<li><p>Added Enum <code class="docutils literal notranslate"><span class="pre">ExperimentStatus</span></code>.</p></li>
+<li><dl class="simple">
+<dt>Modified <code class="docutils literal notranslate"><span class="pre">experimenter.reset_experiments()</span></code> to be able to get</dt><dd><ul>
+<li><p>single <code class="docutils literal notranslate"><span class="pre">ExperimentStatus</span></code></p></li>
+<li><p>list of <code class="docutils literal notranslate"><span class="pre">ExperimentStatus</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code> to reset all <code class="docutils literal notranslate"><span class="pre">ExperimentStatus</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Added method <code class="docutils literal notranslate"><span class="pre">experimenter.delete_table()</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Finalized paper draft</p></li>
+</ul>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Updated due to latest changes and renamings</p></li>
+<li><p>Referenced documentation within examples</p></li>
+</ul>
+</section>
+<section id="fix">
+<h3>Fix<a class="headerlink" href="#fix" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Bugfix of wrong column order when writing to DB</p></li>
+<li><p>Unfavorable pulling experiments has been changed (see above)</p></li>
+</ul>
+</section>
+<section id="tests">
+<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Add workflow to automatically check tests</dt><dd><ul>
+<li><p>Adds a simple test runner using GitHub Actions.</p></li>
+<li><p>Uses poetry to install the package and locked dependencies.</p></li>
+<li><p>Caching the virtual environment. This prevents having to install it every time and cuts down on CI roundtrip times.</p></li>
+<li><p>It tests a matrix of various python versions (3.7, 3.8, 3.9) and OS versions (Ubuntu, MacOS, Windows). Python 3.10 is excluded for now, since installing some of the dependencies takes a very long time.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+<section id="v1-0-0-04-09-2022">
+<h2>v1.0.0 (04/09/2022)<a class="headerlink" href="#v1-0-0-04-09-2022" title="Permalink to this heading"></a></h2>
+<section id="id1">
+<h3>Feature<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><dl class="simple">
 <dt>Restructured the experiment configuration file.</dt><dd><ul>
@@ -137,34 +228,34 @@
 </dd>
 </dl>
 </li>
-<li><p>Added option to give a name to the <cite>PyExperimenter</cite> instance to improve support of parallel HPC cluster usage.</p></li>
+<li><p>Added option to give a name to the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> instance to improve support of parallel HPC cluster usage.</p></li>
 <li><p>Added multiple options to fill tables.</p></li>
 <li><p>Improved column order of the database table when it is created.</p></li>
 <li><p>Added method to reset parts of the database table based on their status.</p></li>
-<li><p>Added method to obtain the current state of the database table as <cite>pandas.Dataframe</cite>, which can be used to easily export result tables, e.g. to LaTeX.</p></li>
+<li><p>Added method to obtain the current state of the database table as <code class="docutils literal notranslate"><span class="pre">pandas.Dataframe</span></code>, which can be used to easily export result tables, e.g. to LaTeX.</p></li>
 <li><p>Improved robustness of database creation and experiment execution.</p></li>
 <li><p>Improved error handling.</p></li>
 <li><p>Updated and extended the README file according to all changes.</p></li>
 </ul>
 </section>
-<section id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h3>
+<section id="id2">
+<h3>Examples<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
 <ul class="simple">
-<li><p>Added a Jupyter notebook explaining the general usage of the <cite>PyExperimenter</cite>.</p></li>
+<li><p>Added a Jupyter notebook explaining the general usage of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>.</p></li>
 <li><p>Added a Jupyter notebook explaining how to fill the database table with a conditional experiment grid.</p></li>
 </ul>
 </section>
-<section id="fix">
-<h3>Fix<a class="headerlink" href="#fix" title="Permalink to this heading"></a></h3>
+<section id="id3">
+<h3>Fix<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Added checked when resetting a table, that only missing rows are added and no duplicated rows are created.</p></li>
 <li><p>Fixed writing of string containing quotation marks to the database table.</p></li>
 </ul>
 </section>
-<section id="tests">
-<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this heading"></a></h3>
+<section id="id4">
+<h3>Tests<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
 <ul class="simple">
-<li><p>Added tests for all key components of <cite>PyExperimenter</cite>.</p></li>
+<li><p>Added tests for all key components of <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>.</p></li>
 </ul>
 </section>
 </section>
@@ -201,7 +292,7 @@
 <section id="v0-0-1-14-10-2021">
 <h2>v0.0.1 (14/10/2021)<a class="headerlink" href="#v0-0-1-14-10-2021" title="Permalink to this heading"></a></h2>
 <ul class="simple">
-<li><p>First release of <cite>PyExperimenter</cite></p></li>
+<li><p>First release of <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code></p></li>
 <li><p>No summary available.</p></li>
 </ul>
 </section>
