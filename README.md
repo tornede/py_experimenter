@@ -1,13 +1,26 @@
+[![doc](https://img.shields.io/badge/doc-success-success)](https://tornede.github.io/py_experimenter)
+[![pypi](https://img.shields.io/pypi/v/py_experimenter)](https://pypi.org/project/py-experimenter/)
+[![GitHub](https://img.shields.io/github/license/tornede/py_experimenter)](https://tornede.github.io/py_experimenter/license.html)
+
 <img src="docs/source/_static/py-experimenter-logo.png" alt="PyExperimenter Logo: Python biting a database" width="200px"/>
 
 # PyExperimenter
 
-The `PyExperimenter` is a tool for the automatic execution of experiments, e.g. for machine learning (ML), capturing corresponding results in a unified manner in a database. It is designed based on the assumption that an experiment is uniquely defined by certain inputs, i.e., experiment parameters, and a function computing the results of the experiment based on these input parameters. The set of experiments to be executed can be defined through a configuration file listing the domains of each experiment parameter, or manually through code. Based on the set of experiments defined by the user, `PyExperimenter` creates a table in the database featuring all experiments identified by their input parameter values and additional information such as the execution status. Once this table has been created, `PyExperimenter` can be run on any machine, including a distributed cluster. Each `PyExperimenter` instance automatically pulls open experiments from the database, executes the experiment function provided by the user with the corresponding experiment parameters defining the experiment and writes back the results computed by the function. Possible errors arising during the execution are logged in the database. After all experiments are done, the experiment evaluation table can be easily extracted, e.g. averaging over different seeds.
+`PyExperimenter` is a tool to facilitate the setup, documentation, execution, and subsequent evaluation of results from an empirical study of algorithms and in particular is designed to reduce the involved manual effort significantly.
+It is intended to be used by researchers in the field of artificial intelligence, but is not limited to those.
+
+The empirical analysis of algorithms is often accompanied by the execution of algorithms for different inputs and variants of the algorithms (specified via parameters) and the measurement of non-functional properties.
+Since the individual evaluations are usually independent, the evaluation can be performed in a distributed manner on an HPC system.
+However, setting up, documenting, and evaluating the results of such a study is often file-based.
+Usually, this requires extensive manual work to create configuration files for the inputs or to read and aggregate measured results from a report file.
+In addition, monitoring and restarting individual executions is tedious and time-consuming.
+
+These challenges are addressed by `PyExperimenter` by means of a single well defined configuration file and a central database for managing massively parallel evaluations, as well as collecting and aggregating their results.
+Thereby, `PyExperimenter` alleviates the aforementioned overhead and allows experiment executions to be defined and monitored with ease.
+
+![General schema of `PyExperimenter`.](docs/source/_static/workflow.png)
 
 For more details check out the [`PyExperimenter` documentation](https://tornede.github.io/py_experimenter/):
 
 - [Installation](https://tornede.github.io/py_experimenter/installation.html)
-- [Example](https://tornede.github.io/py_experimenter/examples/example_general_usage.html)
-- [License](https://tornede.github.io/py_experimenter/license.html)
-
-![General schema of `PyExperimenter`.](docs/source/_static/workflow.png)
+- [Examples](https://tornede.github.io/py_experimenter/examples/example_general_usage.html)

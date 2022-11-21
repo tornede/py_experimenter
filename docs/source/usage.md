@@ -4,7 +4,7 @@
 
 The experiment configuration file is primarily used to define the database backend, as well as execution parameters, i.e. keyfields, and result fields.
 
-```conf
+```
 [PY_EXPERIMENTER]
 provider = sqlite 
 database = database_name
@@ -50,14 +50,14 @@ Optionally, custom configurations can be defined under the `CUSTOM` section, whi
 
 When working with `MySQL` as a database provider, an additional database credential file is needed, containing the credentials for accessing the database:
 
-```conf
+```
 [CREDENTIALS]
 host = <host>
 user = <user>
 password = <password>
 ```
 
-By default, this file is located at `config/database_credentials.cfg`. If this is not the case, the according path has to be explicitly given when [executing the `PyExperimenter`](#executing-the-pyexperimenter).
+By default, this file is located at `config/database_credentials.cfg`. If this is not the case, the according path has to be explicitly given when [executing `PyExperimenter`](#executing-the-pyexperimenter).
 
 ---
 
@@ -96,7 +96,7 @@ def run_experiment(keyfields: dict, result_processor: ResultProcessor, custom_fi
 
 ## Executing the PyExperimenter
 
-The actual execution of the `PyExperimenter` only needs a few lines of code. Please make sure that you have created the [experiment configuration file](#experiment-configuration-file). Below the core functionality is elaborated on.
+The actual execution of `PyExperimenter` only needs a few lines of code. Please make sure that you have created the [experiment configuration file](#experiment-configuration-file). Below the core functionality is elaborated on.
 
 ```python
 from py_experimenter.experimenter import PyExperimenter
@@ -114,7 +114,7 @@ A `PyExperimenter` can be created without any further information, assuming the 
 experimenter = PyExperimenter()
 ```
 
-Additionally, further information can be given to the `PyExperimenter`:
+Additionally, further information can be given to `PyExperimenter`:
 
 - `experiment_configuration_file_path`: The path of the [experiment configuration file](#experiment-configuration-file). Default: `config/configuration.cfg`
 - `database_credential_file_path`: The path of the [database credential file](#database-credential-file). Default: `config/database_credentials.cfg`
