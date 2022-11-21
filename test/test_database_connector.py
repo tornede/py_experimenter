@@ -1,4 +1,3 @@
-from py_experimenter.experiment_status import ExperimentStatus
 import datetime
 import os
 
@@ -9,6 +8,7 @@ from mock import patch
 from py_experimenter import database_connector, database_connector_mysql
 from py_experimenter.database_connector import DatabaseConnector
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
+from py_experimenter.experiment_status import ExperimentStatus
 from py_experimenter.utils import load_config
 
 
@@ -166,7 +166,7 @@ def test_delete_experiments_with_condition(commit_mock, execute_mock, cursor_moc
             'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
     )
 
-    database_connector._delete_experiments_with_condition(f' WHERE status = "{ExperimentStatus.CREATED.value}"')
+    database_connector._delete_experiments_with_condition(f'WHERE status = "{ExperimentStatus.CREATED.value}"')
 
     args = execute_mock.call_args_list
     assert len(args) == 1
@@ -196,7 +196,7 @@ def test_get_experiments_with_condition(get_structture_from_table_mock, fetchall
         database_credential_file_path=os.path.join(
             'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
     )
-    database_connector._get_experiments_with_condition(f' WHERE status = "{ExperimentStatus.CREATED.value}"')
+    database_connector._get_experiments_with_condition(f'WHERE status = "{ExperimentStatus.CREATED.value}"')
 
     assert execute_mock.call_args_list[0][0][1] == f'SELECT * FROM test_table WHERE status = "{ExperimentStatus.CREATED.value}"'
 

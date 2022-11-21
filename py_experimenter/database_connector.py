@@ -181,14 +181,12 @@ class DatabaseConnector(abc.ABC):
             order_by = self.__class__.random_order_string()
         else:
             order_by = "id"
-        select_experiment = f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;"
-        alter_experiment = "UPDATE {} SET status = '{}' WHERE id = {};"
-        select_keyfields = "SELECT {} FROM {} WHERE id = {};"
-        self.execute(cursor, select_experiment)
+            
+        self.execute(cursor, f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;")
         experiment_id = self.fetchall(cursor)[0][0]
-        self.execute(cursor, alter_experiment.format(self.table_name, ExperimentStatus.RUNNING.value, experiment_id))
-        self.execute(cursor, select_keyfields.format(','.join(utils.get_keyfield_names(
-            self.database_credential_file_path)), self.table_name, experiment_id))
+        self.execute(cursor, f"UPDATE {self.table_name} SET status = '{ExperimentStatus.RUNNING.value}' WHERE id = {experiment_id};")
+        keyfields = ','.join(utils.get_keyfield_names(self.database_credential_file_path))
+        self.execute(cursor, f"SELECT {keyfields} FROM {self.table_name} WHERE id = {experiment_id};")
         values = self.fetchall(cursor)
         self.commit(connection)
         description = cursor.description
@@ -268,7 +266,7 @@ class DatabaseConnector(abc.ABC):
         if status == ExperimentStatus.ALL.value:
             condition = None
         else:
-            condition = f" WHERE status = '{status}'"
+            condition = f"WHERE status = '{status}'"
 
         column_names, entries = self._get_experiments_with_condition(condition)
         self._delete_experiments_with_condition(condition)
@@ -280,12 +278,12 @@ class DatabaseConnector(abc.ABC):
             keyfields = utils.get_keyfield_names(self.database_credential_file_path)
             entries = df[keyfields].values.tolist()
             return keyfields, entries
+
         connection = self.connect()
         cursor = self.cursor(connection)
 
-        query = f"SELECT * FROM {self.table_name}"
-        query += condition if condition is not None else ''
-        self.execute(cursor, query)
+        query_condition= condition or ''
+        self.execute(cursor, f"SELECT * FROM {self.table_name} {query_condition}")
         entries = self.fetchall(cursor)
         column_names = self.get_structure_from_table(cursor)
         column_names, entries = _get_keyfields_from_columns(column_names, entries)
@@ -295,9 +293,9 @@ class DatabaseConnector(abc.ABC):
     def _delete_experiments_with_condition(self, condition: Optional[str] = None) -> None:
         connection = self.connect()
         cursor = self.cursor(connection)
-        query = f'DELETE FROM {self.table_name}'
-        query += condition if condition is not None else ''
-        self.execute(cursor, query)
+        
+        query_condition = condition or ''
+        self.execute(cursor, f'DELETE FROM {self.table_name} {query_condition}')
         self.commit(connection)
         self.close_connection(connection)
 
@@ -308,8 +306,7 @@ class DatabaseConnector(abc.ABC):
     def drop_table(self) -> None:
         connection = self.connect()
         cursor = self.cursor(connection)
-        query = f'DROP TABLE IF EXISTS {self.table_name}'
-        self.execute(cursor, query)
+        self.execute(cursor, f'DROP TABLE IF EXISTS {self.table_name}')
         self.commit(connection)
 
     def get_table(self) -> pd.DataFrame:
