@@ -424,11 +424,11 @@ class PyExperimenter:
         else:
             self.dbconnector.reset_experiments(*states)
 
-    def drop_table(self) -> None:
+    def delete_table(self) -> None:
         """
         Drops the table defined in the configuration file.
         """
-        self.dbconnector.drop_table()
+        self.dbconnector.delete_table()
 
     def get_table(self) -> pd.DataFrame:
         """

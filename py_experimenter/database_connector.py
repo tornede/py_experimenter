@@ -303,7 +303,7 @@ class DatabaseConnector(abc.ABC):
     def get_structure_from_table(self, cursor):
         pass
 
-    def drop_table(self) -> None:
+    def delete_table(self) -> None:
         connection = self.connect()
         cursor = self.cursor(connection)
         self.execute(cursor, f'DROP TABLE IF EXISTS {self.table_name}')

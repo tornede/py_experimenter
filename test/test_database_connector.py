@@ -207,7 +207,7 @@ def test_get_experiments_with_condition(get_structture_from_table_mock, fetchall
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'cursor')
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'execute')
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, 'commit')
-def test_drop_table(commit_mock, execute_mock, cursor_mock, connect_mock, create_database_if_not_existing_mock, _test_connection_mock):
+def test_delete_table(commit_mock, execute_mock, cursor_mock, connect_mock, create_database_if_not_existing_mock, _test_connection_mock):
     create_database_if_not_existing_mock.return_value = None
     _test_connection_mock.return_value = None
     connect_mock.return_value = None
@@ -220,7 +220,7 @@ def test_drop_table(commit_mock, execute_mock, cursor_mock, connect_mock, create
         database_credential_file_path=os.path.join(
             'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
     )
-    database_connector.drop_table()
+    database_connector.delete_table()
 
     assert execute_mock.call_count == 1
     assert execute_mock.call_args[0][1] == 'DROP TABLE IF EXISTS test_table'

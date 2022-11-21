@@ -36,7 +36,7 @@ def test_run_all_mqsql_experiments():
     logging.basicConfig(level=logging.DEBUG)
     experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path)
     try:
-        experimenter.drop_table()
+        experimenter.delete_table()
     except ProgrammingError as e:
         logging.warning(e)
     experimenter.fill_table_from_config()

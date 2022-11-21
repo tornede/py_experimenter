@@ -38,7 +38,7 @@ def test_run_all_sqlite_experiments():
     logging.basicConfig(level=logging.DEBUG)
     experimenter= PyExperimenter(experiment_configuration_file_path=os.path.join('test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg'))
     try:
-        experimenter.drop_table()
+        experimenter.delete_table()
     except Exception:
         pass
     experimenter.fill_table_from_config()
