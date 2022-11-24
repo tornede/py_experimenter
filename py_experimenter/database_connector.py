@@ -181,10 +181,12 @@ class DatabaseConnector(abc.ABC):
             order_by = self.__class__.random_order_string()
         else:
             order_by = "id"
-            
+        time = datetime.now()
+        time = time.strftime("%m/%d/%Y, %H:%M:%S")
+        
         self.execute(cursor, f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;")
         experiment_id = self.fetchall(cursor)[0][0]
-        self.execute(cursor, f"UPDATE {self.table_name} SET status = '{ExperimentStatus.RUNNING.value}' WHERE id = {experiment_id};")
+        self.execute(cursor, f"UPDATE {self.table_name} SET status = '{ExperimentStatus.RUNNING.value}', start_date = '{time}' WHERE id = {experiment_id};")
         keyfields = ','.join(utils.get_keyfield_names(self.database_credential_file_path))
         self.execute(cursor, f"SELECT {keyfields} FROM {self.table_name} WHERE id = {experiment_id};")
         values = self.fetchall(cursor)

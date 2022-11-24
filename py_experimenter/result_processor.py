@@ -68,10 +68,6 @@ class ResultProcessor:
         time = datetime.now()
         time = time.strftime("%m/%d/%Y, %H:%M:%S")
 
-        if status == 'running':
-            self._dbconnector._update_database(keys=['status', 'start_date'], values=["running", time],
-                                               where=self._where)
-
         if status == 'done' or status == 'error':
             self._dbconnector._update_database(keys=['status', 'end_date'], values=[status, time], where=self._where)
 
