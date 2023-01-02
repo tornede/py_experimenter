@@ -6,7 +6,7 @@ import numpy as np
 from mysql.connector import Error, connect
 
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.exceptions import DatabaseConnectionError, DatabaseCreationError, TableError
+from py_experimenter.exceptions import CreatingTableError, DatabaseConnectionError, DatabaseCreationError
 from py_experimenter.utils import load_config
 
 
@@ -68,12 +68,9 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         self.execute(cursor, f"SHOW TABLES LIKE '{self._get_tablename_for_query()}'")
         return self.fetchall(cursor)
 
-    def _create_table(self, cursor, columns):
-        try:
-            self.execute(cursor,
-                         f"CREATE TABLE {DatabaseConnectorMYSQL.escape_sql_chars(self.table_name)[0]} (ID int NOT NULL AUTO_INCREMENT, {','.join(columns)}, PRIMARY KEY (ID))")
-        except Exception as err:
-            raise TableError(f'Error when creating table: {err}')
+    @staticmethod
+    def get_autoincrement():
+        return "AUTO_INCREMENT"
 
     def _get_tablename_for_query(self):
         return DatabaseConnectorMYSQL.escape_sql_chars(self.table_name)[0]
@@ -108,7 +105,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             else:
                 escaped_args.append(arg)
         return escaped_args
-    
+
     @staticmethod
     def random_order_string():
         return 'RAND()'

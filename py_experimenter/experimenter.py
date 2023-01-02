@@ -70,7 +70,7 @@ class PyExperimenter:
             self.dbconnector = DatabaseConnectorMYSQL(self.config, database_credential_file_path)
         else:
             raise ValueError('The provider indicated in the config file is not supported')
-
+        
         logging.info('Initialized and connected to database')
 
     def set_config_value(self, section_name: str, key: str, value: str) -> None:
@@ -426,7 +426,7 @@ class PyExperimenter:
 
     def delete_table(self) -> None:
         """
-        Drops the table defined in the configuration file.
+        Drops the table defined in the configuration file. Additionally, all associated log tables are dropped.
         """
         self.dbconnector.delete_table()
 

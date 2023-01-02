@@ -1,10 +1,10 @@
-import configparser
 import logging
-from typing import List, Tuple
+from configparser import ConfigParser
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
-from py_experimenter.exceptions import ConfigError, NoConfigFileError, ParameterCombinationError
+from py_experimenter.exceptions import ConfigError, MissingLogTableError, NoConfigFileError, ParameterCombinationError
 
 
 def load_config(path):
@@ -13,7 +13,7 @@ def load_config(path):
     :param path: path to the config file
     :return: configuration file
     """
-    config = configparser.ConfigParser()
+    config = ConfigParser()
     try:
         with open(path) as f:
             config.read_file(f)
@@ -68,27 +68,27 @@ def extract_db_credentials_and_table_name_from_config(config):
     return table_name, host, user, database, password
 
 
-def get_keyfield_names(config: configparser.ConfigParser) -> List[str]:
+def get_keyfield_names(config: ConfigParser) -> List[str]:
     keyfield_names = get_keyfields(config)
     return [name for name, _ in keyfield_names]
 
 
-def get_keyfields(config: configparser.ConfigParser) -> List[Tuple[str, str]]:
-    keyfield_names = get_fields(config['PY_EXPERIMENTER']['keyfields'])
+def get_keyfields(config: ConfigParser) -> List[Tuple[str, str]]:
+    keyfield_names = extract_columns(config['PY_EXPERIMENTER']['keyfields'])
     return keyfield_names
 
 
-def get_result_field_names(config: configparser.ConfigParser) -> List[str]:
+def get_result_field_names(config: ConfigParser) -> List[str]:
     result_fields = get_resultfields(config)
     return [name for name, _ in result_fields]
 
 
-def get_resultfields(config: configparser.ConfigParser) -> List[Tuple[str, str]]:
-    result_fields = get_fields(config['PY_EXPERIMENTER']['resultfields'])
+def get_resultfields(config: ConfigParser) -> List[Tuple[str, str]]:
+    result_fields = extract_columns(config['PY_EXPERIMENTER']['resultfields'])
     return result_fields
 
 
-def get_fields(fields: str) -> List[Tuple[str, str]]:
+def extract_columns(fields: str) -> List[Tuple[str, str]]:
     """
     Clean field names
     :param fields: List of field names
@@ -104,7 +104,7 @@ def get_fields(fields: str) -> List[Tuple[str, str]]:
     return typed_fields
 
 
-def timestamps_for_result_fields(config: configparser.ConfigParser) -> bool:
+def timestamps_for_result_fields(config: ConfigParser) -> bool:
     if config.has_option('PY_EXPERIMENTER', 'resultfields.timestamps'):
         timestamp_on_result_fields = config.getboolean('PY_EXPERIMENTER', 'resultfields.timestamps')
     else:
@@ -118,6 +118,22 @@ def add_timestep_result_columns(result_field_configuration):
         result_fields_with_timestamp.append(result_field)
         result_fields_with_timestamp.append((f'{result_field[0]}_timestamp', 'VARCHAR(255)'))
     return result_fields_with_timestamp
+
+
+def extract_logtables(config: ConfigParser) -> Optional[Dict[str, Dict[str, str]]]:
+    logtable_configs = dict()
+    if config.has_option('PY_EXPERIMENTER', 'logtables'):
+        logtable_definitions = [logtable_name.strip().split(':') for logtable_name in config['PY_EXPERIMENTER']['logtables'].split(',')]
+    else:
+        logtable_definitions = list()
+
+    for logtable_name, column_definer in logtable_definitions:
+        # todo check short notation
+        if not config.has_option('PY_EXPERIMENTER', column_definer):
+            raise MissingLogTableError(f"Logtable '{column_definer}' is mentioned in the config file but it\'s definition is missing.")
+        logtable_configs[logtable_name] = dict(extract_columns(config['PY_EXPERIMENTER'][column_definer]))
+
+    return logtable_configs
 
 
 def combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations):

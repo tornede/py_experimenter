@@ -1,11 +1,13 @@
 import os
 import re
+from configparser import ConfigParser
+from typing import Dict
 
 import pytest
 
-from py_experimenter.exceptions import ConfigError, NoConfigFileError, ParameterCombinationError
-from py_experimenter.utils import (_generate_int_data, add_timestep_result_columns, combine_fill_table_parameters, get_fields, get_keyfield_data,
-                                   get_keyfield_names, get_keyfields, get_resultfields, load_config, timestamps_for_result_fields)
+from py_experimenter.exceptions import ConfigError, MissingLogTableError, NoConfigFileError, ParameterCombinationError
+from py_experimenter.utils import (_generate_int_data, add_timestep_result_columns, combine_fill_table_parameters, extract_columns, extract_logtables,
+                                   get_keyfield_data, get_keyfield_names, get_keyfields, get_resultfields, load_config, timestamps_for_result_fields)
 
 
 @pytest.mark.parametrize(
@@ -266,8 +268,8 @@ def test_generate_int_data_raises_error(keyfield_values, error, error_string):
         ('value:int,', [('value', 'int')]),
         ('value, value:int', [('value', 'VARCHAR(255)'), ('value', 'int')]),
     ])
-def test_get_field_names(fields, expected_field_names):
-    assert get_fields(fields) == expected_field_names
+def test_extract_columns(fields, expected_field_names):
+    assert extract_columns(fields) == expected_field_names
 
 
 @ pytest.mark.parametrize(
@@ -317,27 +319,6 @@ def test_get_keyfields(config_mock_dict, expected_keyfields):
 
 
 @ pytest.mark.parametrize(
-    'fields, expected_keyfields',
-    [
-        (
-            'datasetName, internal_performance_measure, featureObjectiveMeasure, seed:int(3)',
-            [('datasetName', 'VARCHAR(255)'), ('internal_performance_measure', 'VARCHAR(255)'), ('featureObjectiveMeasure', 'VARCHAR(255)'), ('seed', 'int(3)')]),
-        (
-            '',
-            []
-        ),
-        (
-            'datasetName:str, internal_performance_measure:some_type, featureObjectiveMeasure,',
-            [('datasetName', 'str'), ('internal_performance_measure', 'some_type'), ('featureObjectiveMeasure', 'VARCHAR(255)')]),
-
-    ]
-)
-def test_get_fields(fields, expected_keyfields):
-    field_values = get_fields(fields)
-    assert expected_keyfields == field_values
-
-
-@ pytest.mark.parametrize(
     'keyfield_names, parameters, fixed_parameter_combinations, expected_result',
     [
         (
@@ -375,6 +356,41 @@ def test_get_fields(fields, expected_keyfields):
 )
 def test_combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations, expected_result):
     assert expected_result == combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations)
+
+
+@pytest.mark.parametrize(
+    'configuration_dict, expected_logtables',
+    [
+        pytest.param(
+            {'PY_EXPERIMENTER': {
+                'logtables': 'table1:Table1, table2:Table2',
+                'Table1': 'a:FLOAT, b:FLOAT',
+                'Table2': 'a:FLOAT, b'}},
+            {'table1': {'a': 'FLOAT', 'b': 'FLOAT'}, 'table2': {'a': 'FLOAT', 'b': 'VARCHAR(255)'}},
+            id='logtables with two tables'
+        )
+    ]
+)
+def test_extract_logtables(configuration_dict: Dict[str, Dict[str, str]], expected_logtables: Dict[str, Dict[str, str]]):
+    config = ConfigParser()
+    config.read_dict(configuration_dict)
+    logtables = extract_logtables(config)
+    assert expected_logtables == logtables
+    # todo testcase for short notation
+
+
+def test_extract_logtables_raises_error():
+    config = ConfigParser()
+    config.read_dict(
+        {'PY_EXPERIMENTER': {
+            'logtables': 'table1:Table1, table2:Table2',
+            'Table1': 'a:FLOAT, b:FLOAT'}
+         }
+    )
+
+    error_string: str = "Logtable 'Table2' is mentioned in the config file but it's definition is missing."
+    with pytest.raises(MissingLogTableError, match=re.escape(error_string)):
+        extract_logtables(config)
 
 
 @ pytest.mark.parametrize(

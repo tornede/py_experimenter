@@ -45,9 +45,9 @@ class DatabaseConnectorLITE(DatabaseConnector):
         table_names = self.fetchall(cursor)
         return self.table_name in [x[0] for x in table_names]
 
-    def _create_table(self, cursor, columns):
-        self.execute(cursor,
-                     f"CREATE TABLE {DatabaseConnectorLITE.escape_sql_chars(self.table_name)[0]} (ID Integer PRIMARY KEY AUTOINCREMENT, {','.join(DatabaseConnectorLITE.escape_sql_chars(*columns))});")
+    @staticmethod
+    def get_autoincrement():
+        return 'AUTOINCREMENT'
 
     def _table_has_correct_structure(self, cursor, typed_fields) -> List[str]:
         self.execute(cursor, f"PRAGMA table_info({DatabaseConnectorLITE.escape_sql_chars(self.table_name)[0]})")

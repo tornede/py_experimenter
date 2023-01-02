@@ -1,24 +1,26 @@
 import abc
 import logging
+from configparser import ConfigParser
 from datetime import datetime
 from typing import List, Optional, Tuple
 
 import pandas as pd
 
 from py_experimenter import utils
-from py_experimenter.exceptions import DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperimentsLeftException, TableHasWrongStructureError
+from py_experimenter.exceptions import (CreatingTableError, DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperimentsLeftException,
+                                        TableHasWrongStructureError)
 from py_experimenter.experiment_status import ExperimentStatus
 
 
 class DatabaseConnector(abc.ABC):
 
-    def __init__(self, database_credential_file_path):
-        self.database_credential_file_path = database_credential_file_path
-        self.table_name = self.database_credential_file_path.get('PY_EXPERIMENTER', 'table')
-        self.database_name = self.database_credential_file_path.get('PY_EXPERIMENTER', 'database')
+    def __init__(self, config: ConfigParser):
+        self.config = config
+        self.table_name = self.config.get('PY_EXPERIMENTER', 'table')
+        self.database_name = self.config.get('PY_EXPERIMENTER', 'database')
 
         self.database_credentials = self._extract_credentials()
-        self.timestamp_on_result_fields = utils.timestamps_for_result_fields(self.database_credential_file_path)
+        self.timestamp_on_result_fields = utils.timestamps_for_result_fields(self.config)
 
         self._test_connection()
 
@@ -67,55 +69,71 @@ class DatabaseConnector(abc.ABC):
     def create_table_if_not_existing(self) -> None:
         logging.debug("Create table if not exist")
 
-        keyfields = utils.get_keyfields(self.database_credential_file_path)
-        resultfields = utils.get_resultfields(self.database_credential_file_path)
-
+        keyfields = utils.get_keyfields(self.config)
+        resultfields = utils.get_resultfields(self.config)
         if self.timestamp_on_result_fields:
             resultfields = utils.add_timestep_result_columns(resultfields)
 
         connection = self.connect()
         cursor = self.cursor(connection)
-
         if self._table_exists(cursor):
             if not self._table_has_correct_structure(cursor, keyfields + resultfields):
                 raise TableHasWrongStructureError("Keyfields or resultfields from the configuration do not match columns in the existing "
                                                   "table. Please change your configuration or delete the table in your database.")
         else:
-            fields = (
-                keyfields +
-                [
-                    ('creation_date', 'VARCHAR(255)'),
+            columns = self._compute_columns(keyfields, resultfields)
+            self._create_table(cursor, columns, self.table_name)
+
+            for logtable_name, logtable_columns in utils.extract_logtables(self.config).items():
+                self._create_table(cursor, logtable_columns, logtable_name)
+
+        self.close_connection(connection)
+
+    @abc.abstractmethod
+    def _table_exists(self, cursor):
+        pass
+
+    @staticmethod
+    def _compute_columns(keyfields, resultfields):
+        return (keyfields +
+                [('creation_date', 'VARCHAR(255)'),
                     ('status', 'VARCHAR(255)'),
                     ('start_date', 'VARCHAR(255)'),
                     ('name', 'LONGTEXT'),
-                    ('machine', 'VARCHAR(255)')
-                ]
-                + resultfields +
-                [
-                    ('end_date', 'VARCHAR(255)'),
-                    ('error', 'LONGTEXT'),
-                ]
-            )
-
-            columns = ['%s %s DEFAULT NULL' % (self.__class__.escape_sql_chars(field)[0], datatype) for field, datatype in fields]
-            self._create_table(cursor, columns)
-        self.close_connection(connection)
+                    ('machine', 'VARCHAR(255)')] +
+                resultfields +
+                [('end_date', 'VARCHAR(255)'),
+                    ('error', 'LONGTEXT')]
+                )
 
     def _exclude_fixed_columns(self, columns: List[str]) -> List[str]:
-        amount_of_keyfields = len(utils.get_keyfield_names(self.database_credential_file_path))
-        amount_of_result_fields = len(utils.get_result_field_names(self.database_credential_file_path))
+        amount_of_keyfields = len(utils.get_keyfield_names(self.config))
+        amount_of_result_fields = len(utils.get_result_field_names(self.config))
 
         if self.timestamp_on_result_fields:
             amount_of_result_fields *= 2
 
         return columns[1:amount_of_keyfields + 1] + columns[-amount_of_result_fields - 2:-2]
 
-    @abc.abstractmethod
-    def _table_exists(self, cursor):
-        pass
+    def _create_logtable(self, columns:Dict[str,str], table_name):
+        columns = list(columns.items) + ['experiment_id', 'INTEGER']
+        
 
-    @abc.abstractmethod
-    def _create_table(self, cursor, columns):
+    def _create_table(self, cursor, columns, table_name):
+        query = self._get_create_table_query(columns, table_name)
+        try:
+            self.execute(cursor, query)
+        except Exception as err:
+            raise CreatingTableError(f'Error when creating table: {err}')
+
+    def _get_create_table_query(self, columns, table_name):
+        columns = ['%s %s DEFAULT NULL' % (self.escape_sql_chars(field)[0], datatype) for field, datatype in columns]
+        return f"CREATE TABLE {self.escape_sql_chars(table_name)[0]} (ID INTEGER PRIMARY KEY {self.get_autoincrement()}, {','.join(self.escape_sql_chars(*columns))});"
+
+
+
+    @abc.abstractstaticmethod
+    def get_autoincrement(self):
         pass
 
     @abc.abstractmethod
@@ -131,7 +149,7 @@ class DatabaseConnector(abc.ABC):
         parameters = parameters if parameters is not None else {}
         fixed_parameter_combinations = fixed_parameter_combinations if fixed_parameter_combinations is not None else []
 
-        keyfield_names = utils.get_keyfield_names(self.database_credential_file_path)
+        keyfield_names = utils.get_keyfield_names(self.config)
         combinations = utils.combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations)
 
         if len(combinations) == 0:
@@ -183,11 +201,12 @@ class DatabaseConnector(abc.ABC):
             order_by = "id"
         time = datetime.now()
         time = time.strftime("%m/%d/%Y, %H:%M:%S")
-        
+
         self.execute(cursor, f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;")
         experiment_id = self.fetchall(cursor)[0][0]
-        self.execute(cursor, f"UPDATE {self.table_name} SET status = '{ExperimentStatus.RUNNING.value}', start_date = '{time}' WHERE id = {experiment_id};")
-        keyfields = ','.join(utils.get_keyfield_names(self.database_credential_file_path))
+        self.execute(
+            cursor, f"UPDATE {self.table_name} SET status = '{ExperimentStatus.RUNNING.value}', start_date = '{time}' WHERE id = {experiment_id};")
+        keyfields = ','.join(utils.get_keyfield_names(self.config))
         self.execute(cursor, f"SELECT {keyfields} FROM {self.table_name} WHERE id = {experiment_id};")
         values = self.fetchall(cursor)
         self.commit(connection)
@@ -277,14 +296,14 @@ class DatabaseConnector(abc.ABC):
     def _get_experiments_with_condition(self, condition: Optional[str] = None) -> Tuple[List[str], List[List]]:
         def _get_keyfields_from_columns(column_names, entries):
             df = pd.DataFrame(entries, columns=column_names)
-            keyfields = utils.get_keyfield_names(self.database_credential_file_path)
+            keyfields = utils.get_keyfield_names(self.config)
             entries = df[keyfields].values.tolist()
             return keyfields, entries
 
         connection = self.connect()
         cursor = self.cursor(connection)
 
-        query_condition= condition or ''
+        query_condition = condition or ''
         self.execute(cursor, f"SELECT * FROM {self.table_name} {query_condition}")
         entries = self.fetchall(cursor)
         column_names = self.get_structure_from_table(cursor)
@@ -295,7 +314,7 @@ class DatabaseConnector(abc.ABC):
     def _delete_experiments_with_condition(self, condition: Optional[str] = None) -> None:
         connection = self.connect()
         cursor = self.cursor(connection)
-        
+
         query_condition = condition or ''
         self.execute(cursor, f'DELETE FROM {self.table_name} {query_condition}')
         self.commit(connection)
@@ -309,6 +328,8 @@ class DatabaseConnector(abc.ABC):
         connection = self.connect()
         cursor = self.cursor(connection)
         self.execute(cursor, f'DROP TABLE IF EXISTS {self.table_name}')
+        for table in utils.extract_logtables(self.config).keys():
+            self.execute(cursor, f'DROP TABLE IF EXISTS {table}')
         self.commit(connection)
 
     def get_table(self) -> pd.DataFrame:

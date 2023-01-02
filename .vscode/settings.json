@@ -30,6 +30,8 @@
 		"iterrows",
 		"keyfield",
 		"keyfields",
+		"logtable",
+		"logtables",
 		"meshgrid",
 		"resultfields",
 		"Tanja",
