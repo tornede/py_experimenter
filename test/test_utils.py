@@ -366,7 +366,7 @@ def test_combine_fill_table_parameters(keyfield_names, parameters, fixed_paramet
                 'logtables': 'table1:Table1, table2:Table2',
                 'Table1': 'a:FLOAT, b:FLOAT',
                 'Table2': 'a:FLOAT, b'}},
-            {'table1': {'a': 'FLOAT', 'b': 'FLOAT'}, 'table2': {'a': 'FLOAT', 'b': 'VARCHAR(255)'}},
+            {'table1': [('a', 'FLOAT'), ('b', 'FLOAT')], 'table2': [('a', 'FLOAT'), ('b', 'VARCHAR(255)')]},
             id='logtables with two tables'
         )
     ]

@@ -324,9 +324,9 @@ class DatabaseConnector(abc.ABC):
     def delete_table(self) -> None:
         connection = self.connect()
         cursor = self.cursor(connection)
-        self.execute(cursor, f'DROP TABLE IF EXISTS {self.table_name}')
         for table in utils.extract_logtables(self.config).keys():
             self.execute(cursor, f'DROP TABLE IF EXISTS {table}')
+        self.execute(cursor, f'DROP TABLE IF EXISTS {self.table_name}')
         self.commit(connection)
 
     def get_table(self) -> pd.DataFrame:
