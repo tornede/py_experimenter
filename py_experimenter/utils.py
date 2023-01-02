@@ -120,7 +120,7 @@ def add_timestep_result_columns(result_field_configuration):
     return result_fields_with_timestamp
 
 
-def extract_logtables(config: ConfigParser) -> Optional[Dict[str, Dict[str, str]]]:
+def extract_logtables(config: ConfigParser) -> Optional[Dict[str, List[str]]]:
     logtable_configs = dict()
     if config.has_option('PY_EXPERIMENTER', 'logtables'):
         logtable_definitions = [logtable_name.strip().split(':') for logtable_name in config['PY_EXPERIMENTER']['logtables'].split(',')]
@@ -131,7 +131,7 @@ def extract_logtables(config: ConfigParser) -> Optional[Dict[str, Dict[str, str]
         # todo check short notation
         if not config.has_option('PY_EXPERIMENTER', column_definer):
             raise MissingLogTableError(f"Logtable '{column_definer}' is mentioned in the config file but it\'s definition is missing.")
-        logtable_configs[logtable_name] = dict(extract_columns(config['PY_EXPERIMENTER'][column_definer]))
+        logtable_configs[logtable_name] = extract_columns(config['PY_EXPERIMENTER'][column_definer])
 
     return logtable_configs
 

@@ -85,7 +85,7 @@ class DatabaseConnector(abc.ABC):
             self._create_table(cursor, columns, self.table_name)
 
             for logtable_name, logtable_columns in utils.extract_logtables(self.config).items():
-                self._create_table(cursor, logtable_columns, logtable_name)
+                self._create_table(cursor, logtable_columns, logtable_name, logtable=True)
 
         self.close_connection(connection)
 
@@ -115,19 +115,19 @@ class DatabaseConnector(abc.ABC):
 
         return columns[1:amount_of_keyfields + 1] + columns[-amount_of_result_fields - 2:-2]
 
-    def _create_logtable(self, columns: Dict[str, str], table_name):
-        columns = list(columns.items) + ['experiment_id', 'INTEGER']
-
-    def _create_table(self, cursor, columns, table_name):
-        query = self._get_create_table_query(columns, table_name)
+    def _create_table(self, cursor, columns: List[Tuple['str']], table_name: str, logtable: bool = False):
+        query = self._get_create_table_query(columns, table_name, logtable)
         try:
             self.execute(cursor, query)
         except Exception as err:
             raise CreatingTableError(f'Error when creating table: {err}')
 
-    def _get_create_table_query(self, columns, table_name):
+    def _get_create_table_query(self, columns: List[Tuple['str']], table_name: str, logtable: bool):
         columns = ['%s %s DEFAULT NULL' % (self.escape_sql_chars(field)[0], datatype) for field, datatype in columns]
-        return f"CREATE TABLE {self.escape_sql_chars(table_name)[0]} (ID INTEGER PRIMARY KEY {self.get_autoincrement()}, {','.join(self.escape_sql_chars(*columns))});"
+        query = f"CREATE TABLE {self.escape_sql_chars(table_name)[0]} (ID INTEGER PRIMARY KEY {self.get_autoincrement()}, {','.join(self.escape_sql_chars(*columns))}"
+        if logtable:
+            query += f",experiment_id INTEGER, FOREIGN KEY (experiment_id) REFERENCES {self.table_name}(ID) ON DELETE CASCADE"
+        return query + ');'
 
     @abc.abstractstaticmethod
     def get_autoincrement(self):
