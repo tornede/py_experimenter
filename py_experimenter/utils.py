@@ -23,44 +23,6 @@ def load_config(path):
     return config
 
 
-def timestamps_for_result_fields(config: configparser.ConfigParser) -> bool:
-    if config.has_option('PY_EXPERIMENTER', 'resultfields.timestamps'):
-        timestamp_on_result_fields = config.getboolean('PY_EXPERIMENTER', 'resultfields.timestamps')
-    else:
-        timestamp_on_result_fields = False
-    return timestamp_on_result_fields
-
-
-def add_timestep_result_columns(result_field_configuration):
-    result_fields_with_timestamp = list()
-    for result_field in result_field_configuration:
-        result_fields_with_timestamp.append(result_field)
-        result_fields_with_timestamp.append((f'{result_field[0]}_timestamp', 'VARCHAR(255)'))
-    return result_fields_with_timestamp
-
-
-def extract_db_credentials_and_table_name_from_config(config):
-    """
-    Initialize connection to database based on configuration file. If the tables does not exist, a new one will be
-    created automatically
-    :param config: Configuration file with database and experiment information
-    :return: mysql_connector and table name from the config file
-    """
-    database_config = config['PY_EXPERIMENTER']
-    if database_config['provider'] == 'sqlite':
-        host = None
-        user = None
-        password = None
-    else:
-        host = database_config['host']
-        user = database_config['user']
-        password = database_config['password']
-    database = database_config['PY_EXPERIMENTER']
-    table_name = database_config['table'].replace(' ', '')
-
-    return table_name, host, user, database, password
-
-
 def get_keyfield_data(config):
     keyfields = get_keyfields(config)
 
@@ -84,43 +46,26 @@ def get_keyfield_data(config):
     return keyfield_data
 
 
-def _generate_int_data(keyfield_values):
-    final_data = []
-    for data_definition in keyfield_values:
-        if ':' in data_definition:
+def extract_db_credentials_and_table_name_from_config(config):
+    """
+    Initialize connection to database based on configuration file. If the tables does not exist, a new one will be
+    created automatically
+    :param config: Configuration file with database and experiment information
+    :return: mysql_connector and table name from the config file
+    """
+    database_config = config['PY_EXPERIMENTER']
+    if database_config['provider'] == 'sqlite':
+        host = None
+        user = None
+        password = None
+    else:
+        host = database_config['host']
+        user = database_config['user']
+        password = database_config['password']
+    database = database_config['PY_EXPERIMENTER']
+    table_name = database_config['table'].replace(' ', '')
 
-            if data_definition.startswith(':') or data_definition.endswith(':') or '::' in data_definition:
-                raise ConfigError(f'{data_definition} is not a valid integer range')
-
-            integer_range = data_definition.split(':')
-
-            if len(integer_range) not in (2, 3):
-                raise ConfigError(f'{data_definition} is not a valid integer range')
-
-            try:
-                start = int(integer_range[0])
-                stop = int(integer_range[1])
-            except ValueError:
-                raise ConfigError(f'{data_definition} is not a valid integer range')
-
-            if len(integer_range) == 3:
-                try:
-                    step = int(integer_range[2])
-                except ValueError:
-                    raise ConfigError(f'{data_definition} is not a valid integer range')
-
-            else:
-                step = 1
-
-            if start >= stop:
-                raise ConfigError(f'end of range {stop} is smaller than, or equal to start of range {start}')
-
-            final_data += list(range(start, stop + 1, step))
-        else:
-            final_data.append(int(data_definition))
-
-    final_data = sorted(list(set(final_data)))
-    return final_data
+    return table_name, host, user, database, password
 
 
 def get_keyfield_names(config: configparser.ConfigParser) -> List[str]:
@@ -157,6 +102,22 @@ def get_fields(fields: str) -> List[Tuple[str, str]]:
     typed_fields = [tuple(field.split(':')) if len(field.split(':')) == 2 else (field, 'VARCHAR(255)') for
                     field in clean_fields]
     return typed_fields
+
+
+def timestamps_for_result_fields(config: configparser.ConfigParser) -> bool:
+    if config.has_option('PY_EXPERIMENTER', 'resultfields.timestamps'):
+        timestamp_on_result_fields = config.getboolean('PY_EXPERIMENTER', 'resultfields.timestamps')
+    else:
+        timestamp_on_result_fields = False
+    return timestamp_on_result_fields
+
+
+def add_timestep_result_columns(result_field_configuration):
+    result_fields_with_timestamp = list()
+    for result_field in result_field_configuration:
+        result_fields_with_timestamp.append(result_field)
+        result_fields_with_timestamp.append((f'{result_field[0]}_timestamp', 'VARCHAR(255)'))
+    return result_fields_with_timestamp
 
 
 def combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations):
@@ -208,3 +169,42 @@ def combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_co
                 'The number of config_parameters + individual_parameters + parameters does not match the amount of keyfields!')
 
     return combinations
+
+
+def _generate_int_data(keyfield_values):
+    final_data = []
+    for data_definition in keyfield_values:
+        if ':' in data_definition:
+
+            if data_definition.startswith(':') or data_definition.endswith(':') or '::' in data_definition:
+                raise ConfigError(f'{data_definition} is not a valid integer range')
+
+            integer_range = data_definition.split(':')
+
+            if len(integer_range) not in (2, 3):
+                raise ConfigError(f'{data_definition} is not a valid integer range')
+
+            try:
+                start = int(integer_range[0])
+                stop = int(integer_range[1])
+            except ValueError:
+                raise ConfigError(f'{data_definition} is not a valid integer range')
+
+            if len(integer_range) == 3:
+                try:
+                    step = int(integer_range[2])
+                except ValueError:
+                    raise ConfigError(f'{data_definition} is not a valid integer range')
+
+            else:
+                step = 1
+
+            if start >= stop:
+                raise ConfigError(f'end of range {stop} is smaller than, or equal to start of range {start}')
+
+            final_data += list(range(start, stop + 1, step))
+        else:
+            final_data.append(int(data_definition))
+
+    final_data = sorted(list(set(final_data)))
+    return final_data
