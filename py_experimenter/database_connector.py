@@ -2,7 +2,7 @@ import abc
 import logging
 from configparser import ConfigParser
 from datetime import datetime
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 
@@ -115,9 +115,8 @@ class DatabaseConnector(abc.ABC):
 
         return columns[1:amount_of_keyfields + 1] + columns[-amount_of_result_fields - 2:-2]
 
-    def _create_logtable(self, columns:Dict[str,str], table_name):
+    def _create_logtable(self, columns: Dict[str, str], table_name):
         columns = list(columns.items) + ['experiment_id', 'INTEGER']
-        
 
     def _create_table(self, cursor, columns, table_name):
         query = self._get_create_table_query(columns, table_name)
@@ -129,8 +128,6 @@ class DatabaseConnector(abc.ABC):
     def _get_create_table_query(self, columns, table_name):
         columns = ['%s %s DEFAULT NULL' % (self.escape_sql_chars(field)[0], datatype) for field, datatype in columns]
         return f"CREATE TABLE {self.escape_sql_chars(table_name)[0]} (ID INTEGER PRIMARY KEY {self.get_autoincrement()}, {','.join(self.escape_sql_chars(*columns))});"
-
-
 
     @abc.abstractstaticmethod
     def get_autoincrement(self):
