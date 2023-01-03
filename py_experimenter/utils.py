@@ -128,11 +128,10 @@ def extract_logtables(config: ConfigParser) -> Optional[Dict[str, List[str]]]:
         logtable_definitions = list()
 
     for logtable_name, column_definer in logtable_definitions:
-        # todo check short notation
-        if not config.has_option('PY_EXPERIMENTER', column_definer):
-            raise MissingLogTableError(f"Logtable '{column_definer}' is mentioned in the config file but it\'s definition is missing.")
-        logtable_configs[logtable_name] = extract_columns(config['PY_EXPERIMENTER'][column_definer])
-
+        if config.has_option('PY_EXPERIMENTER', column_definer):
+            logtable_configs[logtable_name] = extract_columns(config['PY_EXPERIMENTER'][column_definer])
+        else:
+            logtable_configs[logtable_name] = [(logtable_name, column_definer),] #todo check for all supported types
     return logtable_configs
 
 

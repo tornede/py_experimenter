@@ -368,7 +368,15 @@ def test_combine_fill_table_parameters(keyfield_names, parameters, fixed_paramet
                 'Table2': 'a:FLOAT, b'}},
             {'table1': [('a', 'FLOAT'), ('b', 'FLOAT')], 'table2': [('a', 'FLOAT'), ('b', 'VARCHAR(255)')]},
             id='logtables with two tables'
-        )
+        ),
+        pytest.param(
+            {'PY_EXPERIMENTER': {
+                'logtables': 'table1:Table1, table2:Table2, table3:FLOAT',
+                'Table1': 'a:FLOAT, b:FLOAT',
+                'Table2': 'a:FLOAT, b'}},
+            {'table1': [('a', 'FLOAT'), ('b', 'FLOAT')], 'table2': [('a', 'FLOAT'), ('b', 'VARCHAR(255)')], 'table3': [('table3', 'FLOAT')]},
+            id='logtables with two tables'
+        ),
     ]
 )
 def test_extract_logtables(configuration_dict: Dict[str, Dict[str, str]], expected_logtables: Dict[str, Dict[str, str]]):
@@ -376,21 +384,6 @@ def test_extract_logtables(configuration_dict: Dict[str, Dict[str, str]], expect
     config.read_dict(configuration_dict)
     logtables = extract_logtables(config)
     assert expected_logtables == logtables
-    # todo testcase for short notation
-
-
-def test_extract_logtables_raises_error():
-    config = ConfigParser()
-    config.read_dict(
-        {'PY_EXPERIMENTER': {
-            'logtables': 'table1:Table1, table2:Table2',
-            'Table1': 'a:FLOAT, b:FLOAT'}
-         }
-    )
-
-    error_string: str = "Logtable 'Table2' is mentioned in the config file but it's definition is missing."
-    with pytest.raises(MissingLogTableError, match=re.escape(error_string)):
-        extract_logtables(config)
 
 
 @ pytest.mark.parametrize(
