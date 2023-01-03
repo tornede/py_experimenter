@@ -394,7 +394,7 @@ class PyExperimenter:
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
 
         result_processor = ResultProcessor(self.config, self.database_credential_file_path, table_name=table_name,
-                                           result_fields=result_field_names, experiment_id = experiment_id)
+                                           result_fields=result_field_names, experiment_id= experiment_id)
         result_processor._set_name(self.name)
         result_processor._set_machine(socket.gethostname())
 

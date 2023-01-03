@@ -2,6 +2,7 @@
 	"autoDocstring.docstringFormat": "sphinx",
 	"editor.codeActionsOnSave": {
 		"source.organizeImports": true,
+		"formatting": true
 	},
 	"editor.formatOnSave": true,
 	"python.formatting.autopep8Args": [

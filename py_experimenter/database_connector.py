@@ -191,7 +191,11 @@ class DatabaseConnector(abc.ABC):
 
         return experiment_id, dict(zip([i[0] for i in description], *values))
 
-    def _execute_queries(self, connection, cursor, random_order) -> Tuple[int, List, List]:
+    @abc.abstractmethod
+    def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
+        pass
+
+    def _execute_pull_open_experiment_queries(self, connection, cursor, random_order) -> Tuple[int, List, List]:
         if random_order:
             order_by = self.__class__.random_order_string()
         else:
@@ -212,10 +216,6 @@ class DatabaseConnector(abc.ABC):
 
     @abc.abstractstaticmethod
     def random_order_string():
-        pass
-
-    @abc.abstractmethod
-    def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
         pass
 
     def _write_to_database(self, keys, values) -> None:
@@ -320,6 +320,14 @@ class DatabaseConnector(abc.ABC):
     @abc.abstractmethod
     def get_structure_from_table(self, cursor):
         pass
+
+    def execute_queries(self, queries: List[str]):
+        connection = self.connect()
+        cursor = self.cursor(connection)
+        for query in queries:
+            self.execute(cursor, query)
+        self.commit(connection)
+        self.close_connection(connection)
 
     def delete_table(self) -> None:
         connection = self.connect()

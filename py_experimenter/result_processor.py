@@ -1,7 +1,7 @@
 import logging
 from copy import deepcopy
 from datetime import datetime
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 import py_experimenter.utils as utils
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
@@ -29,8 +29,12 @@ class ResultProcessor:
         self._result_fields = result_fields
         self._config = _config
         self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
+<<<<<<< HEAD
         self._experiment_id_condition = f'ID = {experiment_id}'
 
+=======
+        self._experiment_id = experiment_id
+>>>>>>> 0fd012d... Add execute_queries and testcases
         if _config['PY_EXPERIMENTER']['provider'] == 'sqlite':
             self._dbconnector = DatabaseConnectorLITE(_config)
         elif _config['PY_EXPERIMENTER']['provider'] == 'mysql':
@@ -63,6 +67,14 @@ class ResultProcessor:
             result_fields_with_timestep[result_field] = value
             result_fields_with_timestep[f"{result_field}_timestamp"] = time
         return result_fields_with_timestep
+
+    def process_logs(self, logs: Dict[str, Dict[str, str]]) -> None:
+        queries = []
+        for logtable_name, log_entries in logs.items():
+            log_entries['experiment_id'] = str(self._experiment_id)
+            queries.append(
+                f"INSERT INTO {logtable_name} ({', '.join(log_entries.keys())}) VALUES ({', '.join(map(lambda x: str(x), log_entries.values()))})")
+        self._dbconnector.execute_queries(queries)
 
     def _change_status(self, status):
         time = datetime.now()

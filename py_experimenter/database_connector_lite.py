@@ -33,7 +33,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
         with connect(**self.database_credentials) as connection:
             try:
                 cursor = self.cursor(connection)
-                experiment_id, description, values = self._execute_queries(connection, cursor, random_order)
+                experiment_id, description, values = self._execute_pull_open_experiment_queries(connection, cursor, random_order)
             except Exception as err:
                 connection.rollback()
                 raise err
