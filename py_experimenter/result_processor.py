@@ -29,6 +29,7 @@ class ResultProcessor:
         self._result_fields = result_fields
         self._config = _config
         self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
+        self._experiment_id = experiment_id
         self._experiment_id_condition = f'ID = {experiment_id}'
 
         if _config['PY_EXPERIMENTER']['provider'] == 'sqlite':
@@ -79,6 +80,9 @@ class ResultProcessor:
 
     def _set_name(self, name):
         self._dbconnector._update_database(keys=['name'], values=[name], where=self._experiment_id_condition)
+
+    def _not_executed_yet(self) -> bool:
+        return self._dbconnector.not_executed_yet(where=self._experiment_id_condition)
 
     def _valid_result_fields(self, result_fields):
         return set(result_fields).issubset(set(self._result_fields))
