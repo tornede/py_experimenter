@@ -16,29 +16,27 @@ CREDENTIAL_PATH = os.path.join('test', 'test_config_files', 'load_config_test_fi
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_test_connection')
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
 @pytest.mark.parametrize(
-    'config, table_name, condition, result_fields, expected_provider',
+    'config, table_name, result_fields, expected_provider',
     [
         (
             utils.load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg')),
             'test_table',
-            {'test': 'condition'},
             ['result_field_1', 'result_field_2'],
             DatabaseConnectorMYSQL
         ),
         (
             utils.load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'sqlite_test_file.cfg')),
             'test_table',
-            {'test': 'condition'},
             ['result_field_1', 'result_field_2'],
             DatabaseConnectorLITE
         ),
     ]
 )
-def test_init(create_database_if_not_existing_mock, test_connection_mysql, test_connection_sqlite, config, table_name, condition, result_fields, expected_provider):
+def test_init(create_database_if_not_existing_mock, test_connection_mysql, test_connection_sqlite, config, table_name, result_fields, expected_provider):
     create_database_if_not_existing_mock.return_value = None
     test_connection_mysql.return_value = None
     test_connection_sqlite.return_value = None
-    result_processor = ResultProcessor(config, CREDENTIAL_PATH, table_name, condition, result_fields)
+    result_processor = ResultProcessor(config, CREDENTIAL_PATH, table_name, result_fields, 0)
 
     assert table_name == result_processor._table_name
     assert result_fields == result_processor._result_fields
@@ -60,7 +58,7 @@ def test_init_raises_error(mock_fn):
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_test_connection')
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
 @pytest.mark.parametrize(
-    'result_fields, results, error, errorstring',
+    'result_fields, results, error, errorstring, experiment_id',
     [
         (
             [
@@ -71,18 +69,18 @@ def test_init_raises_error(mock_fn):
                 'result_field_2': 'result_field_2_value',
             },
             InvalidResultFieldError,
-            f"Invalid result keys: {{'result_field_2'}}"
+            f"Invalid result keys: {{'result_field_2'}}",
+            0
         ),
     ]
 )
-def test_process_results_raises_error(create_database_mock, test_connection_mock, result_fields, results, error, errorstring):
+def test_process_results_raises_error(create_database_mock, test_connection_mock, result_fields, results, error, errorstring, experiment_id):
     create_database_mock.return_value = None
     test_connection_mock.return_value = None
     table_name = 'test_table'
-    condition = {'test': 'condition'}
     config = utils.load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
 
-    result_processor = ResultProcessor(config, CREDENTIAL_PATH, table_name, condition, result_fields)
+    result_processor = ResultProcessor(config, CREDENTIAL_PATH, table_name, result_fields, experiment_id)
 
     with pytest.raises(error, match=errorstring):
         result_processor.process_results(results)
@@ -102,8 +100,8 @@ def test_valid_result_fields(create_database_if_not_existing_mock, test_connecti
     create_database_if_not_existing_mock.return_value = None
     test_connection_mock.return_value = None
     mock_config = utils.load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
-    assert subset_boolean == ResultProcessor(mock_config, CREDENTIAL_PATH, 'test_table_name', {
-                                             'test_condition_key': 'test_condition_value'}, used_result_fields)._valid_result_fields(existing_result_fields)
+    assert subset_boolean == ResultProcessor(mock_config, CREDENTIAL_PATH, 'test_table_name',
+                                             used_result_fields, 0)._valid_result_fields(existing_result_fields)
 
 
 @pytest.mark.parametrize(

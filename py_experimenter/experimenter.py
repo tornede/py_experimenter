@@ -387,14 +387,14 @@ class PyExperimenter:
         :raises NoExperimentsLeftError: If there are no experiments left to be executed.
         :raises DatabaseConnectionError: If an error occurred during the connection to the database.
         """
-        _, keyfield_values = self.dbconnector.get_experiment_configuration(random_order)
+        experiment_id, keyfield_values = self.dbconnector.get_experiment_configuration(random_order)
         
         result_field_names = utils.get_result_field_names(self.config)
         custom_fields = dict(self.config.items('CUSTOM')) if self.has_section('CUSTOM') else None
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
 
         result_processor = ResultProcessor(self.config, self.database_credential_file_path, table_name=table_name,
-                                           condition=keyfield_values, result_fields=result_field_names)
+                                           result_fields=result_field_names, experiment_id = experiment_id)
         result_processor._set_name(self.name)
         result_processor._set_machine(socket.gethostname())
 
