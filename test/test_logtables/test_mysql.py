@@ -34,7 +34,7 @@ def test_tables_created(execute_mock, close_connection_mock, fetchall_mock, curs
                                                 'start_date VARCHAR(255) DEFAULT NULL,name LONGTEXT DEFAULT NULL,machine VARCHAR(255) DEFAULT NULL,'
                                                 'sin VARCHAR(255) DEFAULT NULL,cos VARCHAR(255) DEFAULT NULL,end_date VARCHAR(255) DEFAULT NULL,'
                                                 'error LONGTEXT DEFAULT NULL);')
-    assert execute_mock.mock_calls[2][1][1] == ('CREATE TABLE test_mysql_log (ID INTEGER PRIMARY KEY AUTO_INCREMENT, test int DEFAULT NULL,'
+    assert execute_mock.mock_calls[2][1][1] == ('CREATE TABLE test_mysql_logtables__test_mysql_log (ID INTEGER PRIMARY KEY AUTO_INCREMENT, test int DEFAULT NULL,'
                                                 'experiment_id INTEGER, FOREIGN KEY (experiment_id) REFERENCES test_mysql_logtables(ID) ON DELETE CASCADE);')
 
 
@@ -43,12 +43,13 @@ def test_logtable_insertion(database_connector_mock):
     config = ConfigParser()
     config.read(os.path.join('test', 'test_logtables', 'mysql_logtables.cfg'))
     result_processor = ResultProcessor(config, None, None, None, 0)
+    result_processor._table_name = 'some_table_name'
     result_processor.process_logs({'test_table_0': {'test0': 'test', 'test1': 'test'},
                                    'test_table_1': {'test0': 'test'}})
     result_processor._dbconnector.execute_queries.assert_called()
     result_processor._dbconnector.execute_queries.assert_called_with(
-        ['INSERT INTO test_table_0 (test0, test1, experiment_id) VALUES (test, test, 0)',
-         'INSERT INTO test_table_1 (test0, experiment_id) VALUES (test, 0)'])
+        ['INSERT INTO some_table_name__test_table_0 (test0, test1, experiment_id) VALUES (test, test, 0)',
+         'INSERT INTO some_table_name__test_table_1 (test0, experiment_id) VALUES (test, 0)'])
 
 
 @patch('py_experimenter.experimenter.DatabaseConnectorMYSQL._create_database_if_not_existing')
@@ -64,8 +65,8 @@ def test_delete_logtable(execution_mock, close_connection_mock, commit_mocck, fe
     close_connection_mock.return_value = test_connection_mock.return_value = create_database_mock.return_value = execution_mock.return_value = None
     experimenter = PyExperimenter(os.path.join('test', 'test_logtables', 'mysql_logtables.cfg')) 
     experimenter.delete_table()
-    execution_mock.assert_has_calls([call(None, 'DROP TABLE IF EXISTS test_mysql_log'),
-                                     call(None, 'DROP TABLE IF EXISTS test_mysql_log2'),
+    execution_mock.assert_has_calls([call(None, 'DROP TABLE IF EXISTS test_mysql_logtables__test_mysql_log'),
+                                     call(None, 'DROP TABLE IF EXISTS test_mysql_logtables__test_mysql_log2'),
                                      call(None, 'DROP TABLE IF EXISTS test_mysql_logtables')])
 
 
@@ -93,10 +94,10 @@ def test_integration():
     experimenter.execute(own_function, 1)
     connection = experimenter.dbconnector.connect()
     cursor = experimenter.dbconnector.cursor(connection)
-    cursor.execute(f"SELECT * FROM test_mysql_log")
+    cursor.execute(f"SELECT * FROM test_mysql_logtables__test_mysql_log")
     logtable = cursor.fetchall()
     assert logtable == [(1, 0, 1), (2, 2, 1)]
-    cursor.execute(f"SELECT * FROM test_mysql_log2")
+    cursor.execute(f"SELECT * FROM test_mysql_logtables__test_mysql_log2")
     logtable2 = cursor.fetchall()
     assert logtable2 == [(1, 1, 1), (2, 3, 1)]
     

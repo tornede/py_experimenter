@@ -359,30 +359,35 @@ def test_combine_fill_table_parameters(keyfield_names, parameters, fixed_paramet
 
 
 @pytest.mark.parametrize(
-    'configuration_dict, expected_logtables',
+    'table_name, configuration_dict, expected_logtables',
     [
         pytest.param(
+            'some_table_name',
             {'PY_EXPERIMENTER': {
                 'logtables': 'table1:Table1, table2:Table2',
                 'Table1': 'a:FLOAT, b:FLOAT',
                 'Table2': 'a:FLOAT, b'}},
-            {'table1': [('a', 'FLOAT'), ('b', 'FLOAT')], 'table2': [('a', 'FLOAT'), ('b', 'VARCHAR(255)')]},
+            {'some_table_name__table1': [('a', 'FLOAT'), ('b', 'FLOAT')], 
+             'some_table_name__table2': [('a', 'FLOAT'), ('b', 'VARCHAR(255)')]},
             id='logtables with two tables'
         ),
         pytest.param(
+            'some_table_name',
             {'PY_EXPERIMENTER': {
                 'logtables': 'table1:Table1, table2:Table2, table3:FLOAT',
                 'Table1': 'a:FLOAT, b:FLOAT',
                 'Table2': 'a:FLOAT, b'}},
-            {'table1': [('a', 'FLOAT'), ('b', 'FLOAT')], 'table2': [('a', 'FLOAT'), ('b', 'VARCHAR(255)')], 'table3': [('table3', 'FLOAT')]},
-            id='logtables with two tables'
+            {'some_table_name__table1': [('a', 'FLOAT'), ('b', 'FLOAT')],
+             'some_table_name__table2': [('a', 'FLOAT'), ('b', 'VARCHAR(255)')],
+             'some_table_name__table3': [('table3', 'FLOAT')]},
+            id='logtables with three tables'
         ),
     ]
 )
-def test_extract_logtables(configuration_dict: Dict[str, Dict[str, str]], expected_logtables: Dict[str, Dict[str, str]]):
+def test_extract_logtables(table_name:str, configuration_dict: Dict[str, Dict[str, str]], expected_logtables: Dict[str, Dict[str, str]]):
     config = ConfigParser()
     config.read_dict(configuration_dict)
-    logtables = extract_logtables(config)
+    logtables = extract_logtables(config, table_name)
     assert expected_logtables == logtables
 
 

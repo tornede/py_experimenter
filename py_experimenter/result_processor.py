@@ -70,8 +70,9 @@ class ResultProcessor:
 
     def process_logs(self, logs: Dict[str, Dict[str, str]]) -> None:
         queries = []
-        for logtable_name, log_entries in logs.items():
+        for logtable_identifier, log_entries in logs.items():
             log_entries['experiment_id'] = str(self._experiment_id)
+            logtable_name = f'{self._table_name}__{logtable_identifier}'
             queries.append(
                 f"INSERT INTO {logtable_name} ({', '.join(log_entries.keys())}) VALUES ({', '.join(map(lambda x: str(x), log_entries.values()))})")
         self._dbconnector.execute_queries(queries)

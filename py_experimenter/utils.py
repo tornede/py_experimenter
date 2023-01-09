@@ -120,18 +120,19 @@ def add_timestep_result_columns(result_field_configuration):
     return result_fields_with_timestamp
 
 
-def extract_logtables(config: ConfigParser) -> Optional[Dict[str, List[str]]]:
+def extract_logtables(config: ConfigParser, experiment_table_name: str) -> Optional[Dict[str, List[str]]]:
     logtable_configs = dict()
     if config.has_option('PY_EXPERIMENTER', 'logtables'):
         logtable_definitions = [logtable_name.strip().split(':') for logtable_name in config['PY_EXPERIMENTER']['logtables'].split(',')]
     else:
         logtable_definitions = list()
 
-    for logtable_name, column_definer in logtable_definitions:
+    for logtable_definer, column_definer in logtable_definitions:
+        logtable_name = f'{experiment_table_name}__{logtable_definer}'
         if config.has_option('PY_EXPERIMENTER', column_definer):
             logtable_configs[logtable_name] = extract_columns(config['PY_EXPERIMENTER'][column_definer])
         else:
-            logtable_configs[logtable_name] = [(logtable_name, column_definer),] #todo check for all supported types
+            logtable_configs[logtable_name] = [(logtable_definer, column_definer) ]
     return logtable_configs
 
 

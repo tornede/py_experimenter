@@ -84,7 +84,7 @@ class DatabaseConnector(abc.ABC):
             columns = self._compute_columns(keyfields, resultfields)
             self._create_table(cursor, columns, self.table_name)
 
-            for logtable_name, logtable_columns in utils.extract_logtables(self.config).items():
+            for logtable_name, logtable_columns in utils.extract_logtables(self.config, self.table_name).items():
                 self._create_table(cursor, logtable_columns, logtable_name, logtable=True)
 
         self.close_connection(connection)
@@ -332,8 +332,8 @@ class DatabaseConnector(abc.ABC):
     def delete_table(self) -> None:
         connection = self.connect()
         cursor = self.cursor(connection)
-        for table in utils.extract_logtables(self.config).keys():
-            self.execute(cursor, f'DROP TABLE IF EXISTS {table}')
+        for logtable_name in utils.extract_logtables(self.config, self.table_name).keys():
+            self.execute(cursor, f'DROP TABLE IF EXISTS {logtable_name}')
         self.execute(cursor, f'DROP TABLE IF EXISTS {self.table_name}')
         self.commit(connection)
 
