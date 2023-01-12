@@ -17,12 +17,9 @@ Classes
 
 
 
-.. py:class:: DatabaseConnectorLITE(database_credential_file_path)
+.. py:class:: DatabaseConnectorLITE
 
    Bases: :py:obj:`py_experimenter.database_connector.DatabaseConnector`
-
-   Helper class that provides a standard way to create an ABC using
-   inheritance.
 
    .. py:attribute:: _write_to_database_separator
       :annotation: = ','
