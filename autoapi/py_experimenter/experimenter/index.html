@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>py_experimenter.experimenter &mdash; PyExperimenter 1.0 documentation</title>
@@ -14,9 +14,6 @@
   <![endif]-->
   
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -133,10 +130,6 @@
 <section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.experimenter.PyExperimenter" title="py_experimenter.experimenter.PyExperimenter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyExperimenter</span></code></a></p></td>
 <td><p>Module handling the initialization, execution and collection of experiments and their respective results.</p></td>
@@ -153,14 +146,14 @@
 <dd><p>Modifies the experiment configuration so that within the given <cite>section_name</cite> the value of the  property identified by
 the given <cite>key</cite> is overwritten, or created if it was not existing beforehand.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>section_name</strong> (<em>str</em>) – The name of the section of the experiment configuration in which a value should be set.</p></li>
 <li><p><strong>key</strong> (<em>str</em>) – The name of the key identifying the property within the given section whose value should be set.</p></li>
 <li><p><strong>value</strong> (<em>str</em>) – The value which should be set to the property identified by the given key in the given section.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="../exceptions/index.html#py_experimenter.exceptions.InvalidConfigError" title="py_experimenter.exceptions.InvalidConfigError"><strong>InvalidConfigError</strong></a> – If the modified configuration either misses, or has invalid information.</p>
 </dd>
 </dl>
@@ -172,21 +165,21 @@ the given <cite>key</cite> is overwritten, or created if it was not existing bef
 <dd><p>Returns the value of the property of the experiment configuration identified by the given key. If the <cite>key</cite>
 is not contained within the section, an exception is raised.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>section_name</strong> (<em>str</em>) – The name of the section containing the property whose value should be returned.</p></li>
 <li><p><strong>key</strong> (<em>str</em>) – The name of the key identifying the property within the given section of the experiment
 configuration of which a value should be returned.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The value of the property identified by the given key within the section <cite>section_name</cite> of the
 experiment configuration.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>NoOptionError</strong> – If the section called <cite>section_name</cite> is not part of the experiment configuration, or
 the <cite>key</cite> is not contained within that section.</p>
 </dd>
@@ -198,13 +191,13 @@ the <cite>key</cite> is not contained within that section.</p>
 <span class="sig-name descname"><span class="pre">has_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.has_section" title="Permalink to this definition"></a></dt>
 <dd><p>Checks whether the experiment configuration contains a section with the given name.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>section_name</strong> (<em>str</em>) – The name of the section which should be checked for existence.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True if the section exists, False otherwise.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -216,18 +209,18 @@ the <cite>key</cite> is not contained within that section.</p>
 <dd><p>Checks whether the experiment configuration contains a property identified by the given ‘key’ within the
 section called ‘section_name’.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>section_name</strong> (<em>str</em>) – The name of the section of the experiment configuration of which the <cite>key</cite> should be
 checked.</p></li>
 <li><p><strong>key</strong> (<em>str</em>) – The name of the key to check within the given section.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True if the given <cite>key</cite> is contained in the experiment configuration within the section called
 <cite>section_name</cite>. False otherwise.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -239,17 +232,17 @@ checked.</p></li>
 <dd><p>Checks whether the given experiment configuration is valid, i.e., it contains all necessary fields, the database provider
 is either mysql or sqlite, and in case of a mysql database provider, that the database credentials are available.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>_config</strong> (<em>configparser</em>) – The experiment configuration.</p></li>
 <li><p><strong>database_credential_file_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to the database configuration file, i.e., the file defining
 the host, user and password. Defaults to None.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True if the experiment configuration contains all necessary fields.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -288,14 +281,14 @@ match the keyfields from the experiment configuration, an error is raised.</p>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fixed_parameter_combinations</strong> (<em>List</em><em>[</em><em>dict</em><em>]</em><em>, </em><em>optional</em>) – List of predefined parameter combinations (each of type dict).
 Defaults to None.</p></li>
 <li><p><strong>parameters</strong> (<em>dict</em><em>, </em><em>optional</em>) – Dictionary of parameters and their lists of possible values. Defaults to None.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="../exceptions/index.html#py_experimenter.exceptions.ParameterCombinationError" title="py_experimenter.exceptions.ParameterCombinationError"><strong>ParameterCombinationError</strong></a> – If any parameter of the combinations (rows) does not match the keyfields
 from the experiment configuration.</p>
 </dd>
@@ -327,11 +320,11 @@ parameter combinations do not already exist in the table. For each added row the
 If any parameter of <cite>rows</cite> does not match the keyfields from the experiment configuration, an error is
 raised.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>rows</strong> (<em>List</em><em>[</em><em>dict</em><em>]</em>) – A list of rows, where each entry is made up of a dict containing a key-value-pair for each
 <cite>keyfield</cite> of the experiment configuration file.</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If any key of any row in <cite>rows</cite> does not match the <cite>keyfields</cite> from the experiment
 configuration file</p>
 </dd>
@@ -356,7 +349,7 @@ changed to  <cite>error</cite> and the raised error is logged to the database ta
 errors raised before or after the execution of <cite>experiment_function</cite> are logged according to the local
 logging configuration and do not appear in the table.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>experiment_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>, </em><em>Dict</em><em>, </em><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><em>ResultProcessor</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – The function that should be executed with the different parametrizations.</p></li>
 <li><p><strong>max_experiments</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of experiments to be executed by this <cite>PyExperimenter</cite>. If all experiments
@@ -365,7 +358,7 @@ should be executed, set this to <cite>-1</cite>. Defaults to <cite>-1</cite>.</p
 ID (<cite>False</cite>) or in a randomized fashion (<cite>True</cite>). Defaults to <cite>False</cite>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="../exceptions/index.html#py_experimenter.exceptions.InvalidValuesInConfiguration" title="py_experimenter.exceptions.InvalidValuesInConfiguration"><strong>InvalidValuesInConfiguration</strong></a> – If any value of the experiment parameters is of wrong data type.</p>
 </dd>
 </dl>
@@ -373,7 +366,7 @@ ID (<cite>False</cite>) or in a randomized fashion (<cite>True</cite>). Defaults
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter._execution_worker">
-<span class="sig-name descname"><span class="pre">_execution_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><span class="pre">py_experimenter.result_processor.ResultProcessor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semaphore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">multiprocessing.Semaphore</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._execution_worker" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_execution_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><span class="pre">py_experimenter.result_processor.ResultProcessor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semaphore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">multiprocessing.Semaphore</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._execution_worker" title="Permalink to this definition"></a></dt>
 <dd><p>Handles the execution of experiments of a single worker.</p>
 <p>Each worker repeatedly checks whether the maximum number of experiments to execute is reached. If not, an experiment
 is pulled from the database table, setting its status to <cite>running</cite>, and <cite>experiment_function</cite> is called on its keyfield
@@ -383,7 +376,7 @@ and the raised error is logged to the database table.</p>
 errors raised before or after the execution of <cite>experiment_function</cite> are logged according to the local
 logging configuration and do not appear in the table.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>experiment_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>, </em><em>Dict</em><em>, </em><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><em>ResultProcessor</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – The function that should be executed with the different parametrizations.</p></li>
 <li><p><strong>max_experiments</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of experiments to be executed by this <cite>PyExperimenter</cite>. If all experiments
@@ -399,7 +392,7 @@ should be executed, set this to <cite>-1</cite>. Defaults to <cite>-1</cite>.</p
 <span class="sig-name descname"><span class="pre">_handle_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Exception</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._handle_error" title="Permalink to this definition"></a></dt>
 <dd><p>Logs an error.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>error</strong> (<em>Exception</em>) – Error that should be logged.</p>
 </dd>
 </dl>
@@ -422,14 +415,14 @@ Note that only errors raised within <cite>experiment_function</cite> are logged 
 raised before or after the execution of <cite>experiment_function</cite> are logged according to the local logging configuration
 and do not appear in the table.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>experiment_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>dict</em><em>, </em><em>dict</em><em>, </em><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><em>ResultProcessor</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – The function that should be executed with the different parametrizations.</p></li>
 <li><p><strong>random_order</strong> (<em>bool</em><em>, </em><em>optional</em>) – Indicates whether the experiments to be executed are chosen consecutively by its experiment
 ID (<cite>False</cite>) or in a randomized fashion (<cite>True</cite>). Defaults to <cite>False</cite>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>NoExperimentsLeftError</strong> – If there are no experiments left to be executed.</p></li>
 <li><p><a class="reference internal" href="../exceptions/index.html#py_experimenter.exceptions.DatabaseConnectionError" title="py_experimenter.exceptions.DatabaseConnectionError"><strong>DatabaseConnectionError</strong></a> – If an error occurred during the connection to the database.</p></li>
@@ -445,13 +438,13 @@ ID (<cite>False</cite>) or in a randomized fashion (<cite>True</cite>). Defaults
 deleted from the database table are added to the table again featuring <cite>created</cite> as a status. Experiments
 to reset can be selected based on the following status definition:</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>status</strong> – <dl class="simple">
 <dt>The status of experiments that should be reset. Either <cite>created</cite>, <cite>running</cite>, <cite>error</cite>, <cite>done</cite>, or <cite>all</cite>.</dt><dd><p>Note that <cite>states</cite> is a variable length argument, so multiple states can be given as a list.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">type status</dt>
+<dt class="field-odd">type status<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -471,10 +464,10 @@ to reset can be selected based on the following status definition:</p>
 <span class="sig-name descname"><span class="pre">get_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.get_table" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the database table as <cite>Pandas.DataFrame</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The database table as <cite>Pandas.DataFrame</cite>.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>pd.DataFrame</p>
 </dd>
 </dl>
