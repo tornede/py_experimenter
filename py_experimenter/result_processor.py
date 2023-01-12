@@ -24,12 +24,12 @@ class ResultProcessor:
     database.
     """
 
-    def __init__(self, _config: dict, credential_path, table_name: str, condition: dict, result_fields: List[str]):
+    def __init__(self, _config: dict, credential_path, table_name: str, result_fields: List[str], experiment_id: int):
         self._table_name = table_name
-        self._where = ' AND '.join([f"{str(key)}='{str(value)}'" for key, value in condition.items()])
         self._result_fields = result_fields
         self._config = _config
         self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
+        self._experiment_id_condition = f'ID = {experiment_id}'
 
         if _config['PY_EXPERIMENTER']['provider'] == 'sqlite':
             self._dbconnector = DatabaseConnectorLITE(_config)
@@ -54,7 +54,7 @@ class ResultProcessor:
 
         keys = self._dbconnector.escape_sql_chars(*list(results.keys()))
         values = self._dbconnector.escape_sql_chars(*list(results.values()))
-        self._dbconnector._update_database(keys=keys, values=values, where=self._where)
+        self._dbconnector._update_database(keys=keys, values=values, where=self._experiment_id_condition)
 
     @staticmethod
     def _add_timestamps_to_results(results: dict, time: datetime) -> List[Tuple[str, object]]:
@@ -69,19 +69,16 @@ class ResultProcessor:
         time = time.strftime("%m/%d/%Y, %H:%M:%S")
 
         if status == 'done' or status == 'error':
-            self._dbconnector._update_database(keys=['status', 'end_date'], values=[status, time], where=self._where)
+            self._dbconnector._update_database(keys=['status', 'end_date'], values=[status, time], where=self._experiment_id_condition)
 
     def _write_error(self, error_msg):
-        self._dbconnector._update_database(keys=['error'], values=[error_msg], where=self._where)
+        self._dbconnector._update_database(keys=['error'], values=[error_msg], where=self._experiment_id_condition)
 
     def _set_machine(self, machine_id):
-        self._dbconnector._update_database(keys=['machine'], values=[machine_id], where=self._where)
+        self._dbconnector._update_database(keys=['machine'], values=[machine_id], where=self._experiment_id_condition)
 
     def _set_name(self, name):
-        self._dbconnector._update_database(keys=['name'], values=[name], where=self._where)
-
-    def _not_executed_yet(self) -> bool:
-        return self._dbconnector.not_executed_yet(where=self._where)
+        self._dbconnector._update_database(keys=['name'], values=[name], where=self._experiment_id_condition)
 
     def _valid_result_fields(self, result_fields):
         return set(result_fields).issubset(set(self._result_fields))
