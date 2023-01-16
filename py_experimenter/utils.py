@@ -1,5 +1,6 @@
 import logging
 from configparser import ConfigParser
+from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 
 import numpy as np
@@ -224,3 +225,7 @@ def _generate_int_data(keyfield_values):
 
     final_data = sorted(list(set(final_data)))
     return final_data
+
+
+def get_timestamp_representation() -> str:
+	return datetime.now().strftime('%Y-%m-%d %H:%M:%S')

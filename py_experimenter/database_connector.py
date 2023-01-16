@@ -1,7 +1,6 @@
 import abc
 import logging
 from configparser import ConfigParser
-from datetime import datetime
 from typing import List, Optional, Tuple
 
 import pandas as pd
@@ -162,14 +161,14 @@ class DatabaseConnector(abc.ABC):
         column_names += ",status"
         column_names += ",creation_date"
 
-        time = datetime.now()
+        time = utils.get_timestamp_representation()
         values_added = 0
         for combination in combinations:
             if self._check_combination_in_existing_rows(combination, existing_rows, keyfield_names):
                 continue
             values = list(combination.values())
             values.append(ExperimentStatus.CREATED.value)
-            values.append("%s" % time.strftime("%Y-%m-%d %H:%M:%S"))
+            values.append(time)
 
             self._write_to_database(column_names.split(', '), values)
             values_added += 1
@@ -203,8 +202,7 @@ class DatabaseConnector(abc.ABC):
             order_by = self.__class__.random_order_string()
         else:
             order_by = "id"
-        time = datetime.now()
-        time = time.strftime("%Y-%m-%d %H:%M:%S")
+        time = utils.get_timestamp_representation()
 
         self.execute(cursor, f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;")
         experiment_id = self.fetchall(cursor)[0][0]
