@@ -29,12 +29,8 @@ class ResultProcessor:
         self._result_fields = result_fields
         self._config = _config
         self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
-<<<<<<< HEAD
         self._experiment_id_condition = f'ID = {experiment_id}'
 
-=======
-        self._experiment_id = experiment_id
->>>>>>> 0fd012d... Add execute_queries and testcases
         if _config['PY_EXPERIMENTER']['provider'] == 'sqlite':
             self._dbconnector = DatabaseConnectorLITE(_config)
         elif _config['PY_EXPERIMENTER']['provider'] == 'mysql':
