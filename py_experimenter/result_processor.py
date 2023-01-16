@@ -67,17 +67,18 @@ class ResultProcessor:
 
     def process_logs(self, logs: Dict[str, Dict[str, str]]) -> None:
         queries = []
+        time  = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         for logtable_identifier, log_entries in logs.items():
-            log_entries['experiment_id'] = str(self._experiment_id)
             logtable_name = f'{self._table_name}__{logtable_identifier}'
+            log_entries['experiment_id'] = str(self._experiment_id)
+            log_entries['timestamp'] = f"'{time}'"
             queries.append(
                 f"INSERT INTO {logtable_name} ({', '.join(log_entries.keys())}) VALUES ({', '.join(map(lambda x: str(x), log_entries.values()))})")
         self._dbconnector.execute_queries(queries)
 
     def _change_status(self, status):
-        time = datetime.now()
-        time = time.strftime("%Y-%m-%d %H:%M:%S")
-
+        time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
         if status == 'done' or status == 'error':
             self._dbconnector._update_database(keys=['status', 'end_date'], values=[status, time], where=self._experiment_id_condition)
 

@@ -2,6 +2,7 @@ import os
 from configparser import ConfigParser
 from math import cos, sin
 
+from freezegun import freeze_time
 from mock import call, patch
 
 from py_experimenter.experimenter import PyExperimenter
@@ -33,9 +34,10 @@ def test_tables_created(execute_mock, close_connection_mock, fetchall_mock, curs
                                                 'sin VARCHAR(255) DEFAULT NULL,cos VARCHAR(255) DEFAULT NULL,end_date DATETIME DEFAULT NULL,'
                                                 'error LONGTEXT DEFAULT NULL);')
     assert execute_mock.mock_calls[1][1][1] == ('CREATE TABLE test_sqlite_logtables__test_sqlite_log (ID INTEGER PRIMARY KEY AUTOINCREMENT, experiment_id INTEGER,'
-                                                ' test int DEFAULT NULL, FOREIGN KEY (experiment_id) REFERENCES test_sqlite_logtables(ID) ON DELETE CASCADE);')
+                                                ' timestamp DATETIME, test int DEFAULT NULL, FOREIGN KEY (experiment_id) REFERENCES test_sqlite_logtables(ID) ON DELETE CASCADE);')
 
 
+@freeze_time("2012-01-14 03:21:34")
 @patch('py_experimenter.result_processor.DatabaseConnectorLITE')
 def test_logtable_insertion(database_connector_mock):
     config = ConfigParser()
@@ -46,8 +48,8 @@ def test_logtable_insertion(database_connector_mock):
                                    'test_table_1': {'test0': 'test'}})
     result_processor._dbconnector.execute_queries.assert_called()
     result_processor._dbconnector.execute_queries.assert_called_with(
-        ['INSERT INTO table_name__test_table_0 (test0, test1, experiment_id) VALUES (test, test, 0)',
-         'INSERT INTO table_name__test_table_1 (test0, experiment_id) VALUES (test, 0)'])
+        ['INSERT INTO table_name__test_table_0 (test0, test1, experiment_id, timestamp) VALUES (test, test, 0, \'2012-01-14 03:21:34\')',
+         'INSERT INTO table_name__test_table_1 (test0, experiment_id, timestamp) VALUES (test, 0, \'2012-01-14 03:21:34\')'])
 
 
 @patch('py_experimenter.experimenter.DatabaseConnectorLITE._test_connection')
@@ -92,11 +94,15 @@ def test_integration():
     cursor = experimenter.dbconnector.cursor(connection)
     cursor.execute(f"SELECT * FROM test_sqlite_logtables__test_sqlite_log")
     logtable = cursor.fetchall()
-    assert logtable == [(1, 1, 0), (2, 1, 2)]
+    timesteps = [x[2] for x in logtable]
+    non_timesteps = [x[:2] + x[3:] for x in logtable]
+    assert non_timesteps == [(1, 1,0), (2, 1,2)]
     cursor.execute(f"SELECT * FROM test_sqlite_logtables__test_sqlite_log2")
     logtable2 = cursor.fetchall()
-    assert logtable2 == [(1, 1, 1), (2, 1, 3)]
-    
+    timesteps_2 = [x[2] for x in logtable2]
+    non_timesteps_2 = [x[:2] + x[3:] for x in logtable2]
+    assert non_timesteps_2 == [(1, 1, 1), (2, 1, 3)]
+    assert timesteps == timesteps_2
     
     
     
