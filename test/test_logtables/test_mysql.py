@@ -30,9 +30,9 @@ def test_tables_created(execute_mock, close_connection_mock, fetchall_mock, curs
     experimenter = PyExperimenter(os.path.join('test', 'test_logtables', 'mysql_logtables.cfg'))
     experimenter.fill_table_from_config()
     assert execute_mock.mock_calls[1][1][1] == ('CREATE TABLE test_mysql_logtables (ID INTEGER PRIMARY KEY AUTO_INCREMENT, value int DEFAULT NULL,'
-                                                'exponent int DEFAULT NULL,creation_date VARCHAR(255) DEFAULT NULL,status VARCHAR(255) DEFAULT NULL,'
-                                                'start_date VARCHAR(255) DEFAULT NULL,name LONGTEXT DEFAULT NULL,machine VARCHAR(255) DEFAULT NULL,'
-                                                'sin VARCHAR(255) DEFAULT NULL,cos VARCHAR(255) DEFAULT NULL,end_date VARCHAR(255) DEFAULT NULL,'
+                                                'exponent int DEFAULT NULL,creation_date DATETIME DEFAULT NULL,status VARCHAR(255) DEFAULT NULL,'
+                                                'start_date DATETIME DEFAULT NULL,name LONGTEXT DEFAULT NULL,machine VARCHAR(255) DEFAULT NULL,'
+                                                'sin VARCHAR(255) DEFAULT NULL,cos VARCHAR(255) DEFAULT NULL,end_date DATETIME DEFAULT NULL,'
                                                 'error LONGTEXT DEFAULT NULL);')
     assert execute_mock.mock_calls[2][1][1] == ('CREATE TABLE test_mysql_logtables__test_mysql_log (ID INTEGER PRIMARY KEY AUTO_INCREMENT, experiment_id INTEGER,'
                                                 ' test int DEFAULT NULL, FOREIGN KEY (experiment_id) REFERENCES test_mysql_logtables(ID) ON DELETE CASCADE);')

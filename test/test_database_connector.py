@@ -52,10 +52,10 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
         'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
     database_connector.create_table_if_not_existing()
     create_table_string = ('CREATE TABLE test_table (ID INTEGER PRIMARY KEY AUTO_INCREMENT, value int DEFAULT NULL,exponent int DEFAULT NULL,'
-                           'creation_date VARCHAR(255) DEFAULT NULL,status VARCHAR(255) DEFAULT NULL,start_date VARCHAR(255) DEFAULT NULL,'
+                           'creation_date DATETIME DEFAULT NULL,status VARCHAR(255) DEFAULT NULL,start_date DATETIME DEFAULT NULL,'
                            'name LONGTEXT DEFAULT NULL,machine VARCHAR(255) DEFAULT NULL,sin VARCHAR(255) DEFAULT NULL,cos VARCHAR(255) DEFAULT NULL,'
-                           'end_date VARCHAR(255) DEFAULT NULL,error LONGTEXT DEFAULT NULL);'
-)
+                           'end_date DATETIME DEFAULT NULL,error LONGTEXT DEFAULT NULL);'
+                           )
     execute_mock.assert_has_calls(
         [
             mock.call(None, "SHOW TABLES LIKE 'test_table'"),
@@ -137,7 +137,7 @@ def test_fill_table(
     for expected_args, arg in zip(write_to_database_values, args):
         assert write_to_database_keys == arg[0][0]
         assert expected_args == arg[0][1][:-1]
-        datetime_from_string_argument = datetime.datetime.strptime(arg[0][1][-1], "%m/%d/%Y, %H:%M:%S")
+        datetime_from_string_argument = datetime.datetime.strptime(arg[0][1][-1], "%Y-%m-%d %H:%M:%S")
         assert datetime_from_string_argument.day == datetime.datetime.now().day
         assert datetime_from_string_argument.hour == datetime.datetime.now().hour
         assert datetime_from_string_argument.minute - datetime.datetime.now().minute <= 2

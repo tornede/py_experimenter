@@ -28,9 +28,9 @@ def test_tables_created(execute_mock, close_connection_mock, fetchall_mock, curs
     experimenter = PyExperimenter(os.path.join('test', 'test_logtables', 'sqlite_logtables.cfg'))
     experimenter.fill_table_from_config()
     assert execute_mock.mock_calls[0][1][1] == ('CREATE TABLE test_sqlite_logtables (ID INTEGER PRIMARY KEY AUTOINCREMENT, value int DEFAULT NULL,'
-                                                'exponent int DEFAULT NULL,creation_date VARCHAR(255) DEFAULT NULL,status VARCHAR(255) DEFAULT NULL,'
-                                                'start_date VARCHAR(255) DEFAULT NULL,name LONGTEXT DEFAULT NULL,machine VARCHAR(255) DEFAULT NULL,'
-                                                'sin VARCHAR(255) DEFAULT NULL,cos VARCHAR(255) DEFAULT NULL,end_date VARCHAR(255) DEFAULT NULL,'
+                                                'exponent int DEFAULT NULL,creation_date DATETIME DEFAULT NULL,status VARCHAR(255) DEFAULT NULL,'
+                                                'start_date DATETIME DEFAULT NULL,name LONGTEXT DEFAULT NULL,machine VARCHAR(255) DEFAULT NULL,'
+                                                'sin VARCHAR(255) DEFAULT NULL,cos VARCHAR(255) DEFAULT NULL,end_date DATETIME DEFAULT NULL,'
                                                 'error LONGTEXT DEFAULT NULL);')
     assert execute_mock.mock_calls[1][1][1] == ('CREATE TABLE test_sqlite_logtables__test_sqlite_log (ID INTEGER PRIMARY KEY AUTOINCREMENT, experiment_id INTEGER,'
                                                 ' test int DEFAULT NULL, FOREIGN KEY (experiment_id) REFERENCES test_sqlite_logtables(ID) ON DELETE CASCADE);')

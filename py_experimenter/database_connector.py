@@ -96,13 +96,13 @@ class DatabaseConnector(abc.ABC):
     @staticmethod
     def _compute_columns(keyfields, resultfields):
         return (keyfields +
-                [('creation_date', 'VARCHAR(255)'),
+                [('creation_date', 'DATETIME'),
                     ('status', 'VARCHAR(255)'),
-                    ('start_date', 'VARCHAR(255)'),
+                    ('start_date', 'DATETIME'),
                     ('name', 'LONGTEXT'),
                     ('machine', 'VARCHAR(255)')] +
                 resultfields +
-                [('end_date', 'VARCHAR(255)'),
+                [('end_date', 'DATETIME'),
                     ('error', 'LONGTEXT')]
                 )
 
@@ -169,7 +169,7 @@ class DatabaseConnector(abc.ABC):
                 continue
             values = list(combination.values())
             values.append(ExperimentStatus.CREATED.value)
-            values.append("%s" % time.strftime("%m/%d/%Y, %H:%M:%S"))
+            values.append("%s" % time.strftime("%Y-%m-%d %H:%M:%S"))
 
             self._write_to_database(column_names.split(', '), values)
             values_added += 1
@@ -204,7 +204,7 @@ class DatabaseConnector(abc.ABC):
         else:
             order_by = "id"
         time = datetime.now()
-        time = time.strftime("%m/%d/%Y, %H:%M:%S")
+        time = time.strftime("%Y-%m-%d %H:%M:%S")
 
         self.execute(cursor, f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;")
         experiment_id = self.fetchall(cursor)[0][0]

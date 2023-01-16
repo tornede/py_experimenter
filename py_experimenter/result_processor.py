@@ -29,8 +29,9 @@ class ResultProcessor:
         self._result_fields = result_fields
         self._config = _config
         self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
+        self._experiment_id = experiment_id
         self._experiment_id_condition = f'ID = {experiment_id}'
-
+        
         if _config['PY_EXPERIMENTER']['provider'] == 'sqlite':
             self._dbconnector = DatabaseConnectorLITE(_config)
         elif _config['PY_EXPERIMENTER']['provider'] == 'mysql':
@@ -75,7 +76,7 @@ class ResultProcessor:
 
     def _change_status(self, status):
         time = datetime.now()
-        time = time.strftime("%m/%d/%Y, %H:%M:%S")
+        time = time.strftime("%Y-%m-%d %H:%M:%S")
 
         if status == 'done' or status == 'error':
             self._dbconnector._update_database(keys=['status', 'end_date'], values=[status, time], where=self._experiment_id_condition)
