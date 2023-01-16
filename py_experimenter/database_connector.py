@@ -124,9 +124,12 @@ class DatabaseConnector(abc.ABC):
 
     def _get_create_table_query(self, columns: List[Tuple['str']], table_name: str, logtable: bool):
         columns = ['%s %s DEFAULT NULL' % (self.escape_sql_chars(field)[0], datatype) for field, datatype in columns]
-        query = f"CREATE TABLE {self.escape_sql_chars(table_name)[0]} (ID INTEGER PRIMARY KEY {self.get_autoincrement()}, {','.join(self.escape_sql_chars(*columns))}"
+        query = f"CREATE TABLE {self.escape_sql_chars(table_name)[0]} (ID INTEGER PRIMARY KEY {self.get_autoincrement()}"
+        columns = ','.join(self.escape_sql_chars(*columns))
         if logtable:
-            query += f",experiment_id INTEGER, FOREIGN KEY (experiment_id) REFERENCES {self.table_name}(ID) ON DELETE CASCADE"
+            query += f", experiment_id INTEGER, {columns}, FOREIGN KEY (experiment_id) REFERENCES {self.table_name}(ID) ON DELETE CASCADE"
+        else:
+            query += f", {columns}"
         return query + ');'
 
     @abc.abstractstaticmethod

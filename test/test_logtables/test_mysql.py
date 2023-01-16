@@ -34,8 +34,8 @@ def test_tables_created(execute_mock, close_connection_mock, fetchall_mock, curs
                                                 'start_date VARCHAR(255) DEFAULT NULL,name LONGTEXT DEFAULT NULL,machine VARCHAR(255) DEFAULT NULL,'
                                                 'sin VARCHAR(255) DEFAULT NULL,cos VARCHAR(255) DEFAULT NULL,end_date VARCHAR(255) DEFAULT NULL,'
                                                 'error LONGTEXT DEFAULT NULL);')
-    assert execute_mock.mock_calls[2][1][1] == ('CREATE TABLE test_mysql_logtables__test_mysql_log (ID INTEGER PRIMARY KEY AUTO_INCREMENT, test int DEFAULT NULL,'
-                                                'experiment_id INTEGER, FOREIGN KEY (experiment_id) REFERENCES test_mysql_logtables(ID) ON DELETE CASCADE);')
+    assert execute_mock.mock_calls[2][1][1] == ('CREATE TABLE test_mysql_logtables__test_mysql_log (ID INTEGER PRIMARY KEY AUTO_INCREMENT, experiment_id INTEGER,'
+                                                ' test int DEFAULT NULL, FOREIGN KEY (experiment_id) REFERENCES test_mysql_logtables(ID) ON DELETE CASCADE);')
 
 
 @patch('py_experimenter.result_processor.DatabaseConnectorMYSQL')
@@ -96,10 +96,10 @@ def test_integration():
     cursor = experimenter.dbconnector.cursor(connection)
     cursor.execute(f"SELECT * FROM test_mysql_logtables__test_mysql_log")
     logtable = cursor.fetchall()
-    assert logtable == [(1, 0, 1), (2, 2, 1)]
+    assert logtable == [(1, 1, 0), (2, 1, 2)]
     cursor.execute(f"SELECT * FROM test_mysql_logtables__test_mysql_log2")
     logtable2 = cursor.fetchall()
-    assert logtable2 == [(1, 1, 1), (2, 3, 1)]
+    assert logtable2 == [(1, 1, 1), (2, 1, 3)]
     
     
     
