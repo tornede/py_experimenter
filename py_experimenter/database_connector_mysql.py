@@ -57,7 +57,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         try:
             if credentials is None:
                 credentials = self.database_credentials
-            return connect(**credentials, use_pure=True)
+            return connect(**credentials)
         except Error as err:
             raise DatabaseConnectionError(err)
 
