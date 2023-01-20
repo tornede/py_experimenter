@@ -67,16 +67,16 @@ class ResultProcessor:
         values = {'status': status,
                   'end_date': utils.get_current_time()}
 
-        self._dbconnector._update_database(keys=['status', 'end_date'], values=[status, time], where=f'ID = {self._experiment_id}')
+        self._dbconnector.update_database(self._table_name, values=values, condition=self._experiment_id_condition)
 
     def _write_error(self, error_msg):
-        self._dbconnector._update_database(keys=['error'], values=[error_msg], where=f'ID = {self._experiment_id}')
+        self._dbconnector.update_database(self._table_name, {'error': error_msg}, condition=self._experiment_id_condition)
 
     def _set_machine(self, machine_id):
-        self._dbconnector._update_database(keys=['machine'], values=[machine_id], where=f'ID = {self._experiment_id}')
+        self._dbconnector.update_database(self._table_name, {'machine': machine_id}, condition=self._experiment_id_condition)
 
     def _set_name(self, name):
-        self._dbconnector._update_database(keys=['name'], values=[name], where=f'ID = {self._experiment_id}')
+        self._dbconnector.update_database(self._table_name, {'name': name}, condition=self._experiment_id_condition)
 
     def _valid_result_fields(self, result_fields):
         return set(result_fields).issubset(set(self._result_fields))
