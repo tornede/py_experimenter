@@ -74,3 +74,42 @@ def test_run_all_mqsql_experiments():
 
     assert len(entries) == 30
     assert set(range(2, 32)) == set(entry[0] for entry in entries)
+
+
+def error_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+    raise Exception("Error with weird symbos '@#$%&/\()=")
+
+
+def check_error_entries(experimenter):
+    connection = experimenter.dbconnector.connect()
+    cursor = experimenter.dbconnector.cursor(connection)
+    cursor.execute(f"SELECT * FROM {experimenter.dbconnector.table_name} WHERE status = 'error'")
+    entries = cursor.fetchall()
+    experimenter.dbconnector.close_connection(connection)
+    return entries
+
+
+def test_run_error_experiment():
+    experiment_configuration_file_path = os.path.join('test', 'test_run_experiments', 'test_run_mysql_experiment_config.cfg')
+    logging.basicConfig(level=logging.DEBUG)
+    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path)
+    try:
+        experimenter.delete_table()
+    except ProgrammingError as e:
+        logging.warning(e)
+    experimenter.fill_table_from_config()
+    experimenter.execute(error_function, 1)
+
+    entries = check_error_entries(experimenter)
+    assert entries[0][:3] == (1, 1, 1)
+    assert entries[0][4] == 'error'
+    assert entries[0][6] == 'PyExperimenter'
+    assert entries[0][7] == 'vm-tornede4'
+    assert entries[0][8] == None
+    assert entries[0][9] == None
+    assert entries[0][11] == ('Traceback (most recent call last):\n  File'
+                              ' "/home/tornede/remote_development/py_experimenter/py_experimenter/experimenter.py"'
+                              ', line 403, in _execution_wrapper\n    experiment_function(keyfield_values, result_processor,'
+                              ' custom_fields)\n  File "/home/tornede/remote_development/py_experimenter/test/'
+                              'test_run_experiments/test_run_mysql_experiment.py", line 80, in error_function\n    '
+                              'raise Exception("Error with weird symbos \'@#$%&/\\()=")\nException: Error with weird symbos \'@#$%&/\\()=\n')

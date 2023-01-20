@@ -1,5 +1,6 @@
 import configparser
 import logging
+from datetime import datetime
 from typing import List, Tuple
 
 import numpy as np
@@ -208,3 +209,7 @@ def combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_co
                 'The number of config_parameters + individual_parameters + parameters does not match the amount of keyfields!')
 
     return combinations
+
+
+def get_current_time() -> str:
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')

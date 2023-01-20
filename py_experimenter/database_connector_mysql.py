@@ -1,6 +1,6 @@
 import logging
 from configparser import ConfigParser
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 import numpy as np
 from mysql.connector import Error, connect
@@ -12,6 +12,7 @@ from py_experimenter.utils import load_config
 
 class DatabaseConnectorMYSQL(DatabaseConnector):
     _write_to_database_separator = "', '"
+    _prepared_statement_placeholder = '%s'
 
     def __init__(self, experiment_configuration_file_path: ConfigParser, database_credential_file_path):
         database_credentials = load_config(database_credential_file_path)
@@ -65,18 +66,15 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         connection.start_transaction(readonly=readonly)
 
     def _table_exists(self, cursor):
-        self.execute(cursor, f"SHOW TABLES LIKE '{self._get_tablename_for_query()}'")
+        self.execute(cursor, f"SHOW TABLES LIKE '{self.table_name}'")
         return self.fetchall(cursor)
 
     def _create_table(self, cursor, columns):
         try:
             self.execute(cursor,
-                         f"CREATE TABLE {DatabaseConnectorMYSQL.escape_sql_chars(self.table_name)[0]} (ID int NOT NULL AUTO_INCREMENT, {','.join(columns)}, PRIMARY KEY (ID))")
+                         f"CREATE TABLE {self.table_name} (ID int NOT NULL AUTO_INCREMENT, {','.join(columns)}, PRIMARY KEY (ID))")
         except Exception as err:
             raise TableError(f'Error when creating table: {err}')
-
-    def _get_tablename_for_query(self):
-        return DatabaseConnectorMYSQL.escape_sql_chars(self.table_name)[0]
 
     def _table_has_correct_structure(self, cursor, typed_fields):
         self.execute(cursor,
@@ -99,16 +97,6 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
         return experiment_id, description, values
 
-    @staticmethod
-    def escape_sql_chars(*args):
-        escaped_args = []
-        for arg in args:
-            if isinstance(arg, str):
-                escaped_args.append(arg.replace("'", "''").replace('"', '""').replace('`', '``'))
-            else:
-                escaped_args.append(arg)
-        return escaped_args
-    
     @staticmethod
     def random_order_string():
         return 'RAND()'
@@ -136,3 +124,4 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         self.execute(cursor, f"SHOW COLUMNS FROM {self.table_name}")
         column_names = _get_column_names_from_entries(self.fetchall(cursor))
         return column_names
+    
