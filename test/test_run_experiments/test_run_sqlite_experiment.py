@@ -1,5 +1,6 @@
 import logging
 import os
+import socket
 from math import cos, sin
 
 from mysql.connector.errors import ProgrammingError
@@ -105,12 +106,12 @@ def test_run_error_experiment():
     assert entries[0][:3] == (1, 1, 1)
     assert entries[0][4] == 'error'
     assert entries[0][6] == 'PyExperimenter'
-    assert entries[0][7] == 'vm-tornede4'
+    assert entries[0][7] == socket.gethostname()
     assert entries[0][8] == None
     assert entries[0][9] == None
     assert entries[0][11] == ('Traceback (most recent call last):\n  File'
                               ' "/home/tornede/remote_development/py_experimenter/py_experimenter/experimenter.py"'
                               ', line 403, in _execution_wrapper\n    experiment_function(keyfield_values, result_processor,'
                               ' custom_fields)\n  File "/home/tornede/remote_development/py_experimenter/test/'
-                              'test_run_experiments/test_run_sqlite_experiment.py", line 80, in error_function\n    '
+                              'test_run_experiments/test_run_sqlite_experiment.py", line 82, in error_function\n    '
                               'raise Exception("Error with weird symbos \'@#$%&/\\()=")\nException: Error with weird symbos \'@#$%&/\\()=\n')

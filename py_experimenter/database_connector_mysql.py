@@ -1,6 +1,6 @@
 import logging
 from configparser import ConfigParser
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 import numpy as np
 from mysql.connector import Error, connect
