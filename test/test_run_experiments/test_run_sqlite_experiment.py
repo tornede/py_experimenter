@@ -110,8 +110,8 @@ def test_run_error_experiment():
     assert entries[0][8] == None
     assert entries[0][9] == None
     assert entries[0][11] == ('Traceback (most recent call last):\n  File'
-                              ' "/home/tornede/remote_development/py_experimenter/py_experimenter/experimenter.py"'
+                              f' "{os.getcwd()}/py_experimenter/experimenter.py"'
                               ', line 403, in _execution_wrapper\n    experiment_function(keyfield_values, result_processor,'
-                              ' custom_fields)\n  File "/home/tornede/remote_development/py_experimenter/test/'
+                              f' custom_fields)\n  File "{os.getcwd()}/test/'
                               'test_run_experiments/test_run_sqlite_experiment.py", line 82, in error_function\n    '
                               'raise Exception("Error with weird symbos \'@#$%&/\\()=")\nException: Error with weird symbos \'@#$%&/\\()=\n')
