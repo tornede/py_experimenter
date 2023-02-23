@@ -133,7 +133,7 @@ def own_function_raising_errors(keyfields: dict, result_processor: ResultProcess
 
 
 def test_raising_error_experiment():
-    experimenter = PyExperimenter(experiment_configuration_file_path=os.path.join('test', 'test_run_experiments', 'test_run_mysql_error_config.cfg'),
+    experimenter = PyExperimenter(experiment_configuration_file_path=os.path.join('test', 'test_run_experiments', 'test_run_sqlite_error_config.cfg'),
                                   name='name')
 
     try:
@@ -151,7 +151,7 @@ def test_raising_error_experiment():
         pd.DataFrame(
             {
                 'ID': [1, 2, 3],
-                'error_code': [0., 1., 2.],
+                'error_code': [0, 1, 2],
                 'status': ['error', 'error', 'error'],
                 'name': ['name', 'name', 'name'],
             }
