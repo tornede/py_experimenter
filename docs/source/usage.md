@@ -192,3 +192,39 @@ result_table = experimenter.get_table()
 result_table = result_table.groupby(['dataset']).mean()[['seed']]
 print(result_table.to_latex(columns=['seed'], index_names=['dataset']))
 ```
+
+## Logtables
+
+In addition to the stated above functionality, PyExperimenter also support logtables thereby enabling the logging of information into separate tables. They have to be specified in the configuration file by adding a line starting with `logtables = ...`. There are two different ways of defining logtables:
+
+Standard notation:
+
+`logtables = train_scores:log_train_scores...`  
+`log_train_scores = f1:DOUBLE, accuracy:DOUBLE, kernel:str`
+
+Shorthand notation
+
+`logtables = ..., test_f1:DOUBLE, test_accuracy:DOUBLE`.
+
+Note that the tables in the database are then called `table_name__logtable_name`. In addition to the specified columns, each logtable has a column `experiment_id` referencing the standard table and `timestamp`.
+
+They can be filled in the execution process by calling
+```python
+def run_ml(parameters: dict, result_processor: ResultProcessor, custom_config: dict):
+    ...
+	result_processor.process_logs(
+		{
+			'train_scores': {
+				'f1': np.mean(scores['train_f1_micro']),
+				'accuracy': np.mean(scores['train_accuracy']),
+				'kernel': "'" + kernel + "'"
+			},
+			'test_f1': {
+				'test_f1': np.mean(scores['test_f1_micro'])},
+			'test_accuracy': {
+				'test_accuracy': np.mean(scores['test_accuracy'])},
+		}
+	)
+	...
+```
+There is an [in-depth example](examples/example_logtables.ipynb) showcasing the usage of logtables.
