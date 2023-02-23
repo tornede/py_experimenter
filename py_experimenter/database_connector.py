@@ -338,9 +338,12 @@ class DatabaseConnector(abc.ABC):
         self.execute(cursor, f'DROP TABLE IF EXISTS {self.table_name}')
         self.commit(connection)
 
-    def get_table(self) -> pd.DataFrame:
+    def get_logtable(self, table_name:str) -> pd.DataFrame:
+        return self.get_table(f'{self.table_name}__{table_name}')
+
+    def get_table(self, table_name: Optional[str] = None) -> pd.DataFrame:
         connection = self.connect()
-        query = f"SELECT * FROM {self.table_name}"
+        query = f"SELECT * FROM {self.table_name}" if table_name is None else f"SELECT * FROM {table_name}"
         df = pd.read_sql(query, connection)
         self.close_connection(connection)
         return df

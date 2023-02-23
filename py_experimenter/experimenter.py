@@ -70,7 +70,7 @@ class PyExperimenter:
             self.dbconnector = DatabaseConnectorMYSQL(self.config, database_credential_file_path)
         else:
             raise ValueError('The provider indicated in the config file is not supported')
-        
+
         logging.info('Initialized and connected to database')
 
     def set_config_value(self, section_name: str, key: str, value: str) -> None:
@@ -172,7 +172,7 @@ class PyExperimenter:
                     f'Error in config file: DATABASE section must contain host, user, and password since provider is {_config["DATABASE"]["provider"]}')
                 return False
 
-        if not {'keyfields','resultfields'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
+        if not {'keyfields', 'resultfields'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
             return False
         return True
 
@@ -276,7 +276,7 @@ class PyExperimenter:
         the table until the maximum number of experiments `max_experiments` have been executed. In case of `random_order`, 
         the next open experiment to be executed is not selected based on its consecutive experiment ID, but rather 
         chosen randomly from the table. With the pull the status of the experiment is set to `running`. 
-        
+
         After pulling an experiment, `experiment_function` is executed with keyfield values of the pulled open 
         experiment. Results can be continuously written to the database during the execution via `ResultProcessor`
         that is given as parameter to `experiment_function`. If the execution was successful, the status of the 
@@ -301,16 +301,16 @@ class PyExperimenter:
             n_jobs = int(self.config['PY_EXPERIMENTER']['n_jobs']) if self.has_option('PY_EXPERIMENTER', 'n_jobs') else 1
         except ValueError:
             InvalidValuesInConfiguration('n_jobs must be an integer')
-            
+
         with Manager() as manager:
             if max_experiments >= 0:
                 semaphore = manager.Semaphore(max_experiments)
             else:
                 semaphore = None
-                
+
             with Pool(n_jobs) as pool:
                 for _ in range(n_jobs):
-                    pool.apply_async(self._execution_worker, 
+                    pool.apply_async(self._execution_worker,
                                      args=(experiment_function, random_order, semaphore),
                                      error_callback=self._handle_error)
                 pool.close()
@@ -367,7 +367,7 @@ class PyExperimenter:
         Executes the given `experiment_function` on one open experiment. To that end, one of the open experiments is pulled
         (randomly if `random_order` = True) from the database table. Then `experiment_function` is executed on the keyfield 
         values of the pulled experiment. 
-        
+
         Thereby, the status of the experiment is continuously updated. The experiment can have the following states:
 
         * `running` when the experiment has been pulled from the database table, which will be executed directly afterwards.
@@ -388,13 +388,13 @@ class PyExperimenter:
         :raises DatabaseConnectionError: If an error occurred during the connection to the database.
         """
         experiment_id, keyfield_values = self.dbconnector.get_experiment_configuration(random_order)
-        
+
         result_field_names = utils.get_result_field_names(self.config)
         custom_fields = dict(self.config.items('CUSTOM')) if self.has_section('CUSTOM') else None
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
 
         result_processor = ResultProcessor(self.config, self.database_credential_file_path, table_name=table_name,
-                                           result_fields=result_field_names, experiment_id= experiment_id)
+                                           result_fields=result_field_names, experiment_id=experiment_id)
         result_processor._set_name(self.name)
         result_processor._set_machine(socket.gethostname())
 
@@ -438,3 +438,13 @@ class PyExperimenter:
         :rtype: pd.DataFrame
         """
         return self.dbconnector.get_table()
+
+    def get_logtable(self, table_name: str) -> pd.DataFrame:
+        """
+        Returns the log table as `Pandas.DataFrame`. 
+
+        param table_name: The name of the log table.
+        :return: The log table as `Pandas.DataFrame`. 
+        :rtype: pd.DataFrame
+        """
+        return self.dbconnector.get_logtable(table_name)
