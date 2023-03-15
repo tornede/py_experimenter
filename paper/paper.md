@@ -44,24 +44,23 @@ bibliography: paper.bib
 
 # Summary
 
-`PyExperimenter` is a tool to facilitate the setup, documentation, execution, and subsequent evaluation of results from an empirical study of algorithms and in particular is designed to reduce the involved manual effort significantly.
-It is intended to be used by researchers in the field of artificial intelligence, but is not limited to those.
+`PyExperimenter` is a tool for facilitating the setup, documentation, execution, and subsequent evaluation of results from an empirical study of algorithms, designed with a focus on research in the field of artificial intelligence (AI).
 
-The empirical analysis of algorithms is often accompanied by the execution of algorithms for different inputs and variants of the algorithms (specified via parameters) and the measurement of non-functional properties.
+The empirical analysis of algorithms is often accompanied by the execution of algorithms for different inputs and variants of the algorithms, often specified through hyperparameters, and the measurement of non-functional properties.
 Since the individual evaluations are usually independent, the evaluation can be performed in a distributed manner on an HPC system.
 However, setting up, documenting, and evaluating the results of such a study is often file-based.
 Usually, this requires extensive manual work to create configuration files for the inputs or to read and aggregate measured results from a report file.
 In addition, monitoring and restarting individual executions is tedious and time-consuming.
 
-These challenges are addressed by `PyExperimenter` by means of a single well defined configuration file and a central database for managing massively parallel evaluations, as well as collecting and aggregating their results.
+`PyExperimenter` addresses these issues by means of a single configuration file and a central database for managing parallel evaluations, as well as collecting and aggregating their results.
 Thereby, `PyExperimenter` alleviates the aforementioned overhead and allows experiment executions to be defined and monitored with ease.
 
 ![General schema of `PyExperimenter`.](usage.png)
 
 A general schema of `PyExperimenter` can be found in Figure 1.
-`PyExperimenter` is designed based on the assumption that an experiment is uniquely defined by certain inputs, i.e., parameters, and a function computing the results of the experiment based on these parameters.
+`PyExperimenter` is designed based on the assumption that an experiment is uniquely defined by certain inputs, that is, hyperparameters and a function computing the results of the experiment based on these parameters.
 The set of experiments to be executed can be defined through a configuration file listing the domains of each parameter, or manually through code.
-Those parameters define the experiment grid, based on which `PyExperimenter` setups the table in the database featuring all experiments with their input parameter values and additional information such as the execution status.
+Those parameters define the experiment grid, based on which `PyExperimenter` sets up the table in the database featuring all experiments with their input parameter values and additional information such as the execution status.
 Once this table has been created, a `PyExperimenter` instance can be run on any machine, including a distributed system.
 Each instance automatically pulls open experiments from the database, executes the function provided by the user with the corresponding parameters defining the experiment and writes back the results computed by the function.
 Errors arising during the execution are logged in the database.
@@ -69,7 +68,7 @@ In case of failed experiments or if desired otherwise, a subset of the experimen
 After all experiments are done, results can be jointly exported as a Pandas DataFrame [@pandas] for further processing, such as generating a LaTeX table averaging results of randomized computations over different seeds.
 
 ## Statement of Need
-The recent advances in artificial intelligence have uncovered a need for experiment tracking functionality, leading to the emergence of several tools addressing this issue.
+The recent advances in AI have uncovered a need for experiment tracking functionality, leading to the emergence of several tools addressing this issue.
 Prominent representatives include Weights and Biases [@wandb], MLFlow [@mlflow], TensorBoard [@tensorboard], neptune.ai [@neptune], Comet.ML [@comet], Aim [@aim], Data Version Control [@dvc], Sacred [@sacred], and Guild.AI [@guildai].
 These tools largely assume that users define the configuration of an experiment together with the experiment run itself.
 In case of the evaluation of different hyperparameter configurations, this process is suboptimal, since it requires to communicate the hyperparameters through scripts.
