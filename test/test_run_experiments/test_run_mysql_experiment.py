@@ -105,7 +105,6 @@ def test_run_error_experiment():
     assert entries[0][:3] == (1, 1, 1)
     assert entries[0][4] == 'error'
     assert entries[0][6] == 'PyExperimenter'
-    assert entries[0][7] == 'vm-tornede4'
     assert entries[0][8] == None
     assert entries[0][9] == None
     assert entries[0][11] == ('Traceback (most recent call last):\n  File'
