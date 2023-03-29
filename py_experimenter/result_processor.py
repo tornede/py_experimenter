@@ -29,6 +29,7 @@ class ResultProcessor:
         self._result_fields = result_fields
         self._config = _config
         self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
+        self._experiment_id = experiment_id
         self._experiment_id_condition = f'ID = {experiment_id}'
 
         if _config['PY_EXPERIMENTER']['provider'] == 'sqlite':
@@ -44,7 +45,7 @@ class ResultProcessor:
         want to write results to the database.
         :param results: Dictionary with result field name and result value pairs.
         """
-        time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+        time = utils.get_current_time()
         if not self._valid_result_fields(list(results.keys())):
             invalid_result_keys = set(list(results.keys())) - set(self._result_fields)
             raise InvalidResultFieldError(f"Invalid result keys: {invalid_result_keys}")
@@ -52,9 +53,7 @@ class ResultProcessor:
         if self._timestamp_on_result_fields:
             results = self.__class__._add_timestamps_to_results(results, time)
 
-        keys = self._dbconnector.escape_sql_chars(*list(results.keys()))
-        values = self._dbconnector.escape_sql_chars(*list(results.values()))
-        self._dbconnector._update_database(keys=keys, values=values, where=self._experiment_id_condition)
+        self._dbconnector.update_database(self._table_name, values=results, condition=self._experiment_id_condition)
 
     @staticmethod
     def _add_timestamps_to_results(results: dict, time: datetime) -> List[Tuple[str, object]]:
@@ -65,20 +64,19 @@ class ResultProcessor:
         return result_fields_with_timestep
 
     def _change_status(self, status):
-        time = datetime.now()
-        time = time.strftime("%m/%d/%Y, %H:%M:%S")
+        values = {'status': status,
+                  'end_date': utils.get_current_time()}
 
-        if status == 'done' or status == 'error':
-            self._dbconnector._update_database(keys=['status', 'end_date'], values=[status, time], where=self._experiment_id_condition)
+        self._dbconnector.update_database(self._table_name, values=values, condition=self._experiment_id_condition)
 
     def _write_error(self, error_msg):
-        self._dbconnector._update_database(keys=['error'], values=[error_msg], where=self._experiment_id_condition)
+        self._dbconnector.update_database(self._table_name, {'error': error_msg}, condition=self._experiment_id_condition)
 
     def _set_machine(self, machine_id):
-        self._dbconnector._update_database(keys=['machine'], values=[machine_id], where=self._experiment_id_condition)
+        self._dbconnector.update_database(self._table_name, {'machine': machine_id}, condition=self._experiment_id_condition)
 
     def _set_name(self, name):
-        self._dbconnector._update_database(keys=['name'], values=[name], where=self._experiment_id_condition)
+        self._dbconnector.update_database(self._table_name, {'name': name}, condition=self._experiment_id_condition)
 
     def _valid_result_fields(self, result_fields):
         return set(result_fields).issubset(set(self._result_fields))

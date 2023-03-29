@@ -1,7 +1,6 @@
 import abc
 import logging
-from datetime import datetime
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 
 import pandas as pd
 
@@ -97,7 +96,7 @@ class DatabaseConnector(abc.ABC):
                 ]
             )
 
-            columns = ['%s %s DEFAULT NULL' % (self.__class__.escape_sql_chars(field)[0], datatype) for field, datatype in fields]
+            columns = ['%s %s DEFAULT NULL' % (field, datatype) for field, datatype in fields]
             self._create_table(cursor, columns)
         self.close_connection(connection)
 
@@ -122,10 +121,6 @@ class DatabaseConnector(abc.ABC):
     def _table_has_correct_structure(self, cursor, typed_fields):
         pass
 
-    @abc.abstractclassmethod
-    def escape_sql_chars(*args):
-        pass
-
     def fill_table(self, parameters=None, fixed_parameter_combinations=None) -> None:
         logging.debug("Fill table with parameters")
         parameters = parameters if parameters is not None else {}
@@ -144,14 +139,14 @@ class DatabaseConnector(abc.ABC):
         column_names += ",status"
         column_names += ",creation_date"
 
-        time = datetime.now()
+        time = utils.get_current_time()
         values_added = 0
         for combination in combinations:
             if self._check_combination_in_existing_rows(combination, existing_rows, keyfield_names):
                 continue
             values = list(combination.values())
             values.append(ExperimentStatus.CREATED.value)
-            values.append("%s" % time.strftime("%m/%d/%Y, %H:%M:%S"))
+            values.append("%s" % time)
 
             self._write_to_database(column_names.split(', '), values)
             values_added += 1
@@ -181,12 +176,12 @@ class DatabaseConnector(abc.ABC):
             order_by = self.__class__.random_order_string()
         else:
             order_by = "id"
-        time = datetime.now()
-        time = time.strftime("%m/%d/%Y, %H:%M:%S")
-        
+        time = utils.get_current_time()
+
         self.execute(cursor, f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;")
         experiment_id = self.fetchall(cursor)[0][0]
-        self.execute(cursor, f"UPDATE {self.table_name} SET status = '{ExperimentStatus.RUNNING.value}', start_date = '{time}' WHERE id = {experiment_id};")
+        self.execute(
+            cursor, f"UPDATE {self.table_name} SET status = '{ExperimentStatus.RUNNING.value}', start_date = '{time}' WHERE id = {experiment_id};")
         keyfields = ','.join(utils.get_keyfield_names(self.database_credential_file_path))
         self.execute(cursor, f"SELECT {keyfields} FROM {self.table_name} WHERE id = {experiment_id};")
         values = self.fetchall(cursor)
@@ -214,24 +209,16 @@ class DatabaseConnector(abc.ABC):
         self.commit(connection)
         self.close_connection(connection)
 
-    def _update_database(self, keys, values, where):
-        logging.info(f"Update '{keys}' with values '{values}' in database")
+    def update_database(self, table_name: str, values: Dict[str, Union[str, int, object]], condition: str):
+        connection = self.connect()
+        cursor = self.cursor(connection)
+        cursor.execute(self._prepare_update_query(table_name, values.keys(), condition), list(values.values()))
+        self.commit(connection)
+        self.close_connection(connection)
 
-        try:
-            connection = self.connect()
-            cursor = self.cursor(connection)
-            for key, value in zip(keys, values):
-                stmt = f"UPDATE {self.table_name} SET {key}='{value}' WHERE {where}"
-                self.execute(cursor, stmt)
-            self.commit(connection)
-
-        except Exception as err:
-            logging.error(err)
-            stmt = """UPDATE %s SET error="%s" WHERE %s""" % (self.table_name, err, where)
-            self.execute(cursor, stmt)
-            self.commit(connection)
-        else:
-            self.close_connection(connection)
+    def _prepare_update_query(self, table_name: str, values: Dict[str, Union[str, int, object]],  condition: str) -> str:
+        return (f"UPDATE {table_name} SET {', '.join(f'{key} = {self._prepared_statement_placeholder}' for key in values)}"
+                f" WHERE {condition}")
 
     def not_executed_yet(self, where) -> bool:
         not_executed = False
@@ -284,7 +271,7 @@ class DatabaseConnector(abc.ABC):
         connection = self.connect()
         cursor = self.cursor(connection)
 
-        query_condition= condition or ''
+        query_condition = condition or ''
         self.execute(cursor, f"SELECT * FROM {self.table_name} {query_condition}")
         entries = self.fetchall(cursor)
         column_names = self.get_structure_from_table(cursor)
@@ -295,7 +282,7 @@ class DatabaseConnector(abc.ABC):
     def _delete_experiments_with_condition(self, condition: Optional[str] = None) -> None:
         connection = self.connect()
         cursor = self.cursor(connection)
-        
+
         query_condition = condition or ''
         self.execute(cursor, f'DELETE FROM {self.table_name} {query_condition}')
         self.commit(connection)
