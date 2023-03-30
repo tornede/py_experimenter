@@ -145,6 +145,19 @@ Finally, if you want to build a package, you can use the following command, whic
 
         poetry build
 
+Problems with Poetry 1.4.1:
+        Note that on Windows and Mac ``poetry`` currently fails with a ``_WheelFileValidationError`` when building the debugpy package. This is due the current ``poetry`` version 1.4.1. beeing incompatible with ``debugpy``. In order to fix this, you can either downgrade your poetry version
+
+        .. code-block::
+
+                poetry self update 1.4.0
+
+        or by disabling ``modern-installation`` in the ``poetry`` configuration:
+
+        .. code-block::
+
+                poetry config installer.modern-installation false
+
 .. _contribute_unit_tests:
 
 Extend Unit Tests 
