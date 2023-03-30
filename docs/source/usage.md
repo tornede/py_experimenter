@@ -173,7 +173,7 @@ experimenter.execute(
 Experiments can be reset based on their status. Therefore, the table rows having a given status will be deleted, and corresponding new rows without results will be created. 
 
 ```python
-experimenter.reset_experiments(status='error')
+experimenter.reset_experiments('error')
 ```
 
 Each database table contains a `status` column, summarizing the current state of an experiment. The following exist:
@@ -182,6 +182,12 @@ Each database table contains a `status` column, summarizing the current state of
 - `running`: The experiment is currently in execution.
 - `done`: The execution of the experiment terminated without interruption and the results are written into the database
 - `error`: An error occurred during execution, which is also logged into the database.
+
+Note that several states can be given at once:
+
+```python
+experimenter.reset_experiments('error', 'done')
+```
 
 ### Obtain Results
 
