@@ -22,7 +22,12 @@ Classes
    Bases: :py:obj:`py_experimenter.database_connector.DatabaseConnector`
 
    .. py:attribute:: _write_to_database_separator
-      :annotation: = ','
+      :value: "','"
+
+      
+
+   .. py:attribute:: _prepared_statement_placeholder
+      :value: '?'
 
       
 
@@ -45,10 +50,6 @@ Classes
 
 
    .. py:method:: _table_has_correct_structure(cursor, typed_fields) -> List[str]
-
-
-   .. py:method:: escape_sql_chars(*args)
-      :staticmethod:
 
 
    .. py:method:: random_order_string()

@@ -25,6 +25,7 @@ Functions
    py_experimenter.utils.get_resultfields
    py_experimenter.utils.get_fields
    py_experimenter.utils.combine_fill_table_parameters
+   py_experimenter.utils.get_current_time
 
 
 
@@ -75,5 +76,8 @@ Functions
 
 
 .. py:function:: combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations)
+
+
+.. py:function:: get_current_time() -> str
 
 

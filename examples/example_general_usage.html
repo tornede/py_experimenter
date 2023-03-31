@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>General Usage &mdash; PyExperimenter 1.0 documentation</title>
@@ -9,6 +9,7 @@
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
       <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -31,11 +32,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> PyExperimenter
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyExperimenter
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -89,7 +94,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Examples</a></li>
       <li class="breadcrumb-item active">General Usage</li>
       <li class="wy-breadcrumbs-aside">
@@ -101,286 +106,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS for nbsphinx extension */
-
-/* remove conflicting styling from Sphinx themes */
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt *,
-div.nbinput.container div.input_area pre,
-div.nboutput.container div.output_area pre,
-div.nbinput.container div.input_area .highlight,
-div.nboutput.container div.output_area .highlight {
-    border: none;
-    padding: 0;
-    margin: 0;
-    box-shadow: none;
-}
-
-div.nbinput.container > div[class*=highlight],
-div.nboutput.container > div[class*=highlight] {
-    margin: 0;
-}
-
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt * {
-    background: none;
-}
-
-div.nboutput.container div.output_area .highlight,
-div.nboutput.container div.output_area pre {
-    background: unset;
-}
-
-div.nboutput.container div.output_area div.highlight {
-    color: unset;  /* override Pygments text color */
-}
-
-/* avoid gaps between output lines */
-div.nboutput.container div[class*=highlight] pre {
-    line-height: normal;
-}
-
-/* input/output containers */
-div.nbinput.container,
-div.nboutput.container {
-    display: -webkit-flex;
-    display: flex;
-    align-items: flex-start;
-    margin: 0;
-    width: 100%;
-}
-@media (max-width: 540px) {
-    div.nbinput.container,
-    div.nboutput.container {
-        flex-direction: column;
-    }
-}
-
-/* input container */
-div.nbinput.container {
-    padding-top: 5px;
-}
-
-/* last container */
-div.nblast.container {
-    padding-bottom: 5px;
-}
-
-/* input prompt */
-div.nbinput.container div.prompt pre {
-    color: #307FC1;
-}
-
-/* output prompt */
-div.nboutput.container div.prompt pre {
-    color: #BF5B3D;
-}
-
-/* all prompts */
-div.nbinput.container div.prompt,
-div.nboutput.container div.prompt {
-    width: 4.5ex;
-    padding-top: 5px;
-    position: relative;
-    user-select: none;
-}
-
-div.nbinput.container div.prompt > div,
-div.nboutput.container div.prompt > div {
-    position: absolute;
-    right: 0;
-    margin-right: 0.3ex;
-}
-
-@media (max-width: 540px) {
-    div.nbinput.container div.prompt,
-    div.nboutput.container div.prompt {
-        width: unset;
-        text-align: left;
-        padding: 0.4em;
-    }
-    div.nboutput.container div.prompt.empty {
-        padding: 0;
-    }
-
-    div.nbinput.container div.prompt > div,
-    div.nboutput.container div.prompt > div {
-        position: unset;
-    }
-}
-
-/* disable scrollbars and line breaks on prompts */
-div.nbinput.container div.prompt pre,
-div.nboutput.container div.prompt pre {
-    overflow: hidden;
-    white-space: pre;
-}
-
-/* input/output area */
-div.nbinput.container div.input_area,
-div.nboutput.container div.output_area {
-    -webkit-flex: 1;
-    flex: 1;
-    overflow: auto;
-}
-@media (max-width: 540px) {
-    div.nbinput.container div.input_area,
-    div.nboutput.container div.output_area {
-        width: 100%;
-    }
-}
-
-/* input area */
-div.nbinput.container div.input_area {
-    border: 1px solid #e0e0e0;
-    border-radius: 2px;
-    /*background: #f5f5f5;*/
-}
-
-/* override MathJax center alignment in output cells */
-div.nboutput.container div[class*=MathJax] {
-    text-align: left !important;
-}
-
-/* override sphinx.ext.imgmath center alignment in output cells */
-div.nboutput.container div.math p {
-    text-align: left;
-}
-
-/* standard error */
-div.nboutput.container div.output_area.stderr {
-    background: #fdd;
-}
-
-/* ANSI colors */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-default-inverse-fg { color: #FFFFFF; }
-.ansi-default-inverse-bg { background-color: #000000; }
-
-.ansi-bold { font-weight: bold; }
-.ansi-underline { text-decoration: underline; }
-
-
-div.nbinput.container div.input_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight].math,
-div.nboutput.container div.output_area.rendered_html,
-div.nboutput.container div.output_area > div.output_javascript,
-div.nboutput.container div.output_area:not(.rendered_html) > img{
-    padding: 5px;
-    margin: 0;
-}
-
-/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
-div.nbinput.container div.input_area > div[class^='highlight'],
-div.nboutput.container div.output_area > div[class^='highlight']{
-    overflow-y: hidden;
-}
-
-/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt .copybtn {
-    display: none;
-}
-
-/* Some additional styling taken form the Jupyter notebook CSS */
-.jp-RenderedHTMLCommon table,
-div.rendered_html table {
-  border: none;
-  border-collapse: collapse;
-  border-spacing: 0;
-  color: black;
-  font-size: 12px;
-  table-layout: fixed;
-}
-.jp-RenderedHTMLCommon thead,
-div.rendered_html thead {
-  border-bottom: 1px solid black;
-  vertical-align: bottom;
-}
-.jp-RenderedHTMLCommon tr,
-.jp-RenderedHTMLCommon th,
-.jp-RenderedHTMLCommon td,
-div.rendered_html tr,
-div.rendered_html th,
-div.rendered_html td {
-  text-align: right;
-  vertical-align: middle;
-  padding: 0.5em 0.5em;
-  line-height: normal;
-  white-space: normal;
-  max-width: none;
-  border: none;
-}
-.jp-RenderedHTMLCommon th,
-div.rendered_html th {
-  font-weight: bold;
-}
-.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
-div.rendered_html tbody tr:nth-child(odd) {
-  background: #f5f5f5;
-}
-.jp-RenderedHTMLCommon tbody tr:hover,
-div.rendered_html tbody tr:hover {
-  background: rgba(66, 165, 245, 0.2);
-}
-
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="General-Usage">
+  <section id="General-Usage">
 <h1>General Usage<a class="headerlink" href="#General-Usage" title="Permalink to this heading"></a></h1>
 <p>This example shows the general usage of <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>, from creating an experiment configuration file, over the actual execution of (dummy) experiments, to the extraction of experimental results.</p>
 <p>To execute this notebook you need to install:</p>
@@ -401,7 +127,7 @@ content = &quot;&quot;&quot;
 [PY_EXPERIMENTER]
 provider = sqlite
 database = automl_conf_2023
-table = best_paper_table
+table = example_general_usage
 
 keyfields = dataset, cross_validation_splits:int, seed:int, kernel
 dataset = iris
@@ -425,7 +151,7 @@ with open(experiment_configuration_file_path, &quot;w&quot;) as f:
 <section id="Defining-the-execution-function">
 <h2>Defining the execution function<a class="headerlink" href="#Defining-the-execution-function" title="Permalink to this heading"></a></h2>
 <p>Next, the execution of a single experiment has to be defined. Note that this is a dummy example, which contains limited reasonable code. It is meant to show the core functionality of the PyExperimenter.</p>
-<p>The method is called with the parameters, i.e. <code class="docutils literal notranslate"><span class="pre">keyfields</span></code>, of a database entry. The results are meant to be processed to be written into the database, i.e. as <code class="docutils literal notranslate"><span class="pre">resultfields</span></code>.</p>
+<p>The method is called with the parameters, i.e. <code class="docutils literal notranslate"><span class="pre">keyfields</span></code>, of a database entry. The results are meant to be processed to be written into the database, i.e. as <code class="docutils literal notranslate"><span class="pre">resultfields</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -486,7 +212,7 @@ def run_ml(parameters: dict, result_processor: ResultProcessor, custom_config: d
 <p>The actual execution of the PyExperimenter is done in multiple steps.</p>
 <section id="Initialize-PyExperimenter">
 <h3>Initialize PyExperimenter<a class="headerlink" href="#Initialize-PyExperimenter" title="Permalink to this heading"></a></h3>
-<p>The PyExperimenter is initialized with the previously created configuration file. Additionally, <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> is given a <code class="docutils literal notranslate"><span class="pre">name</span></code>, i.e. job id, which is especially useful for parallel executions of multiple experiments on HPC.</p>
+<p>The PyExperimenter is initialized with the previously created configuration file. Additionally, <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> is given a <code class="docutils literal notranslate"><span class="pre">name</span></code>, i.e. job id, which is especially useful for parallel executions of multiple experiments on HPC.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -500,29 +226,336 @@ experimenter = PyExperimenter(experiment_configuration_file_path=experiment_conf
 </section>
 <section id="Fill-Table">
 <h3>Fill Table<a class="headerlink" href="#Fill-Table" title="Permalink to this heading"></a></h3>
-<p>The table is filled based on the above created configuration file with <code class="docutils literal notranslate"><span class="pre">fill_table_from_config()</span></code>. Therefore, the cartesian product of all keyfields makes up the content of the table. Additionally, a custom defined row, i.e. a custom defined keyfield tuple, is added with <code class="docutils literal notranslate"><span class="pre">fill_table_with_rows()</span></code>.</p>
+<p>The table is filled based on the above created configuration file with <code class="docutils literal notranslate"><span class="pre">fill_table_from_config()</span></code>. Therefore, the cartesian product of all keyfields makes up the content of the table. Additionally, a custom defined row, i.e. a custom defined keyfield tuple, is added with <code class="docutils literal notranslate"><span class="pre">fill_table_with_rows()</span></code>.</p>
 <p>Note that the table can easily be obtained as <code class="docutils literal notranslate"><span class="pre">pandas.Dataframe</span></code> via <code class="docutils literal notranslate"><span class="pre">experimenter.get_table()</span></code>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.fill_table_from_config()
 
 experimenter.fill_table_with_rows(rows=[
-      {&#39;dataset&#39;: &#39;new_data&#39;, &#39;cross_validation_splits&#39;: 3, &#39;seed&#39;: 42, &#39;kernel&#39;:&#39;linear&#39;}])
+      {&#39;dataset&#39;: &#39;error_dataset&#39;, &#39;cross_validation_splits&#39;: 3, &#39;seed&#39;: 42, &#39;kernel&#39;:&#39;linear&#39;}])
 
 # showing database table
 experimenter.get_table()
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>dataset</th>
+      <th>cross_validation_splits</th>
+      <th>seed</th>
+      <th>kernel</th>
+      <th>creation_date</th>
+      <th>status</th>
+      <th>start_date</th>
+      <th>name</th>
+      <th>machine</th>
+      <th>pipeline</th>
+      <th>train_f1</th>
+      <th>train_accuracy</th>
+      <th>test_f1</th>
+      <th>test_accuracy</th>
+      <th>end_date</th>
+      <th>error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>poly</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>poly</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>poly</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>rbf</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>rbf</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>rbf</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>sigmoid</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>sigmoid</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>sigmoid</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>13</td>
+      <td>error_dataset</td>
+      <td>3</td>
+      <td>42</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
 </div>
 </section>
 <section id="Execute-PyExperimenter">
 <h3>Execute PyExperimenter<a class="headerlink" href="#Execute-PyExperimenter" title="Permalink to this heading"></a></h3>
-<p>All experiments are executed one after the other by the same <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> due to <code class="docutils literal notranslate"><span class="pre">max_experiments=-1</span></code>. If just a single one or a predifined number of experiments should be executed, the <code class="docutils literal notranslate"><span class="pre">-1</span></code> has to be replaced by the according amount. The <code class="docutils literal notranslate"><span class="pre">random_order</span></code> is especially important in case of parallel execution of multiple <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>, e.g. when doing it on a HPC, to avoid collusions of accessing the same row of the table.</p>
-<p>The first parameter, i.e. <code class="docutils literal notranslate"><span class="pre">run_ml</span></code>, relates to the actual method that should be executed with the given keyfields of the table.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<p>All experiments are executed one after the other by the same <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> due to <code class="docutils literal notranslate"><span class="pre">max_experiments=-1</span></code>. If just a single one or a predifined number of experiments should be executed, the <code class="docutils literal notranslate"><span class="pre">-1</span></code> has to be replaced by the according amount. The <code class="docutils literal notranslate"><span class="pre">random_order</span></code> is especially important in case of parallel execution of multiple <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>, e.g. when doing it on a HPC, to avoid collusions of accessing the same row of the table.</p>
+<p>The first parameter, i.e. <code class="docutils literal notranslate"><span class="pre">run_ml</span></code>, relates to the actual method that should be executed with the given keyfields of the table.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.execute(run_ml, max_experiments=-1, random_order=True)
@@ -531,25 +564,653 @@ experimenter.get_table()
 experimenter.get_table()
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+ERROR:root:Traceback (most recent call last):
+  File &#34;/Users/tanja/Development/py_experimenter/py_experimenter/experimenter.py&#34;, line 370, in _execution_wrapper
+    experiment_function(keyfield_values, result_processor, custom_fields)
+  File &#34;/var/folders/8l/vv83bgdn0zg97jp8pbsfxq040000gn/T/ipykernel_88425/1244630566.py&#34;, line 31, in run_ml
+    raise ValueError(&#34;Example error&#34;)
+ValueError: Example error
+
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>dataset</th>
+      <th>cross_validation_splits</th>
+      <th>seed</th>
+      <th>kernel</th>
+      <th>creation_date</th>
+      <th>status</th>
+      <th>start_date</th>
+      <th>name</th>
+      <th>machine</th>
+      <th>pipeline</th>
+      <th>train_f1</th>
+      <th>train_accuracy</th>
+      <th>test_f1</th>
+      <th>test_accuracy</th>
+      <th>end_date</th>
+      <th>error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>poly</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>poly</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>poly</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>rbf</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>rbf</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:48</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>rbf</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>sigmoid</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>sigmoid</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>sigmoid</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>13</td>
+      <td>error_dataset</td>
+      <td>3</td>
+      <td>42</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>error</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>Traceback (most recent call last):\n  File "/U...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
 </div>
 </section>
 <section id="Restart-Failed-Experiments">
 <h3>Restart Failed Experiments<a class="headerlink" href="#Restart-Failed-Experiments" title="Permalink to this heading"></a></h3>
-<p>As experiments fail at some time, those experiments were reset for another try with <code class="docutils literal notranslate"><span class="pre">reset_experiments()</span></code>. The <code class="docutils literal notranslate"><span class="pre">status</span></code> describes which table rows should be replace. In this example all failed experiments, i.e. having <code class="docutils literal notranslate"><span class="pre">status==error</span></code>, are reset.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<p>As experiments fail at some time, those experiments were reset for another try with <code class="docutils literal notranslate"><span class="pre">reset_experiments()</span></code>. The <code class="docutils literal notranslate"><span class="pre">status</span></code> describes which table rows should be replace. In this example all failed experiments, i.e. having <code class="docutils literal notranslate"><span class="pre">status==error</span></code>, are reset.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.reset_experiments(status=&#39;error&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.reset_experiments(&#39;error&#39;)
 
 # showing database table
 experimenter.get_table()
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>dataset</th>
+      <th>cross_validation_splits</th>
+      <th>seed</th>
+      <th>kernel</th>
+      <th>creation_date</th>
+      <th>status</th>
+      <th>start_date</th>
+      <th>name</th>
+      <th>machine</th>
+      <th>pipeline</th>
+      <th>train_f1</th>
+      <th>train_accuracy</th>
+      <th>test_f1</th>
+      <th>test_accuracy</th>
+      <th>end_date</th>
+      <th>error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>poly</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>poly</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>poly</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>rbf</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>rbf</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:48</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>rbf</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>sigmoid</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>sigmoid</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>sigmoid</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>14</td>
+      <td>error_dataset</td>
+      <td>3</td>
+      <td>42</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:48</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
 <p>After the reset of failed experiments, they can be executed again as described above.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.execute(run_ml, max_experiments=-1, random_order=True)
@@ -559,12 +1220,333 @@ experimenter.get_table()
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+ERROR:root:Traceback (most recent call last):
+  File &#34;/Users/tanja/Development/py_experimenter/py_experimenter/experimenter.py&#34;, line 370, in _execution_wrapper
+    experiment_function(keyfield_values, result_processor, custom_fields)
+  File &#34;/var/folders/8l/vv83bgdn0zg97jp8pbsfxq040000gn/T/ipykernel_88425/1244630566.py&#34;, line 31, in run_ml
+    raise ValueError(&#34;Example error&#34;)
+ValueError: Example error
+
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>dataset</th>
+      <th>cross_validation_splits</th>
+      <th>seed</th>
+      <th>kernel</th>
+      <th>creation_date</th>
+      <th>status</th>
+      <th>start_date</th>
+      <th>name</th>
+      <th>machine</th>
+      <th>pipeline</th>
+      <th>train_f1</th>
+      <th>train_accuracy</th>
+      <th>test_f1</th>
+      <th>test_accuracy</th>
+      <th>end_date</th>
+      <th>error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>poly</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>poly</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>poly</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>rbf</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>rbf</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:48</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>rbf</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>sigmoid</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>sigmoid</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>sigmoid</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>done</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-03-31 17:29:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>14</td>
+      <td>error_dataset</td>
+      <td>3</td>
+      <td>42</td>
+      <td>linear</td>
+      <td>2023-03-31 17:29:48</td>
+      <td>error</td>
+      <td>2023-03-31 17:29:48</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2023-03-31 17:29:48</td>
+      <td>Traceback (most recent call last):\n  File "/U...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
 </section>
 <section id="Generating-Result-Table">
 <h3>Generating Result Table<a class="headerlink" href="#Generating-Result-Table" title="Permalink to this heading"></a></h3>
-<p>The table containes single experiment results. Those can be aggregated, e.g. to generate the mean over all seeds.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<p>The table containes single experiment results. Those can be aggregated, e.g. to generate the mean over all seeds.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>result_table_agg = experimenter.get_table().groupby([&#39;dataset&#39;]).mean()
@@ -572,17 +1554,119 @@ result_table_agg
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/var/folders/8l/vv83bgdn0zg97jp8pbsfxq040000gn/T/ipykernel_88425/3864672853.py:1: FutureWarning: The default value of numeric_only in DataFrameGroupBy.mean is deprecated. In a future version, numeric_only will default to False. Either specify numeric_only or select only columns which should be valid for the function.
+  result_table_agg = experimenter.get_table().groupby([&#39;dataset&#39;]).mean()
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>cross_validation_splits</th>
+      <th>seed</th>
+      <th>train_f1</th>
+      <th>train_accuracy</th>
+      <th>test_f1</th>
+      <th>test_accuracy</th>
+    </tr>
+    <tr>
+      <th>dataset</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>error_dataset</th>
+      <td>14.0</td>
+      <td>3.0</td>
+      <td>42.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>iris</th>
+      <td>6.5</td>
+      <td>5.0</td>
+      <td>4.0</td>
+      <td>0.945</td>
+      <td>0.945</td>
+      <td>0.94</td>
+      <td>0.94</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
 </section>
 <section id="Printing-LaTex-Table">
 <h3>Printing LaTex Table<a class="headerlink" href="#Printing-LaTex-Table" title="Permalink to this heading"></a></h3>
 <p>As <code class="docutils literal notranslate"><span class="pre">pandas.Dataframe</span></code>s can easily be printed as LaTex table, here is an example code for one of the above result columns.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(result_table_agg.to_latex(columns=[&#39;test_f1&#39;], index_names=[&#39;dataset&#39;]))
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+\begin{tabular}{lr}
+\toprule
+{} &amp;  test\_f1 \\
+dataset       &amp;          \\
+\midrule
+error\_dataset &amp;      NaN \\
+iris          &amp;     0.94 \\
+\bottomrule
+\end{tabular}
+
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/var/folders/8l/vv83bgdn0zg97jp8pbsfxq040000gn/T/ipykernel_88425/1901797589.py:1: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  print(result_table_agg.to_latex(columns=[&#39;test_f1&#39;], index_names=[&#39;dataset&#39;]))
+</pre></div></div>
 </div>
 </section>
 </section>

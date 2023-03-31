@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>py_experimenter.experimenter &mdash; PyExperimenter 1.0 documentation</title>
@@ -29,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyExperimenter
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyExperimenter
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -86,7 +90,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
           <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter</span></code></a></li>
       <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.experimenter</span></code></li>
@@ -99,31 +103,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="module-py_experimenter.experimenter">
+  <section id="module-py_experimenter.experimenter">
 <span id="py-experimenter-experimenter"></span><h1><a class="reference internal" href="#module-py_experimenter.experimenter" title="py_experimenter.experimenter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.experimenter</span></code></a><a class="headerlink" href="#module-py_experimenter.experimenter" title="Permalink to this heading"></a></h1>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
@@ -335,11 +315,12 @@ configuration file</p>
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.execute">
 <span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><span class="pre">py_experimenter.result_processor.ResultProcessor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_experiments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.execute" title="Permalink to this definition"></a></dt>
 <dd><p>Pulls open experiments from the database table and executes them.</p>
-<p>First as many worker are spawned and started as specified with <cite>n_jobs</cite> in the experiment configuration file.
-If <cite>n_jobs</cite> is not given, a single worker is spawned. Each worker then repeatedly pulls an open experiment from
-the table until the maximum number of experiments <cite>max_experiments</cite> have been executed. In case of <cite>random_order</cite>,
-the next open experiment to be executed is not selected based on its consecutive experiment ID, but rather
-chosen randomly from the table. With the pull the status of the experiment is set to <cite>running</cite>.</p>
+<p>First as many processes are created and started as specified with <cite>n_jobs</cite> in the experiment configuration file.
+If <cite>n_jobs</cite> is not given, a single process is created. Then two different scenarios are possible.</p>
+<p>If max_experiments == -1, each process is a worker and continuously starts to execute the next open experiment
+until there is no open experiment left in the database table.
+If max_experiments != -1, we generate <cite>max_experiments</cite> jobs to execute experimetns and distribute them to the
+worker processes.</p>
 <p>After pulling an experiment, <cite>experiment_function</cite> is executed with keyfield values of the pulled open
 experiment. Results can be continuously written to the database during the execution via <cite>ResultProcessor</cite>
 that is given as parameter to <cite>experiment_function</cite>. If the execution was successful, the status of the
@@ -365,35 +346,16 @@ ID (<cite>False</cite>) or in a randomized fashion (<cite>True</cite>). Defaults
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter._execution_worker">
-<span class="sig-name descname"><span class="pre">_execution_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><span class="pre">py_experimenter.result_processor.ResultProcessor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semaphore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">multiprocessing.Semaphore</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._execution_worker" title="Permalink to this definition"></a></dt>
-<dd><p>Handles the execution of experiments of a single worker.</p>
-<p>Each worker repeatedly checks whether the maximum number of experiments to execute is reached. If not, an experiment
-is pulled from the database table, setting its status to <cite>running</cite>, and <cite>experiment_function</cite> is called on its keyfield
-values. After execution, the status is set to <cite>done</cite> if the execution was successful, otherwise it is set to <cite>error</cite>
-and the raised error is logged to the database table.</p>
-<p>Note that only errors raised within <cite>experiment_function</cite> are logged in to the database table. Therefore all
-errors raised before or after the execution of <cite>experiment_function</cite> are logged according to the local
-logging configuration and do not appear in the table.</p>
+<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter._worker">
+<span class="sig-name descname"><span class="pre">_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><span class="pre">py_experimenter.result_processor.ResultProcessor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._worker" title="Permalink to this definition"></a></dt>
+<dd><p>Worker that repeatedly pulls open experiments from the database table and executes them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>experiment_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>, </em><em>Dict</em><em>, </em><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><em>ResultProcessor</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – The function that should be executed with the different parametrizations.</p></li>
-<li><p><strong>max_experiments</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of experiments to be executed by this <cite>PyExperimenter</cite>. If all experiments
-should be executed, set this to <cite>-1</cite>. Defaults to <cite>-1</cite>.</p></li>
-<li><p><strong>semaphore</strong> (<em>multiprocessing.Semaphore</em><em> or </em><em>None</em>) – A semaphore that is used to limit the number of experiments that are executed.</p></li>
+<li><p><strong>random_order</strong> (<em>bool</em><em>, </em><em>optional</em>) – Indicates whether the experiments to be executed are chosen consecutively by its experiment
+ID (<cite>False</cite>) or in a randomized fashion (<cite>True</cite>). Defaults to <cite>False</cite>.</p></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter._handle_error">
-<span class="sig-name descname"><span class="pre">_handle_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Exception</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._handle_error" title="Permalink to this definition"></a></dt>
-<dd><p>Logs an error.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>error</strong> (<em>Exception</em>) – Error that should be logged.</p>
 </dd>
 </dl>
 </dd></dl>

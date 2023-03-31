@@ -26,27 +26,27 @@ Classes
    Derive from this class to define new enumerations.
 
    .. py:attribute:: CREATED
-      :annotation: = created
+      :value: 'created'
 
       
 
    .. py:attribute:: RUNNING
-      :annotation: = running
+      :value: 'running'
 
       
 
    .. py:attribute:: DONE
-      :annotation: = done
+      :value: 'done'
 
       
 
    .. py:attribute:: ERROR
-      :annotation: = error
+      :value: 'error'
 
       
 
    .. py:attribute:: ALL
-      :annotation: = all
+      :value: 'all'
 
       
 

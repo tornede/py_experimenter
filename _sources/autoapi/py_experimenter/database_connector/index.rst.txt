@@ -69,10 +69,6 @@ Classes
       :abstractmethod:
 
 
-   .. py:method:: escape_sql_chars()
-      :classmethod:
-
-
    .. py:method:: fill_table(parameters=None, fixed_parameter_combinations=None) -> None
 
 
@@ -100,7 +96,10 @@ Classes
    .. py:method:: _write_to_database(keys, values) -> None
 
 
-   .. py:method:: _update_database(keys, values, where)
+   .. py:method:: update_database(table_name: str, values: Dict[str, Union[str, int, object]], condition: str)
+
+
+   .. py:method:: _prepare_update_query(table_name: str, values: Dict[str, Union[str, int, object]], condition: str) -> str
 
 
    .. py:method:: not_executed_yet(where) -> bool
