@@ -44,6 +44,7 @@ sphinx-gallery = "^0.11.1"
 sphinx-autoapi = ">=2.0.0"
 sphinx-rtd-theme = ">=1.0.0"
 recommonmark = "^0.7.1"
+freezegun = "^1.2.2"
 
 [build-system]
 requires = ["poetry-core"]
