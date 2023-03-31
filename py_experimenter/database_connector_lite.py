@@ -47,6 +47,18 @@ class DatabaseConnectorLITE(DatabaseConnector):
         return self.table_name in [x[0] for x in table_names]
 
     @staticmethod
+    def escape_sql_chars(*args):
+        modified_args = list()
+        for arg in args:
+            arg = str(arg)
+            if type(arg) == str:
+                modified_args.append(arg.replace('`', '``').replace("'", "''").replace('"', '""'))
+
+            else:
+                modified_args.append(arg)
+        return modified_args
+
+    @staticmethod
     def get_autoincrement():
         return 'AUTOINCREMENT'
 

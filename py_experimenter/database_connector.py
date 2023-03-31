@@ -1,6 +1,7 @@
 import abc
 import logging
 from configparser import ConfigParser
+from datetime import datetime
 from typing import Dict, List, Optional, Tuple, Union
 
 import pandas as pd
@@ -191,8 +192,7 @@ class DatabaseConnector(abc.ABC):
 
     def _execute_queries(self, connection, cursor) -> Tuple[int, List, List]:
         order_by = "id"
-        time = datetime.now()
-        time = time.strftime("%m/%d/%Y, %H:%M:%S")
+        time = utils.get_timestamp_representation()
 
         self.execute(cursor, f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;")
         experiment_id = self.fetchall(cursor)[0][0]

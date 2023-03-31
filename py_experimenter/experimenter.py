@@ -173,7 +173,6 @@ class PyExperimenter:
                 return False
 
         if not {'keyfields', 'resultfields'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
-        if not {'keyfields', 'resultfields'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
             return False
         return True
 

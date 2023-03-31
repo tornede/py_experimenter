@@ -47,7 +47,7 @@ class ResultProcessor:
         want to write results to the database.
         :param results: Dictionary with result field name and result value pairs.
         """
-        time = utils.get_current_time()
+        time = utils.get_timestamp_representation()
         if not self._valid_result_fields(list(results.keys())):
             invalid_result_keys = set(list(results.keys())) - set(self._result_fields)
             raise InvalidResultFieldError(f"Invalid result keys: {invalid_result_keys}")
@@ -78,9 +78,9 @@ class ResultProcessor:
         self._dbconnector.execute_queries(queries)
 
     def _change_status(self, status: str):
-        time = utils.get_timestamp_representation()
-        if status == 'done' or status == 'error':
-            self._dbconnector._update_database(keys=['status', 'end_date'], values=[status, time], where=self._experiment_id_condition)
+        values = {'status': status,
+                  'end_date': utils.get_timestamp_representation()}
+        self._dbconnector.update_database(self._table_name, values=values, condition=self._experiment_id_condition)
 
     def _write_error(self, error_msg):
         self._dbconnector.update_database(self._table_name, {'error': error_msg}, condition=self._experiment_id_condition)
