@@ -137,7 +137,7 @@ def test_fill_table(
     for expected_args, arg in zip(write_to_database_values, args):
         assert write_to_database_keys == arg[0][0]
         assert expected_args == arg[0][1][:-1]
-        datetime_from_string_argument = datetime.datetime.strptime(arg[0][1][-1], "%Y-%m-%d %H:%M:%S")
+        datetime_from_string_argument = datetime.datetime.strptime(arg[0][1][-1], '%Y-%m-%d %H:%M:%S')
         assert datetime_from_string_argument.day == datetime.datetime.now().day
         assert datetime_from_string_argument.hour == datetime.datetime.now().hour
         assert datetime_from_string_argument.minute - datetime.datetime.now().minute <= 2

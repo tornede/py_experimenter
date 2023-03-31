@@ -1,7 +1,7 @@
 import abc
 import logging
 from configparser import ConfigParser
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 
 import pandas as pd
 
@@ -139,10 +139,6 @@ class DatabaseConnector(abc.ABC):
     def _table_has_correct_structure(self, cursor, typed_fields):
         pass
 
-    @abc.abstractclassmethod
-    def escape_sql_chars(*args):
-        pass
-
     def fill_table(self, parameters=None, fixed_parameter_combinations=None) -> None:
         logging.debug("Fill table with parameters")
         parameters = parameters if parameters is not None else {}
@@ -183,9 +179,9 @@ class DatabaseConnector(abc.ABC):
     def _get_existing_rows(self, column_names):
         pass
 
-    def get_experiment_configuration(self, random_order: bool):
+    def get_experiment_configuration(self):
         try:
-            experiment_id, description, values = self._pull_open_experiment(random_order)
+            experiment_id, description, values = self._pull_open_experiment()
         except IndexError as e:
             raise NoExperimentsLeftException("No experiments left to execute")
         except Exception as e:
@@ -193,16 +189,10 @@ class DatabaseConnector(abc.ABC):
 
         return experiment_id, dict(zip([i[0] for i in description], *values))
 
-    @abc.abstractmethod
-    def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
-        pass
-
-    def _execute_pull_open_experiment_queries(self, connection, cursor, random_order) -> Tuple[int, List, List]:
-        if random_order:
-            order_by = self.__class__.random_order_string()
-        else:
-            order_by = "id"
-        time = utils.get_timestamp_representation()
+    def _execute_queries(self, connection, cursor) -> Tuple[int, List, List]:
+        order_by = "id"
+        time = datetime.now()
+        time = time.strftime("%m/%d/%Y, %H:%M:%S")
 
         self.execute(cursor, f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;")
         experiment_id = self.fetchall(cursor)[0][0]
@@ -215,8 +205,8 @@ class DatabaseConnector(abc.ABC):
         description = cursor.description
         return experiment_id, description, values
 
-    @abc.abstractstaticmethod
-    def random_order_string():
+    @abc.abstractmethod
+    def _pull_open_experiment(self) -> Tuple[int, List, List]:
         pass
 
     def _write_to_database(self, keys, values) -> None:
@@ -231,24 +221,16 @@ class DatabaseConnector(abc.ABC):
         self.commit(connection)
         self.close_connection(connection)
 
-    def _update_database(self, keys, values, where):
-        logging.info(f"Update '{keys}' with values '{values}' in database")
+    def update_database(self, table_name: str, values: Dict[str, Union[str, int, object]], condition: str):
+        connection = self.connect()
+        cursor = self.cursor(connection)
+        cursor.execute(self._prepare_update_query(table_name, values.keys(), condition), list(values.values()))
+        self.commit(connection)
+        self.close_connection(connection)
 
-        try:
-            connection = self.connect()
-            cursor = self.cursor(connection)
-            for key, value in zip(keys, values):
-                stmt = f"UPDATE {self.table_name} SET {key}='{value}' WHERE {where}"
-                self.execute(cursor, stmt)
-            self.commit(connection)
-
-        except Exception as err:
-            logging.error(err)
-            stmt = """UPDATE %s SET error="%s" WHERE %s""" % (self.table_name, err, where)
-            self.execute(cursor, stmt)
-            self.commit(connection)
-        else:
-            self.close_connection(connection)
+    def _prepare_update_query(self, table_name: str, values: Dict[str, Union[str, int, object]],  condition: str) -> str:
+        return (f"UPDATE {table_name} SET {', '.join(f'{key} = {self._prepared_statement_placeholder}' for key in values)}"
+                f" WHERE {condition}")
 
     def not_executed_yet(self, where) -> bool:
         not_executed = False
@@ -338,7 +320,7 @@ class DatabaseConnector(abc.ABC):
         self.execute(cursor, f'DROP TABLE IF EXISTS {self.table_name}')
         self.commit(connection)
 
-    def get_logtable(self, table_name:str) -> pd.DataFrame:
+    def get_logtable(self, table_name: str) -> pd.DataFrame:
         return self.get_table(f'{self.table_name}__{table_name}')
 
     def get_table(self, table_name: Optional[str] = None) -> pd.DataFrame:

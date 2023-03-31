@@ -133,7 +133,7 @@ def extract_logtables(config: ConfigParser, experiment_table_name: str) -> Optio
         if config.has_option('PY_EXPERIMENTER', column_definer):
             logtable_configs[logtable_name] = extract_columns(config['PY_EXPERIMENTER'][column_definer])
         else:
-            logtable_configs[logtable_name] = [(logtable_definer, column_definer) ]
+            logtable_configs[logtable_name] = [(logtable_definer, column_definer)]
     return logtable_configs
 
 
@@ -228,4 +228,4 @@ def _generate_int_data(keyfield_values):
 
 
 def get_timestamp_representation() -> str:
-	return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
