@@ -84,22 +84,18 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         config_columns = [k[0] for k in typed_fields]
         return set(columns) == set(config_columns)
 
-    def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
+    def _pull_open_experiment(self) -> Tuple[int, List, List]:
         try:
             connection = self.connect()
             cursor = self.cursor(connection)
             self._start_transaction(connection, readonly=False)
-            experiment_id, description, values = self._execute_queries(connection, cursor, random_order)
+            experiment_id, description, values = self._execute_queries(connection, cursor)
         except Exception as err:
             connection.rollback()
             raise err
         self.close_connection(connection)
 
         return experiment_id, description, values
-
-    @staticmethod
-    def random_order_string():
-        return 'RAND()'
 
     def _get_existing_rows(self, column_names):
         def _remove_double_whitespaces(existing_rows):
