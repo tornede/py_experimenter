@@ -156,17 +156,22 @@ experimenter.fill_table_with_rows(rows=[
 An experiment can be executed easily with the following call:
 
 ```python
-experimenter.execute(
-    experiment_function = run_experiment, 
-    max_experiments = -1, 
-    random_order = True
-)
+from multiprocessing import freeze_support      # this line is only needed for windows and OSX
+if __name__ == '__main__':                      # this line is only needed for windows and OSX
+    freeze_support()                            # this line is only needed for windows and OSX
+    experimenter.execute(
+        experiment_function = run_experiment, 
+        max_experiments = -1, 
+        random_order = True
+    )
 ```
 
 - `experiment_function` is the [experiment funtion](#defining-the-experiment-function) described above.
 - `max_experiments` determines how many experiments will be executed by this `PyExperimenter`. If set to `-1`, it will execute experiments in a sequential fashion until no more open experiments are available.
 - `random_order` determines if the order in which experiments are selected for execution should be random. This is especially important to be turned on, if the execution is parallelized, e.g. on an HPC cluster.  
 
+#### Operating Systems Compability
+Unfortunately, the multiprocessing of Windows and OSX works a little bit different than in Linux, which is why the `if __name__ == '__main__` and `freeze_support()` calls are needed (no effect on Linux and OSX). For more information, please refer to the [official documentation](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.freeze_support). 
 
 ### Reset Experiments
 
