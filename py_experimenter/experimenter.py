@@ -3,10 +3,8 @@ import logging
 import os
 import socket
 import traceback
-from concurrent.futures import ProcessPoolExecutor
-from multiprocessing import Manager, Pool, Semaphore
-from typing import Callable, Dict, List, Optional
-
+from joblib import Parallel, delayed
+from typing import Callable, Dict, List
 import pandas as pd
 
 from py_experimenter import utils
@@ -272,11 +270,13 @@ class PyExperimenter:
         """
         Pulls open experiments from the database table and executes them.
 
-        First as many worker are spawned and started as specified with `n_jobs` in the experiment configuration file. 
-        If `n_jobs` is not given, a single worker is spawned. Each worker then repeatedly pulls an open experiment from 
-        the table until the maximum number of experiments `max_experiments` have been executed. In case of `random_order`, 
-        the next open experiment to be executed is not selected based on its consecutive experiment ID, but rather 
-        chosen randomly from the table. With the pull the status of the experiment is set to `running`. 
+        First as many processes are created and started as specified with `n_jobs` in the experiment configuration file. 
+        If `n_jobs` is not given, a single process is created. Then two different scenarios are possible.
+
+        If max_experiments == -1, each process is a worker and continuously starts to execute the next open experiment
+        until there is no open experiment left in the database table.
+        If max_experiments != -1, we generate `max_experiments` jobs to execute experimetns and distribute them to the
+        worker processes.
 
         After pulling an experiment, `experiment_function` is executed with keyfield values of the pulled open 
         experiment. Results can be continuously written to the database during the execution via `ResultProcessor`
@@ -303,60 +303,29 @@ class PyExperimenter:
         except ValueError:
             InvalidValuesInConfiguration('n_jobs must be an integer')
 
-        with Manager() as manager:
-            if max_experiments >= 0:
-                semaphore = manager.Semaphore(max_experiments)
+        with Parallel(n_jobs=n_jobs) as parallel:
+            if max_experiments == -1:
+                parallel(delayed(self._worker)(experiment_function, random_order) for _ in range(n_jobs))
             else:
-                semaphore = None
-
-            with ProcessPoolExecutor(n_jobs) as pool:
-                futures = [pool.submit(self._execution_worker, experiment_function, random_order, semaphore) for _ in range(n_jobs)]
-                for future in futures:
-                    future.result()
-
+                parallel(delayed(self._execution_wrapper)(experiment_function, random_order) for _ in range(max_experiments))
         logging.info("All configured executions finished.")
 
-    def _execution_worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None], random_order, semaphore: Optional[Semaphore]) -> None:
+    def _worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None],
+                random_order: bool) -> None:
         """
-        Handles the execution of experiments of a single worker.
-
-        Each worker repeatedly checks whether the maximum number of experiments to execute is reached. If not, an experiment 
-        is pulled from the database table, setting its status to `running`, and `experiment_function` is called on its keyfield 
-        values. After execution, the status is set to `done` if the execution was successful, otherwise it is set to `error` 
-        and the raised error is logged to the database table.
-
-        Note that only errors raised within `experiment_function` are logged in to the database table. Therefore all 
-        errors raised before or after the execution of `experiment_function` are logged according to the local
-        logging configuration and do not appear in the table.
+        Worker that repeatedly pulls open experiments from the database table and executes them.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
-        :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments 
-            should be executed, set this to `-1`. Defaults to `-1`. 
-        :type max_experiments: int, optional
-        :param semaphore: A semaphore that is used to limit the number of experiments that are executed.
-        :type semaphore: multiprocessing.Semaphore or None
+        :param random_order: Indicates whether the experiments to be executed are chosen consecutively by its experiment 
+            ID (`False`) or in a randomized fashion (`True`). Defaults to `False`.
+        :type random_order: bool, optional
         """
-        def is_max_experiments_started():
-            if semaphore is None:
-                return False
-            else:
-                return not semaphore.acquire(blocking=False)
-
-        while not is_max_experiments_started():
+        while True:
             try:
                 self._execution_wrapper(experiment_function, random_order)
             except NoExperimentsLeftException:
                 break
-
-    def _handle_error(self, error: Exception):
-        """
-        Logs an error. 
-
-        :param error: Error that should be logged.
-        :type error: Exception
-        """
-        logging.error(error)
 
     def _execution_wrapper(self,
                            experiment_function: Callable[[dict, dict, ResultProcessor], None],
