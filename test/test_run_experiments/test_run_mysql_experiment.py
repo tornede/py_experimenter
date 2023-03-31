@@ -109,7 +109,7 @@ def test_run_error_experiment():
     assert entries[0][9] == None
     assert entries[0][11] == ('Traceback (most recent call last):\n  File'
                               f' "{os.path.join(os.getcwd(),"py_experimenter","experimenter")}.py"'
-                              ', line 403, in _execution_wrapper\n    experiment_function(keyfield_values, result_processor,'
+                              ', line 370, in _execution_wrapper\n    experiment_function(keyfield_values, result_processor,'
                               f' custom_fields)\n  File "{os.path.join(os.getcwd(), "test", "test_run_experiments", "test_run_mysql_experiment")}'
                               '.py", line 81, in error_function\n    '
                               'raise Exception("Error with weird symbos \'@#$%&/\\()=")\nException: Error with weird symbos \'@#$%&/\\()=\n')

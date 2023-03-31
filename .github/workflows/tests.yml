@@ -26,6 +26,9 @@ jobs:
         with:
           virtualenvs-create: true
           virtualenvs-in-project: true
+      - name: Disable Modern Dependency Installation
+        id: poetry-disable-modern
+        run: poetry config installer.modern-installation false
       - name: Load cached venv
         id: cached-poetry-dependencies
         uses: actions/cache@v3

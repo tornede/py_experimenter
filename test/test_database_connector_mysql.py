@@ -1,8 +1,6 @@
-from typing import Dict, List, Union
+from typing import Dict
 
 import pytest
-from mock import patch
-
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
 
 
@@ -25,7 +23,7 @@ from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
         )
     ]
 )
-def test_prepare_update_query(values: dict, expected: str, condition: str):
+def test_prepare_update_query(values: Dict, expected: str, condition: str):
     class A():
         _prepared_statement_placeholder = '%s'
 

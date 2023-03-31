@@ -167,7 +167,6 @@ experimenter.execute(
 - `max_experiments` determines how many experiments will be executed by this `PyExperimenter`. If set to `-1`, it will execute experiments in a sequential fashion until no more open experiments are available.
 - `random_order` determines if the order in which experiments are selected for execution should be random. This is especially important to be turned on, if the execution is parallelized, e.g. on an HPC cluster.  
 
-
 ### Reset Experiments
 
 Experiments can be reset based on their status. Therefore, the table rows having a given status will be deleted, and corresponding new rows without results will be created. 

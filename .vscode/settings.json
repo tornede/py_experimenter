@@ -39,6 +39,9 @@
 	"terminal.integrated.env.linux": {
 		"PYTHONPATH": "${workspaceFolder}"
 	},
+	"terminal.integrated.env.windows": {
+		"PYTHONPATH": "${workspaceFolder}"
+	},
 	"jupyter.notebookFileRoot": "${workspaceFolder}",
 	"restructuredtext.confPath": "${workspaceFolder}\\docs",
 	"python.pythonPath": "~/anaconda3/envs/py-experimenter",
