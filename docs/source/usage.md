@@ -224,4 +224,4 @@ def run_ml(parameters: dict, result_processor: ResultProcessor, custom_config: d
 	)
 	...
 ```
-There is an [in-depth example](examples/example_logtables.ipynb) showcasing the usage of logtables.
+An in-depth example showcasing the usage of logtables can be found within the [examples section](examples).

@@ -9,5 +9,4 @@ Examples
 
    ./example_general_usage.ipynb
    ./example_conditional_grid.ipynb
-   ./example_logtables
-
+   ./example_logtables.ipynb
