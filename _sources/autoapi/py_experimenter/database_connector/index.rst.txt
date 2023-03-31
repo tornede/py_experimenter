@@ -79,17 +79,13 @@ Classes
       :abstractmethod:
 
 
-   .. py:method:: get_experiment_configuration(random_order: bool)
+   .. py:method:: get_experiment_configuration()
 
 
-   .. py:method:: _execute_queries(connection, cursor, random_order) -> Tuple[int, List, List]
+   .. py:method:: _execute_queries(connection, cursor) -> Tuple[int, List, List]
 
 
-   .. py:method:: random_order_string()
-      :staticmethod:
-
-
-   .. py:method:: _pull_open_experiment(random_order) -> Tuple[int, List, List]
+   .. py:method:: _pull_open_experiment() -> Tuple[int, List, List]
       :abstractmethod:
 
 

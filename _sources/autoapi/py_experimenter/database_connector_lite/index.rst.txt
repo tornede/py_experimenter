@@ -40,7 +40,7 @@ Classes
    .. py:method:: connect()
 
 
-   .. py:method:: _pull_open_experiment(random_order) -> Tuple[int, List, List]
+   .. py:method:: _pull_open_experiment() -> Tuple[int, List, List]
 
 
    .. py:method:: _table_exists(cursor) -> bool
@@ -50,10 +50,6 @@ Classes
 
 
    .. py:method:: _table_has_correct_structure(cursor, typed_fields) -> List[str]
-
-
-   .. py:method:: random_order_string()
-      :staticmethod:
 
 
    .. py:method:: _get_existing_rows(column_names)

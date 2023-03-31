@@ -55,11 +55,7 @@ Classes
    .. py:method:: _table_has_correct_structure(cursor, typed_fields)
 
 
-   .. py:method:: _pull_open_experiment(random_order) -> Tuple[int, List, List]
-
-
-   .. py:method:: random_order_string()
-      :staticmethod:
+   .. py:method:: _pull_open_experiment() -> Tuple[int, List, List]
 
 
    .. py:method:: _get_existing_rows(column_names)
