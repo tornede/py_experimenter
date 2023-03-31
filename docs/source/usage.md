@@ -194,16 +194,21 @@ print(result_table.to_latex(columns=['seed'], index_names=['dataset']))
 
 In addition to the stated above functionality, PyExperimenter also support logtables thereby enabling the logging of information into separate tables. They have to be specified in the configuration file by adding a line starting with `logtables = ...`. There are two different ways of defining logtables:
 
-Standard notation:
+### Standard Notation:
 
 `logtables = train_scores:log_train_scores...`  
 `log_train_scores = f1:DOUBLE, accuracy:DOUBLE, kernel:str`
 
-Shorthand notation
+Here, `logtables` is assigned a comma separated list of elements of the form `<table_name>:<table_datatype>`, where `table_name` defines the name of the corresponding logtable and `table_datatype` defines the columns of the table. If this contains more than one field, you can define your custom `table_datatype` by listing the field names and the corresponding values in the same format. For example, above, the logtable would be called `train_scores` and has the datatype `log_train_scores`, which is define in the line below. It features three fields with the names `f1`, `accuracy` and `kernel` the corresponding column types `DOUBLE`, `DOUBLE` and `STRING`. If the logtable should contain only a single column, you can use the shorthand notation shown below.
 
-`logtables = ..., test_f1:DOUBLE, test_accuracy:DOUBLE`.
+### Shorthand Notation
 
-Note that the tables in the database are then called `table_name__logtable_name`. In addition to the specified columns, each logtable has a column `experiment_id` referencing the standard table and `timestamp`.
+`logtables = ..., test_f1:DOUBLE, test_accuracy:DOUBLE`
+
+Since all of the logtables here contain only a single column of type `DOUBLE`, there is no need to define a custom datatype. Correspondingly, in this shorthand notation example, we would have two logtables with the names `test_f1` and `test_accuracy` with the column types `DOUBLE`.
+
+### Additional Information
+Note that the tables in the database are prefixed with the experiment table name, i.e., they are called `table_name__logtable_name`. Moreover, in addition to the specified columns, each logtable has a column `experiment_id` referencing the corresponding experiment in the standard table and a `timestamp` column.
 
 They can be filled in the execution process by calling
 ```python
@@ -224,4 +229,7 @@ def run_ml(parameters: dict, result_processor: ResultProcessor, custom_config: d
 	)
 	...
 ```
+
+As can be seen above, the code is not referring to the prefixed logtable names, but to the names as defined in the configuration.
+
 An in-depth example showcasing the usage of logtables can be found within the [examples section](examples).
