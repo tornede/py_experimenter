@@ -3,10 +3,9 @@
    :alt: PyExperimenter
    :align: right
 
-
+==========================================
 Welcome to PyExperimenter's documentation!
 ==========================================
-
 
 ``PyExperimenter`` is a tool to facilitate the setup, documentation, execution, and subsequent evaluation of results from an empirical study of algorithms and in particular is designed to reduce the involved manual effort significantly.
 It is intended to be used by researchers in the field of artificial intelligence, but is not limited to those.
@@ -24,12 +23,12 @@ Thereby, ``PyExperimenter`` alleviates the aforementioned overhead and allows ex
    After :ref:`installation <installation>` the easiest way to start is to dive into ``PyExperimenter`` with one of our :ref:`examples <examples>`.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
+   :hidden:
    :caption: Documentation
 
-   workflow
    installation
-   usage
+   usage/index
    examples/index
    autoapi/index
    how-to-contribute
@@ -37,6 +36,7 @@ Thereby, ``PyExperimenter`` alleviates the aforementioned overhead and allows ex
 
 .. toctree::
    :maxdepth: 2
+   :hidden:
    :caption: About PyExperimenter
    
    authors
@@ -44,6 +44,8 @@ Thereby, ``PyExperimenter`` alleviates the aforementioned overhead and allows ex
    changelog
    Repository <https://github.com/tornede/py_experimenter/>
 
+----------------
 Acknowledgements
-================
+----------------
+
 This work was partially supported by the German Federal Ministry for Economic Affairs and Climate Action (FLEMING project no.\ 03E16012F) and the German Research Foundation (DFG) within the Collaborative Research Center "On-The-Fly Computing" (SFB 901/3 project no.\ 160364472).

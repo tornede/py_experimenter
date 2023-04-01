@@ -22,7 +22,7 @@ class PyExperimenter:
     """
 
     def __init__(self,
-                 experiment_configuration_file_path: str = os.path.join('config', 'configuration.cfg'),
+                 experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.cfg'),
                  database_credential_file_path: str = os.path.join('config', 'database_credentials.cfg'),
                  table_name: str = None,
                  database_name: str = None,
@@ -31,7 +31,7 @@ class PyExperimenter:
         Initializes the PyExperimenter with the given information.
 
         :param experiment_configuration_file_path: The path to the experiment configuration file. Defaults to
-            'config/configuration.cfg'.
+            'config/experiment_configuration.cfg'.
         :type experiment_configuration_file_path: str, optional
         :param database_credential_file_path: The path to the database configuration file storing the credentials
             for the database connection, i.e., host, user and password. Defaults to 'config/database_credentials.cfg'.
@@ -310,6 +310,7 @@ class PyExperimenter:
     def _worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None]) -> None:
         """
         Worker that repeatedly pulls open experiments from the database table and executes them.
+
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
         """
@@ -384,7 +385,7 @@ class PyExperimenter:
 
         :param status: The status of experiments that should be reset. Either `created`, `running`, `error`, `done`, or `all`.
             Note that `states` is a variable length argument, so multiple states can be given as a list.	
-           :type status: str
+        :type status: str
         """
         if not states:
             logging.warning('No states given to reset experiments. No experiments are reset.')
@@ -410,7 +411,8 @@ class PyExperimenter:
         """
         Returns the log table as `Pandas.DataFrame`. 
 
-        param table_name: The name of the log table.
+        :param table_name: The name of the log table.
+        :type table_name: str
         :return: The log table as `Pandas.DataFrame`. 
         :rtype: pd.DataFrame
         """

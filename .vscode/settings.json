@@ -58,5 +58,5 @@
 		"**/.git/subtree-cache/**": true,
 		"**/node_modules/*/**": true
 	},
-	"esbonio.sphinx.confDir": "${workspaceFolder}\\docs"
+	"esbonio.sphinx.confDir": "${workspaceFolder}/docs/source"
 }
