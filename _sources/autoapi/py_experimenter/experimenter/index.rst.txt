@@ -174,18 +174,16 @@ Classes
       Pulls open experiments from the database table and executes them.
 
       First as many processes are created and started as specified with `n_jobs` in the experiment configuration file.
-      If `n_jobs` is not given, a single process is created. Then two different scenarios are possible.
+      If `n_jobs` is not given, a single process is created.
 
-      If max_experiments == -1, each process is a worker and continuously starts to execute the next open experiment
-      until there is no open experiment left in the database table.
-      If max_experiments != -1, we generate `max_experiments` jobs to execute experimetns and distribute them to the
-      worker processes.
+      Each process sequentially pulls and executes experiments from the database table, until all processes executed as
+      many experiments as defined by `max_experiments`. If `max_experiments == -1` all experiments will be executed.
 
       After pulling an experiment, `experiment_function` is executed with keyfield values of the pulled open
       experiment and the experiments status is set to `running`. Results can be continuously written to the database
       during the execution via `ResultProcessor` that is given as parameter to `experiment_function`. If the execution
       was successful, the status of the corresponding experiment is set to `done`. Otherwise, if an error occurred
-      during the execution, the status is changed to  `error` and the raised error is logged to the database table.
+      during the execution, the status is changed to  `error` and the raised error is logged into the database table.
 
       Note that only errors raised within `experiment_function` are logged in to the database table. Therefore all
       errors raised before or after the execution of `experiment_function` are logged according to the local
@@ -237,15 +235,14 @@ Classes
       :raises DatabaseConnectionError: If an error occurred during the connection to the database.
 
 
-   .. py:method:: reset_experiments(*states: str) -> None
+   .. py:method:: reset_experiments(*states: Tuple[str]) -> None
 
-      Deletes the experiments of the database table having the given `status`. Afterwards, all rows that have been 
-      deleted from the database table are added to the table again featuring `created` as a status. Experiments 
-      to reset can be selected based on the following status definition: 
+      Deletes the experiments from the database table that have the given `states`. Afterward, all deleted rows are added to the 
+      table again. 
 
-      :param status: The status of experiments that should be reset. Either `created`, `running`, `error`, `done`, or `all`.
-          Note that `states` is a variable length argument, so multiple states can be given as a list.        
-      :type status: str
+      :param states: The status of experiments that should be reset. Either `created`, `running`, `error`, `done`, or `all`.
+      Note that `states` is a variable-length argument, so multiple states can be given as a tuple.
+      :type status: Tuple[str]
 
 
    .. py:method:: delete_table() -> None

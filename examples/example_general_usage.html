@@ -894,7 +894,7 @@ ValueError: Example error
 </section>
 <section id="Restart-Failed-Experiments">
 <h3>Restart Failed Experiments<a class="headerlink" href="#Restart-Failed-Experiments" title="Permalink to this heading"></a></h3>
-<p>As experiments fail at some time, those experiments were reset for another try with <code class="docutils literal notranslate"><span class="pre">reset_experiments()</span></code>. The <code class="docutils literal notranslate"><span class="pre">status</span></code> describes which table rows should be replace. In this example all failed experiments, i.e. having <code class="docutils literal notranslate"><span class="pre">status==error</span></code>, are reset.</p>
+<p>As experiments fail at some time, those experiments were reset for another try with <code class="docutils literal notranslate"><span class="pre">reset_experiments()</span></code>. The <code class="docutils literal notranslate"><span class="pre">status</span></code> describes which table rows should be replace. In this example all failed experiments, i.e. having <code class="docutils literal notranslate"><span class="pre">status==error</span></code>, are reset. Experiments can also be reset based on multiple status by simply passing a list of status, e.g. <code class="docutils literal notranslate"><span class="pre">experimenter.reset_experiments('error',</span> <span class="pre">'done')</span></code>. In that case, all experiments with status ‘error’ or ‘done’ will be reset.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
