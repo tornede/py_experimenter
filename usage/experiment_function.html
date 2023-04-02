@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Experiment Function &mdash; PyExperimenter 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Executing the PyExperimenter" href="execution.html" />
+    <link rel="prev" title="Database Credential File" href="database_credential_file.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyExperimenter
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="experiment_configuration_file.html">Experiment Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_credential_file.html">Database Credential File</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Experiment Function</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#push-data-to-resultfields">Push Data To Resultfields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#push-data-to-logtables">Push Data To Logtables</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="execution.html">Executing the PyExperimenter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to-contribute.html">How to Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help.html">Need Help?</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About PyExperimenter</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tornede/py_experimenter/">Repository</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyExperimenter</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Usage</a></li>
+      <li class="breadcrumb-item active">Experiment Function</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/usage/experiment_function.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="experiment-function">
+<span id="id1"></span><h1>Experiment Function<a class="headerlink" href="#experiment-function" title="Permalink to this heading"></a></h1>
+<p>The execution of a single experiment has to be defined within a function. The function is called with the <code class="docutils literal notranslate"><span class="pre">keyfields</span></code> values of a database entry. The results are meant to be processed to be written into the database, i.e. as <code class="docutils literal notranslate"><span class="pre">resultfields</span></code>. During the experiment different information can be logged into <code class="docutils literal notranslate"><span class="pre">logtables</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">py_experimenter.result_processor</span> <span class="kn">import</span> <span class="n">ResultProcessor</span>
+
+<span class="k">def</span> <span class="nf">run_experiment</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+
+    <span class="c1"># Extracting given parameters</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="n">keyfields</span><span class="p">[</span><span class="s1">&#39;seed&#39;</span><span class="p">]</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">custom_fields</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">],</span> <span class="n">keyfields</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">])</span>
+
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="c1"># Having some loop, e.g. over epochs</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+
+        <span class="c1"># Do some stuff here and log the result to the logtables</span>
+        <span class="n">result_processor</span><span class="o">.</span><span class="n">process_logs</span><span class="p">({</span>
+            <span class="s1">&#39;new_best_performance&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;new_best_performance&#39;</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;epochs&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;runtime&#39;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">,</span>
+                <span class="s1">&#39;performance&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">),</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+        <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="c1"># Write first part of final results to database</span>
+    <span class="n">resultfields</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;pipeline&#39;</span><span class="p">:</span> <span class="n">pipeline</span><span class="p">,</span>
+        <span class="s1">&#39;train_f1&#39;</span><span class="p">:</span> <span class="n">train_f1_micro</span><span class="p">,</span>
+        <span class="s1">&#39;train_accuracy&#39;</span><span class="p">:</span> <span class="n">train_accuracy</span><span class="p">}</span>
+    <span class="n">result_processor</span><span class="o">.</span><span class="n">process_results</span><span class="p">(</span><span class="n">resultfields</span><span class="p">)</span>
+
+    <span class="c1"># Do more some stuff here, like evaluating on test data</span>
+
+    <span class="c1"># Write final results to database</span>
+    <span class="n">resultfields</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;test_f1&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;test_f1_micro&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;test_accuracy&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;test_accuracy&#39;</span><span class="p">])}</span>
+    <span class="n">result_processor</span><span class="o">.</span><span class="n">process_results</span><span class="p">(</span><span class="n">resultfields</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="push-data-to-resultfields">
+<h2>Push Data To Resultfields<a class="headerlink" href="#push-data-to-resultfields" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Resultfields</span></code> can be filled any time during the execution process by calling the following code within your experiment function, e.g. <code class="docutils literal notranslate"><span class="pre">run_ml</span></code>. Note that a resultfield is meant to be written once, if you re-write a resultfield, the old value will be overwritten. Furthermore note that you do not have to write all resultfields at once, but can also only write a subset as demonstrated in the example above. Multiple in-depth examples showcasing the usage of resultfields can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result_processor</span><span class="o">.</span><span class="n">process_results</span><span class="p">({</span>
+        <span class="s1">&#39;&lt;resultfield_name&gt;&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">resultfield_value</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;resultfield_name&gt;&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">resultfield_value</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="o">...</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<section id="push-data-to-logtables">
+<h2>Push Data To Logtables<a class="headerlink" href="#push-data-to-logtables" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Logtables</span></code> can be filled any time during the execution process by calling the following code within your experiment function, e.g. <code class="docutils literal notranslate"><span class="pre">run_ml</span></code>. An in-depth example showcasing the usage of logtables can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result_processor</span><span class="o">.</span><span class="n">process_logs</span><span class="p">({</span>
+    <span class="s1">&#39;&lt;logtable_name&gt;&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;&lt;logtable_field_name&gt;&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">logtable_field_value</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;logtable_field_name&gt;&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">logtable_field_value</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="o">...</span>
+    <span class="p">},</span>
+    <span class="o">...</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="database_credential_file.html" class="btn btn-neutral float-left" title="Database Credential File" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="execution.html" class="btn btn-neutral float-right" title="Executing the PyExperimenter" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Tanja Tornede, Alexander Tornede, Lukas Fehring, Lukas Gehring, Helena Graf, Jonas Hanselle, Felix Mohr, Marcel Wever.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -45,9 +45,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../workflow.html">General Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter</span></code></a><ul class="current">
@@ -87,7 +86,7 @@
       </nav>
 
       <div class="wy-nav-content">
-        <div class="rst-content">
+        <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
@@ -118,7 +117,7 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.experimenter.</span></span><span class="sig-name descname"><span class="pre">PyExperimenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_configuration_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">os.path.join('config',</span> <span class="pre">'configuration.cfg')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_credential_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">os.path.join('config',</span> <span class="pre">'database_credentials.cfg')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PyExperimenter'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.experimenter.</span></span><span class="sig-name descname"><span class="pre">PyExperimenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_configuration_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">os.path.join('config',</span> <span class="pre">'experiment_configuration.cfg')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_credential_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">os.path.join('config',</span> <span class="pre">'database_credentials.cfg')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PyExperimenter'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter" title="Permalink to this definition"></a></dt>
 <dd><p>Module handling the initialization, execution and collection of experiments and their respective results.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.set_config_value">
@@ -346,14 +345,11 @@ should be executed, set this to <cite>-1</cite>. Defaults to <cite>-1</cite>.</p
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter._worker">
 <span class="sig-name descname"><span class="pre">_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><span class="pre">py_experimenter.result_processor.ResultProcessor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._worker" title="Permalink to this definition"></a></dt>
-<dd><p>Worker that repeatedly pulls open experiments from the database table and executes them.
-:param experiment_function: The function that should be executed with the different parametrizations.
-:type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
-:param random_order: Indicates whether the experiments to be executed are chosen consecutively by its experiment</p>
-<blockquote>
-<div><p>ID (<cite>False</cite>) or in a randomized fashion (<cite>True</cite>). Defaults to <cite>False</cite>.</p>
-</div></blockquote>
+<dd><p>Worker that repeatedly pulls open experiments from the database table and executes them.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>experiment_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>, </em><em>Dict</em><em>, </em><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><em>ResultProcessor</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – The function that should be executed with the different parametrizations.</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -363,11 +359,7 @@ should be executed, set this to <cite>-1</cite>. Defaults to <cite>-1</cite>.</p
 <dd><p>Worker that repeatedly pulls open experiments from the database table and executes them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>experiment_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>, </em><em>Dict</em><em>, </em><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><em>ResultProcessor</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – The function that should be executed with the different parametrizations.</p></li>
-<li><p><strong>random_order</strong> (<em>bool</em><em>, </em><em>optional</em>) – Indicates whether the experiments to be executed are chosen consecutively by its experiment
-ID (<cite>False</cite>) or in a randomized fashion (<cite>True</cite>). Defaults to <cite>False</cite>.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>experiment_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>, </em><em>Dict</em><em>, </em><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><em>ResultProcessor</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – The function that should be executed with the different parametrizations.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -408,16 +400,8 @@ deleted from the database table are added to the table again featuring <cite>cre
 to reset can be selected based on the following status definition:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>status</strong> – <dl class="simple">
-<dt>The status of experiments that should be reset. Either <cite>created</cite>, <cite>running</cite>, <cite>error</cite>, <cite>done</cite>, or <cite>all</cite>.</dt><dd><p>Note that <cite>states</cite> is a variable length argument, so multiple states can be given as a list.</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">type status<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</p>
+<dd class="field-odd"><p><strong>status</strong> (<em>str</em>) – The status of experiments that should be reset. Either <cite>created</cite>, <cite>running</cite>, <cite>error</cite>, <cite>done</cite>, or <cite>all</cite>.
+Note that <cite>states</cite> is a variable length argument, so multiple states can be given as a list.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -425,7 +409,7 @@ to reset can be selected based on the following status definition:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.delete_table">
 <span class="sig-name descname"><span class="pre">delete_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.delete_table" title="Permalink to this definition"></a></dt>
-<dd><p>Drops the table defined in the configuration file.</p>
+<dd><p>Drops the table defined in the configuration file. Additionally, all associated log tables are dropped.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -438,6 +422,23 @@ to reset can be selected based on the following status definition:</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.get_logtable">
+<span class="sig-name descname"><span class="pre">get_logtable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.get_logtable" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the log table as <cite>Pandas.DataFrame</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>table_name</strong> (<em>str</em>) – The name of the log table.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The log table as <cite>Pandas.DataFrame</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>

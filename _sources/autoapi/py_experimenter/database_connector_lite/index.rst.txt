@@ -46,7 +46,12 @@ Classes
    .. py:method:: _table_exists(cursor) -> bool
 
 
-   .. py:method:: _create_table(cursor, columns)
+   .. py:method:: escape_sql_chars(*args)
+      :staticmethod:
+
+
+   .. py:method:: get_autoincrement()
+      :staticmethod:
 
 
    .. py:method:: _table_has_correct_structure(cursor, typed_fields) -> List[str]

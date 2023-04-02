@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: DatabaseConnector(database_credential_file_path)
+.. py:class:: DatabaseConnector(config: configparser.ConfigParser)
 
    Bases: :py:obj:`abc.ABC`
 
@@ -54,15 +54,25 @@ Classes
    .. py:method:: create_table_if_not_existing() -> None
 
 
-   .. py:method:: _exclude_fixed_columns(columns: List[str]) -> List[str]
-
-
    .. py:method:: _table_exists(cursor)
       :abstractmethod:
 
 
-   .. py:method:: _create_table(cursor, columns)
-      :abstractmethod:
+   .. py:method:: _compute_columns(keyfields, resultfields)
+      :staticmethod:
+
+
+   .. py:method:: _exclude_fixed_columns(columns: List[str]) -> List[str]
+
+
+   .. py:method:: _create_table(cursor, columns: List[Tuple[str]], table_name: str, logtable: bool = False)
+
+
+   .. py:method:: _get_create_table_query(columns: List[Tuple[str]], table_name: str, logtable: bool)
+
+
+   .. py:method:: get_autoincrement(self)
+      :staticmethod:
 
 
    .. py:method:: _table_has_correct_structure(cursor, typed_fields)
@@ -117,10 +127,16 @@ Classes
       :abstractmethod:
 
 
+   .. py:method:: execute_queries(queries: List[str])
+
+
    .. py:method:: delete_table() -> None
 
 
-   .. py:method:: get_table() -> pandas.DataFrame
+   .. py:method:: get_logtable(table_name: str) -> pandas.DataFrame
+
+
+   .. py:method:: get_table(table_name: Optional[str] = None) -> pandas.DataFrame
 
 
 

@@ -42,9 +42,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="workflow.html">General Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="how-to-contribute.html">How to Contribute</a></li>
@@ -68,7 +67,7 @@
       </nav>
 
       <div class="wy-nav-content">
-        <div class="rst-content">
+        <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
@@ -113,16 +112,12 @@
 </li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector._check_combination_in_existing_rows">_check_combination_in_existing_rows() (py_experimenter.database_connector.DatabaseConnector method)</a>
 </li>
+      <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector._compute_columns">_compute_columns() (py_experimenter.database_connector.DatabaseConnector static method)</a>
+</li>
       <li><a href="autoapi/py_experimenter/database_connector_mysql/index.html#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL._create_database_if_not_existing">_create_database_if_not_existing() (py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL method)</a>
 </li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector._create_table">_create_table() (py_experimenter.database_connector.DatabaseConnector method)</a>
-
-      <ul>
-        <li><a href="autoapi/py_experimenter/database_connector_lite/index.html#py_experimenter.database_connector_lite.DatabaseConnectorLITE._create_table">(py_experimenter.database_connector_lite.DatabaseConnectorLITE method)</a>
 </li>
-        <li><a href="autoapi/py_experimenter/database_connector_mysql/index.html#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL._create_table">(py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL method)</a>
-</li>
-      </ul></li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector._delete_experiments_with_condition">_delete_experiments_with_condition() (py_experimenter.database_connector.DatabaseConnector method)</a>
 </li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector._exclude_fixed_columns">_exclude_fixed_columns() (py_experimenter.database_connector.DatabaseConnector method)</a>
@@ -142,6 +137,8 @@
 </li>
       </ul></li>
       <li><a href="autoapi/py_experimenter/utils/index.html#py_experimenter.utils._generate_int_data">_generate_int_data() (in module py_experimenter.utils)</a>
+</li>
+      <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector._get_create_table_query">_get_create_table_query() (py_experimenter.database_connector.DatabaseConnector method)</a>
 </li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector._get_existing_rows">_get_existing_rows() (py_experimenter.database_connector.DatabaseConnector method)</a>
 
@@ -259,6 +256,8 @@
 </li>
       <li><a href="autoapi/py_experimenter/experiment_status/index.html#py_experimenter.experiment_status.ExperimentStatus.CREATED">CREATED (py_experimenter.experiment_status.ExperimentStatus attribute)</a>
 </li>
+      <li><a href="autoapi/py_experimenter/exceptions/index.html#py_experimenter.exceptions.CreatingTableError">CreatingTableError</a>
+</li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector.cursor">cursor() (py_experimenter.database_connector.DatabaseConnector method)</a>
 </li>
   </ul></td>
@@ -301,6 +300,12 @@
 </li>
       <li><a href="autoapi/py_experimenter/experiment_status/index.html#py_experimenter.experiment_status.ExperimentStatus.ERROR">ERROR (py_experimenter.experiment_status.ExperimentStatus attribute)</a>
 </li>
+      <li><a href="autoapi/py_experimenter/database_connector_lite/index.html#py_experimenter.database_connector_lite.DatabaseConnectorLITE.escape_sql_chars">escape_sql_chars() (py_experimenter.database_connector_lite.DatabaseConnectorLITE static method)</a>
+
+      <ul>
+        <li><a href="autoapi/py_experimenter/database_connector_mysql/index.html#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.escape_sql_chars">(py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL static method)</a>
+</li>
+      </ul></li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector.execute">execute() (py_experimenter.database_connector.DatabaseConnector method)</a>
 
       <ul>
@@ -309,9 +314,15 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector.execute_queries">execute_queries() (py_experimenter.database_connector.DatabaseConnector method)</a>
+</li>
       <li><a href="autoapi/py_experimenter/experiment_status/index.html#py_experimenter.experiment_status.ExperimentStatus">ExperimentStatus (class in py_experimenter.experiment_status)</a>
 </li>
+      <li><a href="autoapi/py_experimenter/utils/index.html#py_experimenter.utils.extract_columns">extract_columns() (in module py_experimenter.utils)</a>
+</li>
       <li><a href="autoapi/py_experimenter/utils/index.html#py_experimenter.utils.extract_db_credentials_and_table_name_from_config">extract_db_credentials_and_table_name_from_config() (in module py_experimenter.utils)</a>
+</li>
+      <li><a href="autoapi/py_experimenter/utils/index.html#py_experimenter.utils.extract_logtables">extract_logtables() (in module py_experimenter.utils)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -341,13 +352,17 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector.get_autoincrement">get_autoincrement() (py_experimenter.database_connector.DatabaseConnector static method)</a>
+
+      <ul>
+        <li><a href="autoapi/py_experimenter/database_connector_lite/index.html#py_experimenter.database_connector_lite.DatabaseConnectorLITE.get_autoincrement">(py_experimenter.database_connector_lite.DatabaseConnectorLITE static method)</a>
+</li>
+        <li><a href="autoapi/py_experimenter/database_connector_mysql/index.html#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.get_autoincrement">(py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL static method)</a>
+</li>
+      </ul></li>
       <li><a href="autoapi/py_experimenter/experimenter/index.html#py_experimenter.experimenter.PyExperimenter.get_config_value">get_config_value() (py_experimenter.experimenter.PyExperimenter method)</a>
 </li>
-      <li><a href="autoapi/py_experimenter/utils/index.html#py_experimenter.utils.get_current_time">get_current_time() (in module py_experimenter.utils)</a>
-</li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector.get_experiment_configuration">get_experiment_configuration() (py_experimenter.database_connector.DatabaseConnector method)</a>
-</li>
-      <li><a href="autoapi/py_experimenter/utils/index.html#py_experimenter.utils.get_fields">get_fields() (in module py_experimenter.utils)</a>
 </li>
       <li><a href="autoapi/py_experimenter/utils/index.html#py_experimenter.utils.get_keyfield_data">get_keyfield_data() (in module py_experimenter.utils)</a>
 </li>
@@ -355,6 +370,12 @@
 </li>
       <li><a href="autoapi/py_experimenter/utils/index.html#py_experimenter.utils.get_keyfields">get_keyfields() (in module py_experimenter.utils)</a>
 </li>
+      <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector.get_logtable">get_logtable() (py_experimenter.database_connector.DatabaseConnector method)</a>
+
+      <ul>
+        <li><a href="autoapi/py_experimenter/experimenter/index.html#py_experimenter.experimenter.PyExperimenter.get_logtable">(py_experimenter.experimenter.PyExperimenter method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/py_experimenter/utils/index.html#py_experimenter.utils.get_result_field_names">get_result_field_names() (in module py_experimenter.utils)</a>
@@ -375,6 +396,8 @@
         <li><a href="autoapi/py_experimenter/experimenter/index.html#py_experimenter.experimenter.PyExperimenter.get_table">(py_experimenter.experimenter.PyExperimenter method)</a>
 </li>
       </ul></li>
+      <li><a href="autoapi/py_experimenter/utils/index.html#py_experimenter.utils.get_timestamp_representation">get_timestamp_representation() (in module py_experimenter.utils)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -415,6 +438,8 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/py_experimenter/exceptions/index.html#py_experimenter.exceptions.MissingLogTableError">MissingLogTableError</a>
+</li>
       <li>
     module
 
@@ -460,6 +485,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/py_experimenter/exceptions/index.html#py_experimenter.exceptions.ParameterCombinationError">ParameterCombinationError</a>
 </li>
+      <li><a href="autoapi/py_experimenter/result_processor/index.html#py_experimenter.result_processor.ResultProcessor.process_logs">process_logs() (py_experimenter.result_processor.ResultProcessor method)</a>
+</li>
       <li><a href="autoapi/py_experimenter/result_processor/index.html#py_experimenter.result_processor.ResultProcessor.process_results">process_results() (py_experimenter.result_processor.ResultProcessor method)</a>
 </li>
       <li>
@@ -490,6 +517,8 @@
         <li><a href="autoapi/py_experimenter/database_connector_mysql/index.html#module-py_experimenter.database_connector_mysql">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     py_experimenter.exceptions
 
@@ -497,8 +526,6 @@
         <li><a href="autoapi/py_experimenter/exceptions/index.html#module-py_experimenter.exceptions">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     py_experimenter.experiment_status
 
@@ -565,12 +592,10 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autoapi/py_experimenter/exceptions/index.html#py_experimenter.exceptions.TableError">TableError</a>
+      <li><a href="autoapi/py_experimenter/exceptions/index.html#py_experimenter.exceptions.TableHasWrongStructureError">TableHasWrongStructureError</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autoapi/py_experimenter/exceptions/index.html#py_experimenter.exceptions.TableHasWrongStructureError">TableHasWrongStructureError</a>
-</li>
       <li><a href="autoapi/py_experimenter/utils/index.html#py_experimenter.utils.timestamps_for_result_fields">timestamps_for_result_fields() (in module py_experimenter.utils)</a>
 </li>
   </ul></td>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Conditional Parameter Grids &mdash; PyExperimenter 1.0 documentation</title>
+  <title>Example: Conditional Parameter Grids &mdash; PyExperimenter 1.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -23,8 +23,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="API Reference" href="../autoapi/index.html" />
-    <link rel="prev" title="General Usage" href="example_general_usage.html" /> 
+    <link rel="next" title="Example: Usage of Logtables" href="example_logtables.html" />
+    <link rel="prev" title="Example: General Usage" href="example_general_usage.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,12 +48,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../workflow.html">General Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="example_general_usage.html">General Usage</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Conditional Parameter Grids</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_general_usage.html">Example: General Usage</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example: Conditional Parameter Grids</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Experiment-Configuration-File">Experiment Configuration File</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Defining-the-execution-function">Defining the execution function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Executing-PyExperimenter">Executing PyExperimenter</a><ul>
@@ -64,6 +63,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="example_logtables.html">Example: Usage of Logtables</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
@@ -88,12 +88,12 @@
       </nav>
 
       <div class="wy-nav-content">
-        <div class="rst-content">
+        <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Examples</a></li>
-      <li class="breadcrumb-item active">Conditional Parameter Grids</li>
+      <li class="breadcrumb-item active">Example: Conditional Parameter Grids</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/examples/example_conditional_grid.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -103,8 +103,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Conditional-Parameter-Grids">
-<h1>Conditional Parameter Grids<a class="headerlink" href="#Conditional-Parameter-Grids" title="Permalink to this heading"></a></h1>
+  <section id="Example:-Conditional-Parameter-Grids">
+<h1>Example: Conditional Parameter Grids<a class="headerlink" href="#Example:-Conditional-Parameter-Grids" title="Permalink to this heading"></a></h1>
 <p>This example shows the usage of <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> with a conditional parameter grid. We will programmatically define the parameter combinations of a support vector machine, instead of generating the entire cartesian product from the parameters defined in the config file.</p>
 <p>To execute this notebook you need to install:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pip install py_experimenter
@@ -134,6 +134,12 @@ resultfields.timestamps = false
 [CUSTOM]
 path = sample_data
 &quot;&quot;&quot;
+
+# Create config directory if it does not exist
+if not os.path.exists(&#39;config&#39;):
+    os.mkdir(&#39;config&#39;)
+
+# Create config file
 experiment_configuration_file_path = os.path.join(&#39;config&#39;, &#39;example_conditional_grid.cfg&#39;)
 with open(experiment_configuration_file_path, &quot;w&quot;) as f:
   f.write(content)
@@ -308,7 +314,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -330,7 +336,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -352,7 +358,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -374,7 +380,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -396,7 +402,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -418,7 +424,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -440,7 +446,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -462,7 +468,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -484,7 +490,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -506,7 +512,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -528,7 +534,7 @@ experimenter.get_table()
       <td>nan</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -550,7 +556,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -572,7 +578,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -594,7 +600,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -616,7 +622,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -638,7 +644,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -660,7 +666,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -682,7 +688,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -704,7 +710,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -726,7 +732,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -748,7 +754,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -770,7 +776,7 @@ experimenter.get_table()
       <td>nan</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -792,7 +798,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -814,7 +820,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -836,7 +842,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -858,7 +864,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -880,7 +886,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -902,7 +908,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -924,7 +930,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -946,7 +952,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -968,7 +974,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -990,7 +996,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1012,7 +1018,7 @@ experimenter.get_table()
       <td>nan</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1034,7 +1040,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1056,7 +1062,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1078,7 +1084,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1100,7 +1106,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1122,7 +1128,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1144,7 +1150,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1166,7 +1172,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1188,7 +1194,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1210,7 +1216,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1232,7 +1238,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1254,7 +1260,7 @@ experimenter.get_table()
       <td>nan</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1276,7 +1282,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1298,7 +1304,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1320,7 +1326,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1342,7 +1348,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1364,7 +1370,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1386,7 +1392,7 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1408,7 +1414,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1430,7 +1436,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1452,7 +1458,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1474,7 +1480,7 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1496,7 +1502,7 @@ experimenter.get_table()
       <td>nan</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1582,16 +1588,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:31:02</td>
+      <td>2023-03-31 20:48:29</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:31:03</td>
+      <td>2023-03-31 20:48:29</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1604,16 +1610,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:29:56</td>
+      <td>2023-03-31 20:48:29</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:00</td>
+      <td>2023-03-31 20:48:30</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1626,16 +1632,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:06</td>
+      <td>2023-03-31 20:48:30</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:07</td>
+      <td>2023-03-31 20:48:31</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1648,16 +1654,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:08</td>
+      <td>2023-03-31 20:48:31</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:09</td>
+      <td>2023-03-31 20:48:32</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1670,16 +1676,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:46</td>
+      <td>2023-03-31 20:48:32</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:46</td>
+      <td>2023-03-31 20:48:33</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1692,16 +1698,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:33</td>
+      <td>2023-03-31 20:48:33</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:37</td>
+      <td>2023-03-31 20:48:35</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1714,16 +1720,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:39</td>
+      <td>2023-03-31 20:48:35</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:40</td>
+      <td>2023-03-31 20:48:36</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1736,16 +1742,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:31:01</td>
+      <td>2023-03-31 20:48:36</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:31:02</td>
+      <td>2023-03-31 20:48:37</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1758,16 +1764,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:53</td>
+      <td>2023-03-31 20:48:37</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:58</td>
+      <td>2023-03-31 20:48:38</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1780,16 +1786,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:31:00</td>
+      <td>2023-03-31 20:48:38</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:31:00</td>
+      <td>2023-03-31 20:48:39</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1802,16 +1808,16 @@ experimenter.get_table()
       <td>nan</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:48</td>
+      <td>2023-03-31 20:48:39</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:49</td>
+      <td>2023-03-31 20:48:40</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1824,16 +1830,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:02</td>
+      <td>2023-03-31 20:48:40</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:06</td>
+      <td>2023-03-31 20:48:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1846,16 +1852,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:07</td>
+      <td>2023-03-31 20:48:41</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:08</td>
+      <td>2023-03-31 20:48:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1868,16 +1874,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:31:05</td>
+      <td>2023-03-31 20:48:41</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:31:06</td>
+      <td>2023-03-31 20:48:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1890,16 +1896,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:59</td>
+      <td>2023-03-31 20:48:41</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:31:00</td>
+      <td>2023-03-31 20:48:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1912,16 +1918,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:58</td>
+      <td>2023-03-31 20:48:41</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:59</td>
+      <td>2023-03-31 20:48:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1934,16 +1940,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:46</td>
+      <td>2023-03-31 20:48:41</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:47</td>
+      <td>2023-03-31 20:48:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1956,16 +1962,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:23</td>
+      <td>2023-03-31 20:48:41</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:25</td>
+      <td>2023-03-31 20:48:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1978,16 +1984,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:31:00</td>
+      <td>2023-03-31 20:48:41</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:31:00</td>
+      <td>2023-03-31 20:48:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2000,16 +2006,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:50</td>
+      <td>2023-03-31 20:48:41</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:51</td>
+      <td>2023-03-31 20:48:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2022,16 +2028,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:31:10</td>
+      <td>2023-03-31 20:48:41</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:31:11</td>
+      <td>2023-03-31 20:48:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2044,16 +2050,16 @@ experimenter.get_table()
       <td>nan</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:45</td>
+      <td>2023-03-31 20:48:41</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:46</td>
+      <td>2023-03-31 20:48:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2066,16 +2072,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:59</td>
+      <td>2023-03-31 20:48:41</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:59</td>
+      <td>2023-03-31 20:48:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2088,16 +2094,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:19</td>
+      <td>2023-03-31 20:48:41</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:23</td>
+      <td>2023-03-31 20:48:42</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2110,16 +2116,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:42</td>
+      <td>2023-03-31 20:48:42</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:43</td>
+      <td>2023-03-31 20:48:43</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2132,16 +2138,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:49</td>
+      <td>2023-03-31 20:48:43</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:50</td>
+      <td>2023-03-31 20:48:44</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2154,16 +2160,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:00</td>
+      <td>2023-03-31 20:48:44</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:01</td>
+      <td>2023-03-31 20:48:45</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2176,16 +2182,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:31:00</td>
+      <td>2023-03-31 20:48:45</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:31:01</td>
+      <td>2023-03-31 20:48:46</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2198,16 +2204,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:38</td>
+      <td>2023-03-31 20:48:46</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:39</td>
+      <td>2023-03-31 20:48:47</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2220,16 +2226,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:47</td>
+      <td>2023-03-31 20:48:47</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:48</td>
+      <td>2023-03-31 20:48:48</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2242,16 +2248,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:51</td>
+      <td>2023-03-31 20:48:48</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:52</td>
+      <td>2023-03-31 20:48:49</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2264,16 +2270,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:47</td>
+      <td>2023-03-31 20:48:49</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:47</td>
+      <td>2023-03-31 20:48:50</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2286,16 +2292,16 @@ experimenter.get_table()
       <td>nan</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:44</td>
+      <td>2023-03-31 20:48:50</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:45</td>
+      <td>2023-03-31 20:48:51</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2308,16 +2314,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:31:03</td>
+      <td>2023-03-31 20:48:51</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:31:04</td>
+      <td>2023-03-31 20:48:52</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2330,16 +2336,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:37</td>
+      <td>2023-03-31 20:48:52</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:38</td>
+      <td>2023-03-31 20:48:53</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2352,16 +2358,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:40</td>
+      <td>2023-03-31 20:48:53</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:41</td>
+      <td>2023-03-31 20:48:54</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2374,16 +2380,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:43</td>
+      <td>2023-03-31 20:48:54</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:44</td>
+      <td>2023-03-31 20:48:55</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2396,16 +2402,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:08</td>
+      <td>2023-03-31 20:48:55</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:08</td>
+      <td>2023-03-31 20:48:57</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2418,16 +2424,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:06</td>
+      <td>2023-03-31 20:48:57</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:06</td>
+      <td>2023-03-31 20:48:58</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2440,16 +2446,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:31:06</td>
+      <td>2023-03-31 20:48:58</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:31:10</td>
+      <td>2023-03-31 20:48:59</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2462,16 +2468,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:51</td>
+      <td>2023-03-31 20:48:59</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:51</td>
+      <td>2023-03-31 20:49:00</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2484,16 +2490,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:14</td>
+      <td>2023-03-31 20:49:00</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:18</td>
+      <td>2023-03-31 20:49:01</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2506,16 +2512,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:41</td>
+      <td>2023-03-31 20:49:01</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:42</td>
+      <td>2023-03-31 20:49:02</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2528,16 +2534,16 @@ experimenter.get_table()
       <td>nan</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:31:04</td>
+      <td>2023-03-31 20:49:02</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:31:05</td>
+      <td>2023-03-31 20:49:03</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2550,16 +2556,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:29</td>
+      <td>2023-03-31 20:49:03</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:33</td>
+      <td>2023-03-31 20:49:04</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2572,16 +2578,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:25</td>
+      <td>2023-03-31 20:49:04</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:25</td>
+      <td>2023-03-31 20:49:08</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2594,16 +2600,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:09</td>
+      <td>2023-03-31 20:49:08</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:10</td>
+      <td>2023-03-31 20:49:12</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2616,16 +2622,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:10</td>
+      <td>2023-03-31 20:49:12</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:14</td>
+      <td>2023-03-31 20:49:16</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2638,16 +2644,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:52</td>
+      <td>2023-03-31 20:49:16</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:53</td>
+      <td>2023-03-31 20:49:20</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2660,16 +2666,16 @@ experimenter.get_table()
       <td>0.1</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:49:20</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:49:24</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2682,16 +2688,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:01</td>
+      <td>2023-03-31 20:49:24</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:02</td>
+      <td>2023-03-31 20:49:28</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2704,16 +2710,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>3</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:31:06</td>
+      <td>2023-03-31 20:49:28</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:31:06</td>
+      <td>2023-03-31 20:49:32</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2726,16 +2732,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:49:32</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:29:56</td>
+      <td>2023-03-31 20:49:36</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2748,16 +2754,16 @@ experimenter.get_table()
       <td>0.3</td>
       <td>4</td>
       <td>0.1</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:18</td>
+      <td>2023-03-31 20:49:36</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:19</td>
+      <td>2023-03-31 20:49:40</td>
       <td>None</td>
     </tr>
     <tr>
@@ -2770,16 +2776,16 @@ experimenter.get_table()
       <td>nan</td>
       <td>nan</td>
       <td>nan</td>
-      <td>2023-03-31 17:29:52</td>
+      <td>2023-03-31 20:48:29</td>
       <td>done</td>
-      <td>2023-03-31 17:30:25</td>
+      <td>2023-03-31 20:49:40</td>
       <td>SVM_experimenter_01</td>
-      <td>MacBook-Pro-von-Tanja.fritz.box</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>0.975</td>
       <td>0.975</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>2023-03-31 17:30:29</td>
+      <td>2023-03-31 20:49:44</td>
       <td>None</td>
     </tr>
   </tbody>
@@ -2794,8 +2800,8 @@ experimenter.get_table()
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="example_general_usage.html" class="btn btn-neutral float-left" title="General Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../autoapi/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="example_general_usage.html" class="btn btn-neutral float-left" title="Example: General Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="example_logtables.html" class="btn btn-neutral float-right" title="Example: Usage of Logtables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

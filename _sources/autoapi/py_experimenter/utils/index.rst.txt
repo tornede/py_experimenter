@@ -14,18 +14,19 @@ Functions
 .. autoapisummary::
 
    py_experimenter.utils.load_config
-   py_experimenter.utils.timestamps_for_result_fields
-   py_experimenter.utils.add_timestep_result_columns
-   py_experimenter.utils.extract_db_credentials_and_table_name_from_config
    py_experimenter.utils.get_keyfield_data
-   py_experimenter.utils._generate_int_data
+   py_experimenter.utils.extract_db_credentials_and_table_name_from_config
    py_experimenter.utils.get_keyfield_names
    py_experimenter.utils.get_keyfields
    py_experimenter.utils.get_result_field_names
    py_experimenter.utils.get_resultfields
-   py_experimenter.utils.get_fields
+   py_experimenter.utils.extract_columns
+   py_experimenter.utils.timestamps_for_result_fields
+   py_experimenter.utils.add_timestep_result_columns
+   py_experimenter.utils.extract_logtables
    py_experimenter.utils.combine_fill_table_parameters
-   py_experimenter.utils.get_current_time
+   py_experimenter.utils._generate_int_data
+   py_experimenter.utils.get_timestamp_representation
 
 
 
@@ -36,10 +37,7 @@ Functions
    :return: configuration file
 
 
-.. py:function:: timestamps_for_result_fields(config: configparser.ConfigParser) -> bool
-
-
-.. py:function:: add_timestep_result_columns(result_field_configuration)
+.. py:function:: get_keyfield_data(config)
 
 
 .. py:function:: extract_db_credentials_and_table_name_from_config(config)
@@ -48,12 +46,6 @@ Functions
    created automatically
    :param config: Configuration file with database and experiment information
    :return: mysql_connector and table name from the config file
-
-
-.. py:function:: get_keyfield_data(config)
-
-
-.. py:function:: _generate_int_data(keyfield_values)
 
 
 .. py:function:: get_keyfield_names(config: configparser.ConfigParser) -> List[str]
@@ -68,16 +60,28 @@ Functions
 .. py:function:: get_resultfields(config: configparser.ConfigParser) -> List[Tuple[str, str]]
 
 
-.. py:function:: get_fields(fields: str) -> List[Tuple[str, str]]
+.. py:function:: extract_columns(fields: str) -> List[Tuple[str, str]]
 
    Clean field names
    :param fields: List of field names
    :return: Cleaned list of field names
 
 
+.. py:function:: timestamps_for_result_fields(config: configparser.ConfigParser) -> bool
+
+
+.. py:function:: add_timestep_result_columns(result_field_configuration)
+
+
+.. py:function:: extract_logtables(config: configparser.ConfigParser, experiment_table_name: str) -> Optional[Dict[str, List[str]]]
+
+
 .. py:function:: combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations)
 
 
-.. py:function:: get_current_time() -> str
+.. py:function:: _generate_int_data(keyfield_values)
+
+
+.. py:function:: get_timestamp_representation() -> str
 
 

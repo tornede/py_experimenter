@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'configuration.cfg'), database_credential_file_path: str = os.path.join('config', 'database_credentials.cfg'), table_name: str = None, database_name: str = None, name='PyExperimenter')
+.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.cfg'), database_credential_file_path: str = os.path.join('config', 'database_credentials.cfg'), table_name: str = None, database_name: str = None, name='PyExperimenter')
 
    Module handling the initialization, execution and collection of experiments and their respective results.
 
@@ -202,11 +202,9 @@ Classes
    .. py:method:: _worker(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], None]) -> None
 
       Worker that repeatedly pulls open experiments from the database table and executes them.
+
       :param experiment_function: The function that should be executed with the different parametrizations.
       :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
-      :param random_order: Indicates whether the experiments to be executed are chosen consecutively by its experiment 
-          ID (`False`) or in a randomized fashion (`True`). Defaults to `False`.
-      :type random_order: bool, optional
 
 
    .. py:method:: _execution_worker(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], None]) -> None
@@ -215,9 +213,6 @@ Classes
 
       :param experiment_function: The function that should be executed with the different parametrizations.
       :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
-      :param random_order: Indicates whether the experiments to be executed are chosen consecutively by its experiment 
-          ID (`False`) or in a randomized fashion (`True`). Defaults to `False`.
-      :type random_order: bool, optional
 
 
    .. py:method:: _execution_wrapper(experiment_function: Callable[[dict, dict, py_experimenter.result_processor.ResultProcessor], None]) -> None
@@ -250,12 +245,12 @@ Classes
 
       :param status: The status of experiments that should be reset. Either `created`, `running`, `error`, `done`, or `all`.
           Note that `states` is a variable length argument, so multiple states can be given as a list.        
-         :type status: str
+      :type status: str
 
 
    .. py:method:: delete_table() -> None
 
-      Drops the table defined in the configuration file.
+      Drops the table defined in the configuration file. Additionally, all associated log tables are dropped.
 
 
    .. py:method:: get_table() -> pandas.DataFrame
@@ -263,6 +258,16 @@ Classes
       Returns the database table as `Pandas.DataFrame`. 
 
       :return: The database table as `Pandas.DataFrame`. 
+      :rtype: pd.DataFrame
+
+
+   .. py:method:: get_logtable(table_name: str) -> pandas.DataFrame
+
+      Returns the log table as `Pandas.DataFrame`. 
+
+      :param table_name: The name of the log table.
+      :type table_name: str
+      :return: The log table as `Pandas.DataFrame`. 
       :rtype: pd.DataFrame
 
 

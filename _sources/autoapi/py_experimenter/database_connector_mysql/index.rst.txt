@@ -49,13 +49,18 @@ Classes
    .. py:method:: _table_exists(cursor)
 
 
-   .. py:method:: _create_table(cursor, columns)
+   .. py:method:: get_autoincrement()
+      :staticmethod:
 
 
    .. py:method:: _table_has_correct_structure(cursor, typed_fields)
 
 
    .. py:method:: _pull_open_experiment() -> Tuple[int, List, List]
+
+
+   .. py:method:: escape_sql_chars(*args)
+      :staticmethod:
 
 
    .. py:method:: _get_existing_rows(column_names)

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Experiment Configuration File &mdash; PyExperimenter 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Database Credential File" href="database_credential_file.html" />
+    <link rel="prev" title="Usage" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyExperimenter
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Experiment Configuration File</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#database-information">Database Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#keyfields">Keyfields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resultfields">Resultfields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#logtables">Logtables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#execution-information">Execution Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#custom-fields">Custom Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database_credential_file.html">Database Credential File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment_function.html">Experiment Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="execution.html">Executing the PyExperimenter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to-contribute.html">How to Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help.html">Need Help?</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About PyExperimenter</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tornede/py_experimenter/">Repository</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyExperimenter</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Usage</a></li>
+      <li class="breadcrumb-item active">Experiment Configuration File</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/usage/experiment_configuration_file.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="experiment-configuration-file">
+<span id="id1"></span><h1>Experiment Configuration File<a class="headerlink" href="#experiment-configuration-file" title="Permalink to this heading"></a></h1>
+<p>The experiment configuration file is primarily used to define the database backend, as well as execution parameters, i.e. keyfields, resultfields, and logtables. An example experiment configuration can be found in the following, covering the main functionality <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> provides. Each paragraph is described in the subsections below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">PY_EXPERIMENTER</span><span class="p">]</span>
+<span class="n">provider</span> <span class="o">=</span> <span class="n">sqlite</span>
+<span class="n">database</span> <span class="o">=</span> <span class="n">database_name</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">table_name</span>
+
+<span class="n">keyfields</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">cross_validation_splits</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">kernel</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">iris</span>
+<span class="n">cross_validation_splits</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">2</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">2</span>
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">linear</span><span class="p">,</span> <span class="n">poly</span><span class="p">,</span> <span class="n">rbf</span><span class="p">,</span> <span class="n">sigmoid</span>
+
+<span class="n">resultfields</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">:</span><span class="n">LONGTEXT</span><span class="p">,</span> <span class="n">train_f1</span><span class="p">:</span><span class="n">DECIMAL</span><span class="p">,</span> <span class="n">train_accuracy</span><span class="p">:</span><span class="n">DECIMAL</span><span class="p">,</span> <span class="n">test_f1</span><span class="p">:</span><span class="n">DECIMAL</span><span class="p">,</span> <span class="n">test_accuracy</span><span class="p">:</span><span class="n">DECIMAL</span>
+<span class="n">resultfields</span><span class="o">.</span><span class="n">timestamps</span> <span class="o">=</span> <span class="n">false</span>
+
+<span class="n">logtables</span> <span class="o">=</span> <span class="n">new_best_performance</span><span class="p">:</span><span class="n">INT</span><span class="p">,</span> <span class="n">epochs</span><span class="p">:</span><span class="n">LogEpochs</span>
+<span class="n">LogEpochs</span> <span class="o">=</span> <span class="n">runtime</span><span class="p">:</span><span class="n">FLOAT</span><span class="p">,</span> <span class="n">performance</span><span class="p">:</span><span class="n">FLOAT</span>
+
+<span class="n">n_jobs</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="p">[</span><span class="n">CUSTOM</span><span class="p">]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">sample_data</span>
+</pre></div>
+</div>
+<section id="database-information">
+<h2>Database Information<a class="headerlink" href="#database-information" title="Permalink to this heading"></a></h2>
+<p>The database information have to be defined in the experiment configuration file. It contains the <code class="docutils literal notranslate"><span class="pre">provider</span></code> of the database connection (either <code class="docutils literal notranslate"><span class="pre">sqlite</span></code> or <code class="docutils literal notranslate"><span class="pre">mysql</span></code>). Furthermore, the name of the <code class="docutils literal notranslate"><span class="pre">database</span></code> has to be given, together with the name of the <code class="docutils literal notranslate"><span class="pre">table</span></code> to write the experiment information into.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In case of <code class="docutils literal notranslate"><span class="pre">mysql</span></code> an additional <a class="reference internal" href="database_credential_file.html#database-credential-file"><span class="std std-ref">database credential file</span></a> has to be created.</p>
+</div>
+</section>
+<section id="keyfields">
+<span id="id2"></span><h2>Keyfields<a class="headerlink" href="#keyfields" title="Permalink to this heading"></a></h2>
+<p>Experiments are identified by <code class="docutils literal notranslate"><span class="pre">keyfields</span></code>, hence, keyfields define the execution of experiments. A keyfield can be thought of as a parameter, whose value defines an experiment together with the values of all other experiments. For example, if our experiment was to compute the exponential function for several input values, the input would be a keyfield. They have to be specified in the experiment configuration file by adding a line containing a comma separated list of <code class="docutils literal notranslate"><span class="pre">keyfield_name</span></code>. Furthermore, each keyfield can be further annotated by a <code class="docutils literal notranslate"><span class="pre">keyfield_datatype</span></code>, which is specified by adding a standard datatype to the according field. If no datatype is explicitly specified, <code class="docutils literal notranslate"><span class="pre">VARCHAR(255)</span></code> is used.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">keyfields</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">keyfield_name</span><span class="o">&gt;</span><span class="p">[:</span><span class="o">&lt;</span><span class="n">keyfield_datatype</span><span class="o">&gt;</span><span class="p">],</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>For each keyfield, an additional entry starting with the same <code class="docutils literal notranslate"><span class="pre">keyfield_name</span></code> has to be added to the experiment configuration file, which defines the domain, i.e., possible values, of the keyfield. Usually this is done with a comma separated list of strings or numbers. In the example below, the key field <code class="docutils literal notranslate"><span class="pre">kernel</span></code> can be any of the four given values: <code class="docutils literal notranslate"><span class="pre">linear</span></code>, <code class="docutils literal notranslate"><span class="pre">poly</span></code>, <code class="docutils literal notranslate"><span class="pre">rbf</span></code>, or <code class="docutils literal notranslate"><span class="pre">sigmoid</span></code>. Note that strings are neither allowed to contain any quotation marks nor whitespace. Alternatively, this can be <a class="reference internal" href="execution.html#fill-table-with-rows"><span class="std std-ref">defined via code</span></a>.</p>
+<p>As the manual definition can be a tedious task, especially for a list of integers, there is the option to define the start and the end of the list, together with the step size in the form: <code class="docutils literal notranslate"><span class="pre">start:end:stepsize</span></code>. In the example below, <code class="docutils literal notranslate"><span class="pre">seed</span></code> is meant to be <code class="docutils literal notranslate"><span class="pre">2,</span> <span class="pre">4,</span> <span class="pre">6,</span> <span class="pre">8,</span> <span class="pre">10</span></code>, but instead of the explicit list <code class="docutils literal notranslate"><span class="pre">2:10:2</span></code> is given.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">keyfields</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">cross_validation_splits</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">kernel</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">iris</span>
+<span class="n">cross_validation_splits</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">2</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">2</span>
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">linear</span><span class="p">,</span> <span class="n">poly</span><span class="p">,</span> <span class="n">rbf</span><span class="p">,</span> <span class="n">sigmoid</span>
+</pre></div>
+</div>
+</section>
+<section id="resultfields">
+<span id="id3"></span><h2>Resultfields<a class="headerlink" href="#resultfields" title="Permalink to this heading"></a></h2>
+<p>The results of the experiments will be stored in the database in the form of <code class="docutils literal notranslate"><span class="pre">resultfields</span></code>. They have to be specified in the experiment configuration file by adding a line containing a comma separated list of <code class="docutils literal notranslate"><span class="pre">resultfield_name</span></code> and according <code class="docutils literal notranslate"><span class="pre">resultfield_datatype</span></code>. The datatype can be defined as explained above for <a class="reference internal" href="#keyfields"><span class="std std-ref">keyfields</span></a>, and if no datatype is explicitly specified, <code class="docutils literal notranslate"><span class="pre">VARCHAR(255)</span></code> is used. Note that in case some resultfield should contain arbitrarily long strings, <code class="docutils literal notranslate"><span class="pre">LONGTEXT</span></code> should be used as datatype.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">resultfields</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">resultfield_name</span><span class="o">&gt;</span><span class="p">[:</span><span class="o">&lt;</span><span class="n">resultfield_datatype</span><span class="o">&gt;</span><span class="p">],</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Additionally, it is possible to store the timestamps at which the results have been obtatined in the database. This can be done by adding the following line to the experiment configuration file (Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">resultfields</span><span class="o">.</span><span class="n">timestamps</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</section>
+<section id="logtables">
+<span id="id4"></span><h2>Logtables<a class="headerlink" href="#logtables" title="Permalink to this heading"></a></h2>
+<p>In addition to the functionality stated above, <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> also supports <code class="docutils literal notranslate"><span class="pre">logtables</span></code> thereby enabling the logging of information into separate tables. This is helpful in cases where one is intereted in intermediate results of an experiment, which one might regularily want to write to the databse. Logtables have to be specified in the experiment configuration file by adding a line containing a comma separated list of <code class="docutils literal notranslate"><span class="pre">logtable_name</span></code> and according <code class="docutils literal notranslate"><span class="pre">logtable_datatype</span></code>. Note that the tables in the database are prefixed with the experiment table name, i.e., they are called <code class="docutils literal notranslate"><span class="pre">&lt;table_name&gt;__&lt;logtable_name&gt;</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logtables</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">logtable_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">logtable_datatype</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>If the logtable should contain only a single column, you can directly use a standard datatype, like <code class="docutils literal notranslate"><span class="pre">INT</span></code> in this example.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logtables</span> <span class="o">=</span> <span class="n">new_best_performance</span><span class="p">:</span><span class="n">INT</span><span class="p">,</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>If a logtable should contain more than one field, you can define custom <code class="docutils literal notranslate"><span class="pre">logtable_datatype</span></code> by listing the field names and the corresponding datatypes in the same format as <a class="reference internal" href="#keyfields"><span class="std std-ref">keyfields</span></a>. In the example below, the logtable would be called <code class="docutils literal notranslate"><span class="pre">epochs</span></code> and has the datatype <code class="docutils literal notranslate"><span class="pre">LogEpochs</span></code>, which is define in the line below. It features two fields with the names <code class="docutils literal notranslate"><span class="pre">runtime</span></code>, and <code class="docutils literal notranslate"><span class="pre">performance</span></code>, having the corresponding column types <code class="docutils literal notranslate"><span class="pre">FLOAT</span></code>, and <code class="docutils literal notranslate"><span class="pre">FLOAT</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logtables</span> <span class="o">=</span> <span class="n">epochs</span><span class="p">:</span><span class="n">LogEpochs</span><span class="p">,</span> <span class="o">...</span>
+<span class="n">LogEpochs</span> <span class="o">=</span> <span class="n">runtime</span><span class="p">:</span><span class="n">FLOAT</span><span class="p">,</span> <span class="n">performance</span><span class="p">:</span><span class="n">FLOAT</span>
+</pre></div>
+</div>
+<p>Note that every logtable, however it is defined, additionally has the following fields:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">experiment_id</span> <span class="pre">(int)</span></code>: The id of the experiment the logtable entry belongs to.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestamp</span> <span class="pre">(datetime)</span></code>: The timestamp the logtable entry has been created.</p></li>
+</ul>
+<p>An in-depth example showcasing the usage of logtables can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
+</section>
+<section id="execution-information">
+<h2>Execution Information<a class="headerlink" href="#execution-information" title="Permalink to this heading"></a></h2>
+<p>Furthermore it is possible to define parameters for execution. They will not be part of the database, but are only used to configure the PyExperimenter. Currently, the following parameters are supported:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">n_jobs</span> <span class="pre">(int)</span></code>: The maximum number of experiments that will be executed in parallel. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+</ul>
+</section>
+<section id="custom-fields">
+<h2>Custom Fields<a class="headerlink" href="#custom-fields" title="Permalink to this heading"></a></h2>
+<p>Optionally, custom fields can be defined under the <code class="docutils literal notranslate"><span class="pre">CUSTOM</span></code> section, which will be ignored when creating or filling the database, but can provide fixed parameters for the actual execution of experiments. A common example is the path to some folder in which the data is located. The values of such custom fields are passed to the experiment function.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">CUSTOM</span><span class="p">]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">sample_data</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="database_credential_file.html" class="btn btn-neutral float-right" title="Database Credential File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Tanja Tornede, Alexander Tornede, Lukas Fehring, Lukas Gehring, Helena Graf, Jonas Hanselle, Felix Mohr, Marcel Wever.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
