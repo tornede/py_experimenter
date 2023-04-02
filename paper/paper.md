@@ -53,7 +53,7 @@ However, setting up, documenting, and evaluating the results of such a study is 
 Usually, this requires extensive manual work to create configuration files for the inputs or to read and aggregate measured results from a report file.
 In addition, monitoring and restarting individual executions is tedious and time-consuming.
 
-`PyExperimenter` adresses theses challenges by  by means of a single well defined configuration file and a central database for managing massively parallel evaluations, as well as collecting and aggregating their results.
+`PyExperimenter` adresses theses challenges by means of a single well defined configuration file and a central database for managing massively parallel evaluations, as well as collecting and aggregating their results.
 Thereby, `PyExperimenter` alleviates the aforementioned overhead and allows experiment executions to be defined and monitored with ease.
 
 ![General schema of `PyExperimenter`.](usage.png)
