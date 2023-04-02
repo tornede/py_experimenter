@@ -37,7 +37,7 @@ affiliations:
    index: 2
  - name: MCML, Institut for Informatics, LMU Munich, Germany
    index: 3
-date: 7 November 2022
+date: 2 April 2023
 bibliography: paper.bib
 
 ---
@@ -47,13 +47,13 @@ bibliography: paper.bib
 `PyExperimenter` is a tool to facilitate the setup, documentation, execution, and subsequent evaluation of results from an empirical study of algorithms and in particular is designed to reduce the involved manual effort significantly.
 It is intended to be used by researchers in the field of artificial intelligence, but is not limited to those.
 
-The empirical analysis of algorithms is often accompanied by the execution of algorithms for different inputs and variants of the algorithms (specified via parameters) and the measurement of non-functional properties.
+The empirical analysis of algorithms is often accompanied by the execution of algorithms for different inputs and variants of the algorithms, specified via parameters, and the measurement of non-functional properties.
 Since the individual evaluations are usually independent, the evaluation can be performed in a distributed manner on an HPC system.
 However, setting up, documenting, and evaluating the results of such a study is often file-based.
 Usually, this requires extensive manual work to create configuration files for the inputs or to read and aggregate measured results from a report file.
 In addition, monitoring and restarting individual executions is tedious and time-consuming.
 
-These challenges are addressed by `PyExperimenter` by means of a single well defined configuration file and a central database for managing massively parallel evaluations, as well as collecting and aggregating their results.
+`PyExperimenter` adresses theses challenges by means of a single well defined configuration file and a central database for managing massively parallel evaluations, as well as collecting and aggregating their results.
 Thereby, `PyExperimenter` alleviates the aforementioned overhead and allows experiment executions to be defined and monitored with ease.
 
 ![General schema of `PyExperimenter`.](usage.png)
@@ -61,7 +61,7 @@ Thereby, `PyExperimenter` alleviates the aforementioned overhead and allows expe
 A general schema of `PyExperimenter` can be found in Figure 1.
 `PyExperimenter` is designed based on the assumption that an experiment is uniquely defined by certain inputs, i.e., parameters, and a function computing the results of the experiment based on these parameters.
 The set of experiments to be executed can be defined through a configuration file listing the domains of each parameter, or manually through code.
-Those parameters define the experiment grid, based on which `PyExperimenter` setups the table in the database featuring all experiments with their input parameter values and additional information such as the execution status.
+Those parameters define the experiment grid, based on which `PyExperimenter` sets up the table in the database featuring all experiments with their input parameter values and additional information such as the execution status.
 Once this table has been created, a `PyExperimenter` instance can be run on any machine, including a distributed system.
 Each instance automatically pulls open experiments from the database, executes the function provided by the user with the corresponding parameters defining the experiment and writes back the results computed by the function.
 Errors arising during the execution are logged in the database.
