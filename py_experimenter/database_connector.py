@@ -1,7 +1,6 @@
 import abc
 import logging
 from configparser import ConfigParser
-from datetime import datetime
 from typing import Dict, List, Optional, Tuple, Union
 
 import pandas as pd
@@ -320,8 +319,8 @@ class DatabaseConnector(abc.ABC):
         self.execute(cursor, f'DROP TABLE IF EXISTS {self.table_name}')
         self.commit(connection)
 
-    def get_logtable(self, table_name: str) -> pd.DataFrame:
-        return self.get_table(f'{self.table_name}__{table_name}')
+    def get_logtable(self, logtable_name: str) -> pd.DataFrame:
+        return self.get_table(f'{self.table_name}__{logtable_name}')
 
     def get_table(self, table_name: Optional[str] = None) -> pd.DataFrame:
         connection = self.connect()
