@@ -5,7 +5,7 @@ description = "The PyExperimenter is a tool for the automatic execution of exper
 authors = [
     "Tanja Tornede <t.tornede@ai.uni-hannover.de>",
     "Alexander Tornede <a.tornede@ai.uni-hannover.de>",
-    "Lukas Fehring <fehring2@mail.uni-paderborn.de>",
+    "Lukas Fehring <lukas.fehring@stud.uni-hannover.de>",
     "Lukas Gehring",
     "Helena Graf <h.graf@ai.uni-hannover.de>",
     "Jonas Hanselle <jonas.hanselle@upb.de>",
