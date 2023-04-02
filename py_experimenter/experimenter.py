@@ -378,7 +378,7 @@ class PyExperimenter:
     def reset_experiments(self, *states: Tuple['str']) -> None:
         """
         Deletes the experiments from the database table that have the given `states`. Afterward, all deleted rows are added to the 
-        table again. Experiments to reset can be selected based on the following status definition:
+        table again. 
 
         :param states: The status of experiments that should be reset. Either `created`, `running`, `error`, `done`, or `all`.
         Note that `states` is a variable-length argument, so multiple states can be given as a tuple.
