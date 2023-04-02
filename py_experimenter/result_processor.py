@@ -31,8 +31,7 @@ class ResultProcessor:
         self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
 
         self._experiment_id = experiment_id
-        self._experiment_id = experiment_id
-        self._experiment_id_condition = f'ID = {experiment_id}'
+        self._experiment_id_condition = f'ID = {self._experiment_id}'
 
         if _config['PY_EXPERIMENTER']['provider'] == 'sqlite':
             self._dbconnector: DatabaseConnector = DatabaseConnectorLITE(_config)
