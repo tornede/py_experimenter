@@ -112,11 +112,8 @@ def test_run_error_experiment():
     assert entries[0][9] == None
     first_cwd_mention = os.getcwd() + os.sep + os.path.join('py_experimenter', 'experimenter.py')
     second_cwd_mention = os.getcwd() + os.sep + os.path.join('test', 'test_run_experiments', 'test_run_sqlite_experiment.py')
-    assert entries[0][11] == ('Traceback (most recent call last):\n  File'
-                              f' "{first_cwd_mention}"'
-                              ', line 376, in _execution_wrapper\n    experiment_function(keyfield_values, result_processor,'
-                              f' custom_fields)\n  File "{second_cwd_mention}", line 83, in error_function\n    '
-                              'raise Exception("Error with weird symbos \'@#$%&/\\()=")\nException: Error with weird symbos \'@#$%&/\\()=\n')
+    for message in ["in _execution_wrapper", "experiment_function(keyfield_values, result_processor, custom_fields)", "raise Exception(", "Error with weird symbos \'@#$%&/\\()="]:
+        assert message in entries[0][11]
 
 
 def own_function_raising_errors(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):

@@ -46,9 +46,21 @@ class DatabaseConnectorLITE(DatabaseConnector):
         table_names = self.fetchall(cursor)
         return self.table_name in [x[0] for x in table_names]
 
-    def _create_table(self, cursor, columns):
-        self.execute(cursor,
-                     f"CREATE TABLE {self.table_name} (ID Integer PRIMARY KEY AUTOINCREMENT, {','.join(columns)});")
+    @staticmethod
+    def escape_sql_chars(*args):
+        modified_args = list()
+        for arg in args:
+            arg = str(arg)
+            if type(arg) == str:
+                modified_args.append(arg.replace('`', '``').replace("'", "''").replace('"', '""'))
+
+            else:
+                modified_args.append(arg)
+        return modified_args
+
+    @staticmethod
+    def get_autoincrement():
+        return 'AUTOINCREMENT'
 
     def _table_has_correct_structure(self, cursor, typed_fields) -> List[str]:
         self.execute(cursor, f"PRAGMA table_info({self.table_name})")

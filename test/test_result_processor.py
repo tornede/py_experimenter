@@ -1,6 +1,7 @@
 import os
 
 import pytest
+from freezegun import freeze_time
 from mock import patch
 
 from py_experimenter import database_connector, database_connector_lite, database_connector_mysql, utils
@@ -104,44 +105,31 @@ def test_valid_result_fields(create_database_if_not_existing_mock, test_connecti
                                              used_result_fields, 0)._valid_result_fields(existing_result_fields)
 
 
+@freeze_time('2020-01-01 00:00:00')
 @pytest.mark.parametrize(
-    'results, time, expected_results',
+    'results, expected_results',
     [
         pytest.param(
-            {
-                'result_field_1': 'result_field_1_value',
-                'result_field_2': 'result_field_2_value',
-            },
-            '2020-01-01 00:00:00',
-            {
-                'result_field_1': 'result_field_1_value',
-                'result_field_1_timestamp': '2020-01-01 00:00:00',
-                'result_field_2': 'result_field_2_value',
-                'result_field_2_timestamp': '2020-01-01 00:00:00',
-            },
+            {'result_field_1': 'result_field_1_value',
+             'result_field_2': 'result_field_2_value'},
+            {'result_field_1': 'result_field_1_value',
+             'result_field_1_timestamp': '2020-01-01 00:00:00',
+             'result_field_2': 'result_field_2_value',
+             'result_field_2_timestamp': '2020-01-01 00:00:00'},
             id='default_testcase'
         ),
         pytest.param(
-            {
-            },
-            '2020-01-01 00:00:00',
-            {
-            },
+            {}, {},
             id='empty_testcase'
         ),
         pytest.param(
-            {
-                'result_field_1': 'result_field_1_value',
-            },
-            '2020-01-01 00:00:00',
-            {
-                'result_field_1': 'result_field_1_value',
-                'result_field_1_timestamp': '2020-01-01 00:00:00',
-            },
+            {'result_field_1': 'result_field_1_value', },
+            {'result_field_1': 'result_field_1_value',
+             'result_field_1_timestamp': '2020-01-01 00:00:00', },
             id='one_value_testcase'
         ),
 
     ]
 )
-def test_add_timestamps_to_results(results, time, expected_results):
-    assert expected_results == ResultProcessor._add_timestamps_to_results(results, time)
+def test_add_timestamps_to_results(results, expected_results):
+    assert expected_results == ResultProcessor._add_timestamps_to_results(results)

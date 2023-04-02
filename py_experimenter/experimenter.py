@@ -22,7 +22,7 @@ class PyExperimenter:
     """
 
     def __init__(self,
-                 experiment_configuration_file_path: str = os.path.join('config', 'configuration.cfg'),
+                 experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.cfg'),
                  database_credential_file_path: str = os.path.join('config', 'database_credentials.cfg'),
                  table_name: str = None,
                  database_name: str = None,
@@ -31,7 +31,7 @@ class PyExperimenter:
         Initializes the PyExperimenter with the given information.
 
         :param experiment_configuration_file_path: The path to the experiment configuration file. Defaults to
-            'config/configuration.cfg'.
+            'config/experiment_configuration.cfg'.
         :type experiment_configuration_file_path: str, optional
         :param database_credential_file_path: The path to the database configuration file storing the credentials
             for the database connection, i.e., host, user and password. Defaults to 'config/database_credentials.cfg'.
@@ -310,11 +310,9 @@ class PyExperimenter:
     def _worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None]) -> None:
         """
         Worker that repeatedly pulls open experiments from the database table and executes them.
+
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
-        :param random_order: Indicates whether the experiments to be executed are chosen consecutively by its experiment 
-            ID (`False`) or in a randomized fashion (`True`). Defaults to `False`.
-        :type random_order: bool, optional
         """
         while True:
             try:
@@ -328,9 +326,6 @@ class PyExperimenter:
 
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
-        :param random_order: Indicates whether the experiments to be executed are chosen consecutively by its experiment 
-            ID (`False`) or in a randomized fashion (`True`). Defaults to `False`.
-        :type random_order: bool, optional
         """
         while True:
             try:
@@ -343,7 +338,7 @@ class PyExperimenter:
         """
         Executes the given `experiment_function` on one open experiment. To that end, one of the open experiments is pulled
         from the database table. Then `experiment_function` is executed on the keyfield values of the pulled experiment. 
-        
+
         Thereby, the status of the experiment is continuously updated. The experiment can have the following states:
 
         * `running` when the experiment has been pulled from the database table, which will be executed directly afterwards.
@@ -361,7 +356,7 @@ class PyExperimenter:
         :raises DatabaseConnectionError: If an error occurred during the connection to the database.
         """
         experiment_id, keyfield_values = self.dbconnector.get_experiment_configuration()
-        
+
         result_field_names = utils.get_result_field_names(self.config)
         custom_fields = dict(self.config.items('CUSTOM')) if self.has_section('CUSTOM') else None
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
@@ -390,7 +385,7 @@ class PyExperimenter:
 
         :param status: The status of experiments that should be reset. Either `created`, `running`, `error`, `done`, or `all`.
             Note that `states` is a variable length argument, so multiple states can be given as a list.	
-           :type status: str
+        :type status: str
         """
         if not states:
             logging.warning('No states given to reset experiments. No experiments are reset.')
@@ -399,7 +394,7 @@ class PyExperimenter:
 
     def delete_table(self) -> None:
         """
-        Drops the table defined in the configuration file.
+        Drops the table defined in the configuration file. Additionally, all associated log tables are dropped.
         """
         self.dbconnector.delete_table()
 
@@ -411,3 +406,14 @@ class PyExperimenter:
         :rtype: pd.DataFrame
         """
         return self.dbconnector.get_table()
+
+    def get_logtable(self, table_name: str) -> pd.DataFrame:
+        """
+        Returns the log table as `Pandas.DataFrame`. 
+
+        :param table_name: The name of the log table.
+        :type table_name: str
+        :return: The log table as `Pandas.DataFrame`. 
+        :rtype: pd.DataFrame
+        """
+        return self.dbconnector.get_logtable(table_name)

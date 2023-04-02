@@ -6,7 +6,7 @@ import numpy as np
 from mysql.connector import Error, connect
 
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.exceptions import DatabaseConnectionError, DatabaseCreationError, TableError
+from py_experimenter.exceptions import CreatingTableError, DatabaseConnectionError, DatabaseCreationError
 from py_experimenter.utils import load_config
 
 
@@ -69,12 +69,9 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         self.execute(cursor, f"SHOW TABLES LIKE '{self.table_name}'")
         return self.fetchall(cursor)
 
-    def _create_table(self, cursor, columns):
-        try:
-            self.execute(cursor,
-                         f"CREATE TABLE {self.table_name} (ID int NOT NULL AUTO_INCREMENT, {','.join(columns)}, PRIMARY KEY (ID))")
-        except Exception as err:
-            raise TableError(f'Error when creating table: {err}')
+    @staticmethod
+    def get_autoincrement():
+        return "AUTO_INCREMENT"
 
     def _table_has_correct_structure(self, cursor, typed_fields):
         self.execute(cursor,
@@ -97,6 +94,16 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
         return experiment_id, description, values
 
+    @staticmethod
+    def escape_sql_chars(*args):
+        escaped_args = []
+        for arg in args:
+            if isinstance(arg, str):
+                escaped_args.append(arg.replace("'", "''").replace('"', '""').replace('`', '``'))
+            else:
+                escaped_args.append(arg)
+        return escaped_args
+    
     def _get_existing_rows(self, column_names):
         def _remove_double_whitespaces(existing_rows):
             return [' '.join(row.split()) for row in existing_rows]
