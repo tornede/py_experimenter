@@ -1,7 +1,7 @@
 .. _execution:
 
 ============================
-Executing the PyExperimenter
+Executing PyExperimenter
 ============================
 
 The actual execution of ``PyExperimenter`` only needs a few lines of code. Please make sure that you have created the :ref:`experiment configuration file <experiment_configuration_file>` and defined the :ref:`experiment function <experiment_function>` beforehand. 
