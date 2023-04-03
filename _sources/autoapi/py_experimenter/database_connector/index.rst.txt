@@ -133,7 +133,7 @@ Classes
    .. py:method:: delete_table() -> None
 
 
-   .. py:method:: get_logtable(table_name: str) -> pandas.DataFrame
+   .. py:method:: get_logtable(logtable_name: str) -> pandas.DataFrame
 
 
    .. py:method:: get_table(table_name: Optional[str] = None) -> pandas.DataFrame
