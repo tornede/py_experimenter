@@ -121,11 +121,11 @@
 </div>
 <p>Additionally, further information can be given to <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">experiment_configuration_file_path</span></code>: The path of the <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file"><span class="std std-ref">experiment configuration file</span></a>. Default: <code class="docutils literal notranslate"><span class="pre">config/experiment_configuration.cfg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">experiment_configuration_file_path</span></code>: The path of the <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file"><span class="std std-ref">experiment configuration file</span></a>. Default: <code class="docutils literal notranslate"><span class="pre">config/experiment_configuration.cfg</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">database_credential_file_path</span></code>: The path of the <a class="reference internal" href="database_credential_file.html#database-credential-file"><span class="std std-ref">database credential file</span></a>. Default: <code class="docutils literal notranslate"><span class="pre">config/database_credentials.cfg</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">database_name</span></code>: The name of the database to manage the experiments. If given, it will overwrite the database name given in the <cite>experiment_configuration_file_path</cite>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">table_name</span></code>: The name of the database table to manage the experiments. If given, it will overwrite the table name given in the <cite>experiment_configuration_file_path</cite>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The name of the experimenter, which will be added to the database table of each executed experiment. If using the PyExperimenter on an HPC system, this can be used for the job ID, so that the according log file can easily be found. Default: <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The name of the experimenter, which will be added to the database table of each executed experiment. If using the PyExperimenter on an HPC system, this can be used for the job ID, so that the according log file can easily be found. Default: <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>.</p></li>
 </ul>
 </section>
 <section id="fill-database-table">
@@ -187,7 +187,7 @@
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">created</span></code>: All parameters for the experiment are defined and the experiment is ready for execution.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">running</span></code>: The experiment is currently in execution.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">done</span></code>: The execution of the experiment terminated without interruption and the results are written into the database</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">done</span></code>: The execution of the experiment terminated without interruption and the results are written into the database.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">error</span></code>: An error occurred during execution, which is also logged into the database.</p></li>
 </ul>
 </section>
