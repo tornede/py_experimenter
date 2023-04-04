@@ -2,6 +2,39 @@
 Changelog
 =========
 
+
+v1.2.0 (04/04/2023)
+===================
+
+Feature
+-------
+
+- Added logtables functionality, allowing to incrementally log information during the execution of an experiment, which is described in detail in the documentation.
+- Documentation of the usage of ``PyExperimenter`` has been reworked in large parts. 
+
+Examples
+--------
+- An additional logtable example has been added.
+- An issue of the example notebook has been fixed causing them to fail due to missing directories. 
+- Improved general example to cover extended functionality of ``PyExperimenter.reset_experiments()``.
+
+Fix
+---
+
+- Start date is now set when pulling an experiment.
+- Supported Python version is now >= 3.9.
+- Changed row identification in ResultProcessor to experiment ID instead of checking keyfields.
+- Stack traces are now correctly logged into the mysql database, as the used mysql connector implementation has been changed to C. 
+- Changed multiprocessing to joblib due to issues with the example notebooks.
+- The ``random_order`` parameter is not needed anymore for the execution, therefore it has been removed. 
+- Documentation of ``PyExperimenter.reset_experiments()`` has been updated to reflect the changes in the functionality.
+
+Tests
+-----
+
+- Tests covering the new functionality of logtables have been added.
+
+
 v1.1.0 (21/11/2022)
 ===================
 

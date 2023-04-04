@@ -6,12 +6,13 @@ import numpy as np
 from mysql.connector import Error, connect
 
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.exceptions import DatabaseConnectionError, DatabaseCreationError, TableError
+from py_experimenter.exceptions import CreatingTableError, DatabaseConnectionError, DatabaseCreationError
 from py_experimenter.utils import load_config
 
 
 class DatabaseConnectorMYSQL(DatabaseConnector):
     _write_to_database_separator = "', '"
+    _prepared_statement_placeholder = '%s'
 
     def __init__(self, experiment_configuration_file_path: ConfigParser, database_credential_file_path):
         database_credentials = load_config(database_credential_file_path)
@@ -57,7 +58,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         try:
             if credentials is None:
                 credentials = self.database_credentials
-            return connect(**credentials, use_pure=True)
+            return connect(**credentials)
         except Error as err:
             raise DatabaseConnectionError(err)
 
@@ -65,18 +66,12 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         connection.start_transaction(readonly=readonly)
 
     def _table_exists(self, cursor):
-        self.execute(cursor, f"SHOW TABLES LIKE '{self._get_tablename_for_query()}'")
+        self.execute(cursor, f"SHOW TABLES LIKE '{self.table_name}'")
         return self.fetchall(cursor)
 
-    def _create_table(self, cursor, columns):
-        try:
-            self.execute(cursor,
-                         f"CREATE TABLE {DatabaseConnectorMYSQL.escape_sql_chars(self.table_name)[0]} (ID int NOT NULL AUTO_INCREMENT, {','.join(columns)}, PRIMARY KEY (ID))")
-        except Exception as err:
-            raise TableError(f'Error when creating table: {err}')
-
-    def _get_tablename_for_query(self):
-        return DatabaseConnectorMYSQL.escape_sql_chars(self.table_name)[0]
+    @staticmethod
+    def get_autoincrement():
+        return "AUTO_INCREMENT"
 
     def _table_has_correct_structure(self, cursor, typed_fields):
         self.execute(cursor,
@@ -86,12 +81,12 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         config_columns = [k[0] for k in typed_fields]
         return set(columns) == set(config_columns)
 
-    def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
+    def _pull_open_experiment(self) -> Tuple[int, List, List]:
         try:
             connection = self.connect()
             cursor = self.cursor(connection)
             self._start_transaction(connection, readonly=False)
-            experiment_id, description, values = self._execute_queries(connection, cursor, random_order)
+            experiment_id, description, values = self._execute_queries(connection, cursor)
         except Exception as err:
             connection.rollback()
             raise err
@@ -109,10 +104,6 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
                 escaped_args.append(arg)
         return escaped_args
     
-    @staticmethod
-    def random_order_string():
-        return 'RAND()'
-
     def _get_existing_rows(self, column_names):
         def _remove_double_whitespaces(existing_rows):
             return [' '.join(row.split()) for row in existing_rows]
@@ -136,3 +127,4 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         self.execute(cursor, f"SHOW COLUMNS FROM {self.table_name}")
         column_names = _get_column_names_from_entries(self.fetchall(cursor))
         return column_names
+    

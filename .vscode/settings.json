@@ -2,6 +2,7 @@
 	"autoDocstring.docstringFormat": "sphinx",
 	"editor.codeActionsOnSave": {
 		"source.organizeImports": true,
+		"formatting": true
 	},
 	"editor.formatOnSave": true,
 	"python.formatting.autopep8Args": [
@@ -30,6 +31,8 @@
 		"iterrows",
 		"keyfield",
 		"keyfields",
+		"logtable",
+		"logtables",
 		"meshgrid",
 		"resultfields",
 		"Tanja",
@@ -37,6 +40,9 @@
 		"Tornede"
 	],
 	"terminal.integrated.env.linux": {
+		"PYTHONPATH": "${workspaceFolder}"
+	},
+	"terminal.integrated.env.windows": {
 		"PYTHONPATH": "${workspaceFolder}"
 	},
 	"jupyter.notebookFileRoot": "${workspaceFolder}",
@@ -51,5 +57,6 @@
 		"**/.git/objects/**": true,
 		"**/.git/subtree-cache/**": true,
 		"**/node_modules/*/**": true
-	}
+	},
+	"esbonio.sphinx.confDir": "${workspaceFolder}/docs/source"
 }

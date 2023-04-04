@@ -26,7 +26,7 @@ class EmptyFillDatabaseCallError(DatabaseError):
     pass
 
 
-class TableError(DatabaseError):
+class CreatingTableError(DatabaseError):
     pass
 
 
@@ -34,7 +34,7 @@ class InvalidResultFieldError(DatabaseError):
     pass
 
 
-class TableHasWrongStructureError(TableError):
+class TableHasWrongStructureError(CreatingTableError):
     pass
 
 
@@ -56,3 +56,6 @@ class InvalidConfigError(ConfigError):
 
 class InvalidValuesInConfiguration(ConfigError):
     pass
+
+class MissingLogTableError(ConfigError):
+	pass
