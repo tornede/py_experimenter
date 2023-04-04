@@ -29,11 +29,11 @@ A ``PyExperimenter`` can be created without any further information, assuming th
 
 Additionally, further information can be given to ``PyExperimenter``:
 
-- ``experiment_configuration_file_path``: The path of the :ref:`experiment configuration file <experiment_configuration_file>`. Default: ``config/experiment_configuration.cfg``
+- ``experiment_configuration_file_path``: The path of the :ref:`experiment configuration file <experiment_configuration_file>`. Default: ``config/experiment_configuration.cfg``.
 - ``database_credential_file_path``: The path of the :ref:`database credential file <database_credential_file>`. Default: ``config/database_credentials.cfg``
 - ``database_name``: The name of the database to manage the experiments. If given, it will overwrite the database name given in the `experiment_configuration_file_path`.
 - ``table_name``: The name of the database table to manage the experiments. If given, it will overwrite the table name given in the `experiment_configuration_file_path`.
-- ``name``: The name of the experimenter, which will be added to the database table of each executed experiment. If using the PyExperimenter on an HPC system, this can be used for the job ID, so that the according log file can easily be found. Default: ``PyExperimenter``
+- ``name``: The name of the experimenter, which will be added to the database table of each executed experiment. If using the PyExperimenter on an HPC system, this can be used for the job ID, so that the according log file can easily be found. Default: ``PyExperimenter``.
 
 
 -------------------
@@ -118,7 +118,7 @@ The following status exist:
 
 - ``created``: All parameters for the experiment are defined and the experiment is ready for execution.
 - ``running``: The experiment is currently in execution.
-- ``done``: The execution of the experiment terminated without interruption and the results are written into the database
+- ``done``: The execution of the experiment terminated without interruption and the results are written into the database.
 - ``error``: An error occurred during execution, which is also logged into the database.
 
 

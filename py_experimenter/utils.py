@@ -5,12 +5,12 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
-from py_experimenter.exceptions import ConfigError, MissingLogTableError, NoConfigFileError, ParameterCombinationError
+from py_experimenter.exceptions import ConfigError, NoConfigFileError, ParameterCombinationError
 
 
 def load_config(path):
     """
-    Load and return configuration file
+    Load and return configuration file.
     :param path: path to the config file
     :return: configuration file
     """
@@ -50,7 +50,7 @@ def get_keyfield_data(config):
 def extract_db_credentials_and_table_name_from_config(config):
     """
     Initialize connection to database based on configuration file. If the tables does not exist, a new one will be
-    created automatically
+    created automatically.
     :param config: Configuration file with database and experiment information
     :return: mysql_connector and table name from the config file
     """

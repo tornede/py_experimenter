@@ -21,11 +21,11 @@ Examples
 Fix
 ---
 
-- Start date is now set when pulling an experiment
-- Supported Python version is now >= 3.9
-- Changed row identification in ResultProcessor to experiment ID instead of checking keyfields
+- Start date is now set when pulling an experiment.
+- Supported Python version is now >= 3.9.
+- Changed row identification in ResultProcessor to experiment ID instead of checking keyfields.
 - Stack traces are now correctly logged into the mysql database, as the used mysql connector implementation has been changed to C. 
-- Changed multiprocessing to joblib due to issues with the example notebooks
+- Changed multiprocessing to joblib due to issues with the example notebooks.
 - The ``random_order`` parameter is not needed anymore for the execution, therefore it has been removed. 
 - Documentation of ``PyExperimenter.reset_experiments()`` has been updated to reflect the changes in the functionality.
 

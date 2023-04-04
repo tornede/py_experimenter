@@ -17,7 +17,7 @@ At the end, please make sure that you also :ref:`extended the unit tests <contri
 Creating an Issue
 ------------------
 
-A GitHub issue should contain any information that is needed that a third person understands the problem (in case of a bug) or the vision of a new feature. To create an issue
+A GitHub issue should contain any information that is needed that a third person understands the problem (in case of a bug) or the vision of a new feature. To create an issue:
 
 1. Go to the `GitHub Issues <github_py_experimenter_issues_>`_.
 2. Summarize the bug / vision as title of the issue. 
@@ -182,9 +182,9 @@ The documentation of the ``PyExperimenter`` is key to all users to understand th
 Create Pull Request
 --------------------
 
-After all changes are made, including  :ref:`tests <contribute_unit_tests>` and :ref:`documentation <contribute_update_documentation>`, make sure to commit and :ref:`push <contribute_fork_project>` all your changes. 
+After all changes are made, including  :ref:`tests <contribute_unit_tests>` and :ref:`documentation <contribute_update_documentation>`, make sure to commit and :ref:`push <contribute_fork_project>` all your changes.
 
-Afterwards, go to the `PyExperimenter GitHub Pull Requests <github_py_experimenter_pulls_>`_ and create a new pull request. 
+Afterwards, go to the `PyExperimenter GitHub Pull Requests <github_py_experimenter_pulls_>`_ and create a new pull request.
 
 1. Make sure to select the correct source and destination repositories and according branches. The source repository is your fork, and the source branch is the ``<feature_branch_name>``. The destination repository is ``tornede/py_experimenter`` and the destination branch is ``develop``.
 
