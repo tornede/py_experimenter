@@ -62,9 +62,6 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         except Error as err:
             raise DatabaseConnectionError(err)
 
-    def _start_transaction(self, connection, readonly=False):
-        connection.start_transaction(readonly=readonly)
-
     def _table_exists(self, cursor):
         self.execute(cursor, f"SHOW TABLES LIKE '{self.table_name}'")
         return self.fetchall(cursor)
@@ -85,7 +82,6 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         try:
             connection = self.connect()
             cursor = self.cursor(connection)
-            self._start_transaction(connection, readonly=False)
             experiment_id, description, values = self._execute_queries(connection, cursor)
         except Exception as err:
             connection.rollback()
@@ -113,7 +109,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
         connection = self.connect()
         cursor = self.cursor(connection)
-        self.execute(cursor, f"SELECT {column_names} FROM {self.table_name}")
+        self.execute(cursor, f"SELECT {', '.join(column_names)} FROM {self.table_name}")
         existing_rows = list(map(np.array2string, np.array(self.fetchall(cursor))))
         existing_rows = _remove_string_markers(existing_rows)
         existing_rows = _remove_double_whitespaces(existing_rows)

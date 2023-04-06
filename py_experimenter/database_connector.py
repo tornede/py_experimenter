@@ -144,7 +144,7 @@ class DatabaseConnector(abc.ABC):
         parameters = parameters if parameters is not None else {}
         fixed_parameter_combinations = fixed_parameter_combinations if fixed_parameter_combinations is not None else []
 
-        keyfield_names = utils.get_keyfield_names(self.database_credential_file_path)
+        keyfield_names = utils.get_keyfield_names(self.config)
         combinations = utils.combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations)
 
         if len(combinations) == 0:
@@ -153,7 +153,8 @@ class DatabaseConnector(abc.ABC):
         column_names = list(combinations[0].keys())
         logging.debug("Getting existing rows.")
         existing_rows = set(self._get_existing_rows(column_names))
-        time = datetime.now()
+        time = utils.get_timestamp_representation()
+        
         rows_skipped = 0
         rows = []
         logging.debug("Checking which of the experiments to be inserted already exist.")
@@ -163,7 +164,7 @@ class DatabaseConnector(abc.ABC):
                 continue
             values = list(combination.values())
             values.append(ExperimentStatus.CREATED.value)
-            values.append("%s" % time.strftime("%m/%d/%Y, %H:%M:%S"))
+            values.append(time)
             rows.append(values)
         
         if rows:
@@ -188,7 +189,8 @@ class DatabaseConnector(abc.ABC):
         except IndexError as e:
             raise NoExperimentsLeftException("No experiments left to execute")
         except Exception as e:
-            raise DatabaseConnectionError(f'error \n {e} raised. \n Please check if fill_table() was called correctly.')
+            raise
+            #raise DatabaseConnectionError(f'error \n {e} raised. \n Please check if fill_table() was called correctly.')
 
         return experiment_id, dict(zip([i[0] for i in description], *values))
 
@@ -211,11 +213,11 @@ class DatabaseConnector(abc.ABC):
     def _pull_open_experiment(self) -> Tuple[int, List, List]:
         pass
 
-    def _write_to_database(self, keys, values) -> None:
-        keys = ", ".join(keys)
-        values = "'" + self.__class__._write_to_database_separator.join([str(value) for value in values]) + "'"
+    def _write_to_database(self, df) -> None:
+        keys = ", ".join(df.columns)
+        values = ["('" + self.__class__._write_to_database_separator.join([str(value) for value in row]) + "')" for row in df.values]
 
-        stmt = f"INSERT INTO {self.table_name} ({keys}) VALUES ({values})"
+        stmt = f"INSERT INTO {self.table_name} ({keys}) VALUES {', '.join(values)}"
 
         connection = self.connect()
         cursor = self.cursor(connection)
