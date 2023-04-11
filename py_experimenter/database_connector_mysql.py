@@ -61,7 +61,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             return connect(**credentials)
         except Error as err:
             raise DatabaseConnectionError(err)
-            
+
     def _start_transaction(self, connection, readonly=False):
         connection.start_transaction(readonly=readonly)
 
