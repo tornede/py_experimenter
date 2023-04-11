@@ -61,6 +61,9 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             return connect(**credentials)
         except Error as err:
             raise DatabaseConnectionError(err)
+            
+    def _start_transaction(self, connection, readonly=False):
+        connection.start_transaction(readonly=readonly)
 
     def _table_exists(self, cursor):
         self.execute(cursor, f"SHOW TABLES LIKE '{self.table_name}'")
@@ -82,6 +85,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         try:
             connection = self.connect()
             cursor = self.cursor(connection)
+            self._start_transaction(connection, readonly=False)
             experiment_id, description, values = self._execute_queries(connection, cursor)
         except Exception as err:
             connection.rollback()

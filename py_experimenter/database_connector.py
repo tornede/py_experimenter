@@ -189,8 +189,7 @@ class DatabaseConnector(abc.ABC):
         except IndexError as e:
             raise NoExperimentsLeftException("No experiments left to execute")
         except Exception as e:
-            raise
-            #raise DatabaseConnectionError(f'error \n {e} raised. \n Please check if fill_table() was called correctly.')
+            raise DatabaseConnectionError(f'error \n {e} raised. \n Please check if fill_table() was called correctly.')
 
         return experiment_id, dict(zip([i[0] for i in description], *values))
 
