@@ -40,5 +40,5 @@ jobs:
       - name: Run tests
         run: |
           source $VENV
-          # Ignore the MySQL test, as it requires a MySQL server:
-          pytest --ignore=test/test_run_experiments/test_run_mysql_experiment.py --ignore=test/test_logtables/test_mysql.py
+          # Ignore the MySQL and MariaDB tests, as these require running servers:
+          pytest --ignore=test/test_run_experiments/test_run_mysql_experiment.py --ignore=test/test_logtables/test_mysql.py --ignore=test/test_run_experiments/test_run_mariadb_experiment.py --ignore=test/test_logtables/test_mariadb.py
