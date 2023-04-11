@@ -14,11 +14,12 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
     _write_to_database_separator = "', '"
     _prepared_statement_placeholder = '%s'
 
-    def __init__(self, experiment_configuration_file_path: ConfigParser, database_credential_file_path):
+    def __init__(self, experiment_configuration_file_path: ConfigParser, database_credential_file_path, explicit_transactions: bool = True):
         database_credentials = load_config(database_credential_file_path)
         self.host = database_credentials.get('CREDENTIALS', 'host')
         self.user = database_credentials.get('CREDENTIALS', 'user')
         self.password = database_credentials.get('CREDENTIALS', 'password')
+        self.explit_transactions = explicit_transactions
 
         super().__init__(experiment_configuration_file_path)
 
@@ -85,7 +86,8 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         try:
             connection = self.connect()
             cursor = self.cursor(connection)
-            self._start_transaction(connection, readonly=False)
+            if self.explit_transactions:
+                self._start_transaction(connection, readonly=False)
             experiment_id, description, values = self._execute_queries(connection, cursor)
         except Exception as err:
             connection.rollback()

@@ -11,6 +11,7 @@ from joblib import Parallel, delayed
 from py_experimenter import utils
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
+from py_experimenter.database_connector_mariadb import DatabaseConnectorMariaDB
 from py_experimenter.exceptions import InvalidConfigError, InvalidValuesInConfiguration, NoExperimentsLeftException
 from py_experimenter.experiment_status import ExperimentStatus
 from py_experimenter.result_processor import ResultProcessor
@@ -68,6 +69,8 @@ class PyExperimenter:
             self.dbconnector = DatabaseConnectorLITE(self.config)
         elif self.config['PY_EXPERIMENTER']['provider'] == 'mysql':
             self.dbconnector = DatabaseConnectorMYSQL(self.config, database_credential_file_path)
+        elif self.config['PY_EXPERIMENTER']['provider'] == 'mariadb':
+            self.dbconnector = DatabaseConnectorMariaDB(self.config, database_credential_file_path)
         else:
             raise ValueError('The provider indicated in the config file is not supported')
 
@@ -141,7 +144,7 @@ class PyExperimenter:
     def _is_valid_configuration(_config: configparser, database_credential_file_path: str = None) -> bool:
         """
         Checks whether the given experiment configuration is valid, i.e., it contains all necessary fields, the database provider
-        is either mysql or sqlite, and in case of a mysql database provider, that the database credentials are available.
+        is either mysql, mariadb, or sqlite, and in case of a mysql or mariadb database provider, that the database credentials are available.
 
         :param _config: The experiment configuration.
         :type _config: configparser
@@ -161,11 +164,11 @@ class PyExperimenter:
             logging.error('Error in config file: DATABASE section must contain provider, database, and table')
             return False
 
-        if _config['PY_EXPERIMENTER']['provider'] not in ['sqlite', 'mysql']:
-            logging.error('Error in config file: DATABASE provider must be either sqlite or mysql')
+        if _config['PY_EXPERIMENTER']['provider'] not in ['sqlite', 'mysql', 'mariadb']:
+            logging.error('Error in config file: DATABASE provider must be either sqlite, mysql, or mariadb')
             return False
 
-        if _config['PY_EXPERIMENTER']['provider'] == 'mysql':
+        if _config['PY_EXPERIMENTER']['provider'] in ['mysql', 'mariadb']:
             credentials = utils.load_config(database_credential_file_path)
             if not {'host', 'user', 'password'}.issubset(set(credentials.options('CREDENTIALS'))):
                 logging.error(

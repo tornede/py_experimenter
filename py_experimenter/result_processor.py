@@ -6,6 +6,7 @@ import py_experimenter.utils as utils
 from py_experimenter.database_connector import DatabaseConnector
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
+from py_experimenter.database_connector_mariadb import DatabaseConnectorMariaDB
 from py_experimenter.exceptions import InvalidConfigError, InvalidResultFieldError
 
 result_logger = logging.getLogger('result_logger')
@@ -37,6 +38,8 @@ class ResultProcessor:
             self._dbconnector: DatabaseConnector = DatabaseConnectorLITE(_config)
         elif _config['PY_EXPERIMENTER']['provider'] == 'mysql':
             self._dbconnector: DatabaseConnector = DatabaseConnectorMYSQL(_config, credential_path)
+        elif _config['PY_EXPERIMENTER']['provider'] == 'mariadb':
+            self._dbconnector: DatabaseConnector = DatabaseConnectorMariaDB(_config, credential_path)
         else:
             raise InvalidConfigError("Invalid database provider!")
 
