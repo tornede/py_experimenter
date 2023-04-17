@@ -8,6 +8,7 @@ assignees: ''
 ---
 
 * PyExperimenter version:
+* Database provider: 
 * Python version:
 * Operating System:
 
@@ -17,27 +18,28 @@ Describe what you wanted to do and what (unexpected) behaviour occurred.
 
 ### Steps to reproduce
 
-1. Used configuration:
-    ```
-    [PyExperimenter]
+#### Used configuration:
+```
+[PY_EXPERIMENTER]
+...
+```
+
+#### Used experiment function:
+```
+def run_experiment(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
     ...
-    ```
+```
 
-2. Used experiment function:
-    ```
-    def run_experiment(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
-        ...
-    ```
+#### Executed the following code: 
 
-3. Executed the following code: 
-    ```
-    experimenter = PyExperimenter(...)
-    ... 
-    ```
+```
+experimenter = PyExperimenter(...)
+... 
+```
 
-4. Got following error
-    ```
-    ...
-    ```
+#### Got following error
+```
+...
+```
 
-5. Database looks like: ADD SCREENSHOT
+#### Database looks like: ADD SCREENSHOT
