@@ -46,7 +46,6 @@ class ResultProcessor:
         want to write results to the database.
         :param results: Dictionary with result field name and result value pairs.
         """
-        time = utils.get_timestamp_representation()
         if not self._valid_result_fields(list(results.keys())):
             invalid_result_keys = set(list(results.keys())) - set(self._result_fields)
             raise InvalidResultFieldError(f"Invalid result keys: {invalid_result_keys}")
@@ -71,9 +70,9 @@ class ResultProcessor:
         for logtable_identifier, log_entries in logs.items():
             logtable_name = f'{self._table_name}__{logtable_identifier}'
             log_entries['experiment_id'] = str(self._experiment_id)
-            log_entries['timestamp'] = f"'{time}'"
-            queries.append(
-                f"INSERT INTO {logtable_name} ({', '.join(log_entries.keys())}) VALUES ({', '.join(map(lambda x: str(x), log_entries.values()))})")
+            log_entries['timestamp'] = f"{time}"
+            stmt = self._dbconnector.prepare_write_query(logtable_name, log_entries.keys())
+            queries.append((stmt, log_entries.values()))
         self._dbconnector.execute_queries(queries)
 
     def _change_status(self, status: str):

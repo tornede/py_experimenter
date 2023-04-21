@@ -47,9 +47,12 @@ class DatabaseConnector(abc.ABC):
         except Exception as e:
             raise DatabaseConnectionError(f'error \n{e}\n raised when committing to database.')
 
-    def execute(self, cursor, sql_statement):
+    def execute(self, cursor, sql_statement, values=None) -> None:
         try:
-            cursor.execute(sql_statement)
+            if values is None:
+                cursor.execute(sql_statement)
+            else:
+                cursor.execute(sql_statement, values)
         except Exception as e:
             raise DatabaseConnectionError(f'error \n{e}\n raised when executing sql statement.')
 
@@ -200,7 +203,7 @@ class DatabaseConnector(abc.ABC):
         self.execute(cursor, f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;")
         experiment_id = self.fetchall(cursor)[0][0]
         self.execute(
-            cursor, f"UPDATE {self.table_name} SET status = '{ExperimentStatus.RUNNING.value}', start_date = '{time}' WHERE id = {experiment_id};")
+            cursor, f"UPDATE {self.table_name} SET status = '{ExperimentStatus.RUNNING.value}', start_date = '{time}' WHERE id = {experiment_id};") #todo use prepared statements instead
         keyfields = ','.join(utils.get_keyfield_names(self.config))
         self.execute(cursor, f"SELECT {keyfields} FROM {self.table_name} WHERE id = {experiment_id};")
         values = self.fetchall(cursor)
@@ -220,14 +223,17 @@ class DatabaseConnector(abc.ABC):
 
         connection = self.connect()
         cursor = self.cursor(connection)
-        self.execute(cursor, stmt)
+        self.execute(cursor, stmt)#todo use prepared statements instead
         self.commit(connection)
         self.close_connection(connection)
+
+    def prepare_write_query(self, table_name: str, keys) -> str:
+        return f"INSERT INTO {table_name} ({', '.join(keys)}) VALUES ({','.join([self._prepared_statement_placeholder] * len(keys))})"
 
     def update_database(self, table_name: str, values: Dict[str, Union[str, int, object]], condition: str):
         connection = self.connect()
         cursor = self.cursor(connection)
-        cursor.execute(self._prepare_update_query(table_name, values.keys(), condition), list(values.values()))
+        self.execute(cursor, self._prepare_update_query(table_name, values.keys(), condition), list(values.values()))
         self.commit(connection)
         self.close_connection(connection)
 
@@ -311,7 +317,7 @@ class DatabaseConnector(abc.ABC):
         connection = self.connect()
         cursor = self.cursor(connection)
         for query in queries:
-            self.execute(cursor, query)
+            self.execute(cursor, query[0], tuple(query[1]))
         self.commit(connection)
         self.close_connection(connection)
 
