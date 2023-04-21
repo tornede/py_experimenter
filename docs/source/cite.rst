@@ -20,8 +20,7 @@ BibTex
 .. code-block:: 
 
     @article{Tornede2023, 
-        title = {PyExperimenter: Easily distribute experiments and track results}, 
-        journal = {Journal of Open Source Software},
+        title = {{PyExperimenter}: Easily distribute experiments and track results}, 
         author = {Tanja Tornede and Alexander Tornede and Lukas Fehring and Lukas Gehring and Helena Graf and Jonas Hanselle and Felix Mohr and Marcel Wever}, 
         journal = {Journal of Open Source Software},
         publisher = {The Open Journal},  
