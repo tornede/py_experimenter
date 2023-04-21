@@ -2,6 +2,15 @@
 Changelog
 =========
 
+v1.2.1 (21/04/2023)
+===================
+
+Feature
+-------
+- Improve performance addding new experiments to database table
+- Create issue template 
+- Update documentation to include JOSS publication
+
 
 v1.2.0 (04/04/2023)
 ===================
