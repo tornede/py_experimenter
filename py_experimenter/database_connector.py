@@ -140,7 +140,7 @@ class DatabaseConnector(abc.ABC):
         pass
 
     def fill_table(self, parameters=None, fixed_parameter_combinations=None) -> None:
-        logging.debug("Fill table with parameters")
+        logging.debug("Fill table with parameters.")
         parameters = parameters if parameters is not None else {}
         fixed_parameter_combinations = fixed_parameter_combinations if fixed_parameter_combinations is not None else []
 
@@ -150,25 +150,29 @@ class DatabaseConnector(abc.ABC):
         if len(combinations) == 0:
             raise EmptyFillDatabaseCallError("No combinations to execute found.")
 
-        column_names = ','.join(combinations[0].keys())
-
-        existing_rows = self._get_existing_rows(column_names)
-
-        column_names += ",status"
-        column_names += ",creation_date"
-
+        column_names = list(combinations[0].keys())
+        logging.debug("Getting existing rows.")
+        existing_rows = set(self._get_existing_rows(column_names))
         time = utils.get_timestamp_representation()
-        values_added = 0
+
+        rows_skipped = 0
+        rows = []
+        logging.debug("Checking which of the experiments to be inserted already exist.")
         for combination in combinations:
             if self._check_combination_in_existing_rows(combination, existing_rows, keyfield_names):
+                rows_skipped += 1
                 continue
             values = list(combination.values())
             values.append(ExperimentStatus.CREATED.value)
             values.append(time)
+            rows.append(values)
 
-            self._write_to_database(column_names.split(', '), values)
-            values_added += 1
-        logging.info(f"{values_added} values successfully added to database")
+        if rows:
+            logging.debug(f"Now adding {len(rows)} rows to database. {rows_skipped} rows were skipped.")
+            self._write_to_database(pd.DataFrame(rows, columns=column_names + ["status", "creation_date"]))
+            logging.info(f"{len(rows)} rows successfully added to database. {rows_skipped} rows were skipped.")
+        else:
+            logging.info(f"No rows to add. All the {len(combinations)} experiments already exist.")
 
     def _check_combination_in_existing_rows(self, combination, existing_rows, keyfield_names) -> bool:
         def _get_column_values():
@@ -208,11 +212,11 @@ class DatabaseConnector(abc.ABC):
     def _pull_open_experiment(self) -> Tuple[int, List, List]:
         pass
 
-    def _write_to_database(self, keys, values) -> None:
-        keys = ", ".join(keys)
-        values = "'" + self.__class__._write_to_database_separator.join([str(value) for value in values]) + "'"
+    def _write_to_database(self, df) -> None:
+        keys = ", ".join(df.columns)
+        values = df.apply(lambda row: "('" + self.__class__._write_to_database_separator.join([str(value) for value in row]) + "')", axis=1)
 
-        stmt = f"INSERT INTO {self.table_name} ({keys}) VALUES ({values})"
+        stmt = f"INSERT INTO {self.table_name} ({keys}) VALUES {', '.join(values)}"
 
         connection = self.connect()
         cursor = self.cursor(connection)

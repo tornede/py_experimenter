@@ -1,4 +1,6 @@
 import datetime
+import pandas as pd
+import numpy as np
 import os
 
 import mock
@@ -70,7 +72,7 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {'value': [1, 2], 'exponent': [3, 4]},
          [],
-         ['value,exponent,status,creation_date'],
+         ['value', 'exponent', 'status', 'creation_date'],
          [
              [1, 3, ExperimentStatus.CREATED.value],
              [1, 4, ExperimentStatus.CREATED.value],
@@ -80,7 +82,7 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {},
          [{'value': 1, 'exponent': 3}, {'value': 1, 'exponent': 4}],
-         ['value,exponent,status,creation_date'],
+         ['value', 'exponent', 'status', 'creation_date'],
          [
              [1, 3, ExperimentStatus.CREATED.value],
              [1, 4, ExperimentStatus.CREATED.value],
@@ -88,7 +90,7 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], },
          [{'exponent': 3, 'other_value': 5}],
-         ['value,exponent,other_value,status,creation_date'],
+         ['value', 'exponent', 'other_value', 'status', 'creation_date'],
          [
              [1, 3, 5, ExperimentStatus.CREATED.value],
              [2, 3, 5, ExperimentStatus.CREATED.value],
@@ -97,7 +99,7 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], 'exponent': [3, 4], },
          [{'other_value': 5}],
-         ['value,exponent,other_value,status,creation_date'],
+         ['value', 'exponent', 'other_value', 'status', 'creation_date'],
          [
              [1, 3, 5, ExperimentStatus.CREATED.value],
              [1, 4, 5, ExperimentStatus.CREATED.value],
@@ -131,13 +133,15 @@ def test_fill_table(
         experiment_configuration,
         database_credential_file_path=os.path.join('test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
     database_connector.fill_table(parameters, fixed_parameter_combination)
-    args = write_to_database_mock.call_args_list
+    args_of_first_call = write_to_database_mock.call_args_list[0][0]
 
-    assert len(args) == len(write_to_database_values)
-    for expected_args, arg in zip(write_to_database_values, args):
-        assert write_to_database_keys == arg[0][0]
-        assert expected_args == arg[0][1][:-1]
-        datetime_from_string_argument = datetime.datetime.strptime(arg[0][1][-1], '%Y-%m-%d %H:%M:%S')
+    assert type(args_of_first_call[0]) == pd.DataFrame
+    df = args_of_first_call[0]
+    assert len(df) == len(write_to_database_values)
+    assert write_to_database_keys == list(df.columns)
+    for expected_row, row in zip(write_to_database_values, df.values):
+        assert expected_row == row[:-1].tolist()
+        datetime_from_string_argument = datetime.datetime.strptime(row[-1], '%Y-%m-%d %H:%M:%S')
         assert datetime_from_string_argument.day == datetime.datetime.now().day
         assert datetime_from_string_argument.hour == datetime.datetime.now().hour
         assert datetime_from_string_argument.minute - datetime.datetime.now().minute <= 2

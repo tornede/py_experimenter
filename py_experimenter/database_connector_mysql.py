@@ -113,7 +113,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
         connection = self.connect()
         cursor = self.cursor(connection)
-        self.execute(cursor, f"SELECT {column_names} FROM {self.table_name}")
+        self.execute(cursor, f"SELECT {', '.join(column_names)} FROM {self.table_name}")
         existing_rows = list(map(np.array2string, np.array(self.fetchall(cursor))))
         existing_rows = _remove_string_markers(existing_rows)
         existing_rows = _remove_double_whitespaces(existing_rows)

@@ -74,7 +74,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
             return row.replace("'", "")
         connection = self.connect()
         cursor = self.cursor(connection)
-        self.execute(cursor, f"SELECT {column_names} FROM {self.table_name}")
+        self.execute(cursor, f"SELECT {', '.join(column_names)} FROM {self.table_name}")
         existing_rows = list(map(np.array2string, np.array(self.fetchall(cursor))))
         existing_rows = [' '.join(_remove_string_markers(row).split()) for row in existing_rows]
         self.close_connection(connection)
