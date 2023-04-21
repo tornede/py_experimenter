@@ -39,6 +39,7 @@ Thereby, ``PyExperimenter`` alleviates the aforementioned overhead and allows ex
    :hidden:
    :caption: About PyExperimenter
    
+   cite
    authors
    license
    changelog
