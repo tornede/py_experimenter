@@ -17,4 +17,5 @@ Core Development Team
 Contributions
 ---------------------
 
+- Karlson Pfannschmidt
 - Lukas Gehring

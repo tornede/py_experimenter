@@ -1,0 +1,71 @@
+cff-version: "1.2.0"
+authors:
+- family-names: Tornede
+  given-names: Tanja
+  orcid: "https://orcid.org/0000-0001-9954-462X"
+- family-names: Tornede
+  given-names: Alexander
+  orcid: "https://orcid.org/0000-0002-2415-2186"
+- family-names: Fehring
+  given-names: Lukas
+  orcid: "https://orcid.org/0000-0001-8057-4650"
+- family-names: Gehring
+  given-names: Lukas
+- family-names: Graf
+  given-names: Helena
+  orcid: "https://orcid.org/0000-0001-9447-0609"
+- family-names: Hanselle
+  given-names: Jonas
+  orcid: "https://orcid.org/0000-0002-1231-4985"
+- family-names: Mohr
+  given-names: Felix
+  orcid: "https://orcid.org/0000-0002-9293-2424"
+- family-names: Wever
+  given-names: Marcel
+  orcid: "https://orcid.org/0000-0001-9782-6818"
+contact:
+- family-names: Tornede
+  given-names: Tanja
+  orcid: "https://orcid.org/0000-0001-9954-462X"
+doi: 10.5281/zenodo.7838280
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Tornede
+    given-names: Tanja
+    orcid: "https://orcid.org/0000-0001-9954-462X"
+  - family-names: Tornede
+    given-names: Alexander
+    orcid: "https://orcid.org/0000-0002-2415-2186"
+  - family-names: Fehring
+    given-names: Lukas
+    orcid: "https://orcid.org/0000-0001-8057-4650"
+  - family-names: Gehring
+    given-names: Lukas
+  - family-names: Graf
+    given-names: Helena
+    orcid: "https://orcid.org/0000-0001-9447-0609"
+  - family-names: Hanselle
+    given-names: Jonas
+    orcid: "https://orcid.org/0000-0002-1231-4985"
+  - family-names: Mohr
+    given-names: Felix
+    orcid: "https://orcid.org/0000-0002-9293-2424"
+  - family-names: Wever
+    given-names: Marcel
+    orcid: "https://orcid.org/0000-0001-9782-6818"
+  date-published: 2023-04-20
+  doi: 10.21105/joss.05149
+  issn: 2475-9066
+  issue: 84
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 5149
+  title: "PyExperimenter: Easily distribute experiments and track
+    results"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.05149"
+  volume: 8
+title: "PyExperimenter: Easily distribute experiments and track results"
