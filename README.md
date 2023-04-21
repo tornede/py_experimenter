@@ -1,6 +1,10 @@
-[![doc](https://img.shields.io/badge/doc-success-success)](https://tornede.github.io/py_experimenter)
-[![pypi](https://img.shields.io/pypi/v/py_experimenter)](https://pypi.org/project/py-experimenter/)
-[![GitHub](https://img.shields.io/github/license/tornede/py_experimenter)](https://tornede.github.io/py_experimenter/license.html)
+[![Project homepage](https://img.shields.io/badge/Project%20homepage-tornede.github.io/py_experimenter-0092CD)](https://tornede.github.io/py_experimenter)
+[![Pypi](https://img.shields.io/pypi/v/py_experimenter)](https://pypi.org/project/py-experimenter/)
+[![License](https://img.shields.io/github/license/tornede/py_experimenter)](https://tornede.github.io/py_experimenter/license.html)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.05149/status.svg)](https://doi.org/10.21105/joss.05149)
+
+![Tests](https://github.com/tornede/py_experimenter/actions/workflows/tests.yml/badge.svg)
+![GitHub Pages](https://github.com/tornede/py_experimenter/actions/workflows/github-pages.yml/badge.svg)
 
 <img src="docs/source/_static/py-experimenter-logo.png" alt="PyExperimenter Logo: Python biting a database" width="200px"/>
 
@@ -24,3 +28,28 @@ For more details check out the [`PyExperimenter` documentation](https://tornede.
 
 - [Installation](https://tornede.github.io/py_experimenter/installation.html)
 - [Examples](https://tornede.github.io/py_experimenter/examples/example_general_usage.html)
+
+## Cite PyExperimenter
+
+If you use `PyExperimenter` in a scientific publication, we would appreciate a citation in one of the following ways.
+
+### Citation String
+
+Tornede et al., (2023). PyExperimenter: Easily distribute experiments and track results. Journal of Open Source Software, 8(84), 5149, https://doi.org/10.21105/joss.05149
+
+### BibTex
+```
+@article{Tornede2023, 
+    title = {PyExperimenter: Easily distribute experiments and track results}, 
+    journal = {Journal of Open Source Software},
+    author = {Tanja Tornede and Alexander Tornede and Lukas Fehring and Lukas Gehring and Helena Graf and Jonas Hanselle and Felix Mohr and Marcel Wever}, 
+    journal = {Journal of Open Source Software},
+    publisher = {The Open Journal},  
+    year = {2023}, 
+    volume = {8}, 
+    number = {84}, 
+    pages = {5149}, 
+    doi = {10.21105/joss.05149}, 
+    url = {https://doi.org/10.21105/joss.05149}
+}
+```
