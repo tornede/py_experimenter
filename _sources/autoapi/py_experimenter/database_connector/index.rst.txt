@@ -99,7 +99,7 @@ Classes
       :abstractmethod:
 
 
-   .. py:method:: _write_to_database(df) -> None
+   .. py:method:: _write_to_database(keys, values) -> None
 
 
    .. py:method:: update_database(table_name: str, values: Dict[str, Union[str, int, object]], condition: str)
