@@ -154,7 +154,7 @@ class DatabaseConnector(abc.ABC):
         logging.debug("Getting existing rows.")
         existing_rows = set(self._get_existing_rows(column_names))
         time = utils.get_timestamp_representation()
-        
+
         rows_skipped = 0
         rows = []
         logging.debug("Checking which of the experiments to be inserted already exist.")
@@ -166,7 +166,7 @@ class DatabaseConnector(abc.ABC):
             values.append(ExperimentStatus.CREATED.value)
             values.append(time)
             rows.append(values)
-        
+
         if rows:
             logging.debug(f"Now adding {len(rows)} rows to database. {rows_skipped} rows were skipped.")
             self._write_to_database(pd.DataFrame(rows, columns=column_names + ["status", "creation_date"]))
@@ -214,7 +214,7 @@ class DatabaseConnector(abc.ABC):
 
     def _write_to_database(self, df) -> None:
         keys = ", ".join(df.columns)
-        values = ["('" + self.__class__._write_to_database_separator.join([str(value) for value in row]) + "')" for row in df.values]
+        values = df.apply(lambda row: "('" + self.__class__._write_to_database_separator.join([str(value) for value in row]) + "')", axis=1)
 
         stmt = f"INSERT INTO {self.table_name} ({keys}) VALUES {', '.join(values)}"
 
