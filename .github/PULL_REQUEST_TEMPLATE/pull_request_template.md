@@ -10,7 +10,7 @@
 ## Changes
 <!--- Explain your changes in detail here. -->
 
-#### Type of Changes
+#### Type Of Changes
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
