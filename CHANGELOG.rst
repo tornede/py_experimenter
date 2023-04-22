@@ -2,6 +2,35 @@
 Changelog
 =========
 
+
+v1.X.X (?/?/2023)
+===================
+
+Feature
+-------
+
+- Improved issue template
+- New pull request template
+- Extended documentation for development
+
+
+Examples
+--------
+
+- ?
+
+
+Fix
+---
+
+- ?
+
+
+Tests
+-----
+
+- ?
+
 v1.2.1 (21/04/2023)
 ===================
 
