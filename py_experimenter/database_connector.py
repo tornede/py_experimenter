@@ -125,9 +125,9 @@ class DatabaseConnector(abc.ABC):
             raise CreatingTableError(f'Error when creating table: {err}')
 
     def _get_create_table_query(self, columns: List[Tuple['str']], table_name: str, logtable: bool):
-        columns = ['%s %s DEFAULT NULL' % (self.escape_sql_chars(field)[0], datatype) for field, datatype in columns]
-        columns = ','.join(self.escape_sql_chars(*columns))
-        query = f"CREATE TABLE {self.escape_sql_chars(table_name)[0]} (ID INTEGER PRIMARY KEY {self.get_autoincrement()}"
+        columns = ['%s %s DEFAULT NULL' % (field, datatype) for field, datatype in columns]
+        columns = ','.join(columns)
+        query = f"CREATE TABLE {table_name} (ID INTEGER PRIMARY KEY {self.get_autoincrement()}"
         if logtable:
             query += f", experiment_id INTEGER, timestamp DATETIME, {columns}, FOREIGN KEY (experiment_id) REFERENCES {self.table_name}(ID) ON DELETE CASCADE"
         else:
@@ -165,7 +165,7 @@ class DatabaseConnector(abc.ABC):
             if self._check_combination_in_existing_rows(combination, existing_rows, keyfield_names):
                 rows_skipped += 1
                 continue
-            values = list(combination.values())
+            values = list(map(lambda x: str(x), combination.values()))
             values.append(ExperimentStatus.CREATED.value)
             values.append(time)
             rows.append(values)
@@ -203,7 +203,7 @@ class DatabaseConnector(abc.ABC):
         self.execute(cursor, f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;")
         experiment_id = self.fetchall(cursor)[0][0]
         self.execute(
-            cursor, f"UPDATE {self.table_name} SET status = '{ExperimentStatus.RUNNING.value}', start_date = '{time}' WHERE id = {experiment_id};") #todo use prepared statements instead
+            cursor, f"UPDATE {self.table_name} SET status = {self._prepared_statement_placeholder}, start_date = {self._prepared_statement_placeholder} WHERE id = {self._prepared_statement_placeholder};", (ExperimentStatus.RUNNING.value, time, experiment_id))
         keyfields = ','.join(utils.get_keyfield_names(self.config))
         self.execute(cursor, f"SELECT {keyfields} FROM {self.table_name} WHERE id = {experiment_id};")
         values = self.fetchall(cursor)
@@ -223,7 +223,7 @@ class DatabaseConnector(abc.ABC):
 
         connection = self.connect()
         cursor = self.cursor(connection)
-        self.execute(cursor, stmt)#todo use prepared statements instead
+        self.execute(cursor, stmt, values)
         self.commit(connection)
         self.close_connection(connection)
 
@@ -233,33 +233,14 @@ class DatabaseConnector(abc.ABC):
     def update_database(self, table_name: str, values: Dict[str, Union[str, int, object]], condition: str):
         connection = self.connect()
         cursor = self.cursor(connection)
-        self.execute(cursor, self._prepare_update_query(table_name, values.keys(), condition), list(values.values()))
+        self.execute(cursor, self._prepare_update_query(table_name, values.keys(), condition),
+                     list(values.values()))
         self.commit(connection)
         self.close_connection(connection)
 
     def _prepare_update_query(self, table_name: str, values: Dict[str, Union[str, int, object]],  condition: str) -> str:
         return (f"UPDATE {table_name} SET {', '.join(f'{key} = {self._prepared_statement_placeholder}' for key in values)}"
                 f" WHERE {condition}")
-
-    def not_executed_yet(self, where) -> bool:
-        not_executed = False
-
-        try:
-            connection = self.connect()
-            cursor = self.cursor(connection)
-
-            stmt = "SELECT status FROM %s WHERE %s" % (self.table_name, where)
-
-            self.execute(cursor, stmt)
-            for result in cursor:
-                if result[0] == 'created':
-                    not_executed = True
-
-        except Exception as err:
-            logging.error(err)
-        else:
-            connection.close()
-            return not_executed
 
     def reset_experiments(self, *states: str) -> None:
         def get_dict_for_keyfields_and_rows(keyfields: List[str], rows: List[List[str]]) -> List[dict]:

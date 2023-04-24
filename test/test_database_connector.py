@@ -74,26 +74,26 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
          [],
          ['value', 'exponent', 'status', 'creation_date'],
          [
-             [1, 3, ExperimentStatus.CREATED.value],
-             [1, 4, ExperimentStatus.CREATED.value],
-             [2, 3, ExperimentStatus.CREATED.value],
-             [2, 4, ExperimentStatus.CREATED.value]
+             ['1', '3', str(ExperimentStatus.CREATED.value)],
+             ['1', '4', str(ExperimentStatus.CREATED.value)],
+             ['2', '3', str(ExperimentStatus.CREATED.value)],
+             ['2', '4', str(ExperimentStatus.CREATED.value)]
         ]),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {},
          [{'value': 1, 'exponent': 3}, {'value': 1, 'exponent': 4}],
          ['value', 'exponent', 'status', 'creation_date'],
          [
-             [1, 3, ExperimentStatus.CREATED.value],
-             [1, 4, ExperimentStatus.CREATED.value],
+             ['1', '3', str(ExperimentStatus.CREATED.value)],
+             ['1', '4', str(ExperimentStatus.CREATED.value)],
         ]),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], },
          [{'exponent': 3, 'other_value': 5}],
          ['value', 'exponent', 'other_value', 'status', 'creation_date'],
          [
-             [1, 3, 5, ExperimentStatus.CREATED.value],
-             [2, 3, 5, ExperimentStatus.CREATED.value],
+             ['1', '3', '5', str(ExperimentStatus.CREATED.value)],
+             ['2', '3', '5', str(ExperimentStatus.CREATED.value)],
         ]
         ),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
@@ -101,10 +101,10 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
          [{'other_value': 5}],
          ['value', 'exponent', 'other_value', 'status', 'creation_date'],
          [
-             [1, 3, 5, ExperimentStatus.CREATED.value],
-             [1, 4, 5, ExperimentStatus.CREATED.value],
-             [2, 3, 5, ExperimentStatus.CREATED.value],
-             [2, 4, 5, ExperimentStatus.CREATED.value],
+             ['1', '3', '5', str(ExperimentStatus.CREATED.value)],
+             ['1', '4', '5', str(ExperimentStatus.CREATED.value)],
+             ['2', '3', '5', str(ExperimentStatus.CREATED.value)],
+             ['2', '4', '5', str(ExperimentStatus.CREATED.value)],
         ]
         ),
     ]
