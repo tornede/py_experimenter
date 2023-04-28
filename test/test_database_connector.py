@@ -74,26 +74,26 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
          [],
          ['value', 'exponent', 'status', 'creation_date'],
          [
-             ['1', '3', str(ExperimentStatus.CREATED.value)],
-             ['1', '4', str(ExperimentStatus.CREATED.value)],
-             ['2', '3', str(ExperimentStatus.CREATED.value)],
-             ['2', '4', str(ExperimentStatus.CREATED.value)]
+             [1, 3, str(ExperimentStatus.CREATED.value)],
+             [1, 4, str(ExperimentStatus.CREATED.value)],
+             [2, 3, str(ExperimentStatus.CREATED.value)],
+             [2, 4, str(ExperimentStatus.CREATED.value)]
         ]),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {},
          [{'value': 1, 'exponent': 3}, {'value': 1, 'exponent': 4}],
          ['value', 'exponent', 'status', 'creation_date'],
          [
-             ['1', '3', str(ExperimentStatus.CREATED.value)],
-             ['1', '4', str(ExperimentStatus.CREATED.value)],
+             [1, 3, str(ExperimentStatus.CREATED.value)],
+             [1, 4, str(ExperimentStatus.CREATED.value)],
         ]),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], },
          [{'exponent': 3, 'other_value': 5}],
          ['value', 'exponent', 'other_value', 'status', 'creation_date'],
          [
-             ['1', '3', '5', str(ExperimentStatus.CREATED.value)],
-             ['2', '3', '5', str(ExperimentStatus.CREATED.value)],
+             [1, 3, 5, str(ExperimentStatus.CREATED.value)],
+             [2, 3, 5, str(ExperimentStatus.CREATED.value)],
         ]
         ),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
@@ -101,10 +101,10 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
          [{'other_value': 5}],
          ['value', 'exponent', 'other_value', 'status', 'creation_date'],
          [
-             ['1', '3', '5', str(ExperimentStatus.CREATED.value)],
-             ['1', '4', '5', str(ExperimentStatus.CREATED.value)],
-             ['2', '3', '5', str(ExperimentStatus.CREATED.value)],
-             ['2', '4', '5', str(ExperimentStatus.CREATED.value)],
+             [1, 3, 5, str(ExperimentStatus.CREATED.value)],
+             [1, 4, 5, str(ExperimentStatus.CREATED.value)],
+             [2, 3, 5, str(ExperimentStatus.CREATED.value)],
+             [2, 4, 5, str(ExperimentStatus.CREATED.value)],
         ]
         ),
     ]
@@ -133,14 +133,15 @@ def test_fill_table(
         experiment_configuration,
         database_credential_file_path=os.path.join('test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
     database_connector.fill_table(parameters, fixed_parameter_combination)
-    array_values, columns  = write_to_database_mock.call_args_list[0][0]
+    values, columns = write_to_database_mock.call_args_list[0][0]
 
-    assert isinstance(array_values[0], np.ndarray)
-    assert array_values.shape[0] == len(write_to_database_values)
+    assert isinstance(values, list)
+    assert len(values) == len(write_to_database_values)
     assert write_to_database_keys == columns
-    for expected_row, row in zip(write_to_database_values, array_values):
-        assert expected_row == row[:-1].tolist()
-        datetime_from_string_argument = datetime.datetime.strptime(row[-1], '%Y-%m-%d %H:%M:%S')
+    for expected_entry, entry in zip(write_to_database_values, values):
+        assert isinstance(entry, list)
+        assert expected_entry == entry[:-1]
+        datetime_from_string_argument = datetime.datetime.strptime(entry[-1], '%Y-%m-%d %H:%M:%S')
         assert datetime_from_string_argument.day == datetime.datetime.now().day
         assert datetime_from_string_argument.hour == datetime.datetime.now().hour
         assert datetime_from_string_argument.minute - datetime.datetime.now().minute <= 2

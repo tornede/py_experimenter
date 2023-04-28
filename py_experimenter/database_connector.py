@@ -1,4 +1,5 @@
 import abc
+import itertools
 import logging
 from configparser import ConfigParser
 from typing import Dict, List, Optional, Tuple, Union
@@ -166,14 +167,14 @@ class DatabaseConnector(abc.ABC):
             if self._check_combination_in_existing_rows(combination, existing_rows, keyfield_names):
                 rows_skipped += 1
                 continue
-            values = list(map(lambda x: str(x), combination.values()))
+            values = list(combination.values())
             values.append(ExperimentStatus.CREATED.value)
             values.append(time)
             rows.append(values)
 
         if rows:
             logging.debug(f"Now adding {len(rows)} rows to database. {rows_skipped} rows were skipped.")
-            self._write_to_database(np.array(rows), column_names + ["status", "creation_date"])
+            self._write_to_database(rows, column_names + ["status", "creation_date"])
             logging.info(f"{len(rows)} rows successfully added to database. {rows_skipped} rows were skipped.")
         else:
             logging.info(f"No rows to add. All the {len(combinations)} experiments already exist.")
@@ -216,10 +217,9 @@ class DatabaseConnector(abc.ABC):
     def _pull_open_experiment(self) -> Tuple[int, List, List]:
         pass
 
-    def _write_to_database(self, values: np.ndarray, columns=List[str]) -> None:
-        values = values.astype(str)
+    def _write_to_database(self, values: List, columns=List[str]) -> None:
         values_prepared = ','.join([f"({', '.join([self._prepared_statement_placeholder] * len(columns))})"] * len(values))
-        values = values.flatten().tolist()
+        values = list(map(lambda x: str(x) if x is not None else x, itertools.chain(*values)))
         stmt = f"INSERT INTO {self.table_name} ({','.join(columns)}) VALUES {values_prepared}"
 
         connection = self.connect()
