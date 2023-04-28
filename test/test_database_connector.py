@@ -1,9 +1,9 @@
 import datetime
-import pandas as pd
-import numpy as np
 import os
 
 import mock
+import numpy as np
+import pandas as pd
 import pytest
 from mock import patch
 
@@ -133,13 +133,12 @@ def test_fill_table(
         experiment_configuration,
         database_credential_file_path=os.path.join('test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
     database_connector.fill_table(parameters, fixed_parameter_combination)
-    args_of_first_call = write_to_database_mock.call_args_list[0][0]
+    array_values, columns  = write_to_database_mock.call_args_list[0][0]
 
-    assert type(args_of_first_call[0]) == pd.DataFrame
-    df = args_of_first_call[0]
-    assert len(df) == len(write_to_database_values)
-    assert write_to_database_keys == list(df.columns)
-    for expected_row, row in zip(write_to_database_values, df.values):
+    assert isinstance(array_values[0], np.ndarray)
+    assert array_values.shape[0] == len(write_to_database_values)
+    assert write_to_database_keys == columns
+    for expected_row, row in zip(write_to_database_values, array_values):
         assert expected_row == row[:-1].tolist()
         datetime_from_string_argument = datetime.datetime.strptime(row[-1], '%Y-%m-%d %H:%M:%S')
         assert datetime_from_string_argument.day == datetime.datetime.now().day

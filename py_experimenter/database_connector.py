@@ -3,6 +3,7 @@ import logging
 from configparser import ConfigParser
 from typing import Dict, List, Optional, Tuple, Union
 
+import numpy as np
 import pandas as pd
 
 from py_experimenter import utils
@@ -172,7 +173,7 @@ class DatabaseConnector(abc.ABC):
 
         if rows:
             logging.debug(f"Now adding {len(rows)} rows to database. {rows_skipped} rows were skipped.")
-            self._write_to_database(pd.DataFrame(rows, columns=column_names + ["status", "creation_date"]))
+            self._write_to_database(np.array(rows), column_names + ["status", "creation_date"])
             logging.info(f"{len(rows)} rows successfully added to database. {rows_skipped} rows were skipped.")
         else:
             logging.info(f"No rows to add. All the {len(combinations)} experiments already exist.")
@@ -215,11 +216,11 @@ class DatabaseConnector(abc.ABC):
     def _pull_open_experiment(self) -> Tuple[int, List, List]:
         pass
 
-    def _write_to_database(self, df) -> None:
-        keys = ", ".join(df.columns)
-        values = df.apply(lambda row: "('" + self.__class__._write_to_database_separator.join([str(value) for value in row]) + "')", axis=1)
-
-        stmt = f"INSERT INTO {self.table_name} ({keys}) VALUES {', '.join(values)}"
+    def _write_to_database(self, values: np.ndarray, columns=List[str]) -> None:
+        values = values.astype(str)
+        values_prepared = ','.join([f"({', '.join([self._prepared_statement_placeholder] * len(columns))})"] * len(values))
+        values = values.flatten().tolist()
+        stmt = f"INSERT INTO {self.table_name} ({','.join(columns)}) VALUES {values_prepared}"
 
         connection = self.connect()
         cursor = self.cursor(connection)
