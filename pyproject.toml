@@ -31,10 +31,13 @@ classifiers = [
 python = "^3.9"
 numpy = ">=1.15"
 pandas = ">=1.0"
-mysql-connector-python = ">=8.0"
 jupyterlab = "^3.5.0"
 joblib = "^1.2.0"
 codecarbon = "^2.2.1"
+<<<<<<< HEAD
+=======
+pymysql = "^1.0.3"
+>>>>>>> 735e696 (Adopt pymysql)
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.0"

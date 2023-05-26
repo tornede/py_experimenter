@@ -4,7 +4,7 @@ import socket
 from math import cos, sin
 
 import pandas as pd
-from mysql.connector.errors import ProgrammingError
+from pymysql.err import ProgrammingError
 
 from py_experimenter.experimenter import PyExperimenter
 from py_experimenter.result_processor import ResultProcessor

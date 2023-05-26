@@ -3,7 +3,7 @@ from configparser import ConfigParser
 from typing import List, Tuple
 
 import numpy as np
-from mysql.connector import Error, connect
+from pymysql import Error, connect
 
 from py_experimenter.database_connector import DatabaseConnector
 from py_experimenter.exceptions import DatabaseConnectionError, DatabaseCreationError
@@ -62,7 +62,8 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             raise DatabaseConnectionError(err)
 
     def _start_transaction(self, connection, readonly=False):
-        connection.start_transaction(readonly=readonly)
+        if not readonly:
+            connection.begin()
 
     def _table_exists(self, cursor, table_name:str = None) -> bool:
         table_name = table_name if table_name is not None else self.table_name
