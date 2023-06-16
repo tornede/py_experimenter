@@ -19,6 +19,7 @@ Classes
 
 .. py:class:: DatabaseConnector(config: configparser.ConfigParser)
 
+
    Bases: :py:obj:`abc.ABC`
 
    Helper class that provides a standard way to create an ABC using
@@ -42,7 +43,7 @@ Classes
    .. py:method:: commit(connection) -> None
 
 
-   .. py:method:: execute(cursor, sql_statement)
+   .. py:method:: execute(cursor, sql_statement, values=None) -> None
 
 
    .. py:method:: cursor(connection)
@@ -99,16 +100,16 @@ Classes
       :abstractmethod:
 
 
-   .. py:method:: _write_to_database(df) -> None
+   .. py:method:: _write_to_database(values: List, columns=List[str]) -> None
+
+
+   .. py:method:: prepare_write_query(table_name: str, keys) -> str
 
 
    .. py:method:: update_database(table_name: str, values: Dict[str, Union[str, int, object]], condition: str)
 
 
    .. py:method:: _prepare_update_query(table_name: str, values: Dict[str, Union[str, int, object]], condition: str) -> str
-
-
-   .. py:method:: not_executed_yet(where) -> bool
 
 
    .. py:method:: reset_experiments(*states: str) -> None
