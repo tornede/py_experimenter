@@ -22,7 +22,7 @@ def load_config(path):
         raise NoConfigFileError(f'Configuration file missing! Please add file: {path}')
 
     return config
-
+    
 
 def get_keyfield_data(config):
     keyfields = get_keyfields(config)

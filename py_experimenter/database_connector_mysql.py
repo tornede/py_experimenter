@@ -11,7 +11,6 @@ from py_experimenter.utils import load_config
 
 
 class DatabaseConnectorMYSQL(DatabaseConnector):
-    _write_to_database_separator = "', '"
     _prepared_statement_placeholder = '%s'
 
     def __init__(self, experiment_configuration_file_path: ConfigParser, database_credential_file_path):
@@ -75,7 +74,8 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
     def _table_has_correct_structure(self, cursor, typed_fields):
         self.execute(cursor,
-                     f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{self.table_name}' AND TABLE_SCHEMA = '{self.database_name}'")
+                     f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = {self._prepared_statement_placeholder} AND TABLE_SCHEMA = {self._prepared_statement_placeholder}",
+                     (self.table_name, self.database_name))
 
         columns = self._exclude_fixed_columns([k[0] for k in self.fetchall(cursor)])
         config_columns = [k[0] for k in typed_fields]
@@ -93,16 +93,6 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         self.close_connection(connection)
 
         return experiment_id, description, values
-
-    @staticmethod
-    def escape_sql_chars(*args):
-        escaped_args = []
-        for arg in args:
-            if isinstance(arg, str):
-                escaped_args.append(arg.replace("'", "''").replace('"', '""').replace('`', '``'))
-            else:
-                escaped_args.append(arg)
-        return escaped_args
     
     def _get_existing_rows(self, column_names):
         def _remove_double_whitespaces(existing_rows):
@@ -113,7 +103,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
         connection = self.connect()
         cursor = self.cursor(connection)
-        self.execute(cursor, f"SELECT {', '.join(column_names)} FROM {self.table_name}")
+        self.execute(cursor, f"SELECT {','.join(column_names)} FROM {self.table_name}")
         existing_rows = list(map(np.array2string, np.array(self.fetchall(cursor))))
         existing_rows = _remove_string_markers(existing_rows)
         existing_rows = _remove_double_whitespaces(existing_rows)

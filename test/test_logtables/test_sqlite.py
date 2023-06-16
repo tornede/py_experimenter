@@ -36,7 +36,6 @@ def test_tables_created(execute_mock, close_connection_mock, fetchall_mock, curs
     assert execute_mock.mock_calls[1][1][1] == ('CREATE TABLE test_sqlite_logtables__test_sqlite_log (ID INTEGER PRIMARY KEY AUTOINCREMENT, experiment_id INTEGER,'
                                                 ' timestamp DATETIME, test int DEFAULT NULL, FOREIGN KEY (experiment_id) REFERENCES test_sqlite_logtables(ID) ON DELETE CASCADE);')
 
-
 @freeze_time("2012-01-14 03:21:34")
 @patch('py_experimenter.result_processor.DatabaseConnectorLITE')
 def test_logtable_insertion(database_connector_mock):
@@ -44,12 +43,16 @@ def test_logtable_insertion(database_connector_mock):
     config.read(os.path.join('test', 'test_logtables', 'sqlite_logtables.cfg'))
     result_processor = ResultProcessor(config, None, None, None, 0)
     result_processor._table_name = 'table_name'
-    result_processor.process_logs({'test_table_0': {'test0': 'test', 'test1': 'test'},
-                                   'test_table_1': {'test0': 'test'}})
+    table_0_logs =  {'test0': 'test', 'test1': 'test'}
+    table_1_logs =  {'test0': 'test'}
+    result_processor.process_logs({'test_table_0': table_0_logs,
+                                   'test_table_1': table_1_logs})
+    # result_processor._dbconnector.prepare_write_query.
+    result_processor._dbconnector.prepare_write_query.assert_any_call(
+        'table_name__test_table_1', table_1_logs.keys())
+    result_processor._dbconnector.prepare_write_query.assert_any_call(
+         'table_name__test_table_0', table_0_logs.keys())
     result_processor._dbconnector.execute_queries.assert_called()
-    result_processor._dbconnector.execute_queries.assert_called_with(
-        ['INSERT INTO table_name__test_table_0 (test0, test1, experiment_id, timestamp) VALUES (test, test, 0, \'2012-01-14 03:21:34\')',
-         'INSERT INTO table_name__test_table_1 (test0, experiment_id, timestamp) VALUES (test, 0, \'2012-01-14 03:21:34\')'])
 
 
 @patch('py_experimenter.experimenter.DatabaseConnectorLITE._test_connection')
