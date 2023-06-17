@@ -6,20 +6,20 @@ import numpy as np
 from mysql.connector import Error, connect
 
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.exceptions import CreatingTableError, DatabaseConnectionError, DatabaseCreationError
+from py_experimenter.exceptions import DatabaseConnectionError, DatabaseCreationError
 from py_experimenter.utils import load_config
 
 
 class DatabaseConnectorMYSQL(DatabaseConnector):
     _prepared_statement_placeholder = '%s'
 
-    def __init__(self, experiment_configuration_file_path: ConfigParser, database_credential_file_path):
+    def __init__(self, experiment_configuration: ConfigParser, use_codecarbon:bool, codecarbon_config:ConfigParser, database_credential_file_path:str):
         database_credentials = load_config(database_credential_file_path)
         self.host = database_credentials.get('CREDENTIALS', 'host')
         self.user = database_credentials.get('CREDENTIALS', 'user')
         self.password = database_credentials.get('CREDENTIALS', 'password')
 
-        super().__init__(experiment_configuration_file_path)
+        super().__init__(experiment_configuration, use_codecarbon, codecarbon_config)
 
         self._create_database_if_not_existing()
 
@@ -64,8 +64,9 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
     def _start_transaction(self, connection, readonly=False):
         connection.start_transaction(readonly=readonly)
 
-    def _table_exists(self, cursor):
-        self.execute(cursor, f"SHOW TABLES LIKE '{self.table_name}'")
+    def _table_exists(self, cursor, table_name:str = None) -> bool:
+        table_name = table_name if table_name is not None else self.table_name
+        self.execute(cursor, f"SHOW TABLES LIKE '{table_name}'")
         return self.fetchall(cursor)
 
     @staticmethod
@@ -79,7 +80,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
         columns = self._exclude_fixed_columns([k[0] for k in self.fetchall(cursor)])
         config_columns = [k[0] for k in typed_fields]
-        return set(columns) == set(config_columns)
+        return set(columns) == set(config_columns) 
 
     def _pull_open_experiment(self) -> Tuple[int, List, List]:
         try:

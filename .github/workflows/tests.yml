@@ -41,4 +41,4 @@ jobs:
         run: |
           source $VENV
           # Ignore the MySQL test, as it requires a MySQL server:
-          pytest --ignore=test/test_run_experiments/test_run_mysql_experiment.py --ignore=test/test_logtables/test_mysql.py
+          pytest --ignore=test/test_run_experiments/test_run_mysql_experiment.py --ignore=test/test_logtables/test_mysql.py --ignore=test/test_run_experiments/test_run_mysql_experiment.py --ignore=test/test_codecarbon/test_codecarbon_core_functions_mysql.py --ignore=test/test_codecarbon/test_integration_mysql.py

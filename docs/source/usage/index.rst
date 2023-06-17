@@ -12,7 +12,8 @@ Once this table has been created, a ``PyExperimenter`` instance can be run on an
 Each instance automatically pulls open experiments from the database, executes the function provided by the user with the corresponding parameters defining the experiment and writes back the results computed by the function.
 Errors arising during the execution are logged in the database.
 In case of failed experiments or if desired otherwise, a subset of the experiments can be reset and restarted easily.
-After all experiments are done, results can be jointly exported as a ``Pandas DataFrame`` for further processing, such as generating a LaTeX table averaging results of randomized computations over different seeds.
+Overall, :ref:`CodeCarbon <experiment_configuration_file_codecarbon>` is used to track the carbon emissions of each experiment into a separate table.
+After finishing all experiments, results can be jointly exported as a ``Pandas DataFrame`` for further processing, such as generating a LaTeX table averaging results of randomized computations over different seeds.
 
 .. figure:: ../_static/workflow.png
    :width: 600px
