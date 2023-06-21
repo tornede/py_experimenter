@@ -39,7 +39,7 @@ Attributes
 
    
 
-.. py:class:: ResultProcessor(_config: dict, credential_path, table_name: str, result_fields: List[str], experiment_id: int)
+.. py:class:: ResultProcessor(config: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, credential_path, table_name: str, result_fields: List[str], experiment_id: int)
 
 
    Class for processing the results from an experiment. Use this class whenever you want to write results to the
@@ -50,6 +50,9 @@ Attributes
       Process results from the experiment and write them to the database. You can call this method, whenever you
       want to write results to the database.
       :param results: Dictionary with result field name and result value pairs.
+
+
+   .. py:method:: _write_emissions(emission_data: codecarbon.output.EmissionsData, offline_mode: bool) -> None
 
 
    .. py:method:: _add_timestamps_to_results(results: dict) -> List[Tuple[str, object]]

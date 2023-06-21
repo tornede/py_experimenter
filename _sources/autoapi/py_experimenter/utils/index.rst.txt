@@ -14,6 +14,9 @@ Functions
 .. autoapisummary::
 
    py_experimenter.utils.load_config
+   py_experimenter.utils.extract_codecarbon_config
+   py_experimenter.utils.write_codecarbon_config
+   py_experimenter.utils.extract_codecarbon_columns
    py_experimenter.utils.get_keyfield_data
    py_experimenter.utils.extract_db_credentials_and_table_name_from_config
    py_experimenter.utils.get_keyfield_names
@@ -35,6 +38,15 @@ Functions
    Load and return configuration file.
    :param path: path to the config file
    :return: configuration file
+
+
+.. py:function:: extract_codecarbon_config(config: configparser.ConfigParser) -> Tuple[configparser.ConfigParser]
+
+
+.. py:function:: write_codecarbon_config(codecarbon_config: configparser.ConfigParser)
+
+
+.. py:function:: extract_codecarbon_columns(with_type: bool = True)
 
 
 .. py:function:: get_keyfield_data(config)

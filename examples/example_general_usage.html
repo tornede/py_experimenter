@@ -63,6 +63,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#Restart-Failed-Experiments">Restart Failed Experiments</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Generating-Result-Table">Generating Result Table</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Printing-LaTex-Table">Printing LaTex Table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CodeCarbon">CodeCarbon</a></li>
 </ul>
 </li>
 </ul>
@@ -143,6 +144,14 @@ resultfields.timestamps = false
 
 [CUSTOM]
 path = sample_data
+
+[codecarbon]
+offline_mode = False
+measure_power_secs = 25
+tracking_mode = process
+log_level = error
+save_to_file = True
+output_dir = output/CodeCarbon
 &quot;&quot;&quot;
 # Create config directory if it does not exist
 if not os.path.exists(&#39;config&#39;):
@@ -250,15 +259,6 @@ experimenter.get_table()
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/lukas/development/code_projects/py_experimenter/py_experimenter/database_connector.py:320: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df = pd.read_sql(query, connection)
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -309,17 +309,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>linear</td>
-      <td>2023-04-28 12:25:34</td>
-      <td>done</td>
-      <td>2023-04-28 12:25:35</td>
-      <td>example_notebook</td>
-      <td>Worklaptop</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:36</td>
+      <td>2023-06-17 08:59:12</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -329,17 +329,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>linear</td>
-      <td>2023-04-28 12:25:34</td>
-      <td>done</td>
-      <td>2023-04-28 12:25:36</td>
-      <td>example_notebook</td>
-      <td>Worklaptop</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:37</td>
+      <td>2023-06-17 08:59:12</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -349,17 +349,17 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>linear</td>
-      <td>2023-04-28 12:25:34</td>
-      <td>done</td>
-      <td>2023-04-28 12:25:38</td>
-      <td>example_notebook</td>
-      <td>Worklaptop</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:39</td>
+      <td>2023-06-17 08:59:12</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -369,17 +369,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>2023-04-28 12:25:34</td>
-      <td>done</td>
-      <td>2023-04-28 12:25:39</td>
-      <td>example_notebook</td>
-      <td>Worklaptop</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:40</td>
+      <td>2023-06-17 08:59:12</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -389,17 +389,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>2023-04-28 12:25:34</td>
-      <td>done</td>
-      <td>2023-04-28 12:25:40</td>
-      <td>example_notebook</td>
-      <td>Worklaptop</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:42</td>
+      <td>2023-06-17 08:59:12</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -409,17 +409,17 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>poly</td>
-      <td>2023-04-28 12:25:34</td>
-      <td>done</td>
-      <td>2023-04-28 12:25:42</td>
-      <td>example_notebook</td>
-      <td>Worklaptop</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:43</td>
+      <td>2023-06-17 08:59:12</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -429,17 +429,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>rbf</td>
-      <td>2023-04-28 12:25:34</td>
-      <td>done</td>
-      <td>2023-04-28 12:25:43</td>
-      <td>example_notebook</td>
-      <td>Worklaptop</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:44</td>
+      <td>2023-06-17 08:59:12</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -449,17 +449,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>rbf</td>
-      <td>2023-04-28 12:25:34</td>
-      <td>done</td>
-      <td>2023-04-28 12:25:45</td>
-      <td>example_notebook</td>
-      <td>Worklaptop</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:46</td>
+      <td>2023-06-17 08:59:12</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -469,17 +469,17 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>rbf</td>
-      <td>2023-04-28 12:25:34</td>
-      <td>done</td>
-      <td>2023-04-28 12:25:46</td>
-      <td>example_notebook</td>
-      <td>Worklaptop</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:47</td>
+      <td>2023-06-17 08:59:12</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -489,17 +489,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>sigmoid</td>
-      <td>2023-04-28 12:25:34</td>
-      <td>done</td>
-      <td>2023-04-28 12:25:48</td>
-      <td>example_notebook</td>
-      <td>Worklaptop</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:49</td>
+      <td>2023-06-17 08:59:12</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -509,17 +509,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>sigmoid</td>
-      <td>2023-04-28 12:25:34</td>
-      <td>done</td>
-      <td>2023-04-28 12:25:49</td>
-      <td>example_notebook</td>
-      <td>Worklaptop</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:50</td>
+      <td>2023-06-17 08:59:12</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -529,38 +529,38 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>sigmoid</td>
-      <td>2023-04-28 12:25:34</td>
-      <td>done</td>
-      <td>2023-04-28 12:25:50</td>
-      <td>example_notebook</td>
-      <td>Worklaptop</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:51</td>
+      <td>2023-06-17 08:59:12</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>15</td>
+      <td>13</td>
       <td>error_dataset</td>
       <td>3</td>
       <td>42</td>
       <td>linear</td>
-      <td>2023-04-28 13:45:34</td>
-      <td>error</td>
-      <td>2023-04-28 13:45:34</td>
-      <td>example_notebook</td>
-      <td>Worklaptop</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:45:35</td>
-      <td>Traceback (most recent call last):\n  File "/h...</td>
+      <td>2023-06-17 08:59:12</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
     </tr>
   </tbody>
 </table>
@@ -587,8 +587,13 @@ experimenter.get_table()
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/home/lukas/development/code_projects/py_experimenter/py_experimenter/database_connector.py:320: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df = pd.read_sql(query, connection)
+ERROR:root:Traceback (most recent call last):
+  File &#34;/home/lukas/development/code_projects/py_experimenter/py_experimenter/experimenter.py&#34;, line 382, in _execution_wrapper
+    experiment_function(keyfield_values, result_processor, custom_fields)
+  File &#34;/tmp/ipykernel_28275/1244630566.py&#34;, line 31, in run_ml
+    raise ValueError(&#34;Example error&#34;)
+ValueError: Example error
+
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -641,17 +646,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>linear</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:35</td>
+      <td>2023-06-17 08:59:13</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:36</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:18</td>
       <td>None</td>
     </tr>
     <tr>
@@ -661,17 +666,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>linear</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:36</td>
+      <td>2023-06-17 08:59:18</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:37</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:24</td>
       <td>None</td>
     </tr>
     <tr>
@@ -681,17 +686,17 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>linear</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:38</td>
+      <td>2023-06-17 08:59:24</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:39</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:29</td>
       <td>None</td>
     </tr>
     <tr>
@@ -701,17 +706,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:39</td>
+      <td>2023-06-17 08:59:30</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:40</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-17 08:59:35</td>
       <td>None</td>
     </tr>
     <tr>
@@ -721,17 +726,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:40</td>
+      <td>2023-06-17 08:59:35</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:42</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-17 08:59:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -741,17 +746,17 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>poly</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:42</td>
+      <td>2023-06-17 08:59:41</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:43</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-17 08:59:46</td>
       <td>None</td>
     </tr>
     <tr>
@@ -761,17 +766,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>rbf</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:43</td>
+      <td>2023-06-17 08:59:46</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:44</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:52</td>
       <td>None</td>
     </tr>
     <tr>
@@ -781,17 +786,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>rbf</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:45</td>
+      <td>2023-06-17 08:59:52</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:46</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:57</td>
       <td>None</td>
     </tr>
     <tr>
@@ -801,17 +806,17 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>rbf</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:46</td>
+      <td>2023-06-17 08:59:57</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:47</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 09:00:03</td>
       <td>None</td>
     </tr>
     <tr>
@@ -821,17 +826,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>sigmoid</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:48</td>
+      <td>2023-06-17 09:00:03</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:49</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-17 09:00:09</td>
       <td>None</td>
     </tr>
     <tr>
@@ -841,17 +846,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>sigmoid</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:49</td>
+      <td>2023-06-17 09:00:09</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:50</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-17 09:00:14</td>
       <td>None</td>
     </tr>
     <tr>
@@ -861,29 +866,29 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>sigmoid</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:50</td>
+      <td>2023-06-17 09:00:14</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:51</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-17 09:00:20</td>
       <td>None</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>15</td>
+      <td>13</td>
       <td>error_dataset</td>
       <td>3</td>
       <td>42</td>
       <td>linear</td>
-      <td>2023-04-28 13:45:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>error</td>
-      <td>2023-04-28 13:45:34</td>
+      <td>2023-06-17 09:00:20</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
@@ -891,7 +896,7 @@ experimenter.get_table()
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:45:35</td>
+      <td>2023-06-17 09:00:25</td>
       <td>Traceback (most recent call last):\n  File "/h...</td>
     </tr>
   </tbody>
@@ -912,15 +917,6 @@ experimenter.get_table()
 experimenter.get_table()
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/lukas/development/code_projects/py_experimenter/py_experimenter/database_connector.py:320: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df = pd.read_sql(query, connection)
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -972,17 +968,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>linear</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:35</td>
+      <td>2023-06-17 08:59:13</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:36</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:18</td>
       <td>None</td>
     </tr>
     <tr>
@@ -992,17 +988,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>linear</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:36</td>
+      <td>2023-06-17 08:59:18</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:37</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:24</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1012,17 +1008,17 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>linear</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:38</td>
+      <td>2023-06-17 08:59:24</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:39</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:29</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1032,17 +1028,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:39</td>
+      <td>2023-06-17 08:59:30</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:40</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-17 08:59:35</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1052,17 +1048,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:40</td>
+      <td>2023-06-17 08:59:35</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:42</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-17 08:59:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1072,17 +1068,17 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>poly</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:42</td>
+      <td>2023-06-17 08:59:41</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:43</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-17 08:59:46</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1092,17 +1088,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>rbf</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:43</td>
+      <td>2023-06-17 08:59:46</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:44</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:52</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1112,17 +1108,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>rbf</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:45</td>
+      <td>2023-06-17 08:59:52</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:46</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:57</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1132,17 +1128,17 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>rbf</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:46</td>
+      <td>2023-06-17 08:59:57</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:47</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 09:00:03</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1152,17 +1148,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>sigmoid</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:48</td>
+      <td>2023-06-17 09:00:03</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:49</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-17 09:00:09</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1172,17 +1168,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>sigmoid</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:49</td>
+      <td>2023-06-17 09:00:09</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:50</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-17 09:00:14</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1192,37 +1188,37 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>sigmoid</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:50</td>
+      <td>2023-06-17 09:00:14</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:51</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-17 09:00:20</td>
       <td>None</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>16</td>
+      <td>14</td>
       <td>error_dataset</td>
       <td>3</td>
       <td>42</td>
       <td>linear</td>
-      <td>2023-04-28 13:46:04</td>
+      <td>2023-06-17 09:00:25</td>
       <td>created</td>
-      <td>NaT</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
+      <td>None</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaT</td>
+      <td>None</td>
       <td>None</td>
     </tr>
   </tbody>
@@ -1247,14 +1243,12 @@ experimenter.get_table()
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
 ERROR:root:Traceback (most recent call last):
-  File &#34;/home/lukas/development/code_projects/py_experimenter/py_experimenter/experimenter.py&#34;, line 369, in _execution_wrapper
+  File &#34;/home/lukas/development/code_projects/py_experimenter/py_experimenter/experimenter.py&#34;, line 382, in _execution_wrapper
     experiment_function(keyfield_values, result_processor, custom_fields)
-  File &#34;/tmp/ipykernel_24809/1244630566.py&#34;, line 31, in run_ml
+  File &#34;/tmp/ipykernel_28275/1244630566.py&#34;, line 31, in run_ml
     raise ValueError(&#34;Example error&#34;)
 ValueError: Example error
 
-/home/lukas/development/code_projects/py_experimenter/py_experimenter/database_connector.py:320: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df = pd.read_sql(query, connection)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1307,17 +1301,17 @@ ValueError: Example error
       <td>5</td>
       <td>2</td>
       <td>linear</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:35</td>
+      <td>2023-06-17 08:59:13</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:36</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:18</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1327,17 +1321,17 @@ ValueError: Example error
       <td>5</td>
       <td>4</td>
       <td>linear</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:36</td>
+      <td>2023-06-17 08:59:18</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:37</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:24</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1347,17 +1341,17 @@ ValueError: Example error
       <td>5</td>
       <td>6</td>
       <td>linear</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:38</td>
+      <td>2023-06-17 08:59:24</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:39</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:29</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1367,17 +1361,17 @@ ValueError: Example error
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:39</td>
+      <td>2023-06-17 08:59:30</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:40</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-17 08:59:35</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1387,17 +1381,17 @@ ValueError: Example error
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:40</td>
+      <td>2023-06-17 08:59:35</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:42</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-17 08:59:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1407,17 +1401,17 @@ ValueError: Example error
       <td>5</td>
       <td>6</td>
       <td>poly</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:42</td>
+      <td>2023-06-17 08:59:41</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:43</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-17 08:59:46</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1427,17 +1421,17 @@ ValueError: Example error
       <td>5</td>
       <td>2</td>
       <td>rbf</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:43</td>
+      <td>2023-06-17 08:59:46</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:44</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:52</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1447,17 +1441,17 @@ ValueError: Example error
       <td>5</td>
       <td>4</td>
       <td>rbf</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:45</td>
+      <td>2023-06-17 08:59:52</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:46</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 08:59:57</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1467,17 +1461,17 @@ ValueError: Example error
       <td>5</td>
       <td>6</td>
       <td>rbf</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:46</td>
+      <td>2023-06-17 08:59:57</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:47</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-17 09:00:03</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1487,17 +1481,17 @@ ValueError: Example error
       <td>5</td>
       <td>2</td>
       <td>sigmoid</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:48</td>
+      <td>2023-06-17 09:00:03</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:49</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-17 09:00:09</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1507,17 +1501,17 @@ ValueError: Example error
       <td>5</td>
       <td>4</td>
       <td>sigmoid</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:49</td>
+      <td>2023-06-17 09:00:09</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:50</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-17 09:00:14</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1527,29 +1521,29 @@ ValueError: Example error
       <td>5</td>
       <td>6</td>
       <td>sigmoid</td>
-      <td>2023-04-28 12:25:34</td>
+      <td>2023-06-17 08:59:12</td>
       <td>done</td>
-      <td>2023-04-28 12:25:50</td>
+      <td>2023-06-17 09:00:14</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 12:25:51</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-17 09:00:20</td>
       <td>None</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>16</td>
+      <td>14</td>
       <td>error_dataset</td>
       <td>3</td>
       <td>42</td>
       <td>linear</td>
-      <td>2023-04-28 13:46:04</td>
+      <td>2023-06-17 09:00:25</td>
       <td>error</td>
-      <td>2023-04-28 13:46:05</td>
+      <td>2023-06-17 09:00:26</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
@@ -1557,7 +1551,7 @@ ValueError: Example error
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:46:07</td>
+      <td>2023-06-17 09:00:31</td>
       <td>Traceback (most recent call last):\n  File "/h...</td>
     </tr>
   </tbody>
@@ -1576,15 +1570,6 @@ ValueError: Example error
 result_table_agg
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/lukas/development/code_projects/py_experimenter/py_experimenter/database_connector.py:320: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df = pd.read_sql(query, connection)
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -1631,7 +1616,7 @@ result_table_agg
   <tbody>
     <tr>
       <th>error_dataset</th>
-      <td>16.0</td>
+      <td>14.0</td>
       <td>3.0</td>
       <td>42.0</td>
       <td>NaN</td>
@@ -1644,10 +1629,10 @@ result_table_agg
       <td>6.5</td>
       <td>5.0</td>
       <td>4.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
+      <td>0.945</td>
+      <td>0.945</td>
+      <td>0.94</td>
+      <td>0.94</td>
     </tr>
   </tbody>
 </table>
@@ -1674,11 +1659,530 @@ result_table_agg
  &amp; test_f1 \\
 dataset &amp;  \\
 error_dataset &amp; nan \\
-iris &amp; 1.000000 \\
+iris &amp; 0.940000 \\
 \end{tabular}
 
 </pre></div></div>
 </div>
+</section>
+<section id="CodeCarbon">
+<h3>CodeCarbon<a class="headerlink" href="#CodeCarbon" title="Permalink to this heading"></a></h3>
+<p><a class="reference external" href="https://tornede.github.io/py_experimenter/usage/experiment_configuration_file.html#codecarbon">CodeCarbon</a> is integrated into <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> to provide information about the carbon emissions of experiments. <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> will create a table with suffix <code class="docutils literal notranslate"><span class="pre">_codecarbon</span></code> in the database, each row containing information about the carbon emissions of a single experiment.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_codecarbon_table()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>experiment_id</th>
+      <th>codecarbon_timestamp</th>
+      <th>project_name</th>
+      <th>run_id</th>
+      <th>duration_seconds</th>
+      <th>emissions_kg</th>
+      <th>emissions_rate_kg_sec</th>
+      <th>cpu_power_watt</th>
+      <th>gpu_power_watt</th>
+      <th>...</th>
+      <th>cpu_count</th>
+      <th>cpu_model</th>
+      <th>gpu_count</th>
+      <th>gpu_model</th>
+      <th>longitude</th>
+      <th>latitude</th>
+      <th>ram_total_size</th>
+      <th>tracking_mode</th>
+      <th>on_cloud</th>
+      <th>offline_mode</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>2023-06-17T08:59:18</td>
+      <td>codecarbon</td>
+      <td>451bc2e9-8c7f-416b-80f3-4ed0ef44cdff</td>
+      <td>0.121472</td>
+      <td>3.084560e-07</td>
+      <td>0.000003</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>2</td>
+      <td>2023-06-17T08:59:24</td>
+      <td>codecarbon</td>
+      <td>36f4b99e-b138-4c3f-b833-f6824feafa8f</td>
+      <td>0.147891</td>
+      <td>3.754468e-07</td>
+      <td>0.000003</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>3</td>
+      <td>2023-06-17T08:59:29</td>
+      <td>codecarbon</td>
+      <td>7ed6d96f-68b1-4343-a1c2-7b26ec4bad4b</td>
+      <td>0.147379</td>
+      <td>3.877488e-07</td>
+      <td>0.000003</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>4</td>
+      <td>2023-06-17T08:59:35</td>
+      <td>codecarbon</td>
+      <td>53826b6e-933d-4537-9477-0ff1b9afd5d1</td>
+      <td>0.125964</td>
+      <td>3.283903e-07</td>
+      <td>0.000003</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>5</td>
+      <td>2023-06-17T08:59:41</td>
+      <td>codecarbon</td>
+      <td>640bbbbf-c5a4-4706-94fa-e26bc8eb4c25</td>
+      <td>0.134753</td>
+      <td>3.522335e-07</td>
+      <td>0.000003</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>6</td>
+      <td>2023-06-17T08:59:46</td>
+      <td>codecarbon</td>
+      <td>b67e2e24-72ac-4ca6-976b-440454c79416</td>
+      <td>0.140218</td>
+      <td>3.614312e-07</td>
+      <td>0.000003</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>7</td>
+      <td>2023-06-17T08:59:52</td>
+      <td>codecarbon</td>
+      <td>b411da2a-9809-4f4f-bfbd-88d62bcde67b</td>
+      <td>0.131839</td>
+      <td>3.342969e-07</td>
+      <td>0.000003</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>8</td>
+      <td>2023-06-17T08:59:57</td>
+      <td>codecarbon</td>
+      <td>244f3cff-c8bf-42c2-a186-994aa6931e27</td>
+      <td>0.134510</td>
+      <td>3.455675e-07</td>
+      <td>0.000003</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>9</td>
+      <td>2023-06-17T09:00:03</td>
+      <td>codecarbon</td>
+      <td>7a483787-7c64-4eaa-919d-e978600ea311</td>
+      <td>0.150213</td>
+      <td>3.967545e-07</td>
+      <td>0.000003</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>10</td>
+      <td>2023-06-17T09:00:09</td>
+      <td>codecarbon</td>
+      <td>d738e59c-83c8-4ece-b0fc-fcc8dd0907dd</td>
+      <td>0.135736</td>
+      <td>3.511814e-07</td>
+      <td>0.000003</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11</td>
+      <td>11</td>
+      <td>2023-06-17T09:00:14</td>
+      <td>codecarbon</td>
+      <td>c8d8c9d7-ecc0-4729-aefd-6cfb49d92b73</td>
+      <td>0.129663</td>
+      <td>3.374622e-07</td>
+      <td>0.000003</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>12</td>
+      <td>2023-06-17T09:00:20</td>
+      <td>codecarbon</td>
+      <td>74a3f19e-cdec-4ef3-be29-cd1c3fb69d31</td>
+      <td>0.121140</td>
+      <td>3.037764e-07</td>
+      <td>0.000003</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>13</td>
+      <td>13</td>
+      <td>2023-06-17T09:00:25</td>
+      <td>codecarbon</td>
+      <td>53effe7a-14f9-462d-911c-5cb736146e4b</td>
+      <td>0.093765</td>
+      <td>2.213938e-07</td>
+      <td>0.000002</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>14</td>
+      <td>14</td>
+      <td>2023-06-17T09:00:31</td>
+      <td>codecarbon</td>
+      <td>1c67cb8f-cc53-4073-a610-01e94071bf28</td>
+      <td>0.107141</td>
+      <td>2.437078e-07</td>
+      <td>0.000002</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.8516</td>
+      <td>51.8099</td>
+      <td>15.474876</td>
+      <td>process</td>
+      <td>N</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>14 rows × 33 columns</p>
+</div></div>
+</div>
+<section id="Aggregating-CodeCarbon-Results">
+<h4>Aggregating CodeCarbon Results<a class="headerlink" href="#Aggregating-CodeCarbon-Results" title="Permalink to this heading"></a></h4>
+<p>The carbon emission information of <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> can be easily aggregated via <code class="docutils literal notranslate"><span class="pre">pandas.Dataframe</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>carbon_emissions = experimenter.get_codecarbon_table().groupby([&#39;project_name&#39;]).sum(numeric_only = True)
+carbon_emissions
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>experiment_id</th>
+      <th>duration_seconds</th>
+      <th>emissions_kg</th>
+      <th>emissions_rate_kg_sec</th>
+      <th>cpu_power_watt</th>
+      <th>gpu_power_watt</th>
+      <th>ram_power_watt</th>
+      <th>cpu_energy_kw</th>
+      <th>gpu_energy_kw</th>
+      <th>ram_energy_kw</th>
+      <th>energy_consumed_kw</th>
+      <th>cpu_count</th>
+      <th>ram_total_size</th>
+      <th>offline_mode</th>
+    </tr>
+    <tr>
+      <th>project_name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>codecarbon</th>
+      <td>105</td>
+      <td>105</td>
+      <td>1.821685</td>
+      <td>0.000005</td>
+      <td>0.000036</td>
+      <td>595.0</td>
+      <td>0.0</td>
+      <td>0.890505</td>
+      <td>0.000015</td>
+      <td>0.0</td>
+      <td>2.255914e-08</td>
+      <td>0.000015</td>
+      <td>224.0</td>
+      <td>216.64827</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Printing-CodeCarbon-Results-as-LaTex-Table">
+<h4>Printing CodeCarbon Results as LaTex Table<a class="headerlink" href="#Printing-CodeCarbon-Results-as-LaTex-Table" title="Permalink to this heading"></a></h4>
+<p>Furthermore, the resulting <code class="docutils literal notranslate"><span class="pre">pandas.Dataframe</span></code> can easily be printed as LaTex table.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(carbon_emissions[[&#39;energy_consumed_kw&#39;, &#39;emissions_kg&#39;]].style.to_latex())
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+\begin{tabular}{lrr}
+ &amp; energy_consumed_kw &amp; emissions_kg \\
+project_name &amp;  &amp;  \\
+codecarbon &amp; 0.000015 &amp; 0.000005 \\
+\end{tabular}
+
+</pre></div></div>
+</div>
+</section>
 </section>
 </section>
 </section>

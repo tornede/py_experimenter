@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.cfg'), database_credential_file_path: str = os.path.join('config', 'database_credentials.cfg'), table_name: str = None, database_name: str = None, name='PyExperimenter')
+.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.cfg'), database_credential_file_path: str = os.path.join('config', 'database_credentials.cfg'), table_name: str = None, database_name: str = None, use_codecarbon: bool = True, name='PyExperimenter')
 
 
    Module handling the initialization, execution and collection of experiments and their respective results.
@@ -78,14 +78,14 @@ Classes
       :rtype: bool
 
 
-   .. py:method:: _is_valid_configuration(_config: configparser, database_credential_file_path: str = None) -> bool
+   .. py:method:: _is_valid_configuration(config: configparser.ConfigParser, database_credential_file_path: str = None) -> bool
       :staticmethod:
 
       Checks whether the given experiment configuration is valid, i.e., it contains all necessary fields, the database provider
       is either mysql or sqlite, and in case of a mysql database provider, that the database credentials are available.
 
-      :param _config: The experiment configuration.
-      :type _config: configparser
+      :param config: The experiment configuration.
+      :type config: ConfigParser
       :param database_credential_file_path: The path to the database configuration file, i.e., the file defining
           the host, user and password. Defaults to None.
       :type database_credential_file_path: str, optional
@@ -206,14 +206,6 @@ Classes
       :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
 
 
-   .. py:method:: _execution_worker(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], None]) -> None
-
-      Worker that repeatedly pulls open experiments from the database table and executes them.
-
-      :param experiment_function: The function that should be executed with the different parametrizations.
-      :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
-
-
    .. py:method:: _execution_wrapper(experiment_function: Callable[[dict, dict, py_experimenter.result_processor.ResultProcessor], None]) -> None
 
       Executes the given `experiment_function` on one open experiment. To that end, one of the open experiments is pulled
@@ -225,9 +217,9 @@ Classes
       * `error` if an exception was raised during the execution of the experiment.
       * `done` if the execution of the experiment has finished successfully.
 
-      Errors raised during the execution of `experiment_function` are logged to the `error` column in the database table. 
-      Note that only errors raised within `experiment_function` are logged in to the database table. Therefore all errors 
-      raised before or after the execution of `experiment_function` are logged according to the local logging configuration 
+      Errors raised during the execution of `experiment_function` are logged to the `error` column in the database table.
+      Note that only errors raised within `experiment_function` are logged in to the database table. Therefore all errors
+      raised before or after the execution of `experiment_function` are logged according to the local logging configuration
       and do not appear in the table.
 
       :param experiment_function: The function that should be executed with the different parametrizations.
@@ -259,13 +251,22 @@ Classes
       :rtype: pd.DataFrame
 
 
-   .. py:method:: get_logtable(table_name: str) -> pandas.DataFrame
+   .. py:method:: get_logtable(logtable_name: str) -> pandas.DataFrame
 
       Returns the log table as `Pandas.DataFrame`. 
 
       :param table_name: The name of the log table.
       :type table_name: str
       :return: The log table as `Pandas.DataFrame`. 
+      :rtype: pd.DataFrame
+
+
+   .. py:method:: get_codecarbon_table() -> pandas.DataFrame
+
+      Returns the CodeCarbon table as `Pandas.DataFrame`. If CodeCarbon is not used in this experiment, an error is raised.
+
+      :raises ValueError: If CodeCarbon is not used in this experiment.
+      :return: Returns the CodeCarbon table as `Pandas.DataFrame`.
       :rtype: pd.DataFrame
 
 

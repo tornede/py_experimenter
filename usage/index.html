@@ -103,7 +103,8 @@ Once this table has been created, a <code class="docutils literal notranslate"><
 Each instance automatically pulls open experiments from the database, executes the function provided by the user with the corresponding parameters defining the experiment and writes back the results computed by the function.
 Errors arising during the execution are logged in the database.
 In case of failed experiments or if desired otherwise, a subset of the experiments can be reset and restarted easily.
-After all experiments are done, results can be jointly exported as a <code class="docutils literal notranslate"><span class="pre">Pandas</span> <span class="pre">DataFrame</span></code> for further processing, such as generating a LaTeX table averaging results of randomized computations over different seeds.</p>
+Overall, <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file-codecarbon"><span class="std std-ref">CodeCarbon</span></a> is used to track the carbon emissions of each experiment into a separate table.
+After finishing all experiments, results can be jointly exported as a <code class="docutils literal notranslate"><span class="pre">Pandas</span> <span class="pre">DataFrame</span></code> for further processing, such as generating a LaTeX table averaging results of randomized computations over different seeds.</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../_images/workflow.png"><img alt="General schema of PyExperimenter" src="../_images/workflow.png" style="width: 600px;" /></a>
 </figure>

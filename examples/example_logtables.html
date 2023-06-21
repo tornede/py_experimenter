@@ -60,7 +60,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#Defining-the-execution-function">Defining the execution function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Executing-PyExperimenter">Executing PyExperimenter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Run-Experiments">Run Experiments</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Check-results">Check results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Check-Results">Check Results</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CodeCarbon">CodeCarbon</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -243,15 +246,6 @@ experimenter.get_table()
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/lukas/development/code_projects/py_experimenter/py_experimenter/database_connector.py:320: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df = pd.read_sql(query, connection)
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -297,7 +291,7 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>1</td>
-      <td>2023-04-28 13:46:31</td>
+      <td>2023-06-17 09:04:48</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -313,7 +307,7 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>2</td>
-      <td>2023-04-28 13:46:31</td>
+      <td>2023-06-17 09:04:48</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -329,7 +323,7 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>3</td>
-      <td>2023-04-28 13:46:31</td>
+      <td>2023-06-17 09:04:48</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -345,7 +339,7 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>4</td>
-      <td>2023-04-28 13:46:31</td>
+      <td>2023-06-17 09:04:48</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -361,7 +355,7 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>5</td>
-      <td>2023-04-28 13:46:31</td>
+      <td>2023-06-17 09:04:48</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -383,15 +377,6 @@ experimenter.get_table()
 experimenter.get_logtable(&#39;train_scores&#39;)
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/lukas/development/code_projects/py_experimenter/py_experimenter/database_connector.py:320: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df = pd.read_sql(query, connection)
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -443,8 +428,8 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 </div>
 </div>
 </section>
-<section id="Check-results">
-<h2>Check results<a class="headerlink" href="#Check-results" title="Permalink to this heading"></a></h2>
+<section id="Check-Results">
+<h2>Check Results<a class="headerlink" href="#Check-Results" title="Permalink to this heading"></a></h2>
 <p>The content of all database tables having keyfields and resultfields, as well as every logtable can be easily obtained.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -453,15 +438,6 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_table()
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/lukas/development/code_projects/py_experimenter/py_experimenter/database_connector.py:320: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df = pd.read_sql(query, connection)
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -508,14 +484,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>1</td>
-      <td>2023-04-28 13:46:31</td>
+      <td>2023-06-17 09:04:48</td>
       <td>done</td>
-      <td>2023-04-28 13:46:33</td>
+      <td>2023-06-17 09:04:48</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-04-28 13:46:35</td>
+      <td>2023-06-17 09:04:54</td>
       <td>None</td>
     </tr>
     <tr>
@@ -524,14 +500,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>2</td>
-      <td>2023-04-28 13:46:31</td>
+      <td>2023-06-17 09:04:48</td>
       <td>done</td>
-      <td>2023-04-28 13:46:35</td>
+      <td>2023-06-17 09:04:54</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-04-28 13:46:37</td>
+      <td>2023-06-17 09:05:00</td>
       <td>None</td>
     </tr>
     <tr>
@@ -540,14 +516,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>3</td>
-      <td>2023-04-28 13:46:31</td>
+      <td>2023-06-17 09:04:48</td>
       <td>done</td>
-      <td>2023-04-28 13:46:38</td>
+      <td>2023-06-17 09:05:00</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-04-28 13:46:40</td>
+      <td>2023-06-17 09:05:06</td>
       <td>None</td>
     </tr>
     <tr>
@@ -556,14 +532,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>4</td>
-      <td>2023-04-28 13:46:31</td>
+      <td>2023-06-17 09:04:48</td>
       <td>done</td>
-      <td>2023-04-28 13:46:40</td>
+      <td>2023-06-17 09:05:06</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-04-28 13:46:42</td>
+      <td>2023-06-17 09:05:12</td>
       <td>None</td>
     </tr>
     <tr>
@@ -572,14 +548,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>5</td>
-      <td>2023-04-28 13:46:31</td>
+      <td>2023-06-17 09:04:48</td>
       <td>done</td>
-      <td>2023-04-28 13:46:43</td>
+      <td>2023-06-17 09:05:12</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-04-28 13:46:45</td>
+      <td>2023-06-17 09:05:18</td>
       <td>None</td>
     </tr>
   </tbody>
@@ -593,15 +569,6 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_logtable(&#39;train_scores&#39;)
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/lukas/development/code_projects/py_experimenter/py_experimenter/database_connector.py:320: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df = pd.read_sql(query, connection)
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -639,7 +606,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>0</th>
       <td>1</td>
       <td>1</td>
-      <td>2023-04-28 13:46:33</td>
+      <td>2023-06-17 09:04:54</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -648,7 +615,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>1</th>
       <td>2</td>
       <td>1</td>
-      <td>2023-04-28 13:46:34</td>
+      <td>2023-06-17 09:04:54</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -657,7 +624,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>2</th>
       <td>3</td>
       <td>1</td>
-      <td>2023-04-28 13:46:34</td>
+      <td>2023-06-17 09:04:54</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -666,7 +633,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>3</th>
       <td>4</td>
       <td>1</td>
-      <td>2023-04-28 13:46:34</td>
+      <td>2023-06-17 09:04:54</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -675,7 +642,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>4</th>
       <td>5</td>
       <td>2</td>
-      <td>2023-04-28 13:46:36</td>
+      <td>2023-06-17 09:05:00</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -684,7 +651,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>5</th>
       <td>6</td>
       <td>2</td>
-      <td>2023-04-28 13:46:36</td>
+      <td>2023-06-17 09:05:00</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -693,7 +660,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>6</th>
       <td>7</td>
       <td>2</td>
-      <td>2023-04-28 13:46:37</td>
+      <td>2023-06-17 09:05:00</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -702,7 +669,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>7</th>
       <td>8</td>
       <td>2</td>
-      <td>2023-04-28 13:46:37</td>
+      <td>2023-06-17 09:05:00</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -711,7 +678,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>8</th>
       <td>9</td>
       <td>3</td>
-      <td>2023-04-28 13:46:39</td>
+      <td>2023-06-17 09:05:06</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -720,7 +687,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>9</th>
       <td>10</td>
       <td>3</td>
-      <td>2023-04-28 13:46:39</td>
+      <td>2023-06-17 09:05:06</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -729,7 +696,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>10</th>
       <td>11</td>
       <td>3</td>
-      <td>2023-04-28 13:46:39</td>
+      <td>2023-06-17 09:05:06</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -738,7 +705,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>11</th>
       <td>12</td>
       <td>3</td>
-      <td>2023-04-28 13:46:39</td>
+      <td>2023-06-17 09:05:06</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -747,7 +714,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>12</th>
       <td>13</td>
       <td>4</td>
-      <td>2023-04-28 13:46:41</td>
+      <td>2023-06-17 09:05:12</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -756,7 +723,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>13</th>
       <td>14</td>
       <td>4</td>
-      <td>2023-04-28 13:46:41</td>
+      <td>2023-06-17 09:05:12</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -765,7 +732,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>14</th>
       <td>15</td>
       <td>4</td>
-      <td>2023-04-28 13:46:41</td>
+      <td>2023-06-17 09:05:12</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -774,7 +741,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>15</th>
       <td>16</td>
       <td>4</td>
-      <td>2023-04-28 13:46:42</td>
+      <td>2023-06-17 09:05:12</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -783,7 +750,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>16</th>
       <td>17</td>
       <td>5</td>
-      <td>2023-04-28 13:46:44</td>
+      <td>2023-06-17 09:05:17</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -792,7 +759,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>17</th>
       <td>18</td>
       <td>5</td>
-      <td>2023-04-28 13:46:44</td>
+      <td>2023-06-17 09:05:18</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -801,7 +768,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>18</th>
       <td>19</td>
       <td>5</td>
-      <td>2023-04-28 13:46:44</td>
+      <td>2023-06-17 09:05:18</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -810,7 +777,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>19</th>
       <td>20</td>
       <td>5</td>
-      <td>2023-04-28 13:46:44</td>
+      <td>2023-06-17 09:05:18</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -826,15 +793,6 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_logtable(&#39;test_f1&#39;)
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/lukas/development/code_projects/py_experimenter/py_experimenter/database_connector.py:320: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df = pd.read_sql(query, connection)
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -870,140 +828,140 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>0</th>
       <td>1</td>
       <td>1</td>
-      <td>2023-04-28 13:46:33</td>
+      <td>2023-06-17 09:04:54</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2</td>
       <td>1</td>
-      <td>2023-04-28 13:46:34</td>
+      <td>2023-06-17 09:04:54</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>2</th>
       <td>3</td>
       <td>1</td>
-      <td>2023-04-28 13:46:34</td>
+      <td>2023-06-17 09:04:54</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>3</th>
       <td>4</td>
       <td>1</td>
-      <td>2023-04-28 13:46:34</td>
+      <td>2023-06-17 09:04:54</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
       <td>2</td>
-      <td>2023-04-28 13:46:36</td>
+      <td>2023-06-17 09:05:00</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>5</th>
       <td>6</td>
       <td>2</td>
-      <td>2023-04-28 13:46:36</td>
+      <td>2023-06-17 09:05:00</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>6</th>
       <td>7</td>
       <td>2</td>
-      <td>2023-04-28 13:46:37</td>
+      <td>2023-06-17 09:05:00</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>7</th>
       <td>8</td>
       <td>2</td>
-      <td>2023-04-28 13:46:37</td>
+      <td>2023-06-17 09:05:00</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>8</th>
       <td>9</td>
       <td>3</td>
-      <td>2023-04-28 13:46:39</td>
+      <td>2023-06-17 09:05:06</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>9</th>
       <td>10</td>
       <td>3</td>
-      <td>2023-04-28 13:46:39</td>
+      <td>2023-06-17 09:05:06</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>10</th>
       <td>11</td>
       <td>3</td>
-      <td>2023-04-28 13:46:39</td>
+      <td>2023-06-17 09:05:06</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>11</th>
       <td>12</td>
       <td>3</td>
-      <td>2023-04-28 13:46:39</td>
+      <td>2023-06-17 09:05:06</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>12</th>
       <td>13</td>
       <td>4</td>
-      <td>2023-04-28 13:46:41</td>
+      <td>2023-06-17 09:05:12</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>13</th>
       <td>14</td>
       <td>4</td>
-      <td>2023-04-28 13:46:41</td>
+      <td>2023-06-17 09:05:12</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>14</th>
       <td>15</td>
       <td>4</td>
-      <td>2023-04-28 13:46:41</td>
+      <td>2023-06-17 09:05:12</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>15</th>
       <td>16</td>
       <td>4</td>
-      <td>2023-04-28 13:46:42</td>
+      <td>2023-06-17 09:05:12</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>16</th>
       <td>17</td>
       <td>5</td>
-      <td>2023-04-28 13:46:44</td>
+      <td>2023-06-17 09:05:17</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>17</th>
       <td>18</td>
       <td>5</td>
-      <td>2023-04-28 13:46:44</td>
+      <td>2023-06-17 09:05:18</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>18</th>
       <td>19</td>
       <td>5</td>
-      <td>2023-04-28 13:46:44</td>
+      <td>2023-06-17 09:05:18</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>19</th>
       <td>20</td>
       <td>5</td>
-      <td>2023-04-28 13:46:44</td>
+      <td>2023-06-17 09:05:18</td>
       <td>0.893333</td>
     </tr>
   </tbody>
@@ -1017,15 +975,6 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_logtable(&#39;test_accuracy&#39;)
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/lukas/development/code_projects/py_experimenter/py_experimenter/database_connector.py:320: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df = pd.read_sql(query, connection)
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -1061,146 +1010,150 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>0</th>
       <td>1</td>
       <td>1</td>
-      <td>2023-04-28 13:46:33</td>
+      <td>2023-06-17 09:04:54</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2</td>
       <td>1</td>
-      <td>2023-04-28 13:46:34</td>
+      <td>2023-06-17 09:04:54</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>2</th>
       <td>3</td>
       <td>1</td>
-      <td>2023-04-28 13:46:34</td>
+      <td>2023-06-17 09:04:54</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>3</th>
       <td>4</td>
       <td>1</td>
-      <td>2023-04-28 13:46:34</td>
+      <td>2023-06-17 09:04:54</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
       <td>2</td>
-      <td>2023-04-28 13:46:36</td>
+      <td>2023-06-17 09:05:00</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>5</th>
       <td>6</td>
       <td>2</td>
-      <td>2023-04-28 13:46:36</td>
+      <td>2023-06-17 09:05:00</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>6</th>
       <td>7</td>
       <td>2</td>
-      <td>2023-04-28 13:46:37</td>
+      <td>2023-06-17 09:05:00</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>7</th>
       <td>8</td>
       <td>2</td>
-      <td>2023-04-28 13:46:37</td>
+      <td>2023-06-17 09:05:00</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>8</th>
       <td>9</td>
       <td>3</td>
-      <td>2023-04-28 13:46:39</td>
+      <td>2023-06-17 09:05:06</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>9</th>
       <td>10</td>
       <td>3</td>
-      <td>2023-04-28 13:46:39</td>
+      <td>2023-06-17 09:05:06</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>10</th>
       <td>11</td>
       <td>3</td>
-      <td>2023-04-28 13:46:39</td>
+      <td>2023-06-17 09:05:06</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>11</th>
       <td>12</td>
       <td>3</td>
-      <td>2023-04-28 13:46:39</td>
+      <td>2023-06-17 09:05:06</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>12</th>
       <td>13</td>
       <td>4</td>
-      <td>2023-04-28 13:46:41</td>
+      <td>2023-06-17 09:05:12</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>13</th>
       <td>14</td>
       <td>4</td>
-      <td>2023-04-28 13:46:41</td>
+      <td>2023-06-17 09:05:12</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>14</th>
       <td>15</td>
       <td>4</td>
-      <td>2023-04-28 13:46:41</td>
+      <td>2023-06-17 09:05:12</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>15</th>
       <td>16</td>
       <td>4</td>
-      <td>2023-04-28 13:46:42</td>
+      <td>2023-06-17 09:05:12</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>16</th>
       <td>17</td>
       <td>5</td>
-      <td>2023-04-28 13:46:44</td>
+      <td>2023-06-17 09:05:17</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>17</th>
       <td>18</td>
       <td>5</td>
-      <td>2023-04-28 13:46:44</td>
+      <td>2023-06-17 09:05:18</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>18</th>
       <td>19</td>
       <td>5</td>
-      <td>2023-04-28 13:46:44</td>
+      <td>2023-06-17 09:05:18</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>19</th>
       <td>20</td>
       <td>5</td>
-      <td>2023-04-28 13:46:44</td>
+      <td>2023-06-17 09:05:18</td>
       <td>0.893333</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
+<section id="CodeCarbon">
+<h3>CodeCarbon<a class="headerlink" href="#CodeCarbon" title="Permalink to this heading"></a></h3>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> is activated by default, collecting information about the carbon emissions of each experiment. Have a look at our <a class="reference external" href="https://tornede.github.io/py_experimenter/examples/example_general_usage.html">general usage example</a> and the according <a class="reference external" href="https://tornede.github.io/py_experimenter/usage.html#codecarbon-fields">documentation of CodeCarbon fields</a> for more information.</p>
+</section>
 </section>
 </section>
 

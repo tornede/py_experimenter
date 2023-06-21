@@ -56,6 +56,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#logtables">Logtables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#execution-information">Execution Information</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#custom-fields">Custom Fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#codecarbon">CodeCarbon</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="database_credential_file.html">Database Credential File</a></li>
@@ -126,6 +127,15 @@
 
 <span class="p">[</span><span class="n">CUSTOM</span><span class="p">]</span>
 <span class="n">path</span> <span class="o">=</span> <span class="n">sample_data</span>
+
+<span class="p">[</span><span class="n">codecarbon</span><span class="p">]</span>
+<span class="n">offline_mode</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">measure_power_secs</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">tracking_mode</span> <span class="o">=</span> <span class="n">machine</span>
+<span class="n">log_level</span> <span class="o">=</span> <span class="n">error</span>
+<span class="n">save_to_file</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">output_dir</span> <span class="o">=</span> <span class="n">output</span><span class="o">/</span><span class="n">CodeCarbon</span>
+<span class="n">offline_mode</span> <span class="o">=</span> <span class="kc">False</span>
 </pre></div>
 </div>
 <section id="database-information">
@@ -197,6 +207,21 @@
 <p>Optionally, custom fields can be defined under the <code class="docutils literal notranslate"><span class="pre">CUSTOM</span></code> section, which will be ignored when creating or filling the database, but can provide fixed parameters for the actual execution of experiments. A common example is the path to some folder in which the data is located. The values of such custom fields are passed to the experiment function.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">CUSTOM</span><span class="p">]</span>
 <span class="n">path</span> <span class="o">=</span> <span class="n">sample_data</span>
+</pre></div>
+</div>
+</section>
+<section id="codecarbon">
+<span id="experiment-configuration-file-codecarbon"></span><h2>CodeCarbon<a class="headerlink" href="#codecarbon" title="Permalink to this heading"></a></h2>
+<p>Tracking information about the carbon footprint of experiments is supported via <a class="reference external" href="https://mlco2.github.io/codecarbon/">CodeCarbon</a>. It is enabled by default, if you want to completely deactivate it, please check the <a class="reference internal" href="execution.html#execution"><span class="std std-ref">documentation on how to execute PyExperimenter</span></a>.</p>
+<p>Per default, <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> will track the carbon footprint of the whole machine, including the execution of the experiment function. It measures the power consumption every 15 seconds and estimates the carbon emissions based on the region of the device. The resulting information is saved to a file in the <code class="docutils literal notranslate"><span class="pre">output/CodeCarbon</span></code> as well as written into its own table in the database, called <code class="docutils literal notranslate"><span class="pre">&lt;table_name&gt;_codecarbon</span></code>. A description about how to access the data can be found in the <a class="reference internal" href="execution.html#execution-codecarbon"><span class="std std-ref">CodeCarbon explanation of the execution of PyExperimenter</span></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> can be configured via its own section in the experiment configuration file. The default configuration is shown below, but can be extended by any of the parameters listed in the <a class="reference external" href="https://mlco2.github.io/codecarbon/usage.html#configuration">CodeCarbon documentation</a>. During the execution, the section will be automatically copied into a <code class="docutils literal notranslate"><span class="pre">.codecarbon.config</span></code> file in you working directory, as this is required by <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">codecarbon</span><span class="p">]</span>
+<span class="n">measure_power_secs</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">tracking_mode</span> <span class="o">=</span> <span class="n">machine</span>
+<span class="n">log_level</span> <span class="o">=</span> <span class="n">error</span>
+<span class="n">save_to_file</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">output_dir</span> <span class="o">=</span> <span class="n">output</span><span class="o">/</span><span class="n">CodeCarbon</span>
+<span class="n">offline_mode</span> <span class="o">=</span> <span class="kc">False</span>
 </pre></div>
 </div>
 </section>

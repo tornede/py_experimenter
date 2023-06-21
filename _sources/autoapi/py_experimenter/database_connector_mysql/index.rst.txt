@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: DatabaseConnectorMYSQL(experiment_configuration_file_path: configparser.ConfigParser, database_credential_file_path)
+.. py:class:: DatabaseConnectorMYSQL(experiment_configuration: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, database_credential_file_path: str)
 
 
    Bases: :py:obj:`py_experimenter.database_connector.DatabaseConnector`
@@ -45,7 +45,7 @@ Classes
    .. py:method:: _start_transaction(connection, readonly=False)
 
 
-   .. py:method:: _table_exists(cursor)
+   .. py:method:: _table_exists(cursor, table_name: str = None) -> bool
 
 
    .. py:method:: get_autoincrement()

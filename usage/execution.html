@@ -62,6 +62,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#execute-experiments">Execute Experiments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#reset-experiments">Reset Experiments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#obtain-results">Obtain Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#codecarbon">CodeCarbon</a></li>
 </ul>
 </li>
 </ul>
@@ -117,7 +118,7 @@
 </div>
 <p>The above code will execute all experiments defined in the <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file"><span class="std std-ref">experiment configuration file</span></a>. If you want to do something different, e.g. <a class="reference internal" href="#fill-table-with-rows"><span class="std std-ref">fill the database table with specific rows</span></a>, or <a class="reference internal" href="#reset-experiments"><span class="std std-ref">reset experiments</span></a>, check out the following sections.</p>
 <section id="creating-a-pyexperimenter">
-<h2>Creating a PyExperimenter<a class="headerlink" href="#creating-a-pyexperimenter" title="Permalink to this heading"></a></h2>
+<span id="execution-creating-pyexperimenter"></span><h2>Creating a PyExperimenter<a class="headerlink" href="#creating-a-pyexperimenter" title="Permalink to this heading"></a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> can be created without any further information, assuming the <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file"><span class="std std-ref">experiment configuration file</span></a> can be accessed at its default location.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">()</span>
 </pre></div>
@@ -128,6 +129,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">database_credential_file_path</span></code>: The path of the <a class="reference internal" href="database_credential_file.html#database-credential-file"><span class="std std-ref">database credential file</span></a>. Default: <code class="docutils literal notranslate"><span class="pre">config/database_credentials.cfg</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">database_name</span></code>: The name of the database to manage the experiments. If given, it will overwrite the database name given in the <cite>experiment_configuration_file_path</cite>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">table_name</span></code>: The name of the database table to manage the experiments. If given, it will overwrite the table name given in the <cite>experiment_configuration_file_path</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">use_codecarbon</span></code>: Specifies if <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file-codecarbon"><span class="std std-ref">CodeCarbon</span></a> will be used to track experiment emissions. Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The name of the experimenter, which will be added to the database table of each executed experiment. If using the PyExperimenter on an HPC system, this can be used for the job ID, so that the according log file can easily be found. Default: <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>.</p></li>
 </ul>
 </section>
@@ -200,6 +202,13 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result_table</span> <span class="o">=</span> <span class="n">experimenter</span><span class="o">.</span><span class="n">get_table</span><span class="p">()</span>
 <span class="n">result_table</span> <span class="o">=</span> <span class="n">result_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;dataset&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()[[</span><span class="s1">&#39;seed&#39;</span><span class="p">]]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result_table</span><span class="o">.</span><span class="n">to_latex</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;seed&#39;</span><span class="p">],</span> <span class="n">index_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</section>
+<section id="codecarbon">
+<span id="execution-codecarbon"></span><h2>CodeCarbon<a class="headerlink" href="#codecarbon" title="Permalink to this heading"></a></h2>
+<p>Tracking information about the carbon footprint of experiments is supported via <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file-codecarbon"><span class="std std-ref">CodeCarbon</span></a>. Tracking is enabled by default, as described in <a class="reference internal" href="#execution-creating-pyexperimenter"><span class="std std-ref">how to create a PyExperimenter</span></a>. If the tracking is enabled, the according information can be found in the database table <code class="docutils literal notranslate"><span class="pre">&lt;table_name&gt;_codecarbon</span></code>, which can be easily accessed with the following call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">get_codecarbon_table</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>

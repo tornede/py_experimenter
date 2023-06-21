@@ -61,6 +61,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#Initialize-PyExperimenter">Initialize PyExperimenter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Fill-Table">Fill Table</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Execute-PyExperimenter">Execute PyExperimenter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CodeCarbon">CodeCarbon</a></li>
 </ul>
 </li>
 </ul>
@@ -261,15 +262,6 @@ experimenter.get_table()
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/lukas/development/code_projects/py_experimenter/py_experimenter/database_connector.py:320: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df = pd.read_sql(query, connection)
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -322,10 +314,10 @@ experimenter.get_table()
       <td>5</td>
       <td>1</td>
       <td>rbf</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -344,10 +336,10 @@ experimenter.get_table()
       <td>5</td>
       <td>1</td>
       <td>rbf</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -366,10 +358,10 @@ experimenter.get_table()
       <td>5</td>
       <td>1</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>3.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -388,10 +380,10 @@ experimenter.get_table()
       <td>5</td>
       <td>1</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -410,10 +402,10 @@ experimenter.get_table()
       <td>5</td>
       <td>1</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>4.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -432,10 +424,10 @@ experimenter.get_table()
       <td>5</td>
       <td>1</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -454,10 +446,10 @@ experimenter.get_table()
       <td>5</td>
       <td>1</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>3.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -476,10 +468,10 @@ experimenter.get_table()
       <td>5</td>
       <td>1</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -498,10 +490,10 @@ experimenter.get_table()
       <td>5</td>
       <td>1</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>4.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -520,10 +512,10 @@ experimenter.get_table()
       <td>5</td>
       <td>1</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -545,7 +537,7 @@ experimenter.get_table()
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -564,10 +556,10 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>rbf</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -586,10 +578,10 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>rbf</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -608,10 +600,10 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>3.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -630,10 +622,10 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -652,10 +644,10 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>4.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -674,10 +666,10 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -696,10 +688,10 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>3.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -718,10 +710,10 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -740,10 +732,10 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>4.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -762,10 +754,10 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -787,7 +779,7 @@ experimenter.get_table()
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -806,10 +798,10 @@ experimenter.get_table()
       <td>5</td>
       <td>3</td>
       <td>rbf</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -828,10 +820,10 @@ experimenter.get_table()
       <td>5</td>
       <td>3</td>
       <td>rbf</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -850,10 +842,10 @@ experimenter.get_table()
       <td>5</td>
       <td>3</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>3.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -872,10 +864,10 @@ experimenter.get_table()
       <td>5</td>
       <td>3</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -894,10 +886,10 @@ experimenter.get_table()
       <td>5</td>
       <td>3</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>4.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -916,10 +908,10 @@ experimenter.get_table()
       <td>5</td>
       <td>3</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -938,10 +930,10 @@ experimenter.get_table()
       <td>5</td>
       <td>3</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>3.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -960,10 +952,10 @@ experimenter.get_table()
       <td>5</td>
       <td>3</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -982,10 +974,10 @@ experimenter.get_table()
       <td>5</td>
       <td>3</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>4.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1004,10 +996,10 @@ experimenter.get_table()
       <td>5</td>
       <td>3</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1029,7 +1021,7 @@ experimenter.get_table()
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1048,10 +1040,10 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>rbf</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1070,10 +1062,10 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>rbf</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1092,10 +1084,10 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>3.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1114,10 +1106,10 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1136,10 +1128,10 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>4.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1158,10 +1150,10 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1180,10 +1172,10 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>3.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1202,10 +1194,10 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1224,10 +1216,10 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>4.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1246,10 +1238,10 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1271,7 +1263,7 @@ experimenter.get_table()
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1290,10 +1282,10 @@ experimenter.get_table()
       <td>5</td>
       <td>5</td>
       <td>rbf</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1312,10 +1304,10 @@ experimenter.get_table()
       <td>5</td>
       <td>5</td>
       <td>rbf</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1334,10 +1326,10 @@ experimenter.get_table()
       <td>5</td>
       <td>5</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>3.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1356,10 +1348,10 @@ experimenter.get_table()
       <td>5</td>
       <td>5</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1378,10 +1370,10 @@ experimenter.get_table()
       <td>5</td>
       <td>5</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>4.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1400,10 +1392,10 @@ experimenter.get_table()
       <td>5</td>
       <td>5</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.1</td>
       <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1422,10 +1414,10 @@ experimenter.get_table()
       <td>5</td>
       <td>5</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>3.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1444,10 +1436,10 @@ experimenter.get_table()
       <td>5</td>
       <td>5</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1466,10 +1458,10 @@ experimenter.get_table()
       <td>5</td>
       <td>5</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>4.0</td>
       <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1488,10 +1480,10 @@ experimenter.get_table()
       <td>5</td>
       <td>5</td>
       <td>poly</td>
-      <td>0.0</td>
+      <td>0.3</td>
       <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>0.1</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1513,7 +1505,7 @@ experimenter.get_table()
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
+      <td>2023-06-17 09:05:36</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -1533,7 +1525,7 @@ experimenter.get_table()
 <section id="Execute-PyExperimenter">
 <h3>Execute PyExperimenter<a class="headerlink" href="#Execute-PyExperimenter" title="Permalink to this heading"></a></h3>
 <p>All experiments are executed one after the other by the same <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> due to <code class="docutils literal notranslate"><span class="pre">max_experiments=-1</span></code>. If just a single one or a predifined number of experiments should be executed, the <code class="docutils literal notranslate"><span class="pre">-1</span></code> has to be replaced by the according amount. The first parameter, i.e. <code class="docutils literal notranslate"><span class="pre">run_svm</span></code>, relates to the actual method that should be executed with the given keyfields of the table.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
@@ -1544,1274 +1536,10 @@ experimenter.get_table()
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/lukas/development/code_projects/py_experimenter/py_experimenter/database_connector.py:320: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df = pd.read_sql(query, connection)
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>ID</th>
-      <th>dataset</th>
-      <th>cross_validation_splits</th>
-      <th>seed</th>
-      <th>kernel</th>
-      <th>gamma</th>
-      <th>degree</th>
-      <th>coef0</th>
-      <th>creation_date</th>
-      <th>status</th>
-      <th>start_date</th>
-      <th>name</th>
-      <th>machine</th>
-      <th>train_f1</th>
-      <th>train_accuracy</th>
-      <th>test_f1</th>
-      <th>test_accuracy</th>
-      <th>end_date</th>
-      <th>error</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>1</td>
-      <td>rbf</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:41:58</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:03</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>1</td>
-      <td>rbf</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:04</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:06</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>1</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:06</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:08</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>1</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:09</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:11</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>1</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:11</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:14</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>6</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>1</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:14</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:17</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>7</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>1</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:17</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:20</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>8</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>1</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:20</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:22</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>9</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>1</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:23</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:25</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>10</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>1</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:26</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:28</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>11</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>1</td>
-      <td>linear</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:28</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:31</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>12</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>rbf</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:31</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:34</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>13</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>rbf</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:34</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:36</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>14</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:36</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:37</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>15</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:38</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:39</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>16</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:39</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:41</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>17</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:41</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:43</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>18</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:43</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:44</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>19</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:45</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:46</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>20</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:47</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:48</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>21</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:48</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:50</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>22</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>linear</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:50</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:52</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>23</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>3</td>
-      <td>rbf</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:53</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:54</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>24</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>3</td>
-      <td>rbf</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:54</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:42:57</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>25</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>3</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:42:57</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:00</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>26</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>3</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:00</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:03</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>27</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>3</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:03</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:05</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>28</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>3</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:06</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:08</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>29</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>3</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:09</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:12</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>30</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>3</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:12</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:14</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>30</th>
-      <td>31</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>3</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:15</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:18</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>32</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>3</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:18</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:21</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>32</th>
-      <td>33</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>3</td>
-      <td>linear</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:21</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:25</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>33</th>
-      <td>34</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>rbf</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:26</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:28</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>34</th>
-      <td>35</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>rbf</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:30</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:32</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>35</th>
-      <td>36</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:32</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:35</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>36</th>
-      <td>37</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:35</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:37</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>37</th>
-      <td>38</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:38</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:40</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>38</th>
-      <td>39</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:41</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:44</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>39</th>
-      <td>40</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:44</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:47</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>40</th>
-      <td>41</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:47</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:50</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>41</th>
-      <td>42</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:50</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:53</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>42</th>
-      <td>43</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:54</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:56</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>43</th>
-      <td>44</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>linear</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:57</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:43:59</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>44</th>
-      <td>45</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>5</td>
-      <td>rbf</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:43:59</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:44:02</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>45</th>
-      <td>46</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>5</td>
-      <td>rbf</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:44:03</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:44:08</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>46</th>
-      <td>47</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>5</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:44:08</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:44:14</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>47</th>
-      <td>48</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>5</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:44:14</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:44:19</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>48</th>
-      <td>49</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>5</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:44:20</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:44:25</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>49</th>
-      <td>50</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>5</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:44:26</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:44:31</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>50</th>
-      <td>51</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>5</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:44:32</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:44:37</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>51</th>
-      <td>52</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>5</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>3.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:44:38</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:44:43</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>52</th>
-      <td>53</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>5</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:44:45</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:44:50</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>53</th>
-      <td>54</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>5</td>
-      <td>poly</td>
-      <td>0.0</td>
-      <td>4.0</td>
-      <td>0.0</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:44:50</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:44:56</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>54</th>
-      <td>55</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>5</td>
-      <td>linear</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-04-28 13:41:57</td>
-      <td>done</td>
-      <td>2023-04-28 13:44:56</td>
-      <td>SVM_experimenter_01</td>
-      <td>Worklaptop</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2023-04-28 13:45:02</td>
-      <td>None</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
+</section>
+<section id="CodeCarbon">
+<h3>CodeCarbon<a class="headerlink" href="#CodeCarbon" title="Permalink to this heading"></a></h3>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> is activated by default, collecting information about the carbon emissions of each experiment. Have a look at our <a class="reference external" href="https://tornede.github.io/py_experimenter/examples/example_general_usage.html">general usage example</a> and the according <a class="reference external" href="https://tornede.github.io/py_experimenter/usage.html#codecarbon-fields">documentation of CodeCarbon fields</a> for more information.</p>
 </section>
 </section>
 </section>
