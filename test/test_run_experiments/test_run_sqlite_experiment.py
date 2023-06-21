@@ -36,7 +36,7 @@ def check_done_entries(experimenter, amount_of_entries):
 def test_run_all_sqlite_experiments():
     logging.basicConfig(level=logging.DEBUG)
     experimenter = PyExperimenter(experiment_configuration_file_path=os.path.join(
-        'test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg'))
+        'test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg'), use_codecarbon=False)
     try:
         experimenter.delete_table()
     except Exception:
@@ -55,7 +55,7 @@ def test_run_all_sqlite_experiments():
     experimenter.dbconnector.close_connection(connection)
 
     experimenter = PyExperimenter(experiment_configuration_file_path=os.path.join(
-        'test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg'))
+        'test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg'), use_codecarbon=False)
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, -1)
     check_done_entries(experimenter, 30)
@@ -95,7 +95,7 @@ def check_error_entries(experimenter):
 def test_run_error_experiment():
     experiment_configuration_file_path = os.path.join('test', 'test_run_experiments', 'test_run_sqlite_experiment_config.cfg')
     logging.basicConfig(level=logging.DEBUG)
-    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path)
+    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path, use_codecarbon=False)
     try:
         experimenter.delete_table()
     except ProgrammingError as e:
@@ -131,7 +131,7 @@ def own_function_raising_errors(keyfields: dict, result_processor: ResultProcess
 
 def test_raising_error_experiment():
     experimenter = PyExperimenter(experiment_configuration_file_path=os.path.join('test', 'test_run_experiments', 'test_run_sqlite_error_config.cfg'),
-                                  name='name')
+                                  name='name', use_codecarbon=False)
 
     try:
         experimenter.delete_table()

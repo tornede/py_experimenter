@@ -1,11 +1,12 @@
-import configparser
 import logging
 import os
 import socket
 import traceback
+from configparser import ConfigParser
 from typing import Callable, Dict, List, Tuple
 
 import pandas as pd
+from codecarbon import EmissionsTracker, OfflineEmissionsTracker
 from joblib import Parallel, delayed
 
 from py_experimenter import utils
@@ -26,6 +27,7 @@ class PyExperimenter:
                  database_credential_file_path: str = os.path.join('config', 'database_credentials.cfg'),
                  table_name: str = None,
                  database_name: str = None,
+                 use_codecarbon: bool = True,
                  name='PyExperimenter'):
         """
         Initializes the PyExperimenter with the given information.
@@ -44,6 +46,8 @@ class PyExperimenter:
             `experiment_configuration_file_path`. If None, the database name is taken from the experiment configuration
             file. Defaults to None.
         :type database_name: str, optional
+        :param use_codecarbon: If True, the carbon emissions are tracked and stored in the database. Defaults to True.
+        :type use_codecarbon: bool, optional
         :param name: The name of the PyExperimenter, which will be logged in the according column in the database table.
             Defaults to 'PyExperimenter'.
         :type name: str, optional
@@ -51,6 +55,16 @@ class PyExperimenter:
         :raises ValueError: If an unsupported or unknown database connection provider is given.
         """
         self.config = utils.load_config(experiment_configuration_file_path)
+
+        self.use_codecarbon = use_codecarbon
+        self.config, self.codecarbon_config = utils.extract_codecarbon_config(self.config)
+        if self.codecarbon_config.has_option('codecarbon', 'offline_mode'):
+            self.codecarbon_offline_mode = self.codecarbon_config['codecarbon']['offline_mode'] == 'True'
+        else:
+            self.codecarbon_offline_mode = False
+            self.codecarbon_config.set('codecarbon', 'offline_mode', 'False')
+        utils.write_codecarbon_config(self.codecarbon_config)
+
         self.database_credential_file_path = database_credential_file_path
         if not PyExperimenter._is_valid_configuration(self.config, database_credential_file_path):
             raise InvalidConfigError('Invalid configuration')
@@ -65,9 +79,9 @@ class PyExperimenter:
         self.timestamp_on_result_fields = utils.timestamps_for_result_fields(self.config)
 
         if self.config['PY_EXPERIMENTER']['provider'] == 'sqlite':
-            self.dbconnector = DatabaseConnectorLITE(self.config)
+            self.dbconnector = DatabaseConnectorLITE(self.config, self.use_codecarbon, self.codecarbon_config)
         elif self.config['PY_EXPERIMENTER']['provider'] == 'mysql':
-            self.dbconnector = DatabaseConnectorMYSQL(self.config, database_credential_file_path)
+            self.dbconnector = DatabaseConnectorMYSQL(self.config, self.use_codecarbon, self.codecarbon_config, database_credential_file_path)
         else:
             raise ValueError('The provider indicated in the config file is not supported')
 
@@ -138,41 +152,41 @@ class PyExperimenter:
         return self.config.has_option(section_name, key)
 
     @ staticmethod
-    def _is_valid_configuration(_config: configparser, database_credential_file_path: str = None) -> bool:
+    def _is_valid_configuration(config: ConfigParser, database_credential_file_path: str = None) -> bool:
         """
         Checks whether the given experiment configuration is valid, i.e., it contains all necessary fields, the database provider
         is either mysql or sqlite, and in case of a mysql database provider, that the database credentials are available.
 
-        :param _config: The experiment configuration.
-        :type _config: configparser
+        :param config: The experiment configuration.
+        :type config: ConfigParser
         :param database_credential_file_path: The path to the database configuration file, i.e., the file defining
             the host, user and password. Defaults to None.
         :type database_credential_file_path: str, optional
         :return: True if the experiment configuration contains all necessary fields.
         :rtype: bool
         """
-        if not _config.has_section('PY_EXPERIMENTER'):
+        if not config.has_section('PY_EXPERIMENTER'):
             return False
 
-        if set(_config.keys()) > {'PY_EXPERIMENTER', 'CUSTOM', 'DEFAULT'}:
+        if set(config.keys()) > {'PY_EXPERIMENTER', 'CUSTOM', 'DEFAULT'}:
             return False
 
-        if not {'provider', 'database', 'table'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
+        if not {'provider', 'database', 'table'}.issubset(set(config.options('PY_EXPERIMENTER'))):
             logging.error('Error in config file: DATABASE section must contain provider, database, and table')
             return False
 
-        if _config['PY_EXPERIMENTER']['provider'] not in ['sqlite', 'mysql']:
+        if config['PY_EXPERIMENTER']['provider'] not in ['sqlite', 'mysql']:
             logging.error('Error in config file: DATABASE provider must be either sqlite or mysql')
             return False
 
-        if _config['PY_EXPERIMENTER']['provider'] == 'mysql':
+        if config['PY_EXPERIMENTER']['provider'] == 'mysql':
             credentials = utils.load_config(database_credential_file_path)
             if not {'host', 'user', 'password'}.issubset(set(credentials.options('CREDENTIALS'))):
                 logging.error(
-                    f'Error in config file: DATABASE section must contain host, user, and password since provider is {_config["DATABASE"]["provider"]}')
+                    f'Error in config file: DATABASE section must contain host, user, and password since provider is {config["DATABASE"]["provider"]}')
                 return False
 
-        if not {'keyfields', 'resultfields'}.issubset(set(_config.options('PY_EXPERIMENTER'))):
+        if not {'keyfields', 'resultfields'}.issubset(set(config.options('PY_EXPERIMENTER'))):
             return False
         return True
 
@@ -302,23 +316,11 @@ class PyExperimenter:
             if max_experiments == -1:
                 parallel(delayed(self._worker)(experiment_function) for _ in range(n_jobs))
             else:
-                parallel(delayed(self._execution_wrapper)(experiment_function) for _ in range(max_experiments))
+                parallel(delayed(self._execution_wrapper)(experiment_function)
+                         for _ in range(max_experiments))
         logging.info("All configured executions finished.")
 
     def _worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None]) -> None:
-        """
-        Worker that repeatedly pulls open experiments from the database table and executes them.
-
-        :param experiment_function: The function that should be executed with the different parametrizations.
-        :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
-        """
-        while True:
-            try:
-                self._execution_wrapper(experiment_function)
-            except NoExperimentsLeftException:
-                break
-
-    def _execution_worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None]) -> None:
         """
         Worker that repeatedly pulls open experiments from the database table and executes them.
 
@@ -343,9 +345,9 @@ class PyExperimenter:
         * `error` if an exception was raised during the execution of the experiment.
         * `done` if the execution of the experiment has finished successfully.
 
-        Errors raised during the execution of `experiment_function` are logged to the `error` column in the database table. 
-        Note that only errors raised within `experiment_function` are logged in to the database table. Therefore all errors 
-        raised before or after the execution of `experiment_function` are logged according to the local logging configuration 
+        Errors raised during the execution of `experiment_function` are logged to the `error` column in the database table.
+        Note that only errors raised within `experiment_function` are logged in to the database table. Therefore all errors
+        raised before or after the execution of `experiment_function` are logged according to the local logging configuration
         and do not appear in the table.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
@@ -359,13 +361,24 @@ class PyExperimenter:
         custom_fields = dict(self.config.items('CUSTOM')) if self.has_section('CUSTOM') else None
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
 
-        result_processor = ResultProcessor(self.config, self.database_credential_file_path, table_name=table_name,
+        result_processor = ResultProcessor(self.config, self.use_codecarbon, self.codecarbon_config, self.database_credential_file_path, table_name=table_name,
                                            result_fields=result_field_names, experiment_id=experiment_id)
         result_processor._set_name(self.name)
         result_processor._set_machine(socket.gethostname())
 
+        if self.use_codecarbon:
+            if self.codecarbon_offline_mode:
+                if not self.codecarbon_config.has_option('codecarbon', 'country_iso_code'):
+                    raise InvalidConfigError(('CodeCarbon offline mode requires a `country_iso_code` in the config file.'
+                                              'For more information see `https://mlco2.github.io/codecarbon/index.html`.'))
+                tracker = OfflineEmissionsTracker()
+            else:
+                tracker = EmissionsTracker()
+
         try:
             logging.debug(f"Start of experiment_function on process {socket.gethostname()}")
+            if self.use_codecarbon:
+                tracker.start()
             experiment_function(keyfield_values, result_processor, custom_fields)
         except Exception:
             error_msg = traceback.format_exc()
@@ -374,6 +387,11 @@ class PyExperimenter:
             result_processor._change_status(ExperimentStatus.ERROR.value)
         else:
             result_processor._change_status(ExperimentStatus.DONE.value)
+        finally:
+            if self.use_codecarbon:
+                tracker.stop()
+                emission_data = tracker._prepare_emissions_data().values
+                result_processor._write_emissions(emission_data, self.codecarbon_offline_mode)
 
     def reset_experiments(self, *states: Tuple['str']) -> None:
         """
@@ -404,7 +422,7 @@ class PyExperimenter:
         """
         return self.dbconnector.get_table()
 
-    def get_logtable(self, table_name: str) -> pd.DataFrame:
+    def get_logtable(self, logtable_name: str) -> pd.DataFrame:
         """
         Returns the log table as `Pandas.DataFrame`. 
 
@@ -413,4 +431,17 @@ class PyExperimenter:
         :return: The log table as `Pandas.DataFrame`. 
         :rtype: pd.DataFrame
         """
-        return self.dbconnector.get_logtable(table_name)
+        return self.dbconnector.get_logtable(logtable_name)
+
+    def get_codecarbon_table(self) -> pd.DataFrame:
+        """
+        Returns the CodeCarbon table as `Pandas.DataFrame`. If CodeCarbon is not used in this experiment, an error is raised.
+
+        :raises ValueError: If CodeCarbon is not used in this experiment.
+        :return: Returns the CodeCarbon table as `Pandas.DataFrame`.
+        :rtype: pd.DataFrame
+        """
+        if self.use_codecarbon:
+            return self.dbconnector.get_codecarbon_table()
+        else:
+            raise ValueError('CodeCarbon is not used in this experiment.')

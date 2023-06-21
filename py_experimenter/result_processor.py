@@ -1,6 +1,9 @@
 import logging
+from configparser import ConfigParser
 from copy import deepcopy
 from typing import Dict, List, Tuple
+
+from codecarbon.output import EmissionsData
 
 import py_experimenter.utils as utils
 from py_experimenter.database_connector import DatabaseConnector
@@ -24,19 +27,21 @@ class ResultProcessor:
     database.
     """
 
-    def __init__(self, _config: dict, credential_path, table_name: str, result_fields: List[str], experiment_id: int):
+    def __init__(self, config: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser, credential_path, table_name: str, result_fields: List[str], experiment_id: int):
         self._table_name = table_name
         self._result_fields = result_fields
-        self._config = _config
+        self._config = config
         self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
-
         self._experiment_id = experiment_id
         self._experiment_id_condition = f'ID = {self._experiment_id}'
 
-        if _config['PY_EXPERIMENTER']['provider'] == 'sqlite':
-            self._dbconnector: DatabaseConnector = DatabaseConnectorLITE(_config)
-        elif _config['PY_EXPERIMENTER']['provider'] == 'mysql':
-            self._dbconnector: DatabaseConnector = DatabaseConnectorMYSQL(_config, credential_path)
+        self.use_codecarbon = use_codecarbon
+        self._codecarbon_config = codecarbon_config
+
+        if config['PY_EXPERIMENTER']['provider'] == 'sqlite':
+            self._dbconnector: DatabaseConnector = DatabaseConnectorLITE(config, self.use_codecarbon, self._codecarbon_config)
+        elif config['PY_EXPERIMENTER']['provider'] == 'mysql':
+            self._dbconnector: DatabaseConnector = DatabaseConnectorMYSQL(config, self.use_codecarbon, self._codecarbon_config, credential_path)
         else:
             raise InvalidConfigError("Invalid database provider!")
 
@@ -54,6 +59,16 @@ class ResultProcessor:
             results = self.__class__._add_timestamps_to_results(results)
 
         self._dbconnector.update_database(self._table_name, values=results, condition=self._experiment_id_condition)
+
+    def _write_emissions(self, emission_data: EmissionsData, offline_mode: bool) -> None:
+        emission_data['offline_mode'] = offline_mode
+        emission_data['experiment_id'] = self._experiment_id
+
+        keys = utils.extract_codecarbon_columns(with_type = False)
+        values = emission_data.values()
+        values = [value if not value == '' else None for value in values]
+        statement = self._dbconnector.prepare_write_query(f'{self._table_name}_codecarbon', keys)
+        self._dbconnector.execute_queries([(statement, values)])
 
     @staticmethod
     def _add_timestamps_to_results(results: dict) -> List[Tuple[str, object]]:

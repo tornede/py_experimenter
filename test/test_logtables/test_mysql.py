@@ -45,7 +45,7 @@ def test_tables_created(execute_mock, close_connection_mock, fetchall_mock, curs
 def test_logtable_insertion(database_connector_mock):
     config = ConfigParser()
     config.read(os.path.join('test', 'test_logtables', 'mysql_logtables.cfg'))
-    result_processor = ResultProcessor(config, None, None, None, 0)
+    result_processor = ResultProcessor(config, None, None, None, None, None, 0)
     result_processor._table_name = 'table_name'
     table_0_logs = {'test0': 'test', 'test1': 'test'}
     table_1_logs = {'test0': 'test'}
@@ -69,7 +69,7 @@ def test_logtable_insertion(database_connector_mock):
 def test_delete_logtable(execution_mock, close_connection_mock, commit_mocck, fetchall_mock, cursor_mock, connect_mock, test_connection_mock, create_database_mock):
     fetchall_mock.return_value = cursor_mock.return_value = connect_mock.return_value = commit_mocck.return_value = None
     close_connection_mock.return_value = test_connection_mock.return_value = create_database_mock.return_value = execution_mock.return_value = None
-    experimenter = PyExperimenter(os.path.join('test', 'test_logtables', 'mysql_logtables.cfg'))
+    experimenter = PyExperimenter(os.path.join('test', 'test_logtables', 'mysql_logtables.cfg'), use_codecarbon=False)
     experimenter.delete_table()
     execution_mock.assert_has_calls([call(None, 'DROP TABLE IF EXISTS test_mysql_logtables__test_mysql_log'),
                                      call(None, 'DROP TABLE IF EXISTS test_mysql_logtables__test_mysql_log2'),

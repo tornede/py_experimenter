@@ -15,14 +15,16 @@ from py_experimenter.experiment_status import ExperimentStatus
 
 class DatabaseConnector(abc.ABC):
 
-    def __init__(self, config: ConfigParser):
+    def __init__(self, config: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser):
         self.config = config
+        self.codecarbon_config = codecarbon_config
         self.table_name = self.config.get('PY_EXPERIMENTER', 'table')
         self.database_name = self.config.get('PY_EXPERIMENTER', 'database')
 
         self.database_credentials = self._extract_credentials()
         self.timestamp_on_result_fields = utils.timestamps_for_result_fields(self.config)
 
+        self.use_codecarbon = use_codecarbon
         self._test_connection()
 
     @abc.abstractmethod
@@ -89,12 +91,16 @@ class DatabaseConnector(abc.ABC):
             self._create_table(cursor, columns, self.table_name)
 
             for logtable_name, logtable_columns in utils.extract_logtables(self.config, self.table_name).items():
-                self._create_table(cursor, logtable_columns, logtable_name, logtable=True)
+                self._create_table(cursor, logtable_columns, logtable_name, table_type='logtable')
+
+            if self.use_codecarbon:
+                codecarbon_columns = utils.extract_codecarbon_columns()
+                self._create_table(cursor, codecarbon_columns, f"{self.table_name}_codecarbon", table_type='codecarbon')
 
         self.close_connection(connection)
 
     @abc.abstractmethod
-    def _table_exists(self, cursor):
+    def _table_exists(self, cursor, table_name: str):
         pass
 
     @staticmethod
@@ -119,21 +125,25 @@ class DatabaseConnector(abc.ABC):
 
         return columns[1:amount_of_keyfields + 1] + columns[-amount_of_result_fields - 2:-2]
 
-    def _create_table(self, cursor, columns: List[Tuple['str']], table_name: str, logtable: bool = False):
-        query = self._get_create_table_query(columns, table_name, logtable)
+    def _create_table(self, cursor, columns: List[Tuple['str']], table_name: str, table_type: str = 'standard'):
+        query = self._get_create_table_query(columns, table_name, table_type)
         try:
             self.execute(cursor, query)
         except Exception as err:
             raise CreatingTableError(f'Error when creating table: {err}')
 
-    def _get_create_table_query(self, columns: List[Tuple['str']], table_name: str, logtable: bool):
+    def _get_create_table_query(self, columns: List[Tuple['str']], table_name: str, table_type: str = 'standard'):
         columns = ['%s %s DEFAULT NULL' % (field, datatype) for field, datatype in columns]
         columns = ','.join(columns)
         query = f"CREATE TABLE {table_name} (ID INTEGER PRIMARY KEY {self.get_autoincrement()}"
-        if logtable:
-            query += f", experiment_id INTEGER, timestamp DATETIME, {columns}, FOREIGN KEY (experiment_id) REFERENCES {self.table_name}(ID) ON DELETE CASCADE"
-        else:
+        if table_type == 'standard':
             query += f", {columns}"
+        elif table_type == 'logtable':
+            query += f", experiment_id INTEGER, timestamp DATETIME, {columns}, FOREIGN KEY (experiment_id) REFERENCES {self.table_name}(ID) ON DELETE CASCADE"
+        elif table_type == 'codecarbon':
+            query += f", experiment_id INTEGER, {columns}, FOREIGN KEY (experiment_id) REFERENCES {self.table_name}(ID) ON DELETE CASCADE"
+        else:
+            raise ValueError(f"Unknown table type: {table_type}")
         return query + ');'
 
     @abc.abstractstaticmethod
@@ -308,11 +318,17 @@ class DatabaseConnector(abc.ABC):
         cursor = self.cursor(connection)
         for logtable_name in utils.extract_logtables(self.config, self.table_name).keys():
             self.execute(cursor, f'DROP TABLE IF EXISTS {logtable_name}')
+        if self.use_codecarbon:
+            self.execute(cursor, f'DROP TABLE IF EXISTS {self.table_name}_codecarbon')
+
         self.execute(cursor, f'DROP TABLE IF EXISTS {self.table_name}')
         self.commit(connection)
 
     def get_logtable(self, logtable_name: str) -> pd.DataFrame:
         return self.get_table(f'{self.table_name}__{logtable_name}')
+
+    def get_codecarbon_table(self) -> pd.DataFrame:
+        return self.get_table(f'{self.table_name}_codecarbon')
 
     def get_table(self, table_name: Optional[str] = None) -> pd.DataFrame:
         connection = self.connect()

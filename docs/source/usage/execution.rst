@@ -16,6 +16,7 @@ The actual execution of ``PyExperimenter`` only needs a few lines of code. Pleas
 
 The above code will execute all experiments defined in the :ref:`experiment configuration file <experiment_configuration_file>`. If you want to do something different, e.g. :ref:`fill the database table with specific rows <fill_table_with_rows>`, or :ref:`reset experiments <reset_experiments>`, check out the following sections.
 
+.. _execution_creating_pyexperimenter:
 
 -------------------------
 Creating a PyExperimenter
@@ -33,6 +34,7 @@ Additionally, further information can be given to ``PyExperimenter``:
 - ``database_credential_file_path``: The path of the :ref:`database credential file <database_credential_file>`. Default: ``config/database_credentials.cfg``
 - ``database_name``: The name of the database to manage the experiments. If given, it will overwrite the database name given in the `experiment_configuration_file_path`.
 - ``table_name``: The name of the database table to manage the experiments. If given, it will overwrite the table name given in the `experiment_configuration_file_path`.
+- ``use_codecarbon``: Specifies if :ref:`CodeCarbon <experiment_configuration_file_codecarbon>` will be used to track experiment emissions. Default: ``True``. 
 - ``name``: The name of the experimenter, which will be added to the database table of each executed experiment. If using the PyExperimenter on an HPC system, this can be used for the job ID, so that the according log file can easily be found. Default: ``PyExperimenter``.
 
 
@@ -135,3 +137,16 @@ The current content of the database table can be obtained as a ``pandas.DataFram
     result_table = experimenter.get_table()
     result_table = result_table.groupby(['dataset']).mean()[['seed']]
     print(result_table.to_latex(columns=['seed'], index_names=['dataset']))
+
+
+.. _execution_codecarbon:
+
+----------
+CodeCarbon
+----------
+
+Tracking information about the carbon footprint of experiments is supported via :ref:`CodeCarbon <experiment_configuration_file_codecarbon>`. Tracking is enabled by default, as described in :ref:`how to create a PyExperimenter <execution_creating_pyexperimenter>`. If the tracking is enabled, the according information can be found in the database table ``<table_name>_codecarbon``, which can be easily accessed with the following call:
+
+.. code-block::
+
+    experimenter.get_codecarbon_table()

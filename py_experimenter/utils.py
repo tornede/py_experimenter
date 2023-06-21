@@ -1,13 +1,14 @@
 import logging
 from configparser import ConfigParser
 from datetime import datetime
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Iterable, List, Optional, Tuple
 
 import numpy as np
 
 from py_experimenter.exceptions import ConfigError, NoConfigFileError, ParameterCombinationError
 
 
+# check if path to codecarbon file exists
 def load_config(path):
     """
     Load and return configuration file.
@@ -23,6 +24,58 @@ def load_config(path):
 
     return config
     
+
+def extract_codecarbon_config(config: ConfigParser) -> Tuple[ConfigParser]:
+    codecarbon_config = ConfigParser()
+    if config.has_section("codecarbon"):
+        codecarbon_config.read_dict({"codecarbon": dict(config["codecarbon"])})
+        config.remove_section("codecarbon")
+    else:
+        codecarbon_config.read_dict(
+            {
+                "codecarbon": {
+                    "measure_power_secs": "15",
+                    "tracking_mode": "machine",
+                    "log_level": "error",
+                    "save_to_file": "True",
+                    "output_dir": "output/CodeCarbon"
+                }
+            }
+        )
+
+    return config, codecarbon_config
+
+
+def write_codecarbon_config(codecarbon_config: ConfigParser):
+    with open('.codecarbon.config', 'w') as f:
+        codecarbon_config.write(f)
+
+
+def extract_codecarbon_columns(with_type:bool = True):
+    if with_type:
+        return [
+            ('codecarbon_timestamp', 'DATETIME '), ('project_name', 'VARCHAR(255)'), ('run_id', 'VARCHAR(255)'),
+            ('duration_seconds', 'DOUBLE'), ('emissions_kg', 'DOUBLE'), ('emissions_rate_kg_sec', 'DOUBLE'),
+            ('cpu_power_watt', 'DOUBLE'), ('gpu_power_watt', 'DOUBLE'), ('ram_power_watt', 'DOUBLE'),
+            ('cpu_energy_kw', 'DOUBLE'), ('gpu_energy_kw', 'DOUBLE'), ('ram_energy_kw', 'DOUBLE'),
+            ('energy_consumed_kw', 'DOUBLE'), ('country_name', 'VARCHAR(255)'), ('country_iso_code', 'VARCHAR(255)'),
+            ('region', 'VARCHAR(255)'), ('cloud_provider', 'VARCHAR(255)'), ('cloud_region', 'VARCHAR(255)'),
+            ('os', 'VARCHAR(255)'), ('python_version', 'VARCHAR(255)'), ('codecarbon_version', 'VARCHAR(255)'),
+            ('cpu_count', 'DOUBLE'), ('cpu_model', 'VARCHAR(255)'), ('gpu_count', 'DOUBLE'),
+            ('gpu_model', 'VARCHAR(255)'), ('longitude', 'VARCHAR(255)'), ('latitude', 'VARCHAR(255)'),
+            ('ram_total_size', 'DOUBLE'), ('tracking_mode', 'VARCHAR(255)'), ('on_cloud', 'VARCHAR(255)'),
+            ('offline_mode', 'BOOL')
+        ]
+    else:
+        return [
+            'codecarbon_timestamp', 'project_name', 'run_id', 'duration_seconds', 'emissions_kg',
+            'emissions_rate_kg_sec', 'cpu_power_watt', 'gpu_power_watt', 'ram_power_watt', 'cpu_energy_kw',
+            'gpu_energy_kw', 'ram_energy_kw', 'energy_consumed_kw', 'country_name', 'country_iso_code', 'region',
+            'cloud_provider', 'cloud_region', 'os', 'python_version', 'codecarbon_version', 'cpu_count', 'cpu_model',
+            'gpu_count', 'gpu_model', 'longitude', 'latitude', 'ram_total_size', 'tracking_mode', 'on_cloud',
+            'offline_mode', 'experiment_id'
+        ]
+
 
 def get_keyfield_data(config):
     keyfields = get_keyfields(config)
