@@ -33,7 +33,7 @@ The experiment configuration file is primarily used to define the database backe
     [codecarbon]
     offline_mode = False
     measure_power_secs = 15
-    tracking_mode = process
+    tracking_mode = machine
     log_level = error
     save_to_file = True
     output_dir = output/CodeCarbon
@@ -164,7 +164,7 @@ Per default, ``CodeCarbon`` will track the carbon footprint of the whole machine
 
     [codecarbon]
     measure_power_secs = 15
-    tracking_mode = process
+    tracking_mode = machine
     log_level = error
     save_to_file = True
     output_dir = output/CodeCarbon
