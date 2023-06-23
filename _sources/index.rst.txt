@@ -1,7 +1,7 @@
 .. image:: _static/py-experimenter-logo.png
-   :width: 200px
-   :alt: PyExperimenter
-   :align: right
+  :width: 200px
+  :alt: PyExperimenter
+  :align: right
 
 ==========================================
 Welcome to PyExperimenter's documentation!
@@ -31,8 +31,18 @@ Thereby, ``PyExperimenter`` alleviates the aforementioned overhead and allows ex
    usage/index
    examples/index
    autoapi/index
-   how-to-contribute
    help
+
+
+.. toctree::
+   :maxdepth: 4
+   :hidden:
+   :caption: Development
+
+   issues
+   how-to-contribute
+   3rd-party
+   release-version
 
 .. toctree::
    :maxdepth: 2

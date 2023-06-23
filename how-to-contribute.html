@@ -22,8 +22,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Need Help?" href="help.html" />
-    <link rel="prev" title="py_experimenter.utils" href="autoapi/py_experimenter/utils/index.html" /> 
+    <link rel="next" title="Usage of 3rd Party Dependencies" href="3rd-party.html" />
+    <link rel="prev" title="Creating an Issue" href="issues.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,21 +46,25 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Need Help?</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="issues.html">Creating an Issue</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to Contribute</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#creating-an-issue">Creating an Issue</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setup-development-workflow">Setup Development Workflow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#how-to-use-poetry">How to use Poetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#extend-unit-tests">Extend Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#update-documentation">Update Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#create-pull-request">Create Pull Request</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="help.html">Need Help?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3rd-party.html">Usage of 3rd Party Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-version.html">Release Version</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">About PyExperimenter</span></p>
 <ul>
@@ -97,25 +101,8 @@
              
   <section id="how-to-contribute">
 <span id="contribute"></span><h1>How to Contribute<a class="headerlink" href="#how-to-contribute" title="Permalink to this heading"></a></h1>
-<p>We would appreciate seeing you contributing to <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>. If you have any new idea or have found a bug, please first make sure to check the existing <a class="reference external" href="https://github.com/tornede/py_experimenter/issues">GitHub Issues</a>. In case someone else have had a similar idea or has found the same bug, you could give further feedback on how to improve. Otherwise, please <a class="reference internal" href="#contribute-create-issue"><span class="std std-ref">create an according issue</span></a>. You are planning to work on this issue yourself, or you have found another issue you would like to work on? Great! Directly create a comment stating what exactly you are planning to do and <a class="reference internal" href="#contribute-fork-project"><span class="std std-ref">setup the development workflow</span></a>.</p>
+<p>We would appreciate seeing you contributing to <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>. If you have any new idea or have found a bug, please first make sure to check the existing <a class="reference external" href="https://github.com/tornede/py_experimenter/issues">GitHub Issues</a>. In case someone else have had a similar idea or has found the same bug, you could give further feedback on how to improve. Otherwise, please <a class="reference internal" href="issues.html#contribute-create-issue"><span class="std std-ref">create an according issue</span></a>. You are planning to work on this issue yourself, or you have found another issue you would like to work on? Great! Directly create a comment stating what exactly you are planning to do and <a class="reference internal" href="#contribute-fork-project"><span class="std std-ref">setup the development workflow</span></a>.</p>
 <p>At the end, please make sure that you also <a class="reference internal" href="#contribute-unit-tests"><span class="std std-ref">extended the unit tests</span></a> and that all unit tests are working correctly. Additionally, please <a class="reference internal" href="#contribute-update-documentation"><span class="std std-ref">update the documentation</span></a> according to your changes. At the very end, <a class="reference internal" href="#contribute-pull-request"><span class="std std-ref">create a pull request</span></a> and mention the issue on which the changes are based, which contains important information for the review.</p>
-<section id="creating-an-issue">
-<span id="contribute-create-issue"></span><h2>Creating an Issue<a class="headerlink" href="#creating-an-issue" title="Permalink to this heading"></a></h2>
-<p>A GitHub issue should contain any information that is needed that a third person understands the problem (in case of a bug) or the vision of a new feature. To create an issue:</p>
-<ol class="arabic simple">
-<li><p>Go to the <a class="reference external" href="https://github.com/tornede/py_experimenter/issues">GitHub Issues</a>.</p></li>
-<li><p>Summarize the bug / vision as title of the issue.</p></li>
-<li><p>Give all neccessary information about the issue, depending on if it is a bug or an improvement.</p></li>
-</ol>
-<dl class="simple">
-<dt>Bug Report</dt><dd><p>Give a step-by-step description of what you have done and where the bug occurs, so that it is reproducible. Please also provide the code that produced the bug. Additionally, give some assumption what you think the problem is. And add the <code class="docutils literal notranslate"><span class="pre">bug</span></code> label to your issue.</p>
-</dd>
-<dt>Improvement</dt><dd><p>In detail describe the vision of the improvement, how it should be used and how it should work. Please also provide a code example of the usability of the new method / feature. And add the <code class="docutils literal notranslate"><span class="pre">enhancement</span></code> label to your issue.</p>
-</dd>
-<dt>Help</dt><dd><p>Describe the problem you are facing and provice a code example (is suitable). And add the <code class="docutils literal notranslate"><span class="pre">help</span> <span class="pre">wanted</span></code> label to your issue.</p>
-</dd>
-</dl>
-</section>
 <section id="setup-development-workflow">
 <span id="contribute-fork-project"></span><h2>Setup Development Workflow<a class="headerlink" href="#setup-development-workflow" title="Permalink to this heading"></a></h2>
 <p>The development workflow for the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> is based on the fork-and-branch git workflow as described in this <a class="reference external" href="https://blog.scottlowe.org/2015/01/27/using-fork-branch-git-workflow/">blog post</a>. The general steps are as follows:</p>
@@ -145,7 +132,7 @@
 </pre></div>
 </div>
 </li>
-<li><p>Install the development dependencies using <a class="reference internal" href="#use-poetry"><span class="std std-ref">poetry</span></a>.</p>
+<li><p>Install the development dependencies using <a class="reference internal" href="3rd-party.html#use-poetry"><span class="std std-ref">poetry</span></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">install</span>
 </pre></div>
 </div>
@@ -159,10 +146,12 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span>
 </pre></div>
 </div>
-</li>
-<li><p>In case some tests are not succeeding due to <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> of <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, try to update that dependency manually and execute the tests again (step 8).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In case some tests are not succeeding due to <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> of <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, try to update that dependency manually and execute the tests again.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span> <span class="o">--</span><span class="n">upgrade</span>
 </pre></div>
+</div>
 </div>
 </li>
 <li><p>Finally you can start working on the planned changes! At any time, you can push your changes to the <code class="docutils literal notranslate"><span class="pre">origin</span></code> remote.</p></li>
@@ -172,35 +161,6 @@
 </pre></div>
 </div>
 </div></blockquote>
-</section>
-<section id="how-to-use-poetry">
-<span id="use-poetry"></span><h2>How to use Poetry<a class="headerlink" href="#how-to-use-poetry" title="Permalink to this heading"></a></h2>
-<p><a class="reference external" href="https://python-poetry.org/">Poetry</a> is a dependency management and packaging tool for Python. It allows to declare the dependencies of your projects and it will manage (install / update) them for you. It also allows to build a package which can be uploaded to a package repository and installed via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
-<p>For installation instructions and further useful commands than the ones listed below, please refer to the <a class="reference external" href="https://python-poetry.org/docs/">Poetry documentation</a>. Please make sure to follow the described steps: do NOT use <code class="docutils literal notranslate"><span class="pre">pip</span></code> or <code class="docutils literal notranslate"><span class="pre">conda</span></code> for installation of Poetry itself, and make sure to add Poetry to your PATH.</p>
-<p>If you checked out the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> repository, you can install the development dependencies using Poetry. To this end, navigate into the git project folder and execute the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">install</span>
-</pre></div>
-</div>
-<p>You can add a new core dependency that is needed to use <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> using the first of the following commands, which will add the latest version of the package to the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file. If you want to add a specific version, you can use the second following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">add</span> <span class="o">&lt;</span><span class="n">package_name</span><span class="o">&gt;</span>
-<span class="c1"># or</span>
-<span class="n">poetry</span> <span class="n">add</span> <span class="s2">&quot;&lt;package_name&gt;&gt;=&lt;version&gt;&quot;</span>
-</pre></div>
-</div>
-<p>A development dependency can be added using the following command, which will add the latest or the given version of the package to the <code class="docutils literal notranslate"><span class="pre">dev</span></code> dependency group:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">add</span> <span class="o">--</span><span class="n">group</span> <span class="n">dev</span> <span class="o">&lt;</span><span class="n">package_name</span><span class="o">&gt;</span>
-<span class="c1"># or</span>
-<span class="n">poetry</span> <span class="n">add</span> <span class="o">--</span><span class="n">group</span> <span class="n">dev</span> <span class="s2">&quot;&lt;package_name&gt;&gt;=&lt;version&gt;&quot;</span>
-</pre></div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">poetry.lock</span></code> file will be updated automatically, when doing so. If you want to update the <code class="docutils literal notranslate"><span class="pre">poetry.lock</span></code> file manually, you can use the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">update</span>
-</pre></div>
-</div>
-<p>Finally, if you want to build a package, you can use the following command, which will create a <code class="docutils literal notranslate"><span class="pre">dist</span></code> folder containing the built package:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">build</span>
-</pre></div>
-</div>
 </section>
 <section id="extend-unit-tests">
 <span id="contribute-unit-tests"></span><h2>Extend Unit Tests<a class="headerlink" href="#extend-unit-tests" title="Permalink to this heading"></a></h2>
@@ -216,7 +176,7 @@
 </section>
 <section id="update-documentation">
 <span id="contribute-update-documentation"></span><h2>Update Documentation<a class="headerlink" href="#update-documentation" title="Permalink to this heading"></a></h2>
-<p>The documentation of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> is key to all users to understand the functionality and the usability. Therefore, the documentation should be updated according to the changes. It is located in the <code class="docutils literal notranslate"><span class="pre">docs</span></code> folder of the project. Please check that the documentation can be built by first generating it locally. Therefore, navigate into the git project folder and execute shinx. The builded website can be found in the project folder <code class="docutils literal notranslate"><span class="pre">output/documentation/</span></code>.</p>
+<p>The documentation of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> is key to all users to understand the functionality and the usability. Therefore, the documentation should be updated according to the changes. It is located in the <code class="docutils literal notranslate"><span class="pre">docs</span></code> folder of the project. Please check that the documentation can be built by first generating it locally. Therefore, navigate into the git project folder and execute sphinx. The builded website can be found in the project folder <code class="docutils literal notranslate"><span class="pre">output/documentation/</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">html</span> <span class="n">docs</span><span class="o">/</span><span class="n">source</span><span class="o">/</span> <span class="n">output</span><span class="o">/</span><span class="n">documentation</span><span class="o">/</span>
 </pre></div>
 </div>
@@ -237,8 +197,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="autoapi/py_experimenter/utils/index.html" class="btn btn-neutral float-left" title="py_experimenter.utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="help.html" class="btn btn-neutral float-right" title="Need Help?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="issues.html" class="btn btn-neutral float-left" title="Creating an Issue" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="3rd-party.html" class="btn btn-neutral float-right" title="Usage of 3rd Party Dependencies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
