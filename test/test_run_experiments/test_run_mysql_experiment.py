@@ -3,7 +3,7 @@ import os
 from math import cos, sin
 
 import pandas as pd
-from mysql.connector.errors import ProgrammingError
+from pymysql.err import ProgrammingError
 
 from py_experimenter.experimenter import PyExperimenter
 from py_experimenter.result_processor import ResultProcessor
@@ -35,7 +35,7 @@ def check_done_entries(experimenter, amount_of_entries):
 def test_run_all_mqsql_experiments():
     experiment_configuration_file_path = os.path.join('test', 'test_run_experiments', 'test_run_mysql_experiment_config.cfg')
     logging.basicConfig(level=logging.DEBUG)
-    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path)
+    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path, use_codecarbon=False)
     try:
         experimenter.delete_table()
     except ProgrammingError as e:
@@ -53,7 +53,7 @@ def test_run_all_mqsql_experiments():
     assert entries_without_metadata == (1, 1, 1, 'done', 'PyExperimenter', '0.8414709848078965', '0.5403023058681398', None)
     experimenter.dbconnector.close_connection(connection)
 
-    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path)
+    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path, use_codecarbon=False)
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, -1)
     check_done_entries(experimenter, 30)
@@ -93,7 +93,7 @@ def check_error_entries(experimenter):
 def test_run_error_experiment():
     experiment_configuration_file_path = os.path.join('test', 'test_run_experiments', 'test_run_mysql_experiment_config.cfg')
     logging.basicConfig(level=logging.DEBUG)
-    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path)
+    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path, use_codecarbon=False)
     try:
         experimenter.delete_table()
     except ProgrammingError as e:
@@ -126,7 +126,7 @@ def own_function_raising_errors(keyfields: dict, result_processor: ResultProcess
 
 def test_raising_error_experiment():
     experimenter = PyExperimenter(experiment_configuration_file_path=os.path.join('test', 'test_run_experiments', 'test_run_mysql_error_config.cfg'),
-                                  name='name')
+                                  name='name', use_codecarbon=False)
 
     try:
         experimenter.delete_table()

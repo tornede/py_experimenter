@@ -1,14 +1,14 @@
 .. image:: _static/py-experimenter-logo.png
-   :width: 200px
-   :alt: PyExperimenter
-   :align: right
+  :width: 200px
+  :alt: PyExperimenter
+  :align: right
 
 ==========================================
 Welcome to PyExperimenter's documentation!
 ==========================================
 
 ``PyExperimenter`` is a tool to facilitate the setup, documentation, execution, and subsequent evaluation of results from an empirical study of algorithms and in particular is designed to reduce the involved manual effort significantly.
-It is intended to be used by researchers in the field of artificial intelligence, but is not limited to those.
+It is intended to be used by researchers in the field of artificial intelligence, but is not limited to those. Addtionally, we support tracking carbon emissions using :ref:`CodeCarbon <experiment_configuration_file_codecarbon>`.
 
 The empirical analysis of algorithms is often accompanied by the execution of algorithms for different inputs and variants of the algorithms (specified via parameters) and the measurement of non-functional properties.
 Since the individual evaluations are usually independent, the evaluation can be performed in a distributed manner on an HPC system.
@@ -31,8 +31,18 @@ Thereby, ``PyExperimenter`` alleviates the aforementioned overhead and allows ex
    usage/index
    examples/index
    autoapi/index
-   how-to-contribute
    help
+
+
+.. toctree::
+   :maxdepth: 4
+   :hidden:
+   :caption: Development
+
+   issues
+   how-to-contribute
+   3rd-party
+   release-version
 
 .. toctree::
    :maxdepth: 2

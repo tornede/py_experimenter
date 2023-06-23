@@ -1,13 +1,15 @@
 import os
 import re
+import tempfile
 from configparser import ConfigParser
 from typing import Dict
 
 import pytest
 
 from py_experimenter.exceptions import ConfigError, MissingLogTableError, NoConfigFileError, ParameterCombinationError
-from py_experimenter.utils import (_generate_int_data, add_timestep_result_columns, combine_fill_table_parameters, extract_columns, extract_logtables,
-                                   get_keyfield_data, get_keyfield_names, get_keyfields, get_resultfields, load_config, timestamps_for_result_fields)
+from py_experimenter.utils import (_generate_int_data, add_timestep_result_columns, combine_fill_table_parameters, extract_codecarbon_config,
+                                   extract_columns, extract_logtables, get_keyfield_data, get_keyfield_names, get_keyfields, get_resultfields,
+                                   load_config, timestamps_for_result_fields)
 
 
 @pytest.mark.parametrize(
@@ -367,7 +369,7 @@ def test_combine_fill_table_parameters(keyfield_names, parameters, fixed_paramet
                 'logtables': 'table1:Table1, table2:Table2',
                 'Table1': 'a:FLOAT, b:FLOAT',
                 'Table2': 'a:FLOAT, b'}},
-            {'some_table_name__table1': [('a', 'FLOAT'), ('b', 'FLOAT')], 
+            {'some_table_name__table1': [('a', 'FLOAT'), ('b', 'FLOAT')],
              'some_table_name__table2': [('a', 'FLOAT'), ('b', 'VARCHAR(255)')]},
             id='logtables with two tables'
         ),
@@ -384,7 +386,7 @@ def test_combine_fill_table_parameters(keyfield_names, parameters, fixed_paramet
         ),
     ]
 )
-def test_extract_logtables(table_name:str, configuration_dict: Dict[str, Dict[str, str]], expected_logtables: Dict[str, Dict[str, str]]):
+def test_extract_logtables(table_name: str, configuration_dict: Dict[str, Dict[str, str]], expected_logtables: Dict[str, Dict[str, str]]):
     config = ConfigParser()
     config.read_dict(configuration_dict)
     logtables = extract_logtables(config, table_name)
@@ -401,15 +403,117 @@ def test_extract_logtables(table_name:str, configuration_dict: Dict[str, Dict[st
             [],
             'No parameter combination found!'
         ),
-        (
-            ['keyfield_name_1', 'keyfield_name_2'],
-            {'keyfield_name_1': [1, 2], 'keyfield_name_2': [4, 5]},
-            [{'keyfield_name_2': [7]}],
-            'There is at least one key that is used more than once!'
-        ),
-
-    ]
+    ],
 )
-def test_combine_fill_table_parameters_raises_error(keyfield_names, parameters, fixed_parameter_combinations, error_msg):
+def test_combine_fill_table_parameters_raises_error(
+    keyfield_names, parameters, fixed_parameter_combinations, error_msg
+):
     with pytest.raises(ParameterCombinationError, match=error_msg):
-        combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations)
+        combine_fill_table_parameters(
+            keyfield_names, parameters, fixed_parameter_combinations
+        )
+
+
+@pytest.fixture
+def temp_config_file_no_codecarbon_section():
+    config_data = """
+    [PY_EXPERIMENTER]
+    provider=mysql
+    database=py_experimenter
+    table=test_table_mysql_with_wrong_syntax
+    n_jobs = 5
+    
+    keyfields = value:int, exponent:int,
+    resultfields = sin, cos
+    
+    value=1,2,3,4,5,6,7,8,9,10
+    exponent=1,2,3
+    """
+    with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
+        temp_file.write(config_data)
+        temp_file.close()
+        yield temp_file.name
+        # Clean up the temporary file after the test
+        os.remove(temp_file.name)
+
+
+def test_extract_codecarbon_config_no_codecarbon_section(
+    temp_config_file_no_codecarbon_section,
+):
+    config = ConfigParser()
+    expected_codecarbon_config = ConfigParser()
+    config.read(temp_config_file_no_codecarbon_section)
+
+    config, codecarbon_config = extract_codecarbon_config(config)
+
+    # Check if 'codecarbon' section is removed from the config
+    assert not config.has_section("codecarbon")
+
+    # Check if the extracted 'codecarbon' config is correct
+    expected_codecarbon_config.read_dict(
+        {
+            "codecarbon": {
+                "measure_power_secs": "15",
+                "tracking_mode": "machine",
+                "log_level": "error",
+                "save_to_file": "True",
+                "output_dir": "output/CodeCarbon",
+            }
+        }
+    )
+    assert codecarbon_config == expected_codecarbon_config
+
+
+@pytest.fixture
+def temp_config_file():
+    config_data = """
+    [PY_EXPERIMENTER]
+    provider=mysql
+    database=py_experimenter
+    table=test_table_mysql_with_wrong_syntax
+    n_jobs = 5
+    
+    keyfields = value:int, exponent:int,
+    resultfields = sin, cos
+    
+    value=1,2,3,4,5,6,7,8,9,10
+    exponent=1,2,3
+    
+    [codecarbon]
+    measure_power_secs = 30
+    tracking_mode = process
+    log_level = warning
+    save_to_file = False
+    output_dir = output/CodeCarbon
+    """
+    with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
+        temp_file.write(config_data)
+        temp_file.close()
+        yield temp_file.name
+        # Clean up the temporary file after the test
+        os.remove(temp_file.name)
+
+
+def test_extract_codecarbon_config(temp_config_file):
+    config = ConfigParser()
+    expected_codecarbon_config = ConfigParser()
+    config.read(temp_config_file)
+
+    config, codecarbon_config = extract_codecarbon_config(config)
+
+    # Check if 'codecarbon' section is removed from the config
+    assert not config.has_section("codecarbon")
+
+    # Check if the extracted 'codecarbon' config matches the expected values
+    expected_codecarbon_config.read_dict(
+        {
+            "codecarbon": {
+                "measure_power_secs": "30",
+                "tracking_mode": "process",
+                "log_level": "warning",
+                "save_to_file": "False",
+                "output_dir": "output/CodeCarbon",
+            }
+        }
+    )
+    assert codecarbon_config == expected_codecarbon_config

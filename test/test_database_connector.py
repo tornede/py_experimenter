@@ -1,9 +1,9 @@
 import datetime
-import pandas as pd
-import numpy as np
 import os
 
 import mock
+import numpy as np
+import pandas as pd
 import pytest
 from mock import patch
 
@@ -50,8 +50,8 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
     table_exists_mock.return_value = True
     table_has_correct_structure_mock.return_value = True
     experiment_configuration_file_path = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
-    database_connector = DatabaseConnectorMYSQL(experiment_configuration_file_path, database_credential_file_path=os.path.join(
-        'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
+    database_connector = DatabaseConnectorMYSQL(experiment_configuration_file_path, None, None, database_credential_file_path=os.path.join(
+        'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')) #todo add codecarbon config
     database_connector.create_table_if_not_existing()
     create_table_string = ('CREATE TABLE test_table (ID INTEGER PRIMARY KEY AUTO_INCREMENT, value int DEFAULT NULL,exponent int DEFAULT NULL,'
                            'creation_date DATETIME DEFAULT NULL,status VARCHAR(255) DEFAULT NULL,start_date DATETIME DEFAULT NULL,'
@@ -74,26 +74,26 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
          [],
          ['value', 'exponent', 'status', 'creation_date'],
          [
-             [1, 3, ExperimentStatus.CREATED.value],
-             [1, 4, ExperimentStatus.CREATED.value],
-             [2, 3, ExperimentStatus.CREATED.value],
-             [2, 4, ExperimentStatus.CREATED.value]
+             [1, 3, str(ExperimentStatus.CREATED.value)],
+             [1, 4, str(ExperimentStatus.CREATED.value)],
+             [2, 3, str(ExperimentStatus.CREATED.value)],
+             [2, 4, str(ExperimentStatus.CREATED.value)]
         ]),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'),
          {},
          [{'value': 1, 'exponent': 3}, {'value': 1, 'exponent': 4}],
          ['value', 'exponent', 'status', 'creation_date'],
          [
-             [1, 3, ExperimentStatus.CREATED.value],
-             [1, 4, ExperimentStatus.CREATED.value],
+             [1, 3, str(ExperimentStatus.CREATED.value)],
+             [1, 4, str(ExperimentStatus.CREATED.value)],
         ]),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
          {'value': [1, 2], },
          [{'exponent': 3, 'other_value': 5}],
          ['value', 'exponent', 'other_value', 'status', 'creation_date'],
          [
-             [1, 3, 5, ExperimentStatus.CREATED.value],
-             [2, 3, 5, ExperimentStatus.CREATED.value],
+             [1, 3, 5, str(ExperimentStatus.CREATED.value)],
+             [2, 3, 5, str(ExperimentStatus.CREATED.value)],
         ]
         ),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_3_parameters.cfg'),
@@ -101,10 +101,10 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
          [{'other_value': 5}],
          ['value', 'exponent', 'other_value', 'status', 'creation_date'],
          [
-             [1, 3, 5, ExperimentStatus.CREATED.value],
-             [1, 4, 5, ExperimentStatus.CREATED.value],
-             [2, 3, 5, ExperimentStatus.CREATED.value],
-             [2, 4, 5, ExperimentStatus.CREATED.value],
+             [1, 3, 5, str(ExperimentStatus.CREATED.value)],
+             [1, 4, 5, str(ExperimentStatus.CREATED.value)],
+             [2, 3, 5, str(ExperimentStatus.CREATED.value)],
+             [2, 4, 5, str(ExperimentStatus.CREATED.value)],
         ]
         ),
     ]
@@ -131,17 +131,19 @@ def test_fill_table(
     experiment_configuration = load_config(experiment_configuration_file_path)
     database_connector = DatabaseConnectorMYSQL(
         experiment_configuration,
+        None,
+        None,
         database_credential_file_path=os.path.join('test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
     database_connector.fill_table(parameters, fixed_parameter_combination)
-    args_of_first_call = write_to_database_mock.call_args_list[0][0]
+    values, columns = write_to_database_mock.call_args_list[0][0]
 
-    assert type(args_of_first_call[0]) == pd.DataFrame
-    df = args_of_first_call[0]
-    assert len(df) == len(write_to_database_values)
-    assert write_to_database_keys == list(df.columns)
-    for expected_row, row in zip(write_to_database_values, df.values):
-        assert expected_row == row[:-1].tolist()
-        datetime_from_string_argument = datetime.datetime.strptime(row[-1], '%Y-%m-%d %H:%M:%S')
+    assert isinstance(values, list)
+    assert len(values) == len(write_to_database_values)
+    assert write_to_database_keys == columns
+    for expected_entry, entry in zip(write_to_database_values, values):
+        assert isinstance(entry, list)
+        assert expected_entry == entry[:-1]
+        datetime_from_string_argument = datetime.datetime.strptime(entry[-1], '%Y-%m-%d %H:%M:%S')
         assert datetime_from_string_argument.day == datetime.datetime.now().day
         assert datetime_from_string_argument.hour == datetime.datetime.now().hour
         assert datetime_from_string_argument.minute - datetime.datetime.now().minute <= 2
@@ -166,6 +168,8 @@ def test_delete_experiments_with_condition(commit_mock, execute_mock, cursor_moc
     experiment_configuration_file_path = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     database_connector = DatabaseConnectorMYSQL(
         experiment_configuration_file_path,
+        None,
+        None,
         database_credential_file_path=os.path.join(
             'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
     )
@@ -197,6 +201,8 @@ def test_get_experiments_with_condition(get_structture_from_table_mock, fetchall
     experiment_configuration_file_path = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     database_connector = DatabaseConnectorMYSQL(
         experiment_configuration_file_path,
+        None,
+        None,
         database_credential_file_path=os.path.join(
             'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
     )
@@ -221,6 +227,8 @@ def test_delete_table(commit_mock, execute_mock, cursor_mock, connect_mock, crea
     experiment_configuration_file_path = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     database_connector = DatabaseConnectorMYSQL(
         experiment_configuration_file_path,
+        False,
+        None,
         database_credential_file_path=os.path.join(
             'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
     )

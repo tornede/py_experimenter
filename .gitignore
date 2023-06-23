@@ -140,3 +140,7 @@ todo.md
 config/database_credentials.cfg
 config/example*.cfg
 output/
+
+# codecarbon
+.codecarbon.config
+emissions.csv

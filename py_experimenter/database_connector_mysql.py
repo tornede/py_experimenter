@@ -3,24 +3,23 @@ from configparser import ConfigParser
 from typing import List, Tuple
 
 import numpy as np
-from mysql.connector import Error, connect
+from pymysql import Error, connect
 
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.exceptions import CreatingTableError, DatabaseConnectionError, DatabaseCreationError
+from py_experimenter.exceptions import DatabaseConnectionError, DatabaseCreationError
 from py_experimenter.utils import load_config
 
 
 class DatabaseConnectorMYSQL(DatabaseConnector):
-    _write_to_database_separator = "', '"
     _prepared_statement_placeholder = '%s'
 
-    def __init__(self, experiment_configuration_file_path: ConfigParser, database_credential_file_path):
+    def __init__(self, experiment_configuration: ConfigParser, use_codecarbon:bool, codecarbon_config:ConfigParser, database_credential_file_path:str):
         database_credentials = load_config(database_credential_file_path)
         self.host = database_credentials.get('CREDENTIALS', 'host')
         self.user = database_credentials.get('CREDENTIALS', 'user')
         self.password = database_credentials.get('CREDENTIALS', 'password')
 
-        super().__init__(experiment_configuration_file_path)
+        super().__init__(experiment_configuration, use_codecarbon, codecarbon_config)
 
         self._create_database_if_not_existing()
 
@@ -63,10 +62,12 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             raise DatabaseConnectionError(err)
 
     def _start_transaction(self, connection, readonly=False):
-        connection.start_transaction(readonly=readonly)
+        if not readonly:
+            connection.begin()
 
-    def _table_exists(self, cursor):
-        self.execute(cursor, f"SHOW TABLES LIKE '{self.table_name}'")
+    def _table_exists(self, cursor, table_name:str = None) -> bool:
+        table_name = table_name if table_name is not None else self.table_name
+        self.execute(cursor, f"SHOW TABLES LIKE '{table_name}'")
         return self.fetchall(cursor)
 
     @staticmethod
@@ -75,11 +76,12 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
     def _table_has_correct_structure(self, cursor, typed_fields):
         self.execute(cursor,
-                     f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{self.table_name}' AND TABLE_SCHEMA = '{self.database_name}'")
+                     f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = {self._prepared_statement_placeholder} AND TABLE_SCHEMA = {self._prepared_statement_placeholder}",
+                     (self.table_name, self.database_name))
 
         columns = self._exclude_fixed_columns([k[0] for k in self.fetchall(cursor)])
         config_columns = [k[0] for k in typed_fields]
-        return set(columns) == set(config_columns)
+        return set(columns) == set(config_columns) 
 
     def _pull_open_experiment(self) -> Tuple[int, List, List]:
         try:
@@ -93,16 +95,6 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         self.close_connection(connection)
 
         return experiment_id, description, values
-
-    @staticmethod
-    def escape_sql_chars(*args):
-        escaped_args = []
-        for arg in args:
-            if isinstance(arg, str):
-                escaped_args.append(arg.replace("'", "''").replace('"', '""').replace('`', '``'))
-            else:
-                escaped_args.append(arg)
-        return escaped_args
     
     def _get_existing_rows(self, column_names):
         def _remove_double_whitespaces(existing_rows):
@@ -113,7 +105,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
         connection = self.connect()
         cursor = self.cursor(connection)
-        self.execute(cursor, f"SELECT {', '.join(column_names)} FROM {self.table_name}")
+        self.execute(cursor, f"SELECT {','.join(column_names)} FROM {self.table_name}")
         existing_rows = list(map(np.array2string, np.array(self.fetchall(cursor))))
         existing_rows = _remove_string_markers(existing_rows)
         existing_rows = _remove_double_whitespaces(existing_rows)

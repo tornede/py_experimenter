@@ -30,6 +30,14 @@ The experiment configuration file is primarily used to define the database backe
     [CUSTOM] 
     path = sample_data
 
+    [codecarbon]
+    offline_mode = False
+    measure_power_secs = 15
+    tracking_mode = machine
+    log_level = error
+    save_to_file = True
+    output_dir = output/CodeCarbon
+    offline_mode = False
 
 --------------------
 Database Information
@@ -138,3 +146,26 @@ Optionally, custom fields can be defined under the ``CUSTOM`` section, which wil
 
     [CUSTOM] 
     path = sample_data
+
+
+.. _experiment_configuration_file_codecarbon:
+
+----------
+CodeCarbon
+----------
+
+Tracking information about the carbon footprint of experiments is supported via `CodeCarbon <https://mlco2.github.io/codecarbon/>`_. It is enabled by default, if you want to completely deactivate it, please check the :ref:`documentation on how to execute PyExperimenter <execution>`.
+
+Per default, ``CodeCarbon`` will track the carbon footprint of the whole machine, including the execution of the experiment function. It measures the power consumption every 15 seconds and estimates the carbon emissions based on the region of the device. The resulting information is saved to a file in the ``output/CodeCarbon`` as well as written into its own table in the database, called ``<table_name>_codecarbon``. A description about how to access the data can be found in the :ref:`CodeCarbon explanation of the execution of PyExperimenter <execution_codecarbon>`.
+
+``CodeCarbon`` can be configured via its own section in the experiment configuration file. The default configuration is shown below, but can be extended by any of the parameters listed in the `CodeCarbon documentation <https://mlco2.github.io/codecarbon/usage.html#configuration>`_. During the execution, the section will be automatically copied into a ``.codecarbon.config`` file in you working directory, as this is required by ``CodeCarbon``.
+
+.. code-block:: 
+
+    [codecarbon]
+    measure_power_secs = 15
+    tracking_mode = machine
+    log_level = error
+    save_to_file = True
+    output_dir = output/CodeCarbon
+    offline_mode = False
