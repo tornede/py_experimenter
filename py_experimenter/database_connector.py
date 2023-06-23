@@ -333,6 +333,10 @@ class DatabaseConnector(abc.ABC):
     def get_table(self, table_name: Optional[str] = None) -> pd.DataFrame:
         connection = self.connect()
         query = f"SELECT * FROM {self.table_name}" if table_name is None else f"SELECT * FROM {table_name}"
-        df = pd.read_sql(query, connection)
+        #suppress warning for pandas
+        import warnings
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=UserWarning)
+            df = pd.read_sql(query, connection)
         self.close_connection(connection)
         return df

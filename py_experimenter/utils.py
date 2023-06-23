@@ -63,8 +63,8 @@ def extract_codecarbon_columns(with_type:bool = True):
             ('os', 'VARCHAR(255)'), ('python_version', 'VARCHAR(255)'), ('codecarbon_version', 'VARCHAR(255)'),
             ('cpu_count', 'DOUBLE'), ('cpu_model', 'VARCHAR(255)'), ('gpu_count', 'DOUBLE'),
             ('gpu_model', 'VARCHAR(255)'), ('longitude', 'VARCHAR(255)'), ('latitude', 'VARCHAR(255)'),
-            ('ram_total_size', 'DOUBLE'), ('tracking_mode', 'VARCHAR(255)'), ('on_cloud', 'VARCHAR(255)'),
-            ('offline_mode', 'BOOL')
+            ('ram_total_size', 'DOUBLE'), ('tracking_mode', 'VARCHAR(255)'), ('on_cloud', 'VARCHAR(255)'), 
+            ('power_usage_efficiency', 'DOUBLE'),('offline_mode', 'BOOL')
         ]
     else:
         return [
@@ -73,7 +73,7 @@ def extract_codecarbon_columns(with_type:bool = True):
             'gpu_energy_kw', 'ram_energy_kw', 'energy_consumed_kw', 'country_name', 'country_iso_code', 'region',
             'cloud_provider', 'cloud_region', 'os', 'python_version', 'codecarbon_version', 'cpu_count', 'cpu_model',
             'gpu_count', 'gpu_model', 'longitude', 'latitude', 'ram_total_size', 'tracking_mode', 'on_cloud',
-            'offline_mode', 'experiment_id'
+            'power_usage_efficiency', 'offline_mode', 'experiment_id'
         ]
 
 
