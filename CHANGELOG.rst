@@ -2,34 +2,33 @@
 Changelog
 =========
 
-
-v1.X.X (?/?/2023)
+v1.3.0 (23.06.2023)
 ===================
 
 Feature
 -------
 
-- Improved issue template
-- New pull request template
-- Extended documentation for development
+- Added ``CodeCarbon`` to automatically measure carbon emissions of experiments.
+- Improved issue template.
+- Added template for pull requests.
+- Extended documentation for development / how to contribute to ``PyExperimenter``
 
 
 Examples
 --------
 
-- ?
+- Updated examples to utilize ``CodeCarbon`` functionality.
 
+Changed
+-------
+
+- Replaced ``mysql-connector-python`` dependency to use ``pymysql`` instead.
 
 Fix
 ---
 
-- ?
+- Bugfix escaping of values in sql statements.
 
-
-Tests
------
-
-- ?
 
 v1.2.1 (21/04/2023)
 ===================
