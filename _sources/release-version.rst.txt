@@ -50,7 +50,7 @@ First, check whether the project is ready for publication on `Test PyPi <testpyp
 
     conda create -n release-pyexperimenter python=3.9
     conda activate release-pyexperimenter
-    pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple py-experimenter
+    pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple py-experimenter==<VERSION>
 
 3. Execute all example notebooks and check the outputs based on the new environment ``release-pyexperimenter``. If anything does not work, fix it and repeat the steps above.
 
