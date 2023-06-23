@@ -33,7 +33,7 @@ numpy = ">=1.15"
 pandas = ">=1.0"
 jupyterlab = "^3.5.0"
 joblib = "^1.2.0"
-codecarbon = "^2.2.1"
+codecarbon = ">=2.2.1"
 pymysql = "^1.0.3"
 
 [tool.poetry.group.dev.dependencies]
