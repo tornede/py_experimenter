@@ -58,6 +58,6 @@ def test_integration(experimenter: PyExperimenter):
         'cpu_energy_kw', 'gpu_energy_kw', 'ram_energy_kw', 'energy_consumed_kw', 'country_name',
         'country_iso_code', 'region', 'cloud_provider', 'cloud_region', 'os', 'python_version',
         'codecarbon_version', 'cpu_count', 'cpu_model', 'gpu_count', 'gpu_model',
-        'longitude', 'latitude', 'ram_total_size', 'tracking_mode', 'on_cloud', 'offline_mode']
-    assert table.shape == (12, 33)
-    assert list(table['experiment_id']) == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        'longitude', 'latitude', 'ram_total_size', 'tracking_mode', 'on_cloud', 'power_usage_efficiency', 'offline_mode']
+    assert table.shape == (12, 34)
+    assert set(table['experiment_id']) == {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
