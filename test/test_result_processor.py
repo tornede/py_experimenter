@@ -37,7 +37,7 @@ def test_init(create_database_if_not_existing_mock, test_connection_mysql, test_
     create_database_if_not_existing_mock.return_value = None
     test_connection_mysql.return_value = None
     test_connection_sqlite.return_value = None
-    result_processor = ResultProcessor(config, False, None, CREDENTIAL_PATH, table_name, result_fields, 0)
+    result_processor = ResultProcessor(config, False, None, CREDENTIAL_PATH, table_name, result_fields, 0, 'test_logger')
 
     assert table_name == result_processor._table_name
     assert result_fields == result_processor._result_fields
@@ -53,7 +53,7 @@ def test_init_raises_error(mock_fn):
     config = utils.load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     config.set('PY_EXPERIMENTER', 'provider', 'test_provider')
     with pytest.raises(InvalidConfigError, match='Invalid database provider!'):
-        ResultProcessor(config, False, None, CREDENTIAL_PATH, table_name, condition, result_fields)
+        ResultProcessor(config, False, None, CREDENTIAL_PATH, table_name, condition, result_fields,'test_logger')
 
 
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_test_connection')
@@ -81,7 +81,7 @@ def test_process_results_raises_error(create_database_mock, test_connection_mock
     table_name = 'test_table'
     config = utils.load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
 
-    result_processor = ResultProcessor(config, False, None, CREDENTIAL_PATH, table_name, result_fields, experiment_id)
+    result_processor = ResultProcessor(config, False, None, CREDENTIAL_PATH, table_name, result_fields, experiment_id, 'test_logger')
 
     with pytest.raises(error, match=errorstring):
         result_processor.process_results(results)
@@ -102,7 +102,7 @@ def test_valid_result_fields(create_database_if_not_existing_mock, test_connecti
     test_connection_mock.return_value = None
     mock_config = utils.load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     assert subset_boolean == ResultProcessor(mock_config, False, None, CREDENTIAL_PATH, 'test_table_name',
-                                             used_result_fields, 0)._valid_result_fields(existing_result_fields)
+                                             used_result_fields, 0, 'test_logger')._valid_result_fields(existing_result_fields)
 
 
 @freeze_time('2020-01-01 00:00:00')

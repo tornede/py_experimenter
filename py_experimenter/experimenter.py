@@ -3,7 +3,7 @@ import os
 import socket
 import traceback
 from configparser import ConfigParser
-from typing import Callable, Dict, List, Tuple
+from typing import Callable, Dict, List, Tuple, Union
 
 import pandas as pd
 from codecarbon import EmissionsTracker, OfflineEmissionsTracker
@@ -28,10 +28,15 @@ class PyExperimenter:
                  table_name: str = None,
                  database_name: str = None,
                  use_codecarbon: bool = True,
-                 name='PyExperimenter'):
+                 name='PyExperimenter',
+                 logger_name:str = 'py_experimenter',
+                 log_level:Union[int,str] = logging.INFO,
+                 log_file:str = "./py_experimenter.log"
+                 ):
         """
-        Initializes the PyExperimenter with the given information.
-
+        Initializes the PyExperimenter with the given information. If no loger `logger_name` exists, a new logger
+        is created with the given `logger_name` and `log_level`. 
+        
         :param experiment_configuration_file_path: The path to the experiment configuration file. Defaults to
             'config/experiment_configuration.cfg'.
         :type experiment_configuration_file_path: str, optional
@@ -51,9 +56,21 @@ class PyExperimenter:
         :param name: The name of the PyExperimenter, which will be logged in the according column in the database table.
             Defaults to 'PyExperimenter'.
         :type name: str, optional
+        :param logger_name: The name of the logger. Defaults to 'py_experimenter'.
+        :type logger_name: str
+        :param log_level: The log level of the logger. Defaults to logging.INFO.
+        :type log_level: Union[int,str]
+        :param log_file: The path to the log file. Defaults to "./py_experimenter.log".
+        :type log_file: str
         :raises InvalidConfigError: If either the experiment or database configuration are missing mandatory information.
         :raises ValueError: If an unsupported or unknown database connection provider is given.
         """
+        # If the logger is not allready craeted, create it with the given name and level
+        self.logger_name = logger_name
+        if not logging.getLogger(logger_name):
+            logging.basicConfig(filename=log_file, name=logger_name, level=log_level)
+        self.logger = logging.getLogger(logger_name)
+        
         self.config = utils.load_config(experiment_configuration_file_path)
 
         self.use_codecarbon = use_codecarbon
@@ -66,7 +83,7 @@ class PyExperimenter:
         utils.write_codecarbon_config(self.codecarbon_config)
 
         self.database_credential_file_path = database_credential_file_path
-        if not PyExperimenter._is_valid_configuration(self.config, database_credential_file_path):
+        if not self._is_valid_configuration(self.config, database_credential_file_path):
             raise InvalidConfigError('Invalid configuration')
 
         if table_name is not None:
@@ -79,13 +96,14 @@ class PyExperimenter:
         self.timestamp_on_result_fields = utils.timestamps_for_result_fields(self.config)
 
         if self.config['PY_EXPERIMENTER']['provider'] == 'sqlite':
-            self.dbconnector = DatabaseConnectorLITE(self.config, self.use_codecarbon, self.codecarbon_config)
+            self.dbconnector = DatabaseConnectorLITE(self.config, self.use_codecarbon, self.codecarbon_config, logger_name)
         elif self.config['PY_EXPERIMENTER']['provider'] == 'mysql':
-            self.dbconnector = DatabaseConnectorMYSQL(self.config, self.use_codecarbon, self.codecarbon_config, database_credential_file_path)
+            self.dbconnector = DatabaseConnectorMYSQL(self.config, self.use_codecarbon, self.codecarbon_config, database_credential_file_path,
+                                                      logger_name)
         else:
             raise ValueError('The provider indicated in the config file is not supported')
 
-        logging.info('Initialized and connected to database')
+        self.logger.info('Initialized and connected to database')
 
     def set_config_value(self, section_name: str, key: str, value: str) -> None:
         """
@@ -103,7 +121,7 @@ class PyExperimenter:
         if not self.config.has_section(section_name):
             self.config.add_section(section_name)
         self.config.set(section_name, key, value)
-        if not PyExperimenter._is_valid_configuration(self.config, self.database_credential_file_path):
+        if not self._is_valid_configuration(self.config, self.database_credential_file_path):
             raise InvalidConfigError('Invalid configuration')
 
     def get_config_value(self, section_name: str, key: str) -> str:
@@ -151,8 +169,7 @@ class PyExperimenter:
         """
         return self.config.has_option(section_name, key)
 
-    @ staticmethod
-    def _is_valid_configuration(config: ConfigParser, database_credential_file_path: str = None) -> bool:
+    def _is_valid_configuration(self, config: ConfigParser, database_credential_file_path: str = None) -> bool:
         """
         Checks whether the given experiment configuration is valid, i.e., it contains all necessary fields, the database provider
         is either mysql or sqlite, and in case of a mysql database provider, that the database credentials are available.
@@ -172,17 +189,17 @@ class PyExperimenter:
             return False
 
         if not {'provider', 'database', 'table'}.issubset(set(config.options('PY_EXPERIMENTER'))):
-            logging.error('Error in config file: DATABASE section must contain provider, database, and table')
+            self.logger.error('Error in config file: DATABASE section must contain provider, database, and table')
             return False
 
         if config['PY_EXPERIMENTER']['provider'] not in ['sqlite', 'mysql']:
-            logging.error('Error in config file: DATABASE provider must be either sqlite or mysql')
+            self.logger.error('Error in config file: DATABASE provider must be either sqlite or mysql')
             return False
 
         if config['PY_EXPERIMENTER']['provider'] == 'mysql':
             credentials = utils.load_config(database_credential_file_path)
             if not {'host', 'user', 'password'}.issubset(set(credentials.options('CREDENTIALS'))):
-                logging.error(
+                self.logger.error(
                     f'Error in config file: DATABASE section must contain host, user, and password since provider is {config["DATABASE"]["provider"]}')
                 return False
 
@@ -318,7 +335,7 @@ class PyExperimenter:
             else:
                 parallel(delayed(self._execution_wrapper)(experiment_function)
                          for _ in range(max_experiments))
-        logging.info("All configured executions finished.")
+        self.logger.info("All configured executions finished.")
 
     def _worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None]) -> None:
         """
@@ -362,7 +379,7 @@ class PyExperimenter:
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
 
         result_processor = ResultProcessor(self.config, self.use_codecarbon, self.codecarbon_config, self.database_credential_file_path, table_name=table_name,
-                                           result_fields=result_field_names, experiment_id=experiment_id)
+                                           result_fields=result_field_names, experiment_id=experiment_id, logger_name=self.logger_name)
         result_processor._set_name(self.name)
         result_processor._set_machine(socket.gethostname())
 
@@ -376,13 +393,13 @@ class PyExperimenter:
                 tracker = EmissionsTracker()
 
         try:
-            logging.debug(f"Start of experiment_function on process {socket.gethostname()}")
+            self.logger.debug(f"Start of experiment_function on process {socket.gethostname()}")
             if self.use_codecarbon:
                 tracker.start()
             experiment_function(keyfield_values, result_processor, custom_fields)
         except Exception:
             error_msg = traceback.format_exc()
-            logging.error(error_msg)
+            self.logger.error(error_msg)
             result_processor._write_error(error_msg)
             result_processor._change_status(ExperimentStatus.ERROR.value)
         else:
@@ -403,7 +420,7 @@ class PyExperimenter:
         :type status: Tuple[str]
         """
         if not states:
-            logging.warning('No states given to reset experiments. No experiments are reset.')
+            self.logger.warning('No states given to reset experiments. No experiments are reset.')
         else:
             self.dbconnector.reset_experiments(*states)
 

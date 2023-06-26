@@ -1,7 +1,7 @@
 import os
 
 import pytest
-from mock import patch
+from mock import patch, MagicMock
 
 from py_experimenter import database_connector, database_connector_mysql, experimenter, utils
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
@@ -157,9 +157,10 @@ def test_set_config_values(create_database_if_not_existing_mock, mock_fn, config
     py_experimenter.set_config_value(section_name, key, value)
     assert py_experimenter.get_config_value(section_name, key) == value
 
-
+@patch.object(database_connector.DatabaseConnector, '__init__')
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, '_create_database_if_not_existing')
 @pytest.mark.parametrize(
-    'config_file, valid',
+    'config_path, valid',
     [
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_file_with_wrong_syntax.cfg'), True),
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file_without_keyfields.cfg'), True),
@@ -171,6 +172,10 @@ def test_set_config_values(create_database_if_not_existing_mock, mock_fn, config
         (os.path.join('test', 'test_config_files', 'load_config_test_file', 'invalid_config_3.cfg'), False),
     ]
 )
-def test_valid_configuration(config_file, valid):
-    config_file = utils.load_config(config_file)
-    assert PyExperimenter._is_valid_configuration(config_file, CREDENTIAL_PATH) == valid
+def test_valid_configuration(create_database_if_not_existing_mock, mock_fn, config_path, valid):
+    create_database_if_not_existing_mock.return_value = None
+    mock_fn.return_value = None
+    config_file = utils.load_config(config_path)
+    py_experimenter = MagicMock()
+    py_experimenter.logger = MagicMock()
+    assert PyExperimenter._is_valid_configuration(py_experimenter, config_file, CREDENTIAL_PATH) == valid
