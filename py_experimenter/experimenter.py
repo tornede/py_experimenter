@@ -29,7 +29,7 @@ class PyExperimenter:
                  database_name: str = None,
                  use_codecarbon: bool = True,
                  name='PyExperimenter',
-                 logger_name:str = 'py_experimenter',
+                 logger_name:str = 'PyExperimenter',
                  log_level:Union[int,str] = logging.INFO,
                  log_file:str = "./py_experimenter.log"
                  ):
@@ -99,7 +99,7 @@ class PyExperimenter:
             self.dbconnector = DatabaseConnectorLITE(self.config, self.use_codecarbon, self.codecarbon_config, logger_name)
         elif self.config['PY_EXPERIMENTER']['provider'] == 'mysql':
             self.dbconnector = DatabaseConnectorMYSQL(self.config, self.use_codecarbon, self.codecarbon_config, database_credential_file_path,
-                                                      logger_name)
+                                                      self.logger_name)
         else:
             raise ValueError('The provider indicated in the config file is not supported')
 

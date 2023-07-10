@@ -13,7 +13,7 @@ from py_experimenter.utils import load_config
 class DatabaseConnectorMYSQL(DatabaseConnector):
     _prepared_statement_placeholder = '%s'
 
-    def __init__(self, experiment_configuration: ConfigParser, use_codecarbon:bool, codecarbon_config:ConfigParser, database_credential_file_path:str, logger_name:str = 'py_experimenter'):
+    def __init__(self, experiment_configuration: ConfigParser, use_codecarbon:bool, codecarbon_config:ConfigParser, database_credential_file_path:str, logger_name:str):
         database_credentials = load_config(database_credential_file_path)
         self.host = database_credentials.get('CREDENTIALS', 'host')
         self.user = database_credentials.get('CREDENTIALS', 'user')
