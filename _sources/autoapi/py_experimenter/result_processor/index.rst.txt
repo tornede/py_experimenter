@@ -17,29 +17,7 @@ Classes
 
 
 
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   py_experimenter.result_processor.result_logger
-   py_experimenter.result_processor.formatter
-   py_experimenter.result_processor.file_handler
-
-
-.. py:data:: result_logger
-
-   
-
-.. py:data:: formatter
-
-   
-
-.. py:data:: file_handler
-
-   
-
-.. py:class:: ResultProcessor(config: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, credential_path, table_name: str, result_fields: List[str], experiment_id: int)
+.. py:class:: ResultProcessor(config: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, credential_path, table_name: str, result_fields: List[str], experiment_id: int, logger_name: str)
 
 
    Class for processing the results from an experiment. Use this class whenever you want to write results to the

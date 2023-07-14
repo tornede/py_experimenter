@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: DatabaseConnector(config: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser)
+.. py:class:: DatabaseConnector(config: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, logger_name: str)
 
 
    Bases: :py:obj:`abc.ABC`
