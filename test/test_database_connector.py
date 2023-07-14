@@ -51,7 +51,7 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
     table_has_correct_structure_mock.return_value = True
     experiment_configuration_file_path = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     database_connector = DatabaseConnectorMYSQL(experiment_configuration_file_path, None, None, database_credential_file_path=os.path.join(
-        'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')) #todo add codecarbon config
+        'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'), logger_name='test_logger')
     database_connector.create_table_if_not_existing()
     create_table_string = ('CREATE TABLE test_table (ID INTEGER PRIMARY KEY AUTO_INCREMENT, value int DEFAULT NULL,exponent int DEFAULT NULL,'
                            'creation_date DATETIME DEFAULT NULL,status VARCHAR(255) DEFAULT NULL,start_date DATETIME DEFAULT NULL,'
@@ -133,7 +133,8 @@ def test_fill_table(
         experiment_configuration,
         None,
         None,
-        database_credential_file_path=os.path.join('test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'))
+        database_credential_file_path=os.path.join('test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'),
+        logger_name = 'test_logger')
     database_connector.fill_table(parameters, fixed_parameter_combination)
     values, columns = write_to_database_mock.call_args_list[0][0]
 
@@ -171,7 +172,8 @@ def test_delete_experiments_with_condition(commit_mock, execute_mock, cursor_moc
         None,
         None,
         database_credential_file_path=os.path.join(
-            'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
+            'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'),
+        logger_name='test_logger'
     )
 
     database_connector._delete_experiments_with_condition(f'WHERE status = "{ExperimentStatus.CREATED.value}"')
@@ -204,7 +206,8 @@ def test_get_experiments_with_condition(get_structture_from_table_mock, fetchall
         None,
         None,
         database_credential_file_path=os.path.join(
-            'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
+            'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'),
+        logger_name='test_logger'
     )
     database_connector._get_experiments_with_condition(f'WHERE status = "{ExperimentStatus.CREATED.value}"')
 
@@ -230,7 +233,8 @@ def test_delete_table(commit_mock, execute_mock, cursor_mock, connect_mock, crea
         False,
         None,
         database_credential_file_path=os.path.join(
-            'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg')
+            'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'),
+        logger_name='test_logger'
     )
     database_connector.delete_table()
 
