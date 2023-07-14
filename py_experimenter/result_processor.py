@@ -11,15 +11,6 @@ from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
 from py_experimenter.exceptions import InvalidConfigError, InvalidResultFieldError
 
-result_logger = logging.getLogger('result_logger')
-result_logger.setLevel(logging.INFO)
-
-formatter = logging.Formatter('%(asctime)s: %(message)s')
-
-file_handler = logging.FileHandler('result.log')
-file_handler.setFormatter(formatter)
-result_logger.addHandler(file_handler)
-
 
 class ResultProcessor:
     """
@@ -27,7 +18,8 @@ class ResultProcessor:
     database.
     """
 
-    def __init__(self, config: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser, credential_path, table_name: str, result_fields: List[str], experiment_id: int):
+    def __init__(self, config: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser, credential_path, table_name: str, result_fields: List[str], experiment_id: int, logger_name:str):
+        self._logger = logging.getLogger(logger_name)
         self._table_name = table_name
         self._result_fields = result_fields
         self._config = config
@@ -39,9 +31,9 @@ class ResultProcessor:
         self._codecarbon_config = codecarbon_config
 
         if config['PY_EXPERIMENTER']['provider'] == 'sqlite':
-            self._dbconnector: DatabaseConnector = DatabaseConnectorLITE(config, self.use_codecarbon, self._codecarbon_config)
+            self._dbconnector: DatabaseConnector = DatabaseConnectorLITE(config, self.use_codecarbon, self._codecarbon_config, logger_name)
         elif config['PY_EXPERIMENTER']['provider'] == 'mysql':
-            self._dbconnector: DatabaseConnector = DatabaseConnectorMYSQL(config, self.use_codecarbon, self._codecarbon_config, credential_path)
+            self._dbconnector: DatabaseConnector = DatabaseConnectorMYSQL(config, self.use_codecarbon, self._codecarbon_config, credential_path, logger_name)
         else:
             raise InvalidConfigError("Invalid database provider!")
 

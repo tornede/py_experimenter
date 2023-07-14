@@ -45,7 +45,7 @@ def test_tables_created(execute_mock, close_connection_mock, fetchall_mock, curs
 def test_logtable_insertion(database_connector_mock):
     config = ConfigParser()
     config.read(os.path.join('test', 'test_logtables', 'mysql_logtables.cfg'))
-    result_processor = ResultProcessor(config, None, None, None, None, None, 0)
+    result_processor = ResultProcessor(config, None, None, None, None, None, 0, 'test_logger')
     result_processor._table_name = 'table_name'
     table_0_logs = {'test0': 'test', 'test1': 'test'}
     table_1_logs = {'test0': 'test'}
