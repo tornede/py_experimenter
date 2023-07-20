@@ -37,7 +37,6 @@ The experiment configuration file is primarily used to define the database backe
     log_level = error
     save_to_file = True
     output_dir = output/CodeCarbon
-    offline_mode = False
 
 --------------------
 Database Information
