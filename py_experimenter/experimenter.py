@@ -73,6 +73,9 @@ class PyExperimenter:
         self.logger.setLevel(log_level)
         
         if logger_initialization_needed:
+            if not os.path.exists('logs'):
+                os.makedirs('logs')
+                
             formatter = logging.Formatter('%(asctime)s  | %(name)s - %(levelname)-8s | %(message)s')
             
             handler = logging.StreamHandler()
