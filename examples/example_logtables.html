@@ -252,6 +252,15 @@ experimenter.get_table()
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2023-07-20 18:58:42,290  | py-experimenter - INFO     | Initialized and connected to database
+2023-07-20 18:58:42,295  | py-experimenter - INFO     | 5 rows successfully added to database. 0 rows were skipped.
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -297,7 +306,7 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>1</td>
-      <td>2023-06-17 09:04:48</td>
+      <td>2023-07-20 18:58:42</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -313,7 +322,7 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>2</td>
-      <td>2023-06-17 09:04:48</td>
+      <td>2023-07-20 18:58:42</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -329,7 +338,7 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>3</td>
-      <td>2023-06-17 09:04:48</td>
+      <td>2023-07-20 18:58:42</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -345,7 +354,7 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>4</td>
-      <td>2023-06-17 09:04:48</td>
+      <td>2023-07-20 18:58:42</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -361,7 +370,7 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>5</td>
-      <td>2023-06-17 09:04:48</td>
+      <td>2023-07-20 18:58:42</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -425,13 +434,21 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 <h2>Run Experiments<a class="headerlink" href="#Run-Experiments" title="Permalink to this heading"></a></h2>
 <p>All experiments are executed sequentially by the same <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> due to <code class="docutils literal notranslate"><span class="pre">max_experiments=-1</span></code> and the implicit <code class="docutils literal notranslate"><span class="pre">n_jobs=1</span></code> as no amount of jobs is specified in the configuration file. If just a single one or a predifined number of experiments should be executed, the <code class="docutils literal notranslate"><span class="pre">-1</span></code> has to be replaced by the corresponding amount.</p>
 <p>The first parameter, i.e. <code class="docutils literal notranslate"><span class="pre">run_ml</span></code>, relates to the actual method that should be executed with the given keyfields of the table.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.execute(run_ml, max_experiments=-1)
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2023-07-20 18:58:51,148  | py-experimenter - INFO     | All configured executions finished.
+</pre></div></div>
 </div>
 </section>
 <section id="Check-Results">
@@ -490,14 +507,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>1</td>
-      <td>2023-06-17 09:04:48</td>
+      <td>2023-07-20 18:58:42</td>
       <td>done</td>
-      <td>2023-06-17 09:04:48</td>
+      <td>2023-07-20 18:58:42</td>
       <td>example_notebook</td>
-      <td>Worklaptop</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>None</td>
     </tr>
     <tr>
@@ -506,14 +523,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>2</td>
-      <td>2023-06-17 09:04:48</td>
+      <td>2023-07-20 18:58:42</td>
       <td>done</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>example_notebook</td>
-      <td>Worklaptop</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>None</td>
     </tr>
     <tr>
@@ -522,14 +539,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>3</td>
-      <td>2023-06-17 09:04:48</td>
+      <td>2023-07-20 18:58:42</td>
       <td>done</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>example_notebook</td>
-      <td>Worklaptop</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>None</td>
     </tr>
     <tr>
@@ -538,14 +555,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>4</td>
-      <td>2023-06-17 09:04:48</td>
+      <td>2023-07-20 18:58:42</td>
       <td>done</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>example_notebook</td>
-      <td>Worklaptop</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>None</td>
     </tr>
     <tr>
@@ -554,14 +571,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>5</td>
-      <td>2023-06-17 09:04:48</td>
+      <td>2023-07-20 18:58:42</td>
       <td>done</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>example_notebook</td>
-      <td>Worklaptop</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-06-17 09:05:18</td>
+      <td>2023-07-20 18:58:51</td>
       <td>None</td>
     </tr>
   </tbody>
@@ -612,7 +629,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>0</th>
       <td>1</td>
       <td>1</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -621,7 +638,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>1</th>
       <td>2</td>
       <td>1</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -630,7 +647,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>2</th>
       <td>3</td>
       <td>1</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -639,7 +656,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>3</th>
       <td>4</td>
       <td>1</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -648,7 +665,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>4</th>
       <td>5</td>
       <td>2</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -657,7 +674,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>5</th>
       <td>6</td>
       <td>2</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -666,7 +683,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>6</th>
       <td>7</td>
       <td>2</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -675,7 +692,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>7</th>
       <td>8</td>
       <td>2</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -684,7 +701,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>8</th>
       <td>9</td>
       <td>3</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -693,7 +710,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>9</th>
       <td>10</td>
       <td>3</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -702,7 +719,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>10</th>
       <td>11</td>
       <td>3</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -711,7 +728,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>11</th>
       <td>12</td>
       <td>3</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -720,7 +737,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>12</th>
       <td>13</td>
       <td>4</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -729,7 +746,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>13</th>
       <td>14</td>
       <td>4</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -738,7 +755,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>14</th>
       <td>15</td>
       <td>4</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -747,7 +764,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>15</th>
       <td>16</td>
       <td>4</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -756,7 +773,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>16</th>
       <td>17</td>
       <td>5</td>
-      <td>2023-06-17 09:05:17</td>
+      <td>2023-07-20 18:58:51</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -765,7 +782,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>17</th>
       <td>18</td>
       <td>5</td>
-      <td>2023-06-17 09:05:18</td>
+      <td>2023-07-20 18:58:51</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -774,7 +791,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>18</th>
       <td>19</td>
       <td>5</td>
-      <td>2023-06-17 09:05:18</td>
+      <td>2023-07-20 18:58:51</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -783,7 +800,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>19</th>
       <td>20</td>
       <td>5</td>
-      <td>2023-06-17 09:05:18</td>
+      <td>2023-07-20 18:58:51</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -834,140 +851,140 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>0</th>
       <td>1</td>
       <td>1</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2</td>
       <td>1</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>2</th>
       <td>3</td>
       <td>1</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>3</th>
       <td>4</td>
       <td>1</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
       <td>2</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>5</th>
       <td>6</td>
       <td>2</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>6</th>
       <td>7</td>
       <td>2</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>7</th>
       <td>8</td>
       <td>2</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>8</th>
       <td>9</td>
       <td>3</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>9</th>
       <td>10</td>
       <td>3</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>10</th>
       <td>11</td>
       <td>3</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>11</th>
       <td>12</td>
       <td>3</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>12</th>
       <td>13</td>
       <td>4</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>13</th>
       <td>14</td>
       <td>4</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>14</th>
       <td>15</td>
       <td>4</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>15</th>
       <td>16</td>
       <td>4</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>16</th>
       <td>17</td>
       <td>5</td>
-      <td>2023-06-17 09:05:17</td>
+      <td>2023-07-20 18:58:51</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>17</th>
       <td>18</td>
       <td>5</td>
-      <td>2023-06-17 09:05:18</td>
+      <td>2023-07-20 18:58:51</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>18</th>
       <td>19</td>
       <td>5</td>
-      <td>2023-06-17 09:05:18</td>
+      <td>2023-07-20 18:58:51</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>19</th>
       <td>20</td>
       <td>5</td>
-      <td>2023-06-17 09:05:18</td>
+      <td>2023-07-20 18:58:51</td>
       <td>0.893333</td>
     </tr>
   </tbody>
@@ -1016,140 +1033,140 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>0</th>
       <td>1</td>
       <td>1</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2</td>
       <td>1</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>2</th>
       <td>3</td>
       <td>1</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>3</th>
       <td>4</td>
       <td>1</td>
-      <td>2023-06-17 09:04:54</td>
+      <td>2023-07-20 18:58:44</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
       <td>2</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>5</th>
       <td>6</td>
       <td>2</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>6</th>
       <td>7</td>
       <td>2</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>7</th>
       <td>8</td>
       <td>2</td>
-      <td>2023-06-17 09:05:00</td>
+      <td>2023-07-20 18:58:45</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>8</th>
       <td>9</td>
       <td>3</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>9</th>
       <td>10</td>
       <td>3</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>10</th>
       <td>11</td>
       <td>3</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>11</th>
       <td>12</td>
       <td>3</td>
-      <td>2023-06-17 09:05:06</td>
+      <td>2023-07-20 18:58:47</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>12</th>
       <td>13</td>
       <td>4</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>13</th>
       <td>14</td>
       <td>4</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>14</th>
       <td>15</td>
       <td>4</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>15</th>
       <td>16</td>
       <td>4</td>
-      <td>2023-06-17 09:05:12</td>
+      <td>2023-07-20 18:58:49</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>16</th>
       <td>17</td>
       <td>5</td>
-      <td>2023-06-17 09:05:17</td>
+      <td>2023-07-20 18:58:51</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>17</th>
       <td>18</td>
       <td>5</td>
-      <td>2023-06-17 09:05:18</td>
+      <td>2023-07-20 18:58:51</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>18</th>
       <td>19</td>
       <td>5</td>
-      <td>2023-06-17 09:05:18</td>
+      <td>2023-07-20 18:58:51</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>19</th>
       <td>20</td>
       <td>5</td>
-      <td>2023-06-17 09:05:18</td>
+      <td>2023-07-20 18:58:51</td>
       <td>0.893333</td>
     </tr>
   </tbody>
