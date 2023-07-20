@@ -2,6 +2,29 @@
 Changelog
 =========
 
+
+v1.3.1 (??.07.2023)
+===================
+
+Feature
+-------
+
+- ?
+
+Examples
+--------
+
+- ?
+
+Changed
+-------
+- ?
+
+Fix
+---
+
+- `PyExperimenter` no longer overwrites the basicConfig of the logging framework. Furthermore, a formatter has been added, as well as different (file) handlers to ensure the messages occur both in the console as well as in the log file.
+
 v1.3.0 (23.06.2023)
 ===================
 

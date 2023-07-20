@@ -29,9 +29,9 @@ class PyExperimenter:
                  database_name: str = None,
                  use_codecarbon: bool = True,
                  name='PyExperimenter',
-                 logger_name:str = 'PyExperimenter',
+                 logger_name:str = 'py-experimenter',
                  log_level:Union[int,str] = logging.INFO,
-                 log_file:str = "./py_experimenter.log"
+                 log_file:str = "./logs/py-experimenter.log"
                  ):
         """
         Initializes the PyExperimenter with the given information. If no loger `logger_name` exists, a new logger
@@ -67,9 +67,24 @@ class PyExperimenter:
         """
         # If the logger is not allready craeted, create it with the given name and level
         self.logger_name = logger_name
-        if not logging.getLogger(logger_name):
-            logging.basicConfig(filename=log_file, name=logger_name, level=log_level)
+        
+        logger_initialization_needed = self.logger_name not in logging.root.manager.loggerDict.keys()
         self.logger = logging.getLogger(logger_name)
+        self.logger.setLevel(log_level)
+        
+        if logger_initialization_needed:
+            if not os.path.exists('logs'):
+                os.makedirs('logs')
+                
+            formatter = logging.Formatter('%(asctime)s  | %(name)s - %(levelname)-8s | %(message)s')
+            
+            handler = logging.StreamHandler()
+            handler.setFormatter(formatter)
+            self.logger.addHandler(handler)
+            
+            handler = logging.FileHandler(log_file)
+            handler.setFormatter(formatter)
+            self.logger.addHandler(handler)
         
         self.config = utils.load_config(experiment_configuration_file_path)
 
