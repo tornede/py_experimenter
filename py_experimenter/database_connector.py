@@ -208,8 +208,12 @@ class DatabaseConnector(abc.ABC):
             raise DatabaseConnectionError(f'error \n {e} raised. \n Please check if fill_table() was called correctly.')
 
         return experiment_id, dict(zip([i[0] for i in description], *values))
+    
+    @abc.abstractmethod
+    def _pull_open_experiment(self) -> Tuple[int, List, List]:
+        pass
 
-    def _execute_queries(self, connection, cursor) -> Tuple[int, List, List]:
+    def _select_open_experiments_from_db(self, connection, cursor) -> Tuple[int, List, List]:
         order_by = "id"
         time = utils.get_timestamp_representation()
 
@@ -224,9 +228,6 @@ class DatabaseConnector(abc.ABC):
         description = cursor.description
         return experiment_id, description, values
 
-    @abc.abstractmethod
-    def _pull_open_experiment(self) -> Tuple[int, List, List]:
-        pass
 
     def _write_to_database(self, values: List, columns=List[str]) -> None:
         values_prepared = ','.join([f"({', '.join([self._prepared_statement_placeholder] * len(columns))})"] * len(values))

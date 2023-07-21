@@ -88,7 +88,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             connection = self.connect()
             cursor = self.cursor(connection)
             self._start_transaction(connection, readonly=False)
-            experiment_id, description, values = self._execute_queries(connection, cursor)
+            experiment_id, description, values = self._select_open_experiments_from_db(connection, cursor)
         except Exception as err:
             connection.rollback()
             raise err
