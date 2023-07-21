@@ -1,3 +1,4 @@
+import logging
 import os
 
 import pytest
@@ -95,9 +96,10 @@ def test_valid_result_fields(create_database_if_not_existing_mock, test_connecti
     create_database_if_not_existing_mock.return_value = None
     test_connection_mock.return_value = None
     get_resultfilds_names_mock.return_value = used_result_fields
+    logger = logging.getLogger('test_logger')
     mock_config = utils.load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     assert subset_boolean == ResultProcessor(mock_config, False, None, CREDENTIAL_PATH, 'test_table_name',
-                                             0, 'test_logger')._valid_result_fields(existing_result_fields)
+                                             0, logger)._valid_result_fields(existing_result_fields)
 
 
 @freeze_time('2020-01-01 00:00:00')
@@ -133,7 +135,8 @@ def test_add_timestamps_to_results(results, expected_results):
 @pytest.fixture
 def result_processor():
     config = utils.load_config(os.path.join('test', 'test_logtables', 'sqlite_logtables.cfg'))
-    return ResultProcessor(config, False, None, None, 'test_table', 0, 'test_logger')
+    logger = logging.getLogger('test_logger')
+    return ResultProcessor(config, False, None, None, 'test_table', 0, logger)
 
 
 def test_valid_logtable_logs(result_processor: ResultProcessor):

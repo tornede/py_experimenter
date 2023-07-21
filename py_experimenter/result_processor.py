@@ -18,8 +18,8 @@ class ResultProcessor:
     database.
     """
 
-    def __init__(self, config: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser, credential_path, table_name: str, experiment_id: int, logger_name: str):
-        self._logger = logging.getLogger(logger_name)
+    def __init__(self, config: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser, credential_path, table_name: str, experiment_id: int, logger):
+        self._logger = logger
         self._table_name = table_name
         self._config = config
         self._timestamp_on_result_fields = utils.timestamps_for_result_fields(self._config)
@@ -30,10 +30,10 @@ class ResultProcessor:
         self._codecarbon_config = codecarbon_config
 
         if config['PY_EXPERIMENTER']['provider'] == 'sqlite':
-            self._dbconnector: DatabaseConnector = DatabaseConnectorLITE(config, self.use_codecarbon, self._codecarbon_config, logger_name)
+            self._dbconnector: DatabaseConnector = DatabaseConnectorLITE(config, self.use_codecarbon, self._codecarbon_config, logger)
         elif config['PY_EXPERIMENTER']['provider'] == 'mysql':
             self._dbconnector: DatabaseConnector = DatabaseConnectorMYSQL(
-                config, self.use_codecarbon, self._codecarbon_config, credential_path, logger_name)
+                config, self.use_codecarbon, self._codecarbon_config, credential_path, logger)
         else:
             raise InvalidConfigError("Invalid database provider!")
 
@@ -48,7 +48,7 @@ class ResultProcessor:
         """
         if not self._valid_result_fields(list(results.keys())):
             invalid_result_keys = set(list(results.keys())) - set(self._result_fields)
-            logging.error(f"The resultsfileds {','.join(invalid_result_keys)} are invalid.")
+            logging.error(f"The resultsfileds `{','.join(invalid_result_keys)}` are invalid.")
             raise InvalidResultFieldError(f"Invalid result keys: {invalid_result_keys}.")
 
         if self._timestamp_on_result_fields:
@@ -100,13 +100,13 @@ class ResultProcessor:
     def _valid_logtable_logs(self, logs: Dict[str, Dict[str, str]]) -> bool:
         logs = {f"{self._table_name}__{logtable_name}": logtable_entries for logtable_name, logtable_entries in logs.items()}
         if not set(logs.keys()) <= set(self._logtable_fields.keys()):
-            self._logger.error(f'Logtabes {set(logs.keys()) - set(self._logtable_fields.keys())}')
+            self._logger.error(f'Logtabes `{set(logs.keys()) - set(self._logtable_fields.keys())}` are not valid logtables.')
             return False
 
         for logtable_name, logtable_entries in logs.items():
             for column, _ in logtable_entries.items():
                 if column not in [column[0] for column in self._logtable_fields[logtable_name]]:
-                    self._logger.error(f'Column {column} is not a valid column for logtable {logtable_name}')
+                    self._logger.error(f'Column `{column}` is not a valid column for logtable `{logtable_name}`')
                     return False
         return True
 

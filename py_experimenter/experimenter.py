@@ -111,10 +111,10 @@ class PyExperimenter:
         self.timestamp_on_result_fields = utils.timestamps_for_result_fields(self.config)
 
         if self.config['PY_EXPERIMENTER']['provider'] == 'sqlite':
-            self.dbconnector = DatabaseConnectorLITE(self.config, self.use_codecarbon, self.codecarbon_config, logger_name)
+            self.dbconnector = DatabaseConnectorLITE(self.config, self.use_codecarbon, self.codecarbon_config, self.logger)
         elif self.config['PY_EXPERIMENTER']['provider'] == 'mysql':
             self.dbconnector = DatabaseConnectorMYSQL(self.config, self.use_codecarbon, self.codecarbon_config, database_credential_file_path,
-                                                      self.logger_name)
+                                                      self.logger)
         else:
             raise ValueError('The provider indicated in the config file is not supported')
 
@@ -396,7 +396,7 @@ class PyExperimenter:
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
 
         result_processor = ResultProcessor(self.config, self.use_codecarbon, self.codecarbon_config, self.database_credential_file_path, table_name=table_name,
-                                           experiment_id=experiment_id, logger_name=self.logger_name)
+                                           experiment_id=experiment_id, logger=self.logger)
         result_processor._set_name(self.name)
         result_processor._set_machine(socket.gethostname())
 

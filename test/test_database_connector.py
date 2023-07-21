@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os
 
 import mock
@@ -49,9 +50,10 @@ def test_create_table_if_not_exists(create_database_if_not_existing_mock, test_c
     close_connection_mock.return_value = None
     table_exists_mock.return_value = True
     table_has_correct_structure_mock.return_value = True
+    test_logger = logging.getLogger('test_logger')
     experiment_configuration_file_path = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     database_connector = DatabaseConnectorMYSQL(experiment_configuration_file_path, None, None, database_credential_file_path=os.path.join(
-        'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'), logger_name='test_logger')
+        'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'), logger=test_logger)
     database_connector.create_table_if_not_existing()
     create_table_string = ('CREATE TABLE test_table (ID INTEGER PRIMARY KEY AUTO_INCREMENT, value int DEFAULT NULL,exponent int DEFAULT NULL,'
                            'creation_date DATETIME DEFAULT NULL,status VARCHAR(255) DEFAULT NULL,start_date DATETIME DEFAULT NULL,'
@@ -127,6 +129,7 @@ def test_fill_table(
     test_connection_mock.return_value = None
     get_existing_rows_mock.return_value = []
     write_to_database_mock.return_value = None
+    logger = logging.getLogger('test_logger')
 
     experiment_configuration = load_config(experiment_configuration_file_path)
     database_connector = DatabaseConnectorMYSQL(
@@ -134,7 +137,7 @@ def test_fill_table(
         None,
         None,
         database_credential_file_path=os.path.join('test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'),
-        logger_name = 'test_logger')
+        logger=logger)
     database_connector.fill_table(parameters, fixed_parameter_combination)
     values, columns = write_to_database_mock.call_args_list[0][0]
 
@@ -165,6 +168,7 @@ def test_delete_experiments_with_condition(commit_mock, execute_mock, cursor_moc
     execute_mock.return_value = None
     cursor_mock.return_value = None
     commit_mock.return_value = None
+    logger = logging.getLogger('test_logger')
 
     experiment_configuration_file_path = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     database_connector = DatabaseConnectorMYSQL(
@@ -173,7 +177,7 @@ def test_delete_experiments_with_condition(commit_mock, execute_mock, cursor_moc
         None,
         database_credential_file_path=os.path.join(
             'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'),
-        logger_name='test_logger'
+        logger=logger
     )
 
     database_connector._delete_experiments_with_condition(f'WHERE status = "{ExperimentStatus.CREATED.value}"')
@@ -199,6 +203,7 @@ def test_get_experiments_with_condition(get_structture_from_table_mock, fetchall
     cursor_mock.return_value = None
     commit_mock.return_value = None
     fetchall_mock.return_value = [(1, 2,), ]
+    logger = logging.getLogger('test_logger')
     get_structture_from_table_mock.return_value = ['value', 'exponent']
     experiment_configuration_file_path = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     database_connector = DatabaseConnectorMYSQL(
@@ -207,7 +212,7 @@ def test_get_experiments_with_condition(get_structture_from_table_mock, fetchall
         None,
         database_credential_file_path=os.path.join(
             'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'),
-        logger_name='test_logger'
+        logger=logger
     )
     database_connector._get_experiments_with_condition(f'WHERE status = "{ExperimentStatus.CREATED.value}"')
 
@@ -227,6 +232,7 @@ def test_delete_table(commit_mock, execute_mock, cursor_mock, connect_mock, crea
     execute_mock.return_value = None
     cursor_mock.return_value = None
     commit_mock.return_value = None
+    logger = logging.getLogger('test_logger')
     experiment_configuration_file_path = load_config(os.path.join('test', 'test_config_files', 'load_config_test_file', 'my_sql_test_file.cfg'))
     database_connector = DatabaseConnectorMYSQL(
         experiment_configuration_file_path,
@@ -234,7 +240,7 @@ def test_delete_table(commit_mock, execute_mock, cursor_mock, connect_mock, crea
         None,
         database_credential_file_path=os.path.join(
             'test', 'test_config_files', 'load_config_test_file', 'mysql_fake_credentials.cfg'),
-        logger_name='test_logger'
+        logger=logger
     )
     database_connector.delete_table()
 

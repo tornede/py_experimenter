@@ -15,8 +15,8 @@ from py_experimenter.experiment_status import ExperimentStatus
 
 class DatabaseConnector(abc.ABC):
 
-    def __init__(self, config: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser, logger_name:str):
-        self.logger = logging.getLogger(logger_name)
+    def __init__(self, config: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser, logger):
+        self.logger = logger
         self.config = config
         self.codecarbon_config = codecarbon_config
         self.table_name = self.config.get('PY_EXPERIMENTER', 'table')
