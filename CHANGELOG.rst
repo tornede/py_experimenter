@@ -24,6 +24,8 @@ Fix
 ---
 
 - `PyExperimenter` no longer overwrites the basicConfig of the logging framework. Furthermore, a formatter has been added, as well as different (file) handlers to ensure the messages occur both in the console as well as in the log file.
+- Remove the need for resultfields to be defined in the experiment configuration file.
+- Improve error messages.
 
 v1.3.0 (23.06.2023)
 ===================
