@@ -99,7 +99,7 @@ class PyExperimenter:
 
         self.database_credential_file_path = database_credential_file_path
         if not self._is_valid_configuration(self.config, database_credential_file_path):
-            raise InvalidConfigError('Invalid configuration')
+            raise InvalidConfigError('Invalid configuration. See log messages for details')
 
         if table_name is not None:
             self.config.set('PY_EXPERIMENTER', 'table', table_name)
@@ -198,9 +198,11 @@ class PyExperimenter:
         :rtype: bool
         """
         if not config.has_section('PY_EXPERIMENTER'):
+            self.logger.error('Error in config file: PY_EXPERIMENTER section is missing')
             return False
 
         if set(config.keys()) > {'PY_EXPERIMENTER', 'CUSTOM', 'DEFAULT'}:
+            self.looger.error('Error in config file: Only PY_EXPERIMENTER, CUSTOM and DEFAULT sections are allowed')
             return False
 
         if not {'provider', 'database', 'table'}.issubset(set(config.options('PY_EXPERIMENTER'))):
@@ -219,6 +221,7 @@ class PyExperimenter:
                 return False
 
         if not {'keyfields', 'resultfields'}.issubset(set(config.options('PY_EXPERIMENTER'))):
+            self.logger.error('Error in config file: PY_EXPERIMENTER section must contain keyfields and resultfields')
             return False
         return True
 
