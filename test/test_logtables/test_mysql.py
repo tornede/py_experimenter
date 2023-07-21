@@ -91,7 +91,7 @@ def own_function(keyfields: dict, result_processor: ResultProcessor, custom_fiel
     result_processor.process_logs({'test_mysql_log': {'test': 2}, 'test_mysql_log2': {'test': 3}})
 
 
-def test_integration():
+def test_integration_without_resultfields():
     experimenter = PyExperimenter(os.path.join('test', 'test_logtables', 'mysql_logtables.cfg'))
     try:
         experimenter.delete_table()
@@ -99,6 +99,34 @@ def test_integration():
         pass
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, 1)
+    connection = experimenter.dbconnector.connect()
+    cursor = experimenter.dbconnector.cursor(connection)
+    cursor.execute(f"SELECT * FROM test_mysql_logtables__test_mysql_log")
+    logtable = cursor.fetchall()
+    timesteps = [x[2] for x in logtable]
+    non_timesteps = [x[:2] + x[3:] for x in logtable]
+    assert non_timesteps == [(1, 1, 0), (2, 1, 2)]
+    cursor.execute(f"SELECT * FROM test_mysql_logtables__test_mysql_log2")
+    logtable2 = cursor.fetchall()
+    timesteps2 = [x[2] for x in logtable2]
+    logtable2 = [x[:2] + x[3:] for x in logtable2]
+    assert logtable2 == [(1, 1, 1), (2, 1, 3)]
+    assert timesteps == timesteps2
+
+# Integration Test without Resultfields
+def own_function_without_resultfields(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+    # send result to to the database
+    result_processor.process_logs({'test_mysql_log': {'test': 0}, 'test_mysql_log2': {'test': 1}})
+    result_processor.process_logs({'test_mysql_log': {'test': 2}, 'test_mysql_log2': {'test': 3}})
+    
+def test_integration_without_resultfields():
+    experimenter = PyExperimenter(os.path.join('test', 'test_logtables', 'mysql_logtables_no_resultfields.cfg'))
+    try:
+        experimenter.delete_table()
+    except Exception:
+        pass
+    experimenter.fill_table_from_config()
+    experimenter.execute(own_function_without_resultfields, 1)
     connection = experimenter.dbconnector.connect()
     cursor = experimenter.dbconnector.cursor(connection)
     cursor.execute(f"SELECT * FROM test_mysql_logtables__test_mysql_log")

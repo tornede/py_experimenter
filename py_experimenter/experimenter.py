@@ -220,7 +220,7 @@ class PyExperimenter:
                     f'Error in config file: DATABASE section must contain host, user, and password since provider is {config["DATABASE"]["provider"]}')
                 return False
 
-        if not {'keyfields', 'resultfields'}.issubset(set(config.options('PY_EXPERIMENTER'))):
+        if not 'keyfields' in config.options('PY_EXPERIMENTER'):
             self.logger.error('Error in config file: PY_EXPERIMENTER section must contain keyfields and resultfields')
             return False
         return True

@@ -138,8 +138,11 @@ def get_result_field_names(config: ConfigParser) -> List[str]:
 
 
 def get_resultfields(config: ConfigParser) -> List[Tuple[str, str]]:
-    result_fields = extract_columns(config['PY_EXPERIMENTER']['resultfields'])
-    return result_fields
+    if config.has_option('PY_EXPERIMENTER', 'resultfields'):
+        result_fields = extract_columns(config['PY_EXPERIMENTER']['resultfields'])
+        return result_fields
+    else:
+        return list()
 
 
 def extract_columns(fields: str) -> List[Tuple[str, str]]:

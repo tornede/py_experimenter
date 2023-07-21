@@ -78,7 +78,7 @@ class DatabaseConnector(abc.ABC):
 
         keyfields = utils.get_keyfields(self.config)
         resultfields = utils.get_resultfields(self.config)
-        if self.timestamp_on_result_fields:
+        if resultfields and self.timestamp_on_result_fields:
             resultfields = utils.add_timestep_result_columns(resultfields)
 
         connection = self.connect()
