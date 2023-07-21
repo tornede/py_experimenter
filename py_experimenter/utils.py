@@ -23,7 +23,7 @@ def load_config(path):
         raise NoConfigFileError(f'Configuration file missing! Please add file: {path}')
 
     return config
-    
+
 
 def extract_codecarbon_config(config: ConfigParser) -> Tuple[ConfigParser]:
     codecarbon_config = ConfigParser()
@@ -51,7 +51,7 @@ def write_codecarbon_config(codecarbon_config: ConfigParser):
         codecarbon_config.write(f)
 
 
-def extract_codecarbon_columns(with_type:bool = True):
+def extract_codecarbon_columns(with_type: bool = True):
     if with_type:
         return [
             ('codecarbon_timestamp', 'DATETIME '), ('project_name', 'VARCHAR(255)'), ('run_id', 'VARCHAR(255)'),
@@ -63,8 +63,8 @@ def extract_codecarbon_columns(with_type:bool = True):
             ('os', 'VARCHAR(255)'), ('python_version', 'VARCHAR(255)'), ('codecarbon_version', 'VARCHAR(255)'),
             ('cpu_count', 'DOUBLE'), ('cpu_model', 'VARCHAR(255)'), ('gpu_count', 'DOUBLE'),
             ('gpu_model', 'VARCHAR(255)'), ('longitude', 'VARCHAR(255)'), ('latitude', 'VARCHAR(255)'),
-            ('ram_total_size', 'DOUBLE'), ('tracking_mode', 'VARCHAR(255)'), ('on_cloud', 'VARCHAR(255)'), 
-            ('power_usage_efficiency', 'DOUBLE'),('offline_mode', 'BOOL')
+            ('ram_total_size', 'DOUBLE'), ('tracking_mode', 'VARCHAR(255)'), ('on_cloud', 'VARCHAR(255)'),
+            ('power_usage_efficiency', 'DOUBLE'), ('offline_mode', 'BOOL')
         ]
     else:
         return [
@@ -145,6 +145,22 @@ def get_resultfields(config: ConfigParser) -> List[Tuple[str, str]]:
         return list()
 
 
+def extract_logtables(config: ConfigParser, experiment_table_name: str) -> Optional[Dict[str, List[str]]]:
+    logtable_configs = dict()
+    if config.has_option('PY_EXPERIMENTER', 'logtables'):
+        logtable_definitions = [logtable_name.strip().split(':') for logtable_name in config['PY_EXPERIMENTER']['logtables'].split(',')]
+    else:
+        logtable_definitions = list()
+
+    for logtable_definer, column_definer in logtable_definitions:
+        logtable_name = f'{experiment_table_name}__{logtable_definer}'
+        if config.has_option('PY_EXPERIMENTER', column_definer):
+            logtable_configs[logtable_name] = extract_columns(config['PY_EXPERIMENTER'][column_definer])
+        else:
+            logtable_configs[logtable_name] = [(logtable_definer, column_definer)]
+    return logtable_configs
+
+
 def extract_columns(fields: str) -> List[Tuple[str, str]]:
     """
     Clean field names
@@ -175,22 +191,6 @@ def add_timestep_result_columns(result_field_configuration):
         result_fields_with_timestamp.append(result_field)
         result_fields_with_timestamp.append((f'{result_field[0]}_timestamp', 'VARCHAR(255)'))
     return result_fields_with_timestamp
-
-
-def extract_logtables(config: ConfigParser, experiment_table_name: str) -> Optional[Dict[str, List[str]]]:
-    logtable_configs = dict()
-    if config.has_option('PY_EXPERIMENTER', 'logtables'):
-        logtable_definitions = [logtable_name.strip().split(':') for logtable_name in config['PY_EXPERIMENTER']['logtables'].split(',')]
-    else:
-        logtable_definitions = list()
-
-    for logtable_definer, column_definer in logtable_definitions:
-        logtable_name = f'{experiment_table_name}__{logtable_definer}'
-        if config.has_option('PY_EXPERIMENTER', column_definer):
-            logtable_configs[logtable_name] = extract_columns(config['PY_EXPERIMENTER'][column_definer])
-        else:
-            logtable_configs[logtable_name] = [(logtable_definer, column_definer)]
-    return logtable_configs
 
 
 def combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations):

@@ -29,14 +29,14 @@ class PyExperimenter:
                  database_name: str = None,
                  use_codecarbon: bool = True,
                  name='PyExperimenter',
-                 logger_name:str = 'py-experimenter',
-                 log_level:Union[int,str] = logging.INFO,
-                 log_file:str = "./logs/py-experimenter.log"
+                 logger_name: str = 'py-experimenter',
+                 log_level: Union[int, str] = logging.INFO,
+                 log_file: str = "./logs/py-experimenter.log"
                  ):
         """
         Initializes the PyExperimenter with the given information. If no loger `logger_name` exists, a new logger
         is created with the given `logger_name` and `log_level`. 
-        
+
         :param experiment_configuration_file_path: The path to the experiment configuration file. Defaults to
             'config/experiment_configuration.cfg'.
         :type experiment_configuration_file_path: str, optional
@@ -67,25 +67,25 @@ class PyExperimenter:
         """
         # If the logger is not allready craeted, create it with the given name and level
         self.logger_name = logger_name
-        
+
         logger_initialization_needed = self.logger_name not in logging.root.manager.loggerDict.keys()
         self.logger = logging.getLogger(logger_name)
         self.logger.setLevel(log_level)
-        
+
         if logger_initialization_needed:
             if not os.path.exists('logs'):
                 os.makedirs('logs')
-                
+
             formatter = logging.Formatter('%(asctime)s  | %(name)s - %(levelname)-8s | %(message)s')
-            
+
             handler = logging.StreamHandler()
             handler.setFormatter(formatter)
             self.logger.addHandler(handler)
-            
+
             handler = logging.FileHandler(log_file)
             handler.setFormatter(formatter)
             self.logger.addHandler(handler)
-        
+
         self.config = utils.load_config(experiment_configuration_file_path)
 
         self.use_codecarbon = use_codecarbon
@@ -392,12 +392,11 @@ class PyExperimenter:
         """
         experiment_id, keyfield_values = self.dbconnector.get_experiment_configuration()
 
-        result_field_names = utils.get_result_field_names(self.config)
         custom_fields = dict(self.config.items('CUSTOM')) if self.has_section('CUSTOM') else None
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
 
         result_processor = ResultProcessor(self.config, self.use_codecarbon, self.codecarbon_config, self.database_credential_file_path, table_name=table_name,
-                                           result_fields=result_field_names, experiment_id=experiment_id, logger_name=self.logger_name)
+                                           experiment_id=experiment_id, logger_name=self.logger_name)
         result_processor._set_name(self.name)
         result_processor._set_machine(socket.gethostname())
 
