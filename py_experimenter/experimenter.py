@@ -99,7 +99,7 @@ class PyExperimenter:
 
         self.database_credential_file_path = database_credential_file_path
         if not self._is_valid_configuration(self.config, database_credential_file_path):
-            raise InvalidConfigError('Invalid configuration. See log messages for details')
+            raise InvalidConfigError('Invalid configuration. See previous log messages for details')
 
         if table_name is not None:
             self.config.set('PY_EXPERIMENTER', 'table', table_name)

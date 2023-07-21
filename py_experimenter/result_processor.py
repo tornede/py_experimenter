@@ -48,8 +48,9 @@ class ResultProcessor:
         """
         if not self._valid_result_fields(list(results.keys())):
             invalid_result_keys = set(list(results.keys())) - set(self._result_fields)
-            logging.error(f"The resultsfileds `{','.join(invalid_result_keys)}` are invalid.")
-            raise InvalidResultFieldError(f"Invalid result keys: {invalid_result_keys}.")
+            logging.error(
+                f"The resultsfileds `{','.join(invalid_result_keys)}` are invalid sinceare not mentioned in the config file and therefore not in the database.")
+            raise InvalidResultFieldError(f"Invalid result keys: {invalid_result_keys}. See previous logs for more information.")
 
         if self._timestamp_on_result_fields:
             results = self.__class__._add_timestamps_to_results(results)
