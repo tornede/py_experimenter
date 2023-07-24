@@ -37,7 +37,6 @@ The experiment configuration file is primarily used to define the database backe
     log_level = error
     save_to_file = True
     output_dir = output/CodeCarbon
-    offline_mode = False
 
 --------------------
 Database Information
@@ -81,7 +80,7 @@ As the manual definition can be a tedious task, especially for a list of integer
 Resultfields
 ------------
 
-The results of the experiments will be stored in the database in the form of ``resultfields``. They have to be specified in the experiment configuration file by adding a line containing a comma separated list of ``resultfield_name`` and according ``resultfield_datatype``. The datatype can be defined as explained above for :ref:`keyfields <keyfields>`, and if no datatype is explicitly specified, ``VARCHAR(255)`` is used. Note that in case some resultfield should contain arbitrarily long strings, ``LONGTEXT`` should be used as datatype.
+The results of the experiments will be stored in the database in the form of ``resultfields``. They are optional and can be be specified in the experiment configuration file by adding a line containing a comma separated list of ``resultfield_name`` and according ``resultfield_datatype``. The datatype can be defined as explained above for :ref:`keyfields <keyfields>`, and if no datatype is explicitly specified, ``VARCHAR(255)`` is used. Note that in case some resultfield should contain arbitrarily long strings, ``LONGTEXT`` should be used as datatype.
 
 .. code-block:: 
 
@@ -92,6 +91,10 @@ Additionally, it is possible to store the timestamps at which the results have b
 .. code-block:: 
 
     resultfields.timestamps = True
+
+.. note::
+
+   The ``resultfields`` are optional. If they are not specified, the database will only contain the keyfields and the according experiment id.
 
 
 .. _logtables:

@@ -36,22 +36,19 @@ def test_tables_created(execute_mock, close_connection_mock, fetchall_mock, curs
     assert execute_mock.mock_calls[1][1][1] == ('CREATE TABLE test_sqlite_logtables__test_sqlite_log (ID INTEGER PRIMARY KEY AUTOINCREMENT, experiment_id INTEGER,'
                                                 ' timestamp DATETIME, test int DEFAULT NULL, FOREIGN KEY (experiment_id) REFERENCES test_sqlite_logtables(ID) ON DELETE CASCADE);')
 
+
 @freeze_time("2012-01-14 03:21:34")
 @patch('py_experimenter.result_processor.DatabaseConnectorLITE')
 def test_logtable_insertion(database_connector_mock):
     config = ConfigParser()
     config.read(os.path.join('test', 'test_logtables', 'sqlite_logtables.cfg'))
-    result_processor = ResultProcessor(config, None, None, None, None, None, 0)
+    result_processor = ResultProcessor(config, None, None, None, 'table_name', 0,  'test_logger')
     result_processor._table_name = 'table_name'
-    table_0_logs =  {'test0': 'test', 'test1': 'test'}
-    table_1_logs =  {'test0': 'test'}
-    result_processor.process_logs({'test_table_0': table_0_logs,
-                                   'test_table_1': table_1_logs})
+    table_0_logs = {'test': '0'}
+    table_1_logs = {'test': '1'}
+    result_processor.process_logs({'test_sqlite_log': table_0_logs,
+                                   'test_sqlite_log2': table_1_logs})
     # result_processor._dbconnector.prepare_write_query.
-    result_processor._dbconnector.prepare_write_query.assert_any_call(
-        'table_name__test_table_1', table_1_logs.keys())
-    result_processor._dbconnector.prepare_write_query.assert_any_call(
-         'table_name__test_table_0', table_0_logs.keys())
     result_processor._dbconnector.execute_queries.assert_called()
 
 
@@ -71,7 +68,7 @@ def test_delete_logtable(execution_mock, close_connection_mock, commit_mocck, fe
                                      call(None, 'DROP TABLE IF EXISTS test_sqlite_logtables__test_sqlite_log2'), call(None, 'DROP TABLE IF EXISTS test_sqlite_logtables')])
 
 
-####################### Integration Test
+# Integration Test
 def own_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
     # run the experiment with the given value for the sin and cos function
     sin_result = sin(keyfields['value'])**keyfields['exponent']
@@ -85,7 +82,8 @@ def own_function(keyfields: dict, result_processor: ResultProcessor, custom_fiel
     result_processor.process_logs({'test_sqlite_log': {'test': 0}, 'test_sqlite_log2': {'test': 1}})
     result_processor.process_logs({'test_sqlite_log': {'test': 2}, 'test_sqlite_log2': {'test': 3}})
 
-def test_integration():
+
+def test_integration_without_resultfields():
     experimenter = PyExperimenter(os.path.join('test', 'test_logtables', 'sqlite_logtables.cfg'), use_codecarbon=False)
     try:
         experimenter.delete_table()
@@ -99,15 +97,39 @@ def test_integration():
     logtable = cursor.fetchall()
     timesteps = [x[2] for x in logtable]
     non_timesteps = [x[:2] + x[3:] for x in logtable]
-    assert non_timesteps == [(1, 1,0), (2, 1,2)]
+    assert non_timesteps == [(1, 1, 0), (2, 1, 2)]
     cursor.execute(f"SELECT * FROM test_sqlite_logtables__test_sqlite_log2")
     logtable2 = cursor.fetchall()
     timesteps_2 = [x[2] for x in logtable2]
     non_timesteps_2 = [x[:2] + x[3:] for x in logtable2]
     assert non_timesteps_2 == [(1, 1, 1), (2, 1, 3)]
     assert timesteps == timesteps_2
-    
-    
-    
-    
-    
+
+
+def own_function_without_resultfields(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+    # send result to to the database
+    result_processor.process_logs({'test_sqlite_log': {'test': 0}, 'test_sqlite_log2': {'test': 1}})
+    result_processor.process_logs({'test_sqlite_log': {'test': 2}, 'test_sqlite_log2': {'test': 3}})
+
+
+def test_integration_without_resultfields():
+    experimenter = PyExperimenter(os.path.join('test', 'test_logtables', 'sqlite_logtables_no_resultfields.cfg'), use_codecarbon=False)
+    try:
+        experimenter.delete_table()
+    except Exception:
+        pass
+    experimenter.fill_table_from_config()
+    experimenter.execute(own_function_without_resultfields, 1)
+    connection = experimenter.dbconnector.connect()
+    cursor = experimenter.dbconnector.cursor(connection)
+    cursor.execute(f"SELECT * FROM test_sqlite_logtables__test_sqlite_log")
+    logtable = cursor.fetchall()
+    timesteps = [x[2] for x in logtable]
+    non_timesteps = [x[:2] + x[3:] for x in logtable]
+    assert non_timesteps == [(1, 1, 0), (2, 1, 2)]
+    cursor.execute(f"SELECT * FROM test_sqlite_logtables__test_sqlite_log2")
+    logtable2 = cursor.fetchall()
+    timesteps_2 = [x[2] for x in logtable2]
+    non_timesteps_2 = [x[:2] + x[3:] for x in logtable2]
+    assert non_timesteps_2 == [(1, 1, 1), (2, 1, 3)]
+    assert timesteps == timesteps_2

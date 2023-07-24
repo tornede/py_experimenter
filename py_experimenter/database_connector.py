@@ -15,7 +15,8 @@ from py_experimenter.experiment_status import ExperimentStatus
 
 class DatabaseConnector(abc.ABC):
 
-    def __init__(self, config: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser):
+    def __init__(self, config: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser, logger):
+        self.logger = logger
         self.config = config
         self.codecarbon_config = codecarbon_config
         self.table_name = self.config.get('PY_EXPERIMENTER', 'table')
@@ -73,11 +74,11 @@ class DatabaseConnector(abc.ABC):
             raise DatabaseConnectionError(f'error \n{e}\n raised when fetching all rows from database.')
 
     def create_table_if_not_existing(self) -> None:
-        logging.debug("Create table if not exist")
+        self.logger.debug("Create table if not exist")
 
         keyfields = utils.get_keyfields(self.config)
         resultfields = utils.get_resultfields(self.config)
-        if self.timestamp_on_result_fields:
+        if resultfields and self.timestamp_on_result_fields:
             resultfields = utils.add_timestep_result_columns(resultfields)
 
         connection = self.connect()
@@ -155,7 +156,7 @@ class DatabaseConnector(abc.ABC):
         pass
 
     def fill_table(self, parameters=None, fixed_parameter_combinations=None) -> None:
-        logging.debug("Fill table with parameters.")
+        self.logger.debug("Fill table with parameters.")
         parameters = parameters if parameters is not None else {}
         fixed_parameter_combinations = fixed_parameter_combinations if fixed_parameter_combinations is not None else []
 
@@ -166,13 +167,13 @@ class DatabaseConnector(abc.ABC):
             raise EmptyFillDatabaseCallError("No combinations to execute found.")
 
         column_names = list(combinations[0].keys())
-        logging.debug("Getting existing rows.")
+        self.logger.debug("Getting existing rows.")
         existing_rows = set(self._get_existing_rows(column_names))
         time = utils.get_timestamp_representation()
 
         rows_skipped = 0
         rows = []
-        logging.debug("Checking which of the experiments to be inserted already exist.")
+        self.logger.debug("Checking which of the experiments to be inserted already exist.")
         for combination in combinations:
             if self._check_combination_in_existing_rows(combination, existing_rows, keyfield_names):
                 rows_skipped += 1
@@ -183,11 +184,11 @@ class DatabaseConnector(abc.ABC):
             rows.append(values)
 
         if rows:
-            logging.debug(f"Now adding {len(rows)} rows to database. {rows_skipped} rows were skipped.")
+            self.logger.debug(f"Now adding {len(rows)} rows to database. {rows_skipped} rows were skipped.")
             self._write_to_database(rows, column_names + ["status", "creation_date"])
-            logging.info(f"{len(rows)} rows successfully added to database. {rows_skipped} rows were skipped.")
+            self.logger.info(f"{len(rows)} rows successfully added to database. {rows_skipped} rows were skipped.")
         else:
-            logging.info(f"No rows to add. All the {len(combinations)} experiments already exist.")
+            self.logger.info(f"No rows to add. All the {len(combinations)} experiments already exist.")
 
     def _check_combination_in_existing_rows(self, combination, existing_rows, keyfield_names) -> bool:
         def _get_column_values():
@@ -207,8 +208,12 @@ class DatabaseConnector(abc.ABC):
             raise DatabaseConnectionError(f'error \n {e} raised. \n Please check if fill_table() was called correctly.')
 
         return experiment_id, dict(zip([i[0] for i in description], *values))
+    
+    @abc.abstractmethod
+    def _pull_open_experiment(self) -> Tuple[int, List, List]:
+        pass
 
-    def _execute_queries(self, connection, cursor) -> Tuple[int, List, List]:
+    def _select_open_experiments_from_db(self, connection, cursor) -> Tuple[int, List, List]:
         order_by = "id"
         time = utils.get_timestamp_representation()
 
@@ -223,9 +228,6 @@ class DatabaseConnector(abc.ABC):
         description = cursor.description
         return experiment_id, description, values
 
-    @abc.abstractmethod
-    def _pull_open_experiment(self) -> Tuple[int, List, List]:
-        pass
 
     def _write_to_database(self, values: List, columns=List[str]) -> None:
         values_prepared = ','.join([f"({', '.join([self._prepared_statement_placeholder] * len(columns))})"] * len(values))
@@ -262,7 +264,7 @@ class DatabaseConnector(abc.ABC):
             rows = get_dict_for_keyfields_and_rows(keyfields, rows)
             if rows:
                 self.fill_table(fixed_parameter_combinations=rows)
-        logging.info(f"{len(rows)} experiments with status {' '.join(list(states))} were reset")
+        self.logger.info(f"{len(rows)} experiments with status {' '.join(list(states))} were reset")
 
     def _pop_experiments_with_status(self, status: Optional[str] = None) -> Tuple[List[str], List[List]]:
         if status == ExperimentStatus.ALL.value:

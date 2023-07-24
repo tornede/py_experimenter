@@ -13,13 +13,13 @@ from py_experimenter.utils import load_config
 class DatabaseConnectorMYSQL(DatabaseConnector):
     _prepared_statement_placeholder = '%s'
 
-    def __init__(self, experiment_configuration: ConfigParser, use_codecarbon:bool, codecarbon_config:ConfigParser, database_credential_file_path:str):
+    def __init__(self, experiment_configuration: ConfigParser, use_codecarbon:bool, codecarbon_config:ConfigParser, database_credential_file_path:str, logger):
         database_credentials = load_config(database_credential_file_path)
         self.host = database_credentials.get('CREDENTIALS', 'host')
         self.user = database_credentials.get('CREDENTIALS', 'user')
         self.password = database_credentials.get('CREDENTIALS', 'password')
 
-        super().__init__(experiment_configuration, use_codecarbon, codecarbon_config)
+        super().__init__(experiment_configuration, use_codecarbon, codecarbon_config, logger)
 
         self._create_database_if_not_existing()
 
@@ -88,7 +88,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             connection = self.connect()
             cursor = self.cursor(connection)
             self._start_transaction(connection, readonly=False)
-            experiment_id, description, values = self._execute_queries(connection, cursor)
+            experiment_id, description, values = self._select_open_experiments_from_db(connection, cursor)
         except Exception as err:
             connection.rollback()
             raise err

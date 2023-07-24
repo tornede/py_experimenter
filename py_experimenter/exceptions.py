@@ -34,6 +34,10 @@ class InvalidResultFieldError(DatabaseError):
     pass
 
 
+class InvalidLogFieldError(DatabaseError):
+    pass
+
+
 class TableHasWrongStructureError(CreatingTableError):
     pass
 
@@ -57,5 +61,6 @@ class InvalidConfigError(ConfigError):
 class InvalidValuesInConfiguration(ConfigError):
     pass
 
+
 class MissingLogTableError(ConfigError):
-	pass
+    pass
