@@ -2,30 +2,26 @@
 Changelog
 =========
 
-
-v1.3.1 (??.07.2023)
+v1.3.1 (24.07.2023)
 ===================
 
 Feature
 -------
 
-- ?
+- Removed the need for resultfields to be defined in the experiment configuration file. Therefore, they are now optional, which might help if one is only interested in the information from logtables.
+- Improved error messages to provide better feedback about why a configuration file is not valid and why processing information to the database did not work.
+- Logging has been implemented for `PyExperimenter`. The name, log level and log file of the logger can be customized. Furthermore, a fixed formatter has been added, as well as different (file) handlers to ensure the messages occur both in the console as well as in the (given) log file. 
 
 Examples
 --------
 
-- ?
-
-Changed
--------
-- ?
+- Updated example notebooks to reflect the changes of the improved logging.
 
 Fix
 ---
 
-- `PyExperimenter` no longer overwrites the basicConfig of the logging framework. Furthermore, a formatter has been added, as well as different (file) handlers to ensure the messages occur both in the console as well as in the log file.
-- Remove the need for resultfields to be defined in the experiment configuration file.
-- Improve error messages.
+- `PyExperimenter` no longer overwrites the basicConfig of the logging framework. 
+
 
 v1.3.0 (23.06.2023)
 ===================
