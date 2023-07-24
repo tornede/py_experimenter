@@ -251,7 +251,7 @@ experimenter = PyExperimenter(experiment_configuration_file_path=experiment_conf
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2023-07-20 18:55:40,112  | py-experimenter - INFO     | Initialized and connected to database
+2023-07-24 12:52:43,223  | py-experimenter - INFO     | Initialized and connected to database
 </pre></div></div>
 </div>
 </section>
@@ -278,1008 +278,12 @@ experimenter.get_table()
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2023-07-20 18:55:40,120  | py-experimenter - INFO     | No rows to add. All the 12 experiments already exist.
-2023-07-20 18:55:40,122  | py-experimenter - INFO     | No rows to add. All the 1 experiments already exist.
+2023-07-24 12:52:43,231  | py-experimenter - INFO     | No rows to add. All the 12 experiments already exist.
+2023-07-24 12:52:43,233  | py-experimenter - INFO     | No rows to add. All the 1 experiments already exist.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>ID</th>
-      <th>dataset</th>
-      <th>cross_validation_splits</th>
-      <th>seed</th>
-      <th>kernel</th>
-      <th>creation_date</th>
-      <th>status</th>
-      <th>start_date</th>
-      <th>name</th>
-      <th>machine</th>
-      <th>pipeline</th>
-      <th>train_f1</th>
-      <th>train_accuracy</th>
-      <th>test_f1</th>
-      <th>test_accuracy</th>
-      <th>end_date</th>
-      <th>error</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>linear</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:41</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>linear</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:41</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:44</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>6</td>
-      <td>linear</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:44</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:45</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>poly</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:45</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>0.933333</td>
-      <td>0.933333</td>
-      <td>2023-06-23 22:01:47</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>poly</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:47</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>0.933333</td>
-      <td>0.933333</td>
-      <td>2023-06-23 22:01:49</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>6</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>6</td>
-      <td>poly</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:49</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>0.933333</td>
-      <td>0.933333</td>
-      <td>2023-06-23 22:01:50</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>7</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>rbf</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:50</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:52</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>8</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>rbf</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:52</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:53</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>9</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>6</td>
-      <td>rbf</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:53</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:55</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>10</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>sigmoid</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:55</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>0.893333</td>
-      <td>0.893333</td>
-      <td>2023-06-23 22:01:56</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>11</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>sigmoid</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:56</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>0.893333</td>
-      <td>0.893333</td>
-      <td>2023-06-23 22:01:58</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>12</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>6</td>
-      <td>sigmoid</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:58</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>0.893333</td>
-      <td>0.893333</td>
-      <td>2023-06-23 22:01:59</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>14</td>
-      <td>error_dataset</td>
-      <td>3</td>
-      <td>42</td>
-      <td>linear</td>
-      <td>2023-06-23 22:02:01</td>
-      <td>error</td>
-      <td>2023-06-23 22:02:01</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-06-23 22:02:03</td>
-      <td>Traceback (most recent call last):\n  File "/U...</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
-</section>
-<section id="Execute-PyExperimenter">
-<h3>Execute PyExperimenter<a class="headerlink" href="#Execute-PyExperimenter" title="Permalink to this heading"></a></h3>
-<p>All experiments are executed one after the other by the same <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> due to <code class="docutils literal notranslate"><span class="pre">max_experiments=-1</span></code>. If just a single one or a predifined number of experiments should be executed, the <code class="docutils literal notranslate"><span class="pre">-1</span></code> has to be replaced by the according amount</p>
-<p>The first parameter, i.e. <code class="docutils literal notranslate"><span class="pre">run_ml</span></code>, relates to the actual method that should be executed with the given keyfields of the table.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.execute(run_ml, max_experiments=-1)
-
-# showing database table
-experimenter.get_table()
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-2023-07-20 18:55:40,146  | py-experimenter - INFO     | All configured executions finished.
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>ID</th>
-      <th>dataset</th>
-      <th>cross_validation_splits</th>
-      <th>seed</th>
-      <th>kernel</th>
-      <th>creation_date</th>
-      <th>status</th>
-      <th>start_date</th>
-      <th>name</th>
-      <th>machine</th>
-      <th>pipeline</th>
-      <th>train_f1</th>
-      <th>train_accuracy</th>
-      <th>test_f1</th>
-      <th>test_accuracy</th>
-      <th>end_date</th>
-      <th>error</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>linear</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:41</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>linear</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:41</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:44</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>6</td>
-      <td>linear</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:44</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:45</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>poly</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:45</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>0.933333</td>
-      <td>0.933333</td>
-      <td>2023-06-23 22:01:47</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>poly</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:47</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>0.933333</td>
-      <td>0.933333</td>
-      <td>2023-06-23 22:01:49</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>6</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>6</td>
-      <td>poly</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:49</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>0.933333</td>
-      <td>0.933333</td>
-      <td>2023-06-23 22:01:50</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>7</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>rbf</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:50</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:52</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>8</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>rbf</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:52</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:53</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>9</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>6</td>
-      <td>rbf</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:53</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:55</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>10</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>sigmoid</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:55</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>0.893333</td>
-      <td>0.893333</td>
-      <td>2023-06-23 22:01:56</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>11</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>sigmoid</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:56</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>0.893333</td>
-      <td>0.893333</td>
-      <td>2023-06-23 22:01:58</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>12</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>6</td>
-      <td>sigmoid</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:58</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>0.893333</td>
-      <td>0.893333</td>
-      <td>2023-06-23 22:01:59</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>14</td>
-      <td>error_dataset</td>
-      <td>3</td>
-      <td>42</td>
-      <td>linear</td>
-      <td>2023-06-23 22:02:01</td>
-      <td>error</td>
-      <td>2023-06-23 22:02:01</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2023-06-23 22:02:03</td>
-      <td>Traceback (most recent call last):\n  File "/U...</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
-</section>
-<section id="Restart-Failed-Experiments">
-<h3>Restart Failed Experiments<a class="headerlink" href="#Restart-Failed-Experiments" title="Permalink to this heading"></a></h3>
-<p>As experiments fail at some time, those experiments were reset for another try with <code class="docutils literal notranslate"><span class="pre">reset_experiments()</span></code>. The <code class="docutils literal notranslate"><span class="pre">status</span></code> describes which table rows should be replace. In this example all failed experiments, i.e. having <code class="docutils literal notranslate"><span class="pre">status==error</span></code>, are reset. Experiments can also be reset based on multiple status by simply passing a list of status, e.g. <code class="docutils literal notranslate"><span class="pre">experimenter.reset_experiments('error',</span> <span class="pre">'done')</span></code>. In that case, all experiments with status ‘error’ or ‘done’ will be reset.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.reset_experiments(&#39;error&#39;)
-
-# showing database table
-experimenter.get_table()
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-2023-07-20 18:55:40,167  | py-experimenter - INFO     | 1 rows successfully added to database. 0 rows were skipped.
-2023-07-20 18:55:40,167  | py-experimenter - INFO     | 1 experiments with status error were reset
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>ID</th>
-      <th>dataset</th>
-      <th>cross_validation_splits</th>
-      <th>seed</th>
-      <th>kernel</th>
-      <th>creation_date</th>
-      <th>status</th>
-      <th>start_date</th>
-      <th>name</th>
-      <th>machine</th>
-      <th>pipeline</th>
-      <th>train_f1</th>
-      <th>train_accuracy</th>
-      <th>test_f1</th>
-      <th>test_accuracy</th>
-      <th>end_date</th>
-      <th>error</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>linear</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:41</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>linear</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:41</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:44</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>6</td>
-      <td>linear</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:44</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:45</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>poly</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:45</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>0.933333</td>
-      <td>0.933333</td>
-      <td>2023-06-23 22:01:47</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>poly</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:47</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>0.933333</td>
-      <td>0.933333</td>
-      <td>2023-06-23 22:01:49</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>6</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>6</td>
-      <td>poly</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:49</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>0.933333</td>
-      <td>0.933333</td>
-      <td>2023-06-23 22:01:50</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>7</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>rbf</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:50</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:52</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>8</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>rbf</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:52</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:53</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>9</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>6</td>
-      <td>rbf</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:53</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>0.966667</td>
-      <td>0.966667</td>
-      <td>2023-06-23 22:01:55</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>10</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>2</td>
-      <td>sigmoid</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:55</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>0.893333</td>
-      <td>0.893333</td>
-      <td>2023-06-23 22:01:56</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>11</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>4</td>
-      <td>sigmoid</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:56</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>0.893333</td>
-      <td>0.893333</td>
-      <td>2023-06-23 22:01:58</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>12</td>
-      <td>iris</td>
-      <td>5</td>
-      <td>6</td>
-      <td>sigmoid</td>
-      <td>2023-06-23 22:01:37</td>
-      <td>done</td>
-      <td>2023-06-23 22:01:58</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>0.893333</td>
-      <td>0.893333</td>
-      <td>2023-06-23 22:01:59</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>15</td>
-      <td>error_dataset</td>
-      <td>3</td>
-      <td>42</td>
-      <td>linear</td>
-      <td>2023-07-20 18:55:40</td>
-      <td>created</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
-<p>After the reset of failed experiments, they can be executed again as described above.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.execute(run_ml, max_experiments=-1)
-
-# showing database table
-experimenter.get_table()
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-2023-07-20 18:55:51,309  | py-experimenter - ERROR    | Traceback (most recent call last):
-  File &#34;/Users/tanja/Development/py_experimenter/py_experimenter/experimenter.py&#34;, line 414, in _execution_wrapper
-    experiment_function(keyfield_values, result_processor, custom_fields)
-  File &#34;/var/folders/8l/vv83bgdn0zg97jp8pbsfxq040000gn/T/ipykernel_15114/1244630566.py&#34;, line 31, in run_ml
-    raise ValueError(&#34;Example error&#34;)
-ValueError: Example error
-
-2023-07-20 18:55:51,328  | py-experimenter - INFO     | All configured executions finished.
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1586,6 +590,1002 @@ ValueError: Example error
 </div></div>
 </div>
 </section>
+<section id="Execute-PyExperimenter">
+<h3>Execute PyExperimenter<a class="headerlink" href="#Execute-PyExperimenter" title="Permalink to this heading"></a></h3>
+<p>All experiments are executed one after the other by the same <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> due to <code class="docutils literal notranslate"><span class="pre">max_experiments=-1</span></code>. If just a single one or a predifined number of experiments should be executed, the <code class="docutils literal notranslate"><span class="pre">-1</span></code> has to be replaced by the according amount</p>
+<p>The first parameter, i.e. <code class="docutils literal notranslate"><span class="pre">run_ml</span></code>, relates to the actual method that should be executed with the given keyfields of the table.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.execute(run_ml, max_experiments=-1)
+
+# showing database table
+experimenter.get_table()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2023-07-24 12:52:43,254  | py-experimenter - INFO     | All configured executions finished.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>dataset</th>
+      <th>cross_validation_splits</th>
+      <th>seed</th>
+      <th>kernel</th>
+      <th>creation_date</th>
+      <th>status</th>
+      <th>start_date</th>
+      <th>name</th>
+      <th>machine</th>
+      <th>pipeline</th>
+      <th>train_f1</th>
+      <th>train_accuracy</th>
+      <th>test_f1</th>
+      <th>test_accuracy</th>
+      <th>end_date</th>
+      <th>error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>linear</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:41</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>linear</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:41</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:44</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>linear</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:44</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:45</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>poly</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:45</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-23 22:01:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>poly</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-23 22:01:49</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>poly</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:49</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-23 22:01:50</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>rbf</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:50</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:52</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>rbf</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:52</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:53</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>rbf</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:53</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:55</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>sigmoid</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:55</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-23 22:01:56</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>sigmoid</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:56</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-23 22:01:58</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>sigmoid</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:58</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-23 22:01:59</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>15</td>
+      <td>error_dataset</td>
+      <td>3</td>
+      <td>42</td>
+      <td>linear</td>
+      <td>2023-07-20 18:55:40</td>
+      <td>error</td>
+      <td>2023-07-20 18:55:40</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2023-07-20 18:55:51</td>
+      <td>Traceback (most recent call last):\n  File "/U...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Restart-Failed-Experiments">
+<h3>Restart Failed Experiments<a class="headerlink" href="#Restart-Failed-Experiments" title="Permalink to this heading"></a></h3>
+<p>As experiments fail at some time, those experiments were reset for another try with <code class="docutils literal notranslate"><span class="pre">reset_experiments()</span></code>. The <code class="docutils literal notranslate"><span class="pre">status</span></code> describes which table rows should be replace. In this example all failed experiments, i.e. having <code class="docutils literal notranslate"><span class="pre">status==error</span></code>, are reset. Experiments can also be reset based on multiple status by simply passing a list of status, e.g. <code class="docutils literal notranslate"><span class="pre">experimenter.reset_experiments('error',</span> <span class="pre">'done')</span></code>. In that case, all experiments with status ‘error’ or ‘done’ will be reset.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.reset_experiments(&#39;error&#39;)
+
+# showing database table
+experimenter.get_table()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2023-07-24 12:52:43,271  | py-experimenter - INFO     | 1 rows successfully added to database. 0 rows were skipped.
+2023-07-24 12:52:43,272  | py-experimenter - INFO     | 1 experiments with status error were reset
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>dataset</th>
+      <th>cross_validation_splits</th>
+      <th>seed</th>
+      <th>kernel</th>
+      <th>creation_date</th>
+      <th>status</th>
+      <th>start_date</th>
+      <th>name</th>
+      <th>machine</th>
+      <th>pipeline</th>
+      <th>train_f1</th>
+      <th>train_accuracy</th>
+      <th>test_f1</th>
+      <th>test_accuracy</th>
+      <th>end_date</th>
+      <th>error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>linear</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:41</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>linear</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:41</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:44</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>linear</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:44</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:45</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>poly</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:45</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-23 22:01:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>poly</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-23 22:01:49</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>poly</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:49</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-23 22:01:50</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>rbf</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:50</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:52</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>rbf</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:52</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:53</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>rbf</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:53</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:55</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>sigmoid</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:55</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-23 22:01:56</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>sigmoid</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:56</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-23 22:01:58</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>sigmoid</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:58</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-23 22:01:59</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>16</td>
+      <td>error_dataset</td>
+      <td>3</td>
+      <td>42</td>
+      <td>linear</td>
+      <td>2023-07-24 12:52:43</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>After the reset of failed experiments, they can be executed again as described above.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.execute(run_ml, max_experiments=-1)
+
+# showing database table
+experimenter.get_table()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2023-07-24 12:52:46,972  | py-experimenter - ERROR    | Traceback (most recent call last):
+  File &#34;/Users/tanja/Development/py_experimenter/py_experimenter/experimenter.py&#34;, line 412, in _execution_wrapper
+    experiment_function(keyfield_values, result_processor, custom_fields)
+  File &#34;/var/folders/8l/vv83bgdn0zg97jp8pbsfxq040000gn/T/ipykernel_31092/1244630566.py&#34;, line 31, in run_ml
+    raise ValueError(&#34;Example error&#34;)
+ValueError: Example error
+
+2023-07-24 12:52:46,991  | py-experimenter - INFO     | All configured executions finished.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>dataset</th>
+      <th>cross_validation_splits</th>
+      <th>seed</th>
+      <th>kernel</th>
+      <th>creation_date</th>
+      <th>status</th>
+      <th>start_date</th>
+      <th>name</th>
+      <th>machine</th>
+      <th>pipeline</th>
+      <th>train_f1</th>
+      <th>train_accuracy</th>
+      <th>test_f1</th>
+      <th>test_accuracy</th>
+      <th>end_date</th>
+      <th>error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>linear</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:41</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>linear</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:41</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:44</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>linear</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:44</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:45</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>poly</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:45</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-23 22:01:47</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>poly</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-23 22:01:49</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>poly</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:49</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2023-06-23 22:01:50</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>rbf</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:50</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:52</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>rbf</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:52</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:53</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>rbf</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:53</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2023-06-23 22:01:55</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>sigmoid</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:55</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-23 22:01:56</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>sigmoid</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:56</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-23 22:01:58</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>sigmoid</td>
+      <td>2023-06-23 22:01:37</td>
+      <td>done</td>
+      <td>2023-06-23 22:01:58</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2023-06-23 22:01:59</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>16</td>
+      <td>error_dataset</td>
+      <td>3</td>
+      <td>42</td>
+      <td>linear</td>
+      <td>2023-07-24 12:52:43</td>
+      <td>error</td>
+      <td>2023-07-24 12:52:43</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2023-07-24 12:52:46</td>
+      <td>Traceback (most recent call last):\n  File "/U...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
 <section id="Generating-Result-Table">
 <h3>Generating Result Table<a class="headerlink" href="#Generating-Result-Table" title="Permalink to this heading"></a></h3>
 <p>The table containes single experiment results. Those can be aggregated, e.g. to generate the mean over all seeds.</p>
@@ -1643,7 +1643,7 @@ result_table_agg
   <tbody>
     <tr>
       <th>error_dataset</th>
-      <td>15.0</td>
+      <td>16.0</td>
       <td>3.0</td>
       <td>42.0</td>
       <td>NaN</td>
@@ -2110,9 +2110,33 @@ iris &amp; 0.940000 \\
       <td>1.0</td>
       <td>0</td>
     </tr>
+    <tr>
+      <th>15</th>
+      <td>16</td>
+      <td>16</td>
+      <td>2023-07-24T12:52:46</td>
+      <td>codecarbon</td>
+      <td>1067c790-25a6-4b64-a06e-a4127e288cf1</td>
+      <td>0.023908</td>
+      <td>7.372052e-08</td>
+      <td>3.083521e-06</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>Apple M2 Max</td>
+      <td>None</td>
+      <td>None</td>
+      <td>8.7493</td>
+      <td>51.7152</td>
+      <td>32.0</td>
+      <td>process</td>
+      <td>N</td>
+      <td>1.0</td>
+      <td>0</td>
+    </tr>
   </tbody>
 </table>
-<p>15 rows × 34 columns</p>
+<p>16 rows × 34 columns</p>
 </div></div>
 </div>
 <section id="Aggregating-CodeCarbon-Results">
@@ -2190,21 +2214,21 @@ carbon_emissions
   <tbody>
     <tr>
       <th>codecarbon</th>
-      <td>120</td>
-      <td>120</td>
-      <td>0.569779</td>
+      <td>136</td>
+      <td>136</td>
+      <td>0.593687</td>
       <td>0.000002</td>
-      <td>0.000052</td>
-      <td>637.5</td>
+      <td>0.000055</td>
+      <td>680.0</td>
       <td>0.0</td>
-      <td>0.920497</td>
+      <td>0.980787</td>
       <td>0.000006</td>
       <td>0.0</td>
-      <td>5.936714e-09</td>
+      <td>6.117835e-09</td>
       <td>0.000006</td>
-      <td>180.0</td>
-      <td>480.0</td>
-      <td>15.0</td>
+      <td>192.0</td>
+      <td>512.0</td>
+      <td>16.0</td>
       <td>0</td>
     </tr>
   </tbody>

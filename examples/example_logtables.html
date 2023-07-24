@@ -257,8 +257,8 @@ experimenter.get_table()
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2023-07-20 18:58:42,290  | py-experimenter - INFO     | Initialized and connected to database
-2023-07-20 18:58:42,295  | py-experimenter - INFO     | 5 rows successfully added to database. 0 rows were skipped.
+2023-07-24 12:52:44,399  | py-experimenter - INFO     | Initialized and connected to database
+2023-07-24 12:52:44,402  | py-experimenter - INFO     | No rows to add. All the 5 experiments already exist.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -307,13 +307,13 @@ experimenter.get_table()
       <td>5</td>
       <td>1</td>
       <td>2023-07-20 18:58:42</td>
-      <td>created</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
+      <td>done</td>
+      <td>2023-07-20 18:58:42</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>linear</td>
+      <td>linear</td>
+      <td>2023-07-20 18:58:44</td>
       <td>None</td>
     </tr>
     <tr>
@@ -323,13 +323,13 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>2023-07-20 18:58:42</td>
-      <td>created</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
+      <td>done</td>
+      <td>2023-07-20 18:58:44</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>linear</td>
+      <td>linear</td>
+      <td>2023-07-20 18:58:45</td>
       <td>None</td>
     </tr>
     <tr>
@@ -339,13 +339,13 @@ experimenter.get_table()
       <td>5</td>
       <td>3</td>
       <td>2023-07-20 18:58:42</td>
-      <td>created</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
+      <td>done</td>
+      <td>2023-07-20 18:58:45</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>linear</td>
+      <td>linear</td>
+      <td>2023-07-20 18:58:47</td>
       <td>None</td>
     </tr>
     <tr>
@@ -355,13 +355,13 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>2023-07-20 18:58:42</td>
-      <td>created</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
+      <td>done</td>
+      <td>2023-07-20 18:58:47</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>linear</td>
+      <td>linear</td>
+      <td>2023-07-20 18:58:49</td>
       <td>None</td>
     </tr>
     <tr>
@@ -371,13 +371,13 @@ experimenter.get_table()
       <td>5</td>
       <td>5</td>
       <td>2023-07-20 18:58:42</td>
-      <td>created</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
+      <td>done</td>
+      <td>2023-07-20 18:58:49</td>
+      <td>example_notebook</td>
+      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>linear</td>
+      <td>linear</td>
+      <td>2023-07-20 18:58:51</td>
       <td>None</td>
     </tr>
   </tbody>
@@ -425,6 +425,186 @@ experimenter.get_logtable(&#39;train_scores&#39;)
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>2023-07-20 18:58:44</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>'linear'</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>1</td>
+      <td>2023-07-20 18:58:44</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>'poly'</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>1</td>
+      <td>2023-07-20 18:58:44</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>'rbf'</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>1</td>
+      <td>2023-07-20 18:58:44</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>'sigmoid'</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>2</td>
+      <td>2023-07-20 18:58:45</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>'linear'</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>2</td>
+      <td>2023-07-20 18:58:45</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>'poly'</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>2</td>
+      <td>2023-07-20 18:58:45</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>'rbf'</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>2</td>
+      <td>2023-07-20 18:58:45</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>'sigmoid'</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>3</td>
+      <td>2023-07-20 18:58:47</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>'linear'</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>3</td>
+      <td>2023-07-20 18:58:47</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>'poly'</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11</td>
+      <td>3</td>
+      <td>2023-07-20 18:58:47</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>'rbf'</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>3</td>
+      <td>2023-07-20 18:58:47</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>'sigmoid'</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>13</td>
+      <td>4</td>
+      <td>2023-07-20 18:58:49</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>'linear'</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>14</td>
+      <td>4</td>
+      <td>2023-07-20 18:58:49</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>'poly'</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>15</td>
+      <td>4</td>
+      <td>2023-07-20 18:58:49</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>'rbf'</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>16</td>
+      <td>4</td>
+      <td>2023-07-20 18:58:49</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>'sigmoid'</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>17</td>
+      <td>5</td>
+      <td>2023-07-20 18:58:51</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>'linear'</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>18</td>
+      <td>5</td>
+      <td>2023-07-20 18:58:51</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>'poly'</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>19</td>
+      <td>5</td>
+      <td>2023-07-20 18:58:51</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>'rbf'</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>20</td>
+      <td>5</td>
+      <td>2023-07-20 18:58:51</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>'sigmoid'</td>
+    </tr>
   </tbody>
 </table>
 </div></div>
@@ -447,7 +627,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2023-07-20 18:58:51,148  | py-experimenter - INFO     | All configured executions finished.
+2023-07-24 12:52:44,424  | py-experimenter - INFO     | All configured executions finished.
 </pre></div></div>
 </div>
 </section>

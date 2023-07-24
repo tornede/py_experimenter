@@ -169,13 +169,17 @@
 </section>
 <section id="resultfields">
 <span id="id3"></span><h2>Resultfields<a class="headerlink" href="#resultfields" title="Permalink to this heading"></a></h2>
-<p>The results of the experiments will be stored in the database in the form of <code class="docutils literal notranslate"><span class="pre">resultfields</span></code>. They have to be specified in the experiment configuration file by adding a line containing a comma separated list of <code class="docutils literal notranslate"><span class="pre">resultfield_name</span></code> and according <code class="docutils literal notranslate"><span class="pre">resultfield_datatype</span></code>. The datatype can be defined as explained above for <a class="reference internal" href="#keyfields"><span class="std std-ref">keyfields</span></a>, and if no datatype is explicitly specified, <code class="docutils literal notranslate"><span class="pre">VARCHAR(255)</span></code> is used. Note that in case some resultfield should contain arbitrarily long strings, <code class="docutils literal notranslate"><span class="pre">LONGTEXT</span></code> should be used as datatype.</p>
+<p>The results of the experiments will be stored in the database in the form of <code class="docutils literal notranslate"><span class="pre">resultfields</span></code>. They are optional and can be be specified in the experiment configuration file by adding a line containing a comma separated list of <code class="docutils literal notranslate"><span class="pre">resultfield_name</span></code> and according <code class="docutils literal notranslate"><span class="pre">resultfield_datatype</span></code>. The datatype can be defined as explained above for <a class="reference internal" href="#keyfields"><span class="std std-ref">keyfields</span></a>, and if no datatype is explicitly specified, <code class="docutils literal notranslate"><span class="pre">VARCHAR(255)</span></code> is used. Note that in case some resultfield should contain arbitrarily long strings, <code class="docutils literal notranslate"><span class="pre">LONGTEXT</span></code> should be used as datatype.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">resultfields</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">resultfield_name</span><span class="o">&gt;</span><span class="p">[:</span><span class="o">&lt;</span><span class="n">resultfield_datatype</span><span class="o">&gt;</span><span class="p">],</span> <span class="o">...</span>
 </pre></div>
 </div>
 <p>Additionally, it is possible to store the timestamps at which the results have been obtatined in the database. This can be done by adding the following line to the experiment configuration file (Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">resultfields</span><span class="o">.</span><span class="n">timestamps</span> <span class="o">=</span> <span class="kc">True</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">resultfields</span></code> are optional. If they are not specified, the database will only contain the keyfields and the according experiment id.</p>
 </div>
 </section>
 <section id="logtables">

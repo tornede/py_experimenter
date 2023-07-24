@@ -149,16 +149,16 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.get_resultfields" title="py_experimenter.utils.get_resultfields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_resultfields</span></code></a>(→ List[Tuple[str, str]])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.extract_columns" title="py_experimenter.utils.extract_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_columns</span></code></a>(→ List[Tuple[str, str]])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.extract_logtables" title="py_experimenter.utils.extract_logtables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_logtables</span></code></a>(→ Optional[Dict[str, List[str]]])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.extract_columns" title="py_experimenter.utils.extract_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_columns</span></code></a>(→ List[Tuple[str, str]])</p></td>
 <td><p>Clean field names</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.timestamps_for_result_fields" title="py_experimenter.utils.timestamps_for_result_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timestamps_for_result_fields</span></code></a>(→ bool)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.timestamps_for_result_fields" title="py_experimenter.utils.timestamps_for_result_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timestamps_for_result_fields</span></code></a>(→ bool)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.add_timestep_result_columns" title="py_experimenter.utils.add_timestep_result_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_timestep_result_columns</span></code></a>(result_field_configuration)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.extract_logtables" title="py_experimenter.utils.extract_logtables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_logtables</span></code></a>(→ Optional[Dict[str, List[str]]])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.add_timestep_result_columns" title="py_experimenter.utils.add_timestep_result_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_timestep_result_columns</span></code></a>(result_field_configuration)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.combine_fill_table_parameters" title="py_experimenter.utils.combine_fill_table_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_fill_table_parameters</span></code></a>(keyfield_names, ...)</p></td>
@@ -230,6 +230,11 @@ created automatically.
 <dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="py_experimenter.utils.extract_logtables">
+<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">extract_logtables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser.ConfigParser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment_table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.utils.extract_logtables" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="py_experimenter.utils.extract_columns">
 <span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">extract_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.utils.extract_columns" title="Permalink to this definition"></a></dt>
 <dd><p>Clean field names
@@ -245,11 +250,6 @@ created automatically.
 <dl class="py function">
 <dt class="sig sig-object py" id="py_experimenter.utils.add_timestep_result_columns">
 <span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">add_timestep_result_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result_field_configuration</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.utils.add_timestep_result_columns" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils.extract_logtables">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">extract_logtables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser.ConfigParser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment_table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.utils.extract_logtables" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">

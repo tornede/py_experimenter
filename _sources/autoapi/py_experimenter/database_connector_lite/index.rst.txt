@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: DatabaseConnectorLITE(config: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, logger_name: str)
+.. py:class:: DatabaseConnectorLITE(config: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, logger)
 
 
    Bases: :py:obj:`py_experimenter.database_connector.DatabaseConnector`

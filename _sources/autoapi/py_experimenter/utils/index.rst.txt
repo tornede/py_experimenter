@@ -23,10 +23,10 @@ Functions
    py_experimenter.utils.get_keyfields
    py_experimenter.utils.get_result_field_names
    py_experimenter.utils.get_resultfields
+   py_experimenter.utils.extract_logtables
    py_experimenter.utils.extract_columns
    py_experimenter.utils.timestamps_for_result_fields
    py_experimenter.utils.add_timestep_result_columns
-   py_experimenter.utils.extract_logtables
    py_experimenter.utils.combine_fill_table_parameters
    py_experimenter.utils._generate_int_data
    py_experimenter.utils.get_timestamp_representation
@@ -72,6 +72,9 @@ Functions
 .. py:function:: get_resultfields(config: configparser.ConfigParser) -> List[Tuple[str, str]]
 
 
+.. py:function:: extract_logtables(config: configparser.ConfigParser, experiment_table_name: str) -> Optional[Dict[str, List[str]]]
+
+
 .. py:function:: extract_columns(fields: str) -> List[Tuple[str, str]]
 
    Clean field names
@@ -83,9 +86,6 @@ Functions
 
 
 .. py:function:: add_timestep_result_columns(result_field_configuration)
-
-
-.. py:function:: extract_logtables(config: configparser.ConfigParser, experiment_table_name: str) -> Optional[Dict[str, List[str]]]
 
 
 .. py:function:: combine_fill_table_parameters(keyfield_names, parameters, fixed_parameter_combinations)

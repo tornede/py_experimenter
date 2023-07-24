@@ -17,13 +17,13 @@ Classes
 
 
 
-.. py:class:: ResultProcessor(config: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, credential_path, table_name: str, result_fields: List[str], experiment_id: int, logger_name: str)
+.. py:class:: ResultProcessor(config: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, credential_path, table_name: str, experiment_id: int, logger)
 
 
    Class for processing the results from an experiment. Use this class whenever you want to write results to the
    database.
 
-   .. py:method:: process_results(results: dict) -> None
+   .. py:method:: process_results(results: Dict) -> None
 
       Process results from the experiment and write them to the database. You can call this method, whenever you
       want to write results to the database.
@@ -33,11 +33,21 @@ Classes
    .. py:method:: _write_emissions(emission_data: codecarbon.output.EmissionsData, offline_mode: bool) -> None
 
 
-   .. py:method:: _add_timestamps_to_results(results: dict) -> List[Tuple[str, object]]
+   .. py:method:: _add_timestamps_to_results(results: Dict) -> List[Tuple[str, object]]
       :staticmethod:
 
 
    .. py:method:: process_logs(logs: Dict[str, Dict[str, str]]) -> None
+
+      Appends logs to the logtables. Raises InvalidLogFieldError if the given logs are invalid.
+      The logs are of the following structure: Dictionary keys are the logtable_names (without the prefix `table_name__`). Each key refers to a inner dictionary
+      with the keys as columnsnames and values as results.
+
+      :param logs: Logs to be appended to the logtables. 
+      :type logs: Dict[str, Dict[str, str]]
+
+
+   .. py:method:: _valid_logtable_logs(logs: Dict[str, Dict[str, str]]) -> bool
 
 
    .. py:method:: _change_status(status: str)

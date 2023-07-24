@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: DatabaseConnector(config: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, logger_name: str)
+.. py:class:: DatabaseConnector(config: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, logger)
 
 
    Bases: :py:obj:`abc.ABC`
@@ -93,11 +93,11 @@ Classes
    .. py:method:: get_experiment_configuration()
 
 
-   .. py:method:: _execute_queries(connection, cursor) -> Tuple[int, List, List]
-
-
    .. py:method:: _pull_open_experiment() -> Tuple[int, List, List]
       :abstractmethod:
+
+
+   .. py:method:: _select_open_experiments_from_db(connection, cursor) -> Tuple[int, List, List]
 
 
    .. py:method:: _write_to_database(values: List, columns=List[str]) -> None
