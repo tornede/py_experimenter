@@ -29,14 +29,14 @@ class PyExperimenter:
                  database_name: str = None,
                  use_codecarbon: bool = True,
                  name='PyExperimenter',
-                 logger_name:str = 'py-experimenter',
-                 log_level:Union[int,str] = logging.INFO,
-                 log_file:str = "./logs/py-experimenter.log"
+                 logger_name: str = 'py-experimenter',
+                 log_level: Union[int, str] = logging.INFO,
+                 log_file: str = "./logs/py-experimenter.log"
                  ):
         """
         Initializes the PyExperimenter with the given information. If no loger `logger_name` exists, a new logger
         is created with the given `logger_name` and `log_level`. 
-        
+
         :param experiment_configuration_file_path: The path to the experiment configuration file. Defaults to
             'config/experiment_configuration.cfg'.
         :type experiment_configuration_file_path: str, optional
@@ -67,25 +67,25 @@ class PyExperimenter:
         """
         # If the logger is not allready craeted, create it with the given name and level
         self.logger_name = logger_name
-        
+
         logger_initialization_needed = self.logger_name not in logging.root.manager.loggerDict.keys()
         self.logger = logging.getLogger(logger_name)
         self.logger.setLevel(log_level)
-        
+
         if logger_initialization_needed:
             if not os.path.exists('logs'):
                 os.makedirs('logs')
-                
+
             formatter = logging.Formatter('%(asctime)s  | %(name)s - %(levelname)-8s | %(message)s')
-            
+
             handler = logging.StreamHandler()
             handler.setFormatter(formatter)
             self.logger.addHandler(handler)
-            
+
             handler = logging.FileHandler(log_file)
             handler.setFormatter(formatter)
             self.logger.addHandler(handler)
-        
+
         self.config = utils.load_config(experiment_configuration_file_path)
 
         self.use_codecarbon = use_codecarbon
@@ -99,7 +99,7 @@ class PyExperimenter:
 
         self.database_credential_file_path = database_credential_file_path
         if not self._is_valid_configuration(self.config, database_credential_file_path):
-            raise InvalidConfigError('Invalid configuration')
+            raise InvalidConfigError('Invalid configuration. See previous log messages for details')
 
         if table_name is not None:
             self.config.set('PY_EXPERIMENTER', 'table', table_name)
@@ -111,10 +111,10 @@ class PyExperimenter:
         self.timestamp_on_result_fields = utils.timestamps_for_result_fields(self.config)
 
         if self.config['PY_EXPERIMENTER']['provider'] == 'sqlite':
-            self.dbconnector = DatabaseConnectorLITE(self.config, self.use_codecarbon, self.codecarbon_config, logger_name)
+            self.dbconnector = DatabaseConnectorLITE(self.config, self.use_codecarbon, self.codecarbon_config, self.logger)
         elif self.config['PY_EXPERIMENTER']['provider'] == 'mysql':
             self.dbconnector = DatabaseConnectorMYSQL(self.config, self.use_codecarbon, self.codecarbon_config, database_credential_file_path,
-                                                      self.logger_name)
+                                                      self.logger)
         else:
             raise ValueError('The provider indicated in the config file is not supported')
 
@@ -198,9 +198,7 @@ class PyExperimenter:
         :rtype: bool
         """
         if not config.has_section('PY_EXPERIMENTER'):
-            return False
-
-        if set(config.keys()) > {'PY_EXPERIMENTER', 'CUSTOM', 'DEFAULT'}:
+            self.logger.error('Error in config file: PY_EXPERIMENTER section is missing')
             return False
 
         if not {'provider', 'database', 'table'}.issubset(set(config.options('PY_EXPERIMENTER'))):
@@ -215,10 +213,11 @@ class PyExperimenter:
             credentials = utils.load_config(database_credential_file_path)
             if not {'host', 'user', 'password'}.issubset(set(credentials.options('CREDENTIALS'))):
                 self.logger.error(
-                    f'Error in config file: DATABASE section must contain host, user, and password since provider is {config["DATABASE"]["provider"]}')
+                    f'Error in config file: CREDENTIALS file and section must contain host, user, and password since provider is {config["DATABASE"]["provider"]}')
                 return False
 
-        if not {'keyfields', 'resultfields'}.issubset(set(config.options('PY_EXPERIMENTER'))):
+        if not 'keyfields' in config.options('PY_EXPERIMENTER'):
+            self.logger.error('Error in config file: PY_EXPERIMENTER section must contain keyfields')
             return False
         return True
 
@@ -389,12 +388,11 @@ class PyExperimenter:
         """
         experiment_id, keyfield_values = self.dbconnector.get_experiment_configuration()
 
-        result_field_names = utils.get_result_field_names(self.config)
         custom_fields = dict(self.config.items('CUSTOM')) if self.has_section('CUSTOM') else None
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
 
         result_processor = ResultProcessor(self.config, self.use_codecarbon, self.codecarbon_config, self.database_credential_file_path, table_name=table_name,
-                                           result_fields=result_field_names, experiment_id=experiment_id, logger_name=self.logger_name)
+                                           experiment_id=experiment_id, logger=self.logger)
         result_processor._set_name(self.name)
         result_processor._set_machine(socket.gethostname())
 

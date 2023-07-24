@@ -15,8 +15,8 @@ from py_experimenter.experiment_status import ExperimentStatus
 
 class DatabaseConnector(abc.ABC):
 
-    def __init__(self, config: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser, logger_name:str):
-        self.logger = logging.getLogger(logger_name)
+    def __init__(self, config: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser, logger):
+        self.logger = logger
         self.config = config
         self.codecarbon_config = codecarbon_config
         self.table_name = self.config.get('PY_EXPERIMENTER', 'table')
@@ -78,7 +78,7 @@ class DatabaseConnector(abc.ABC):
 
         keyfields = utils.get_keyfields(self.config)
         resultfields = utils.get_resultfields(self.config)
-        if self.timestamp_on_result_fields:
+        if resultfields and self.timestamp_on_result_fields:
             resultfields = utils.add_timestep_result_columns(resultfields)
 
         connection = self.connect()
@@ -208,8 +208,12 @@ class DatabaseConnector(abc.ABC):
             raise DatabaseConnectionError(f'error \n {e} raised. \n Please check if fill_table() was called correctly.')
 
         return experiment_id, dict(zip([i[0] for i in description], *values))
+    
+    @abc.abstractmethod
+    def _pull_open_experiment(self) -> Tuple[int, List, List]:
+        pass
 
-    def _execute_queries(self, connection, cursor) -> Tuple[int, List, List]:
+    def _select_open_experiments_from_db(self, connection, cursor) -> Tuple[int, List, List]:
         order_by = "id"
         time = utils.get_timestamp_representation()
 
@@ -224,9 +228,6 @@ class DatabaseConnector(abc.ABC):
         description = cursor.description
         return experiment_id, description, values
 
-    @abc.abstractmethod
-    def _pull_open_experiment(self) -> Tuple[int, List, List]:
-        pass
 
     def _write_to_database(self, values: List, columns=List[str]) -> None:
         values_prepared = ','.join([f"({', '.join([self._prepared_statement_placeholder] * len(columns))})"] * len(values))

@@ -45,16 +45,11 @@ def test_tables_created(execute_mock, close_connection_mock, fetchall_mock, curs
 def test_logtable_insertion(database_connector_mock):
     config = ConfigParser()
     config.read(os.path.join('test', 'test_logtables', 'mysql_logtables.cfg'))
-    result_processor = ResultProcessor(config, None, None, None, None, None, 0, 'test_logger')
-    result_processor._table_name = 'table_name'
-    table_0_logs = {'test0': 'test', 'test1': 'test'}
-    table_1_logs = {'test0': 'test'}
-    result_processor.process_logs({'test_table_0': table_0_logs,
-                                   'test_table_1': table_1_logs})
-    result_processor._dbconnector.prepare_write_query.assert_any_call(
-        'table_name__test_table_1', table_1_logs.keys())
-    result_processor._dbconnector.prepare_write_query.assert_any_call(
-        'table_name__test_table_0', table_0_logs.keys())
+    result_processor = ResultProcessor(config, None, None, None, 'table_name', 0, 'test_logger')
+    table_0_logs = {'test': 'test'}
+    table_1_logs = {'test': 'test'}
+    result_processor.process_logs({'test_mysql_log': table_0_logs,
+                                   'test_mysql_log2': table_1_logs})
     result_processor._dbconnector.execute_queries.assert_called()
 
 
@@ -91,7 +86,7 @@ def own_function(keyfields: dict, result_processor: ResultProcessor, custom_fiel
     result_processor.process_logs({'test_mysql_log': {'test': 2}, 'test_mysql_log2': {'test': 3}})
 
 
-def test_integration():
+def test_integration_without_resultfields():
     experimenter = PyExperimenter(os.path.join('test', 'test_logtables', 'mysql_logtables.cfg'))
     try:
         experimenter.delete_table()
@@ -99,6 +94,37 @@ def test_integration():
         pass
     experimenter.fill_table_from_config()
     experimenter.execute(own_function, 1)
+    connection = experimenter.dbconnector.connect()
+    cursor = experimenter.dbconnector.cursor(connection)
+    cursor.execute(f"SELECT * FROM test_mysql_logtables__test_mysql_log")
+    logtable = cursor.fetchall()
+    timesteps = [x[2] for x in logtable]
+    non_timesteps = [x[:2] + x[3:] for x in logtable]
+    assert non_timesteps == [(1, 1, 0), (2, 1, 2)]
+    cursor.execute(f"SELECT * FROM test_mysql_logtables__test_mysql_log2")
+    logtable2 = cursor.fetchall()
+    timesteps2 = [x[2] for x in logtable2]
+    logtable2 = [x[:2] + x[3:] for x in logtable2]
+    assert logtable2 == [(1, 1, 1), (2, 1, 3)]
+    assert timesteps == timesteps2
+
+# Integration Test without Resultfields
+
+
+def own_function_without_resultfields(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+    # send result to to the database
+    result_processor.process_logs({'test_mysql_log': {'test': 0}, 'test_mysql_log2': {'test': 1}})
+    result_processor.process_logs({'test_mysql_log': {'test': 2}, 'test_mysql_log2': {'test': 3}})
+
+
+def test_integration_without_resultfields():
+    experimenter = PyExperimenter(os.path.join('test', 'test_logtables', 'mysql_logtables_no_resultfields.cfg'))
+    try:
+        experimenter.delete_table()
+    except Exception:
+        pass
+    experimenter.fill_table_from_config()
+    experimenter.execute(own_function_without_resultfields, 1)
     connection = experimenter.dbconnector.connect()
     cursor = experimenter.dbconnector.cursor(connection)
     cursor.execute(f"SELECT * FROM test_mysql_logtables__test_mysql_log")
