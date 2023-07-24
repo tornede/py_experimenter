@@ -49,7 +49,7 @@ class ResultProcessor:
         if not self._valid_result_fields(list(results.keys())):
             invalid_result_keys = set(list(results.keys())) - set(self._result_fields)
             logging.error(
-                f"The resultsfileds `{','.join(invalid_result_keys)}` are invalid sinceare not mentioned in the config file and therefore not in the database.")
+                f"The resultsfileds `{','.join(invalid_result_keys)}` are invalid since they are not mentioned in the config file and therefore not in the database.")
             raise InvalidResultFieldError(f"Invalid result keys: {invalid_result_keys}. See previous logs for more information.")
 
         if self._timestamp_on_result_fields:
@@ -86,7 +86,7 @@ class ResultProcessor:
         :type logs: Dict[str, Dict[str, str]]
         """
         if not self._valid_logtable_logs(logs):
-            raise InvalidLogFieldError("Invalid logtable entries. See logs for more informaiton")
+            raise InvalidLogFieldError("Invalid logtable entries. See logs for more information")
 
         queries = []
         time = utils.get_timestamp_representation()
@@ -100,8 +100,8 @@ class ResultProcessor:
 
     def _valid_logtable_logs(self, logs: Dict[str, Dict[str, str]]) -> bool:
         logs = {f"{self._table_name}__{logtable_name}": logtable_entries for logtable_name, logtable_entries in logs.items()}
-        if not set(logs.keys()) <= set(self._logtable_fields.keys()):
-            self._logger.error(f'Logtabes `{set(logs.keys()) - set(self._logtable_fields.keys())}` are not valid logtables.')
+        if set(logs.keys()) > set(self._logtable_fields.keys()):
+            self._logger.error(f'Logtables `{set(logs.keys()) - set(self._logtable_fields.keys())}` are not valid logtables.')
             return False
 
         for logtable_name, logtable_entries in logs.items():

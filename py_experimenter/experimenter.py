@@ -213,11 +213,11 @@ class PyExperimenter:
             credentials = utils.load_config(database_credential_file_path)
             if not {'host', 'user', 'password'}.issubset(set(credentials.options('CREDENTIALS'))):
                 self.logger.error(
-                    f'Error in config file: DATABASE section must contain host, user, and password since provider is {config["DATABASE"]["provider"]}')
+                    f'Error in config file: CREDENTIALS file and section must contain host, user, and password since provider is {config["DATABASE"]["provider"]}')
                 return False
 
         if not 'keyfields' in config.options('PY_EXPERIMENTER'):
-            self.logger.error('Error in config file: PY_EXPERIMENTER section must contain keyfields and resultfields')
+            self.logger.error('Error in config file: PY_EXPERIMENTER section must contain keyfields')
             return False
         return True
 
