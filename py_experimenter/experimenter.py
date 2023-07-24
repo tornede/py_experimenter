@@ -201,10 +201,6 @@ class PyExperimenter:
             self.logger.error('Error in config file: PY_EXPERIMENTER section is missing')
             return False
 
-        if set(config.keys()) > {'PY_EXPERIMENTER', 'CUSTOM', 'DEFAULT'}:
-            self.looger.error('Error in config file: Only PY_EXPERIMENTER, CUSTOM and DEFAULT sections are allowed')
-            return False
-
         if not {'provider', 'database', 'table'}.issubset(set(config.options('PY_EXPERIMENTER'))):
             self.logger.error('Error in config file: DATABASE section must contain provider, database, and table')
             return False
