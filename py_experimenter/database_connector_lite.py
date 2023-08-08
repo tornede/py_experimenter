@@ -41,6 +41,9 @@ class DatabaseConnectorLITE(DatabaseConnector):
 
         return experiment_id, description, values
 
+    def _get_pull_experiment_query(self, order_by):
+        return super()._get_pull_experiment_query(order_by) + ';'
+
     def _table_exists(self, cursor) -> bool:
         self.execute(cursor, f"SELECT name FROM sqlite_master WHERE type='table';")
         table_names = self.fetchall(cursor)
