@@ -7,3 +7,4 @@ class ExperimentStatus(Enum):
     DONE = 'done'
     ERROR = 'error'
     ALL = 'all'
+    PAUSED = 'paused'

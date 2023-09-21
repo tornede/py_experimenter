@@ -356,7 +356,11 @@ class PyExperimenter:
                          for _ in range(max_experiments))
         self.logger.info("All configured executions finished.")
 
-    def _worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None], random_order: bool) -> None:
+    def unpause_experiment(self, experiment_id: int, experiment_function: Callable) -> None:
+        keyfield_dict, _ = self.dbconnector.pull_paused_experiment(experiment_id)
+        self._execute_experiment(experiment_id, keyfield_dict, experiment_function)
+
+    def _worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor],  None], random_order:bool) -> None:
         """
         Worker that repeatedly pulls open experiments from the database table and executes them.
 
@@ -396,7 +400,9 @@ class PyExperimenter:
         :raises DatabaseConnectionError: If an error occurred during the connection to the database.
         """
         experiment_id, keyfield_values = self.dbconnector.get_experiment_configuration(random_order)
+        self._execute_experiment(experiment_id, keyfield_values, experiment_function)
 
+    def _execute_experiment(self, experiment_id, keyfield_values, experiment_function):
         custom_fields = dict(self.config.items('CUSTOM')) if self.has_section('CUSTOM') else None
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
 
@@ -418,14 +424,22 @@ class PyExperimenter:
             self.logger.debug(f"Start of experiment_function on process {socket.gethostname()}")
             if self.use_codecarbon:
                 tracker.start()
-            experiment_function(keyfield_values, result_processor, custom_fields)
+            final_status = experiment_function(keyfield_values, result_processor, custom_fields)
+            if final_status not in (None, ExperimentStatus.DONE.value, ExperimentStatus.ERROR.value, ExperimentStatus.PAUSED.value):
+                raise ValueError(f"Invalid final status {final_status}")
+
         except Exception:
             error_msg = traceback.format_exc()
             self.logger.error(error_msg)
             result_processor._write_error(error_msg)
             result_processor._change_status(ExperimentStatus.ERROR.value)
         else:
-            result_processor._change_status(ExperimentStatus.DONE.value)
+            if final_status is None or final_status == ExperimentStatus.DONE.value:
+                result_processor._change_status(ExperimentStatus.DONE.value)
+            elif final_status == ExperimentStatus.ERROR.value:
+                result_processor._change_status(ExperimentStatus.ERROR.value)
+            elif final_status == ExperimentStatus.PAUSED.value:
+                result_processor._change_status(ExperimentStatus.PAUSED.value)
         finally:
             if self.use_codecarbon:
                 tracker.stop()

@@ -10,10 +10,10 @@ from py_experimenter.exceptions import DatabaseConnectionError
 
 class DatabaseConnectorLITE(DatabaseConnector):
     _write_to_database_separator = "','"
-    _prepared_statement_placeholder = '?'
+    _prepared_statement_placeholder = "?"
 
     def _extract_credentials(self):
-        return dict(database=f'{self.database_name}.db')
+        return dict(database=f"{self.database_name}.db")
 
     def _test_connection(self):
         try:
@@ -42,7 +42,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
         return experiment_id, description, values
 
     def _get_pull_experiment_query(self, order_by):
-        return super()._get_pull_experiment_query(order_by) + ';'
+        return super()._get_pull_experiment_query(order_by) + ";"
 
     def _table_exists(self, cursor) -> bool:
         self.execute(cursor, f"SELECT name FROM sqlite_master WHERE type='table';")
@@ -51,7 +51,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
 
     @staticmethod
     def random_order_string():
-        return 'RANDOM()'
+        return "RANDOM()"
 
     @staticmethod
     def escape_sql_chars(*args):
@@ -59,7 +59,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
         for arg in args:
             arg = str(arg)
             if type(arg) == str:
-                modified_args.append(arg.replace('`', '``').replace("'", "''").replace('"', '""'))
+                modified_args.append(arg.replace("`", "``").replace("'", "''").replace('"', '""'))
 
             else:
                 modified_args.append(arg)
@@ -67,7 +67,7 @@ class DatabaseConnectorLITE(DatabaseConnector):
 
     @staticmethod
     def get_autoincrement():
-        return 'AUTOINCREMENT'
+        return "AUTOINCREMENT"
 
     def _table_has_correct_structure(self, cursor, typed_fields) -> List[str]:
         self.execute(cursor, f"PRAGMA table_info({self.table_name})")
@@ -79,17 +79,19 @@ class DatabaseConnectorLITE(DatabaseConnector):
     def _get_existing_rows(self, column_names: List[str]):
         def _remove_string_markers(row):
             return row.replace("'", "")
+
         connection = self.connect()
         cursor = self.cursor(connection)
         self.execute(cursor, f"SELECT {','.join(column_names)} FROM {self.table_name}")
         existing_rows = list(map(np.array2string, np.array(self.fetchall(cursor))))
-        existing_rows = [' '.join(_remove_string_markers(row).split()) for row in existing_rows]
+        existing_rows = [" ".join(_remove_string_markers(row).split()) for row in existing_rows]
         self.close_connection(connection)
         return existing_rows
 
     def get_structure_from_table(self, cursor):
         def _get_column_names_from_entries(entries):
             return [entry[1] for entry in entries]
+
         self.execute(cursor, f"PRAGMA table_info({(self.table_name)})")
         column_names = _get_column_names_from_entries(self.fetchall(cursor))
         return column_names
