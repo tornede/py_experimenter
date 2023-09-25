@@ -30,11 +30,11 @@ class DatabaseConnectorLITE(DatabaseConnector):
         except Error as err:
             raise DatabaseConnectionError(err)
 
-    def _pull_open_experiment(self) -> Tuple[int, List, List]:
+    def _pull_open_experiment(self, random_order: bool) -> Tuple[int, List, List]:
         with connect(**self.database_credentials) as connection:
             try:
                 cursor = self.cursor(connection)
-                experiment_id, description, values = self._select_open_experiments_from_db(connection, cursor)
+                experiment_id, description, values = self._select_open_experiments_from_db(connection, cursor, random_order)
             except Exception as err:
                 connection.rollback()
                 raise err
@@ -45,6 +45,10 @@ class DatabaseConnectorLITE(DatabaseConnector):
         self.execute(cursor, f"SELECT name FROM sqlite_master WHERE type='table';")
         table_names = self.fetchall(cursor)
         return self.table_name in [x[0] for x in table_names]
+
+    @staticmethod
+    def random_order_string():
+        return 'RANDOM()'
 
     @staticmethod
     def escape_sql_chars(*args):

@@ -311,7 +311,7 @@ class PyExperimenter:
         self.dbconnector.fill_table(fixed_parameter_combinations=rows)
 
     def execute(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None],
-                max_experiments: int = -1) -> None:
+                max_experiments: int = -1, random_order=False,) -> None:
         """
         Pulls open experiments from the database table and executes them.
 
@@ -320,6 +320,9 @@ class PyExperimenter:
 
         Each process sequentially pulls and executes experiments from the database table, until all processes executed as
         many experiments as defined by `max_experiments`. If `max_experiments == -1` all experiments will be executed.
+
+        By default the order execution is determined by the id, but if `random_order` is set to `True`, the order is
+        determined randomly.
 
         After pulling an experiment, `experiment_function` is executed with keyfield values of the pulled open
         experiment and the experiments status is set to `running`. Results can be continuously written to the database
@@ -336,6 +339,8 @@ class PyExperimenter:
         :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments
             should be executed, set this to `-1`. Defaults to `-1`.
         :type max_experiments: int, optional
+        :param random_order: If True, the order of the experiments is determined randomly. Defaults to False.
+        :type random_order: bool, optional
         :raises InvalidValuesInConfiguration: If any value of the experiment parameters is of wrong data type.
         """
         try:
@@ -345,27 +350,29 @@ class PyExperimenter:
 
         with Parallel(n_jobs=n_jobs) as parallel:
             if max_experiments == -1:
-                parallel(delayed(self._worker)(experiment_function) for _ in range(n_jobs))
+                parallel(delayed(self._worker)(experiment_function, random_order) for _ in range(n_jobs))
             else:
-                parallel(delayed(self._execution_wrapper)(experiment_function)
+                parallel(delayed(self._execution_wrapper)(experiment_function, random_order)
                          for _ in range(max_experiments))
         self.logger.info("All configured executions finished.")
 
-    def _worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None]) -> None:
+    def _worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None], random_order: bool) -> None:
         """
         Worker that repeatedly pulls open experiments from the database table and executes them.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
+        :param random_order: If True, the order of the experiments is determined randomly. Defaults to False.
+        :type random_order: bool
         """
         while True:
             try:
-                self._execution_wrapper(experiment_function)
+                self._execution_wrapper(experiment_function, random_order)
             except NoExperimentsLeftException:
                 break
 
     def _execution_wrapper(self,
-                           experiment_function: Callable[[dict, dict, ResultProcessor], None]) -> None:
+                           experiment_function: Callable[[dict, dict, ResultProcessor], None], random_order: bool) -> None:
         """
         Executes the given `experiment_function` on one open experiment. To that end, one of the open experiments is pulled
         from the database table. Then `experiment_function` is executed on the keyfield values of the pulled experiment. 
@@ -383,10 +390,12 @@ class PyExperimenter:
 
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
+        :param random_order: If True, the order of the experiments is determined randomly. Defaults to False.
+        :type random_order: bool
         :raises NoExperimentsLeftError: If there are no experiments left to be executed.
         :raises DatabaseConnectionError: If an error occurred during the connection to the database.
         """
-        experiment_id, keyfield_values = self.dbconnector.get_experiment_configuration()
+        experiment_id, keyfield_values = self.dbconnector.get_experiment_configuration(random_order)
 
         custom_fields = dict(self.config.items('CUSTOM')) if self.has_section('CUSTOM') else None
         table_name = self.get_config_value('PY_EXPERIMENTER', 'table')
