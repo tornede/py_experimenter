@@ -154,3 +154,10 @@ Tracking information about the carbon footprint of experiments is supported via 
 .. code-block::
 
     experimenter.get_codecarbon_table()
+
+---------------------------------
+Pausing and Unpausing Experiments
+---------------------------------
+
+For convenience, we support pausing and unpausing experiments. This means that you can use one experiment to run multiple experiment funcitons, by finishing the first experiment with a pause and then continuing with a second (differing) experiment function.
+Note that this function does not support parralelisation and the experimentid has to be given explicitly. For more information check the exmaple.
