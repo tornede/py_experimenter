@@ -2,6 +2,12 @@
 Changelog
 =========
 
+v1.3.2 (*.*.2023)
+===================
+Feature
+-------
+- Add `random_order` parameter to `PyExperimenter.execute()` to allow for random order of experiments.
+
 v1.3.1 (24.07.2023)
 ===================
 
