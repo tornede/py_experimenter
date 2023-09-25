@@ -45,6 +45,9 @@ class TableHasWrongStructureError(CreatingTableError):
 class NoExperimentsLeftException(PyExperimenterError):
     pass
 
+class NoPausedExperimentsException(PyExperimenterError):
+    pass
+
 
 class ConfigError(PyExperimenterError):
     pass

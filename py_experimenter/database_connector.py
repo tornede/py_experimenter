@@ -8,13 +8,8 @@ import numpy as np
 import pandas as pd
 
 from py_experimenter import utils
-from py_experimenter.exceptions import (
-    CreatingTableError,
-    DatabaseConnectionError,
-    EmptyFillDatabaseCallError,
-    NoExperimentsLeftException,
-    TableHasWrongStructureError,
-)
+from py_experimenter.exceptions import (CreatingTableError, DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperimentsLeftException,
+                                        NoPausedExperimentsException, TableHasWrongStructureError)
 from py_experimenter.experiment_status import ExperimentStatus
 
 
@@ -272,15 +267,21 @@ class DatabaseConnector(abc.ABC):
     def pull_paused_experiment(self, experiment_id: int) -> Dict[str, Any]:
         connnection = self.connect()
         cursor = self.cursor(connnection)
-        keyfields = ",".join(utils.get_keyfield_names(self.config))
-        query = f"SELECT {keyfields} FROM {self.table_name} WHERE id = {self._prepared_statement_placeholder}"
-        self.execute(cursor, query, (experiment_id,))
+        keyfields = ','.join(utils.get_keyfield_names(self.config))
+        query = f"SELECT {keyfields} FROM {self.table_name} WHERE id = {self._prepared_statement_placeholder} AND status = {self._prepared_statement_placeholder};"
+        self.execute(cursor, query, (experiment_id, ExperimentStatus.PAUSED.value))
         keyfield_values = self.fetchall(cursor)
-        description = cursor.description
-        self.commit(connnection)
-        self.close_connection(connnection)
-        keyfield_dict = dict(zip([i[0] for i in description], *keyfield_values))
-        return keyfield_dict, description
+        if keyfield_values:
+            description = cursor.description
+            query = f"UPDATE {self.table_name} SET status = {self._prepared_statement_placeholder} WHERE id = {self._prepared_statement_placeholder};"
+            self.execute(cursor, query, (ExperimentStatus.RUNNING.value, experiment_id))
+            self.commit(connnection)
+            self.close_connection(connnection)
+            keyfield_dict = dict(zip([i[0] for i in description], *keyfield_values))
+            return keyfield_dict, description
+        else:
+            self.close_connection(connnection)
+            raise NoPausedExperimentsException(f"There is no paused experiment with id {experiment_id} in the table.")
 
     def prepare_write_query(self, table_name: str, keys) -> str:
         return f"INSERT INTO {table_name} ({', '.join(keys)}) VALUES ({','.join([self._prepared_statement_placeholder] * len(keys))})"
