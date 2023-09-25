@@ -61,9 +61,6 @@ experimenter = PyExperimenter(experiment_configuration_file_path=experiment_conf
 
 experimenter.fill_table_from_config()
 
-experimenter.fill_table_with_rows(rows=[
-    {'dataset': 'error_dataset', 'cross_validation_splits': 3, 'seed': 42, 'kernel': 'linear'}])
-
 # showing database table
 experimenter.get_table()
 
