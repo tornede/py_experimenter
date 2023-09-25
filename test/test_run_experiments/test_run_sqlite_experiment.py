@@ -112,7 +112,7 @@ def test_run_error_experiment():
     assert entries[0][9] == None
     first_cwd_mention = os.getcwd() + os.sep + os.path.join('py_experimenter', 'experimenter.py')
     second_cwd_mention = os.getcwd() + os.sep + os.path.join('test', 'test_run_experiments', 'test_run_sqlite_experiment.py')
-    for message in ["in _execution_wrapper", "experiment_function(keyfield_values, result_processor, custom_fields)", "raise Exception(", "Error with weird symbos \'@#$%&/\\()="]:
+    for message in ["in _execute_experiment", "experiment_function(keyfield_values, result_processor, custom_fields)", "raise Exception(", "Error with weird symbos \'@#$%&/\\()="]:
         assert message in entries[0][11]
 
 
