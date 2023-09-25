@@ -10,4 +10,4 @@ Examples
    ./example_general_usage.ipynb
    ./example_conditional_grid.ipynb
    ./example_logtables.ipynb
-   ./example_pause_and_continue.ipynb
+   ./example_pause_and_contiue.ipynb
