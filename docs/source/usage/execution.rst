@@ -126,6 +126,7 @@ The following status exist:
 - ``running``: The experiment is currently in execution.
 - ``done``: The execution of the experiment terminated without interruption and the results are written into the database.
 - ``error``: An error occurred during execution, which is also logged into the database.
+- ``paused``: The experiment was paused during execution. For more information check :ref:`pausing and unpausing experiments <pausing_and_unpausing_experiments>`.
 
 
 .. _obtain_results:
