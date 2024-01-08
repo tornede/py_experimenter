@@ -56,7 +56,7 @@ class PyExperimenter:
         :param name: The name of the PyExperimenter, which will be logged in the according column in the database table.
             Defaults to 'PyExperimenter'.
         :type name: str, optional
-        :param logger_name: The name of the logger. Defaults to 'PyExperimenter'.
+        :param logger_name: The name of the logger. Defaults to 'py-experimenter'.
         :type logger_name: str
         :param log_level: The log level of the logger. Defaults to logging.INFO.
         :type log_level: Union[int,str]

@@ -36,7 +36,16 @@ Additionally, further information can be given to ``PyExperimenter``:
 - ``table_name``: The name of the database table to manage the experiments. If given, it will overwrite the table name given in the `experiment_configuration_file_path`.
 - ``use_codecarbon``: Specifies if :ref:`CodeCarbon <experiment_configuration_file_codecarbon>` will be used to track experiment emissions. Default: ``True``. 
 - ``name``: The name of the experimenter, which will be added to the database table of each executed experiment. If using the PyExperimenter on an HPC system, this can be used for the job ID, so that the according log file can easily be found. Default: ``PyExperimenter``.
+- ``logger_name``: The name of the logger, which will be used to log information about the execution of the PyExperimenter. Default: ``py-experimenter``.
+- ``log_level``: The log level of the logger. Default: ``INFO``.
+- ``log_file``: The path of the log file. Default: ``py-experimenter.log``.	 
 
+-------------------
+Logging Information
+-------------------
+
+The ``PyExperimenter`` logs information about the execution of experiments. If the logger has not been initialized yet, it will be initialized with the given ``logger_name``, ``log_level``, and ``log_file``. 
+If there allready exists a logger with the given ``logger_name``, it will be used instead. Howver, the ``log_file`` will be ignored in this case. The logger will then be passed to every component of the ``PyExperimenter``, so that all information is logged to the same file.
 
 -------------------
 Fill Database Table
