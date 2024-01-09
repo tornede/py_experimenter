@@ -103,14 +103,6 @@ class PyExperimenter:
         if not self.config.valid():
             raise InvalidConfigError("Invalid configuration")
 
-        if self.use_codecarbon:
-            if "offline_mode" in self.config.codecarbon_configuration.config:
-                self.codecarbon_offline_mode = self.config.codecarbon_configuration.config["offline_mode"]
-            else:
-                self.codecarbon_offline_mode = False
-                self.config.codecarbon_configuration.config["offline_mode"] = False
-            utils.write_codecarbon_config(self.config.codecarbon_configuration.config)
-
         self.database_credential_file_path = database_credential_file_path
         self.use_ssh_tunnel = use_ssh_tunnel
 
@@ -278,12 +270,16 @@ class PyExperimenter:
         if n_jobs is None:
             n_jobs = self.config.n_jobs
 
+        self._write_codecarbon_config()
+
         with Parallel(n_jobs=n_jobs) as parallel:
             if max_experiments == -1:
                 parallel(delayed(self._worker)(experiment_function, random_order) for _ in range(n_jobs))
             else:
                 parallel(delayed(self._execution_wrapper)(experiment_function, random_order) for _ in range(max_experiments))
         self.logger.info("All configured executions finished.")
+
+        self._delete_codecarbon_config()
 
     def unpause_experiment(self, experiment_id: int, experiment_function: Callable) -> None:
         """
@@ -390,6 +386,28 @@ class PyExperimenter:
                 tracker.stop()
                 emission_data = tracker._prepare_emissions_data().values
                 result_processor._write_emissions(emission_data, self.codecarbon_offline_mode)
+
+    def _write_codecarbon_config(self) -> None:
+        """ "
+        Writes the CodeCarbon config file if CodeCarbon is used in this experiment.
+        """
+        if self.use_codecarbon:
+            if "offline_mode" in self.config.codecarbon_configuration.config:
+                self.codecarbon_offline_mode = self.config.codecarbon_configuration.config["offline_mode"]
+            else:
+                self.codecarbon_offline_mode = False
+                self.config.codecarbon_configuration.config["offline_mode"] = False
+            utils.write_codecarbon_config(self.config.codecarbon_configuration.config)
+
+    def _delete_codecarbon_config(self) -> None:
+        """
+        Deletes the CodeCarbon config file if CodeCarbon is used in this experiment.
+        """
+        if self.use_codecarbon:
+            try:
+                os.remove(".codecarbon.config")
+            except FileNotFoundError as e:
+                self.logger.error(f"Could not delete CodeCarbon config file. Error: {e}")
 
     def reset_experiments(self, *states: Tuple["str"]) -> None:
         """
