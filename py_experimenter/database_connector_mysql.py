@@ -91,11 +91,15 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             experiment_id, description, values = self._select_open_experiments_from_db(connection, cursor, random_order=random_order)
         except Exception as err:
             connection.rollback()
-            raise err
-        self.close_connection(connection)
+            raise e
+        finally:
+            self.close_connection(connection)
 
         return experiment_id, description, values
 
+    def _get_pull_experiment_query(self, order_by: str):
+        return super()._get_pull_experiment_query(order_by) + " FOR UPDATE;"
+    
     @staticmethod
     def random_order_string():
         return 'RAND()'
