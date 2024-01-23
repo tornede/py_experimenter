@@ -185,12 +185,14 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
     <span class="n">experiment_function</span> <span class="o">=</span> <span class="n">run_experiment</span><span class="p">,</span>
     <span class="n">max_experiments</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">random_order</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">experiment_function</span></code> is the previously defined <a class="reference internal" href="experiment_function.html#experiment-function"><span class="std std-ref">experiment funtion</span></a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">max_experiments</span></code> determines how many experiments will be executed by this <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>. If set to <code class="docutils literal notranslate"><span class="pre">-1</span></code>, it will execute experiments in a sequential fashion until no more open experiments are available.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">random_order</span></code> determines if the experiments will be executed in a random order. By default, the parameter is set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, meaning that experiments will be executed ordered by their <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p></li>
 </ul>
 </section>
 <section id="reset-experiments">

@@ -101,11 +101,12 @@ An experiment can be executed easily with the following call:
     experimenter.execute(
         experiment_function = run_experiment, 
         max_experiments = -1
+        random_order = False
     )
 
 - ``experiment_function`` is the previously defined :ref:`experiment funtion <experiment_function>`.
 - ``max_experiments`` determines how many experiments will be executed by this ``PyExperimenter``. If set to ``-1``, it will execute experiments in a sequential fashion until no more open experiments are available.
-
+- ``random_order`` determines if the experiments will be executed in a random order. By default, the parameter is set to ``False``, meaning that experiments will be executed ordered by their ``id``.
 
 .. _reset_experiments:
 

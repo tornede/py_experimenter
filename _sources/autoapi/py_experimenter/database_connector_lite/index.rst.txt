@@ -44,10 +44,14 @@ Classes
    .. py:method:: connect()
 
 
-   .. py:method:: _pull_open_experiment() -> Tuple[int, List, List]
+   .. py:method:: _pull_open_experiment(random_order: bool) -> Tuple[int, List, List]
 
 
    .. py:method:: _table_exists(cursor) -> bool
+
+
+   .. py:method:: random_order_string()
+      :staticmethod:
 
 
    .. py:method:: escape_sql_chars(*args)

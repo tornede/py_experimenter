@@ -90,14 +90,18 @@ Classes
       :abstractmethod:
 
 
-   .. py:method:: get_experiment_configuration()
+   .. py:method:: get_experiment_configuration(random_order: bool)
 
 
-   .. py:method:: _pull_open_experiment() -> Tuple[int, List, List]
+   .. py:method:: _pull_open_experiment(random_order) -> Tuple[int, List, List]
       :abstractmethod:
 
 
-   .. py:method:: _select_open_experiments_from_db(connection, cursor) -> Tuple[int, List, List]
+   .. py:method:: _select_open_experiments_from_db(connection, cursor, random_order: bool) -> Tuple[int, List, List]
+
+
+   .. py:method:: random_order_string()
+      :staticmethod:
 
 
    .. py:method:: _write_to_database(values: List, columns=List[str]) -> None

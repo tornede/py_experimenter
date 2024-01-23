@@ -169,7 +169,7 @@ Classes
           configuration file
 
 
-   .. py:method:: execute(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], None], max_experiments: int = -1) -> None
+   .. py:method:: execute(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], None], max_experiments: int = -1, random_order=False) -> None
 
       Pulls open experiments from the database table and executes them.
 
@@ -178,6 +178,9 @@ Classes
 
       Each process sequentially pulls and executes experiments from the database table, until all processes executed as
       many experiments as defined by `max_experiments`. If `max_experiments == -1` all experiments will be executed.
+
+      By default the order execution is determined by the id, but if `random_order` is set to `True`, the order is
+      determined randomly.
 
       After pulling an experiment, `experiment_function` is executed with keyfield values of the pulled open
       experiment and the experiments status is set to `running`. Results can be continuously written to the database
@@ -194,18 +197,22 @@ Classes
       :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments
           should be executed, set this to `-1`. Defaults to `-1`.
       :type max_experiments: int, optional
+      :param random_order: If True, the order of the experiments is determined randomly. Defaults to False.
+      :type random_order: bool, optional
       :raises InvalidValuesInConfiguration: If any value of the experiment parameters is of wrong data type.
 
 
-   .. py:method:: _worker(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], None]) -> None
+   .. py:method:: _worker(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], None], random_order: bool) -> None
 
       Worker that repeatedly pulls open experiments from the database table and executes them.
 
       :param experiment_function: The function that should be executed with the different parametrizations.
       :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
+      :param random_order: If True, the order of the experiments is determined randomly. Defaults to False.
+      :type random_order: bool
 
 
-   .. py:method:: _execution_wrapper(experiment_function: Callable[[dict, dict, py_experimenter.result_processor.ResultProcessor], None]) -> None
+   .. py:method:: _execution_wrapper(experiment_function: Callable[[dict, dict, py_experimenter.result_processor.ResultProcessor], None], random_order: bool) -> None
 
       Executes the given `experiment_function` on one open experiment. To that end, one of the open experiments is pulled
       from the database table. Then `experiment_function` is executed on the keyfield values of the pulled experiment. 
@@ -223,6 +230,8 @@ Classes
 
       :param experiment_function: The function that should be executed with the different parametrizations.
       :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
+      :param random_order: If True, the order of the experiments is determined randomly. Defaults to False.
+      :type random_order: bool
       :raises NoExperimentsLeftError: If there are no experiments left to be executed.
       :raises DatabaseConnectionError: If an error occurred during the connection to the database.
 
