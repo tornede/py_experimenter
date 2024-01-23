@@ -2,11 +2,20 @@
 Changelog
 =========
 
-v1.3.2 (*.*.2023)
+
+v1.3.2 (23.01.2024)
 ===================
+
 Feature
 -------
+
 - Add `random_order` parameter to `PyExperimenter.execute()` to allow for random order of experiments.
+
+Fix
+---
+
+- Hotfix cluster execution where multiple runners could pull the same experiment.
+- Update logger documentation to reflect the changes of the improved logging.
 
 v1.3.1 (24.07.2023)
 ===================
