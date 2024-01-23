@@ -91,7 +91,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             experiment_id, description, values = self._select_open_experiments_from_db(connection, cursor, random_order=random_order)
         except Exception as err:
             connection.rollback()
-            raise e
+            raise err
         finally:
             self.close_connection(connection)
 
