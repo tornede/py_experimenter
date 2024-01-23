@@ -199,35 +199,52 @@ class DatabaseConnector(abc.ABC):
     def _get_existing_rows(self, column_names):
         pass
 
-    def get_experiment_configuration(self):
+    def get_experiment_configuration(self, random_order:bool):
         try:
-            experiment_id, description, values = self._pull_open_experiment()
+            experiment_id, description, values = self._pull_open_experiment(random_order)
         except IndexError as e:
             raise NoExperimentsLeftException("No experiments left to execute")
         except Exception as e:
             raise DatabaseConnectionError(f'error \n {e} raised. \n Please check if fill_table() was called correctly.')
 
         return experiment_id, dict(zip([i[0] for i in description], *values))
-    
+
+
     @abc.abstractmethod
-    def _pull_open_experiment(self) -> Tuple[int, List, List]:
+    def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
         pass
 
-    def _select_open_experiments_from_db(self, connection, cursor) -> Tuple[int, List, List]:
-        order_by = "id"
+    def _select_open_experiments_from_db(self, connection, cursor, random_order: bool) -> Tuple[int, List, List]:
+        if random_order:
+            order_by = self.random_order_string()
+        else:
+            order_by = "id"
         time = utils.get_timestamp_representation()
 
-        self.execute(cursor, f"SELECT id FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;")
-        experiment_id = self.fetchall(cursor)[0][0]
+        self.execute(cursor, self._get_pull_experiment_query(order_by="id"))
+        results = self.fetchall(cursor)
+        experiment_id = results[0][0]
         self.execute(
             cursor, f"UPDATE {self.table_name} SET status = {self._prepared_statement_placeholder}, start_date = {self._prepared_statement_placeholder} WHERE id = {self._prepared_statement_placeholder};", (ExperimentStatus.RUNNING.value, time, experiment_id))
+        self.commit(connection)
+        cursor.close()
+
+        cursor = self.cursor(connection)
         keyfields = ','.join(utils.get_keyfield_names(self.config))
         self.execute(cursor, f"SELECT {keyfields} FROM {self.table_name} WHERE id = {experiment_id};")
         values = self.fetchall(cursor)
-        self.commit(connection)
         description = cursor.description
+        cursor.close()
+
         return experiment_id, description, values
 
+    @abc.abstractstaticmethod
+    def random_order_string():
+        pass
+    
+    @abc.abstractmethod
+    def _get_pull_experiment_query(self, order_by: str):
+        return f"SELECT `id` FROM {self.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1"
 
     def _write_to_database(self, values: List, columns=List[str]) -> None:
         values_prepared = ','.join([f"({', '.join([self._prepared_statement_placeholder] * len(columns))})"] * len(values))
@@ -335,7 +352,7 @@ class DatabaseConnector(abc.ABC):
     def get_table(self, table_name: Optional[str] = None) -> pd.DataFrame:
         connection = self.connect()
         query = f"SELECT * FROM {self.table_name}" if table_name is None else f"SELECT * FROM {table_name}"
-        #suppress warning for pandas
+        # suppress warning for pandas
         import warnings
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore", category=UserWarning)

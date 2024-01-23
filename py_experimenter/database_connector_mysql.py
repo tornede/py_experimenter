@@ -13,7 +13,7 @@ from py_experimenter.utils import load_config
 class DatabaseConnectorMYSQL(DatabaseConnector):
     _prepared_statement_placeholder = '%s'
 
-    def __init__(self, experiment_configuration: ConfigParser, use_codecarbon:bool, codecarbon_config:ConfigParser, database_credential_file_path:str, logger):
+    def __init__(self, experiment_configuration: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser, database_credential_file_path: str, logger):
         database_credentials = load_config(database_credential_file_path)
         self.host = database_credentials.get('CREDENTIALS', 'host')
         self.user = database_credentials.get('CREDENTIALS', 'user')
@@ -65,7 +65,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         if not readonly:
             connection.begin()
 
-    def _table_exists(self, cursor, table_name:str = None) -> bool:
+    def _table_exists(self, cursor, table_name: str = None) -> bool:
         table_name = table_name if table_name is not None else self.table_name
         self.execute(cursor, f"SHOW TABLES LIKE '{table_name}'")
         return self.fetchall(cursor)
@@ -81,21 +81,29 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
         columns = self._exclude_fixed_columns([k[0] for k in self.fetchall(cursor)])
         config_columns = [k[0] for k in typed_fields]
-        return set(columns) == set(config_columns) 
+        return set(columns) == set(config_columns)
 
-    def _pull_open_experiment(self) -> Tuple[int, List, List]:
+    def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
         try:
             connection = self.connect()
             cursor = self.cursor(connection)
             self._start_transaction(connection, readonly=False)
-            experiment_id, description, values = self._select_open_experiments_from_db(connection, cursor)
+            experiment_id, description, values = self._select_open_experiments_from_db(connection, cursor, random_order=random_order)
         except Exception as err:
             connection.rollback()
             raise err
-        self.close_connection(connection)
+        finally:
+            self.close_connection(connection)
 
         return experiment_id, description, values
+
+    def _get_pull_experiment_query(self, order_by: str):
+        return super()._get_pull_experiment_query(order_by) + " FOR UPDATE;"
     
+    @staticmethod
+    def random_order_string():
+        return 'RAND()'
+
     def _get_existing_rows(self, column_names):
         def _remove_double_whitespaces(existing_rows):
             return [' '.join(row.split()) for row in existing_rows]
@@ -119,4 +127,3 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         self.execute(cursor, f"SHOW COLUMNS FROM {self.table_name}")
         column_names = _get_column_names_from_entries(self.fetchall(cursor))
         return column_names
-    
