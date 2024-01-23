@@ -92,10 +92,14 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         except Exception as err:
             connection.rollback()
             raise err
-        self.close_connection(connection)
+        finally:
+            self.close_connection(connection)
 
         return experiment_id, description, values
 
+    def _get_pull_experiment_query(self, order_by: str):
+        return super()._get_pull_experiment_query(order_by) + " FOR UPDATE;"
+    
     @staticmethod
     def random_order_string():
         return 'RAND()'
