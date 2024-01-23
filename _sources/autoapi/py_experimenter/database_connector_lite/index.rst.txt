@@ -47,6 +47,9 @@ Classes
    .. py:method:: _pull_open_experiment(random_order: bool) -> Tuple[int, List, List]
 
 
+   .. py:method:: _get_pull_experiment_query(order_by)
+
+
    .. py:method:: _table_exists(cursor) -> bool
 
 

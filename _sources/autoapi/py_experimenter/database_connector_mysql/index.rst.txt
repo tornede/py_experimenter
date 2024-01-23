@@ -58,6 +58,9 @@ Classes
    .. py:method:: _pull_open_experiment(random_order) -> Tuple[int, List, List]
 
 
+   .. py:method:: _get_pull_experiment_query(order_by: str)
+
+
    .. py:method:: random_order_string()
       :staticmethod:
 

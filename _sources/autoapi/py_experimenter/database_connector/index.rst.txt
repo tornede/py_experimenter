@@ -104,6 +104,10 @@ Classes
       :staticmethod:
 
 
+   .. py:method:: _get_pull_experiment_query(order_by: str)
+      :abstractmethod:
+
+
    .. py:method:: _write_to_database(values: List, columns=List[str]) -> None
 
 
