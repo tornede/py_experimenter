@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Executing PyExperimenter &mdash; PyExperimenter 1.0 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=359c27e9"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -137,6 +139,9 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">table_name</span></code>: The name of the database table to manage the experiments. If given, it will overwrite the table name given in the <cite>experiment_configuration_file_path</cite>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">use_codecarbon</span></code>: Specifies if <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file-codecarbon"><span class="std std-ref">CodeCarbon</span></a> will be used to track experiment emissions. Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The name of the experimenter, which will be added to the database table of each executed experiment. If using the PyExperimenter on an HPC system, this can be used for the job ID, so that the according log file can easily be found. Default: <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger_name</span></code>: The name of the logger, which will be used to log information about the execution of the PyExperimenter. If there already exists a logger with the given <code class="docutils literal notranslate"><span class="pre">logger_name</span></code>, it will be used instead. However, the <code class="docutils literal notranslate"><span class="pre">log_file</span></code> will be ignored in this case. The logger will then be passed to every component of <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>, so that all information is logged to the same file. Default: <code class="docutils literal notranslate"><span class="pre">py-experimenter</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log_level</span></code>: The log level of the logger. Default: <code class="docutils literal notranslate"><span class="pre">INFO</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log_file</span></code>: The path of the log file. Default: <code class="docutils literal notranslate"><span class="pre">py-experimenter.log</span></code>.</p></li>
 </ul>
 </section>
 <section id="fill-database-table">
