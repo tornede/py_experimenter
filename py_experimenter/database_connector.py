@@ -118,13 +118,15 @@ class DatabaseConnector(abc.ABC):
                 )
 
     def _exclude_fixed_columns(self, columns: List[str]) -> List[str]:
-        amount_of_keyfields = len(utils.get_keyfield_names(self.config))
-        amount_of_result_fields = len(utils.get_result_field_names(self.config))
-
-        if self.timestamp_on_result_fields:
-            amount_of_result_fields *= 2
-
-        return columns[1:amount_of_keyfields + 1] + columns[-amount_of_result_fields - 2:-2]
+        columns.remove('ID')
+        columns.remove('status')
+        columns.remove('creation_date')
+        columns.remove('start_date')
+        columns.remove('name')
+        columns.remove('machine')
+        columns.remove('end_date')
+        columns.remove('error')
+        return columns
 
     def _create_table(self, cursor, columns: List[Tuple['str']], table_name: str, table_type: str = 'standard'):
         query = self._get_create_table_query(columns, table_name, table_type)
