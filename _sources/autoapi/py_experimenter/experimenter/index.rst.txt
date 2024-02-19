@@ -169,7 +169,7 @@ Classes
           configuration file
 
 
-   .. py:method:: execute(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], None], max_experiments: int = -1, random_order=False) -> None
+   .. py:method:: execute(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], Optional[py_experimenter.experiment_status.ExperimentStatus]], max_experiments: int = -1, random_order=False) -> None
 
       Pulls open experiments from the database table and executes them.
 
@@ -185,21 +185,44 @@ Classes
       After pulling an experiment, `experiment_function` is executed with keyfield values of the pulled open
       experiment and the experiments status is set to `running`. Results can be continuously written to the database
       during the execution via `ResultProcessor` that is given as parameter to `experiment_function`. If the execution
-      was successful, the status of the corresponding experiment is set to `done`. Otherwise, if an error occurred
-      during the execution, the status is changed to  `error` and the raised error is logged into the database table.
+      was successful (returns `None` or `ExperimentStatus.Done.`), the status of the corresponding experiment is set to `done`.
+      Otherwise, if an error occurred (error raised or `ExperimentStatus.Error` returned), the status is changed to  `error`
+      and, in case an error occured, it is logged into the database table. Alternatively the experiment can be paused by returning
+      `ExperimentStatus.PAUSED`. In this case the status of the experiment is set to `paused` and the experiment
+      can be unpaused and executed again with the `unpause_experiment` method.
+
+      To pause the experiment the `experiment_function` can return `ExperimentStatus.PAUSED`. In this case the
+      status of the experiment is set to `paused` and the experiment can be unpaused and executed again with the
+      `unpause_experiment` method.
 
       Note that only errors raised within `experiment_function` are logged in to the database table. Therefore all
       errors raised before or after the execution of `experiment_function` are logged according to the local
       logging configuration and do not appear in the table.
 
       :param experiment_function: The function that should be executed with the different parametrizations.
-      :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
+      :type experiment_function:  Callable[[Dict, Dict, ResultProcessor], Optional[ExperimentStatus]]
       :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments
           should be executed, set this to `-1`. Defaults to `-1`.
       :type max_experiments: int, optional
       :param random_order: If True, the order of the experiments is determined randomly. Defaults to False.
       :type random_order: bool, optional
       :raises InvalidValuesInConfiguration: If any value of the experiment parameters is of wrong data type.
+
+
+   .. py:method:: unpause_experiment(experiment_id: int, experiment_function: Callable) -> None
+
+      Pulls the experiment with the given `experiment_id` from the database (if it is `paused`) table and executes it. In
+      this context "executing" means that the given `experiment_function` is executed with the keyfield values of the pulled experiment.
+
+      After pulling the experiment its status is changed to `running` before and changed to `done` after the
+      execution of `experiment_function` if no error occurred. If the function tries to pull an experiment that is
+      not in the `paused` state, an error is raised.
+
+      :raises NoPausedExperimentsException if there are no paused experiment with id `experiment_id`.
+      :param experiment_id: _description_ The id of the experiment to be executed.
+      :type experiment_id: int
+      :param experiment_function: _description_ The experiment function to use to continue the given experiment
+      :type experiment_function: Callable
 
 
    .. py:method:: _worker(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], None], random_order: bool) -> None
@@ -215,7 +238,7 @@ Classes
    .. py:method:: _execution_wrapper(experiment_function: Callable[[dict, dict, py_experimenter.result_processor.ResultProcessor], None], random_order: bool) -> None
 
       Executes the given `experiment_function` on one open experiment. To that end, one of the open experiments is pulled
-      from the database table. Then `experiment_function` is executed on the keyfield values of the pulled experiment. 
+      from the database table. Then `experiment_function` is executed on the keyfield values of the pulled experiment.
 
       Thereby, the status of the experiment is continuously updated. The experiment can have the following states:
 
@@ -236,10 +259,13 @@ Classes
       :raises DatabaseConnectionError: If an error occurred during the connection to the database.
 
 
+   .. py:method:: _execute_experiment(experiment_id, keyfield_values, experiment_function)
+
+
    .. py:method:: reset_experiments(*states: Tuple[str]) -> None
 
-      Deletes the experiments from the database table that have the given `states`. Afterward, all deleted rows are added to the 
-      table again. 
+      Deletes the experiments from the database table that have the given `states`. Afterward, all deleted rows are added to the
+      table again.
 
       :param states: The status of experiments that should be reset. Either `created`, `running`, `error`, `done`, or `all`.
       Note that `states` is a variable-length argument, so multiple states can be given as a tuple.
@@ -253,19 +279,19 @@ Classes
 
    .. py:method:: get_table() -> pandas.DataFrame
 
-      Returns the database table as `Pandas.DataFrame`. 
+      Returns the database table as `Pandas.DataFrame`.
 
-      :return: The database table as `Pandas.DataFrame`. 
+      :return: The database table as `Pandas.DataFrame`.
       :rtype: pd.DataFrame
 
 
    .. py:method:: get_logtable(logtable_name: str) -> pandas.DataFrame
 
-      Returns the log table as `Pandas.DataFrame`. 
+      Returns the log table as `Pandas.DataFrame`.
 
       :param table_name: The name of the log table.
       :type table_name: str
-      :return: The log table as `Pandas.DataFrame`. 
+      :return: The log table as `Pandas.DataFrame`.
       :rtype: pd.DataFrame
 
 

@@ -323,7 +323,7 @@ configuration file</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.execute">
-<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><span class="pre">py_experimenter.result_processor.ResultProcessor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_experiments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.execute" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><span class="pre">py_experimenter.result_processor.ResultProcessor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../experiment_status/index.html#py_experimenter.experiment_status.ExperimentStatus" title="py_experimenter.experiment_status.ExperimentStatus"><span class="pre">py_experimenter.experiment_status.ExperimentStatus</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_experiments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.execute" title="Permalink to this definition"></a></dt>
 <dd><p>Pulls open experiments from the database table and executes them.</p>
 <p>First as many processes are created and started as specified with <cite>n_jobs</cite> in the experiment configuration file.
 If <cite>n_jobs</cite> is not given, a single process is created.</p>
@@ -334,15 +334,21 @@ determined randomly.</p>
 <p>After pulling an experiment, <cite>experiment_function</cite> is executed with keyfield values of the pulled open
 experiment and the experiments status is set to <cite>running</cite>. Results can be continuously written to the database
 during the execution via <cite>ResultProcessor</cite> that is given as parameter to <cite>experiment_function</cite>. If the execution
-was successful, the status of the corresponding experiment is set to <cite>done</cite>. Otherwise, if an error occurred
-during the execution, the status is changed to  <cite>error</cite> and the raised error is logged into the database table.</p>
+was successful (returns <cite>None</cite> or <cite>ExperimentStatus.Done.</cite>), the status of the corresponding experiment is set to <cite>done</cite>.
+Otherwise, if an error occurred (error raised or <cite>ExperimentStatus.Error</cite> returned), the status is changed to  <cite>error</cite>
+and, in case an error occured, it is logged into the database table. Alternatively the experiment can be paused by returning
+<cite>ExperimentStatus.PAUSED</cite>. In this case the status of the experiment is set to <cite>paused</cite> and the experiment
+can be unpaused and executed again with the <cite>unpause_experiment</cite> method.</p>
+<p>To pause the experiment the <cite>experiment_function</cite> can return <cite>ExperimentStatus.PAUSED</cite>. In this case the
+status of the experiment is set to <cite>paused</cite> and the experiment can be unpaused and executed again with the
+<cite>unpause_experiment</cite> method.</p>
 <p>Note that only errors raised within <cite>experiment_function</cite> are logged in to the database table. Therefore all
 errors raised before or after the execution of <cite>experiment_function</cite> are logged according to the local
 logging configuration and do not appear in the table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>experiment_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>, </em><em>Dict</em><em>, </em><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><em>ResultProcessor</em></a><em>]</em><em>, </em><em>None</em><em>]</em>) – The function that should be executed with the different parametrizations.</p></li>
+<li><p><strong>experiment_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>, </em><em>Dict</em><em>, </em><a class="reference internal" href="../result_processor/index.html#py_experimenter.result_processor.ResultProcessor" title="py_experimenter.result_processor.ResultProcessor"><em>ResultProcessor</em></a><em>]</em><em>, </em><em>Optional</em><em>[</em><a class="reference internal" href="../experiment_status/index.html#py_experimenter.experiment_status.ExperimentStatus" title="py_experimenter.experiment_status.ExperimentStatus"><em>ExperimentStatus</em></a><em>]</em><em>]</em>) – The function that should be executed with the different parametrizations.</p></li>
 <li><p><strong>max_experiments</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of experiments to be executed by this <cite>PyExperimenter</cite>. If all experiments
 should be executed, set this to <cite>-1</cite>. Defaults to <cite>-1</cite>.</p></li>
 <li><p><strong>random_order</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the order of the experiments is determined randomly. Defaults to False.</p></li>
@@ -352,6 +358,21 @@ should be executed, set this to <cite>-1</cite>. Defaults to <cite>-1</cite>.</p
 <dd class="field-even"><p><a class="reference internal" href="../exceptions/index.html#py_experimenter.exceptions.InvalidValuesInConfiguration" title="py_experimenter.exceptions.InvalidValuesInConfiguration"><strong>InvalidValuesInConfiguration</strong></a> – If any value of the experiment parameters is of wrong data type.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.unpause_experiment">
+<span class="sig-name descname"><span class="pre">unpause_experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.unpause_experiment" title="Permalink to this definition"></a></dt>
+<dd><p>Pulls the experiment with the given <cite>experiment_id</cite> from the database (if it is <cite>paused</cite>) table and executes it. In
+this context “executing” means that the given <cite>experiment_function</cite> is executed with the keyfield values of the pulled experiment.</p>
+<p>After pulling the experiment its status is changed to <cite>running</cite> before and changed to <cite>done</cite> after the
+execution of <cite>experiment_function</cite> if no error occurred. If the function tries to pull an experiment that is
+not in the <cite>paused</cite> state, an error is raised.</p>
+<p>:raises NoPausedExperimentsException if there are no paused experiment with id <cite>experiment_id</cite>.
+:param experiment_id: _description_ The id of the experiment to be executed.
+:type experiment_id: int
+:param experiment_function: _description_ The experiment function to use to continue the given experiment
+:type experiment_function: Callable</p>
 </dd></dl>
 
 <dl class="py method">
@@ -398,6 +419,11 @@ and do not appear in the table.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter._execute_experiment">
+<span class="sig-name descname"><span class="pre">_execute_experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyfield_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment_function</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._execute_experiment" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.reset_experiments">

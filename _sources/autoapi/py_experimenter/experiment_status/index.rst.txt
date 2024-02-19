@@ -51,4 +51,9 @@ Classes
 
       
 
+   .. py:attribute:: PAUSED
+      :value: 'paused'
+
+      
+
 

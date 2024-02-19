@@ -65,6 +65,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#reset-experiments">Reset Experiments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#obtain-results">Obtain Results</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#codecarbon">CodeCarbon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pausing-and-unpausing-experiments">Pausing and Unpausing Experiments</a></li>
 </ul>
 </li>
 </ul>
@@ -180,7 +181,7 @@
 </section>
 </section>
 <section id="execute-experiments">
-<h2>Execute Experiments<a class="headerlink" href="#execute-experiments" title="Permalink to this heading"></a></h2>
+<span id="id1"></span><h2>Execute Experiments<a class="headerlink" href="#execute-experiments" title="Permalink to this heading"></a></h2>
 <p>An experiment can be executed easily with the following call:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
     <span class="n">experiment_function</span> <span class="o">=</span> <span class="n">run_experiment</span><span class="p">,</span>
@@ -190,27 +191,28 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">experiment_function</span></code> is the previously defined <a class="reference internal" href="experiment_function.html#experiment-function"><span class="std std-ref">experiment funtion</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">experiment_function</span></code> is the previously defined <a class="reference internal" href="experiment_function.html#experiment-function"><span class="std std-ref">experiment function</span></a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">max_experiments</span></code> determines how many experiments will be executed by this <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>. If set to <code class="docutils literal notranslate"><span class="pre">-1</span></code>, it will execute experiments in a sequential fashion until no more open experiments are available.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">random_order</span></code> determines if the experiments will be executed in a random order. By default, the parameter is set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, meaning that experiments will be executed ordered by their <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p></li>
 </ul>
 </section>
 <section id="reset-experiments">
-<span id="id1"></span><h2>Reset Experiments<a class="headerlink" href="#reset-experiments" title="Permalink to this heading"></a></h2>
-<p>Each database table contains a <code class="docutils literal notranslate"><span class="pre">status</span></code> column, summarizing the current state of an experiment. Experiments can be reset based on these status. If this is done, the table rows having a given status will be deleted, and corresponding new rows without results will be created. A comma separated list of <code class="docutils literal notranslate"><span class="pre">status</span></code> has to be provided.</p>
+<span id="id2"></span><h2>Reset Experiments<a class="headerlink" href="#reset-experiments" title="Permalink to this heading"></a></h2>
+<p>Each database table contains a <code class="docutils literal notranslate"><span class="pre">status</span></code> column, summarizing the current state of an experiment. Experiments can be reset based on these states. If this is done, the table rows having a given status will be deleted, and corresponding new rows without results will be created. A comma separated list of <code class="docutils literal notranslate"><span class="pre">status</span></code> has to be provided.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">reset_experiments</span><span class="p">(</span><span class="o">&lt;</span><span class="n">status</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">status</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The following status exist:</p>
+<p>The following states exist:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">created</span></code>: All parameters for the experiment are defined and the experiment is ready for execution.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">running</span></code>: The experiment is currently in execution.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">done</span></code>: The execution of the experiment terminated without interruption and the results are written into the database.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">error</span></code>: An error occurred during execution, which is also logged into the database.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">paused</span></code>: The experiment was paused during execution. For more information check <a class="reference internal" href="#pausing-and-unpausing-experiments"><span class="std std-ref">pausing and unpausing experiments</span></a>.</p></li>
 </ul>
 </section>
 <section id="obtain-results">
-<span id="id2"></span><h2>Obtain Results<a class="headerlink" href="#obtain-results" title="Permalink to this heading"></a></h2>
+<span id="id3"></span><h2>Obtain Results<a class="headerlink" href="#obtain-results" title="Permalink to this heading"></a></h2>
 <p>The current content of the database table can be obtained as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>. This can, for example, be used to generate a result table and export it to LaTeX.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result_table</span> <span class="o">=</span> <span class="n">experimenter</span><span class="o">.</span><span class="n">get_table</span><span class="p">()</span>
 <span class="n">result_table</span> <span class="o">=</span> <span class="n">result_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;dataset&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()[[</span><span class="s1">&#39;seed&#39;</span><span class="p">]]</span>
@@ -224,6 +226,40 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">get_codecarbon_table</span><span class="p">()</span>
 </pre></div>
 </div>
+</section>
+<section id="pausing-and-unpausing-experiments">
+<span id="id4"></span><h2>Pausing and Unpausing Experiments<a class="headerlink" href="#pausing-and-unpausing-experiments" title="Permalink to this heading"></a></h2>
+<p>For convenience, we support pausing and unpausing experiments. This means that you can use one <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> to start an experiment, which will be paused after certain operations. Therefore, it can be resumed later on. Afterwards, depending on the parametrization of <code class="docutils literal notranslate"><span class="pre">execute()</span></code> of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> instance (see <span class="xref std std-ref">asdf</span>), the experimenter terminates or another experiment will be started.</p>
+<p>To pause an experiment, the experiment function has to return the state <code class="docutils literal notranslate"><span class="pre">ExperimentStatus.PAUSED</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_experiment_until_pause</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="c1"># do something</span>
+
+    <span class="k">if</span> <span class="n">some_reason_to_pause</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ExperimentStatus</span><span class="o">.</span><span class="n">PAUSED</span>
+
+    <span class="c1"># do further things</span>
+    <span class="k">return</span> <span class="n">ExperimentStatus</span><span class="o">.</span><span class="n">DONE</span>
+
+<span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">()</span>
+<span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+    <span class="n">experiment_function</span><span class="o">=</span><span class="n">run_experiment_until_pause</span><span class="p">,</span>
+    <span class="n">max_experiments</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>At a later point in time, the experiment can be unpaused and continued. This can be done by calling <code class="docutils literal notranslate"><span class="pre">unpause_experiment()</span></code> on <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> instance given the specific <code class="docutils literal notranslate"><span class="pre">experiment_id</span></code> of the experiment to continue, together with a separate experiment function, which only contains experiment code to be executed after the pause. Note that only a single <code class="docutils literal notranslate"><span class="pre">experiment_id</span></code> can be executed at the same time, i.e. there is no parallelization of unpausing multiple <code class="docutils literal notranslate"><span class="pre">experiment_id</span></code> supported.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_experiment_after_pause</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="c1"># do something</span>
+    <span class="k">return</span> <span class="n">ExperimentStatus</span><span class="o">.</span><span class="n">DONE</span>
+
+<span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">()</span>
+<span class="n">experimenter</span><span class="o">.</span><span class="n">unpause_experiment</span><span class="p">(</span>
+    <span class="n">experiment_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">experiment_function</span><span class="o">=</span><span class="n">run_experiment_after_pause</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>A complete example on how to pause and continue an experiment can be found in the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
 </section>
 </section>
 

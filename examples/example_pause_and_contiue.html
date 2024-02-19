@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example: Pause and Continue &mdash; PyExperimenter 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=359c27e9"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="../autoapi/index.html" />
+    <link rel="prev" title="Example: Usage of Logtables" href="example_logtables.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyExperimenter
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="example_general_usage.html">Example: General Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_conditional_grid.html">Example: Conditional Parameter Grids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_logtables.html">Example: Usage of Logtables</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example: Pause and Continue</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Experiment-Configuration-File">Experiment Configuration File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Defining-Pausing-Execution-Function">Defining Pausing Execution Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Showcase-Paused-Execution">Showcase Paused Execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Define-resuming-execution-function">Define resuming execution function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CodeCarbon-Entries">CodeCarbon Entries</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help.html">Need Help?</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../issues.html">Creating an Issue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to-contribute.html">How to Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3rd-party.html">Usage of 3rd Party Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-version.html">Release Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About PyExperimenter</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">Cite PyExperimenter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tornede/py_experimenter/">Repository</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyExperimenter</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Examples</a></li>
+      <li class="breadcrumb-item active">Example: Pause and Continue</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/example_pause_and_contiue.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Example:-Pause-and-Continue">
+<h1>Example: Pause and Continue<a class="headerlink" href="#Example:-Pause-and-Continue" title="Permalink to this heading"></a></h1>
+<p>This notebook shows how one can execute two functions for one experiment by setting the status to <code class="docutils literal notranslate"><span class="pre">paused</span></code>, and unpausing it later on with a different execution function. This example is heavily based on the <code class="docutils literal notranslate"><span class="pre">example_general_usage.ipynb</span></code> notebook.</p>
+<p>To execute this notebook you need to install:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pip install py_experimenter
+pip install scikit-learn
+</pre></div>
+</div>
+<section id="Experiment-Configuration-File">
+<h2>Experiment Configuration File<a class="headerlink" href="#Experiment-Configuration-File" title="Permalink to this heading"></a></h2>
+<p>First we define an experiment configuraiton file. Note that in comparison to the basic example two resultfields <code class="docutils literal notranslate"><span class="pre">paused_at_seconds</span></code> and <code class="docutils literal notranslate"><span class="pre">resumed_at_seconds</span></code> were added.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import os
+
+content = &quot;&quot;&quot;
+[PY_EXPERIMENTER]
+provider = sqlite
+database = py_experimenter
+table = example_pause_and_continue
+
+keyfields = dataset, cross_validation_splits:int, seed:int, kernel
+dataset = iris
+cross_validation_splits = 5
+seed = 2:6:2
+kernel = linear, poly, rbf, sigmoid
+
+resultfields = pipeline:LONGTEXT, train_f1:DECIMAL, train_accuracy:DECIMAL, test_f1:DECIMAL, test_accuracy:DECIMAL, paused_at_seconds:DOUBLE, resumed_at_seconds:DOUBLE
+resultfields.timestamps = false
+
+[CUSTOM]
+path = sample_data
+
+[codecarbon]
+offline_mode = False
+measure_power_secs = 25
+tracking_mode = process
+log_level = error
+save_to_file = True
+output_dir = output/CodeCarbon
+&quot;&quot;&quot;
+# Create config directory if it does not exist
+if not os.path.exists(&#39;config&#39;):
+    os.mkdir(&#39;config&#39;)
+
+# Create config file
+experiment_configuration_file_path = os.path.join(&#39;config&#39;, &#39;example_pause_and_continue.cfg&#39;)
+with open(experiment_configuration_file_path, &quot;w&quot;) as f:
+  f.write(content)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Defining-Pausing-Execution-Function">
+<h2>Defining Pausing Execution Function<a class="headerlink" href="#Defining-Pausing-Execution-Function" title="Permalink to this heading"></a></h2>
+<p>Next we fill the table, define the execution function that gets paused after five seconds and run this execution function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import datetime
+
+from py_experimenter.experimenter import ExperimentStatus, PyExperimenter
+from py_experimenter.result_processor import ResultProcessor
+
+experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path, name=&#39;example_notebook&#39;)
+
+experimenter.fill_table_from_config()
+
+def pause_after_5_seconds(parameters: dict, result_processor: ResultProcessor, custom_config: dict):
+    import time
+    time.sleep(5)
+    result_processor.process_results({
+        &#39;paused_at_seconds&#39;: datetime.datetime.now().timestamp()
+    })
+    return ExperimentStatus.PAUSED
+
+
+
+experimenter.execute(pause_after_5_seconds, max_experiments=1)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2024-02-19 14:34:46,660  | py-experimenter - INFO     | Initialized and connected to database
+2024-02-19 14:34:46,769  | py-experimenter - INFO     | 12 rows successfully added to database. 0 rows were skipped.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+2024-02-19 14:34:56,550  | py-experimenter - INFO     | All configured executions finished.
+</pre></div></div>
+</div>
+</section>
+<section id="Showcase-Paused-Execution">
+<h2>Showcase Paused Execution<a class="headerlink" href="#Showcase-Paused-Execution" title="Permalink to this heading"></a></h2>
+<p>Below we only show that the execution of the experiment with <code class="docutils literal notranslate"><span class="pre">id=1</span></code> has been paused.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_table()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>dataset</th>
+      <th>cross_validation_splits</th>
+      <th>seed</th>
+      <th>kernel</th>
+      <th>creation_date</th>
+      <th>status</th>
+      <th>start_date</th>
+      <th>name</th>
+      <th>machine</th>
+      <th>pipeline</th>
+      <th>train_f1</th>
+      <th>train_accuracy</th>
+      <th>test_f1</th>
+      <th>test_accuracy</th>
+      <th>paused_at_seconds</th>
+      <th>resumed_at_seconds</th>
+      <th>end_date</th>
+      <th>error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>linear</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>paused</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>example_notebook</td>
+      <td>Worklaptop</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>1.708350e+09</td>
+      <td>None</td>
+      <td>2024-02-19 14:34:56</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>linear</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>linear</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>poly</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>poly</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>poly</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>rbf</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>rbf</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>rbf</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>sigmoid</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>sigmoid</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>sigmoid</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Define-resuming-execution-function">
+<h2>Define resuming execution function<a class="headerlink" href="#Define-resuming-execution-function" title="Permalink to this heading"></a></h2>
+<p>Lastly, we can define a second execution function that resumes the paused execution function. After running this execution function, the experiment is finished and the resulting table is shown.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import random
+
+import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.model_selection import cross_validate
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+
+def resume_after_5_seconds(parameters: dict, result_processor: ResultProcessor, custom_config: dict):
+    result_processor.process_results({
+        &#39;resumed_at_seconds&#39;: datetime.datetime.now().timestamp()
+    })
+    seed = parameters[&#39;seed&#39;]
+    random.seed(seed)
+    np.random.seed(seed)
+
+    data = load_iris()
+    # In case you want to load a file from a path
+    # path = os.path.join(custom_config[&#39;path&#39;], parameters[&#39;dataset&#39;])
+    # data = pd.read_csv(path)
+
+    X = data.data
+    y = data.target
+
+    model = make_pipeline(StandardScaler(), SVC(kernel=parameters[&#39;kernel&#39;], gamma=&#39;auto&#39;))
+    result_processor.process_results({
+        &#39;pipeline&#39;: str(model)
+    })
+
+    if parameters[&#39;dataset&#39;] != &#39;iris&#39;:
+        raise ValueError(&quot;Example error&quot;)
+
+    scores = cross_validate(model, X, y,
+                            cv=parameters[&#39;cross_validation_splits&#39;],
+                            scoring=(&#39;accuracy&#39;, &#39;f1_micro&#39;),
+                            return_train_score=True
+                            )
+
+    result_processor.process_results({
+        &#39;train_f1&#39;: np.mean(scores[&#39;train_f1_micro&#39;]),
+        &#39;train_accuracy&#39;: np.mean(scores[&#39;train_accuracy&#39;])
+    })
+
+    result_processor.process_results({
+        &#39;test_f1&#39;: np.mean(scores[&#39;test_f1_micro&#39;]),
+        &#39;test_accuracy&#39;: np.mean(scores[&#39;test_accuracy&#39;])
+    })
+
+
+experimenter.unpause_experiment(1, resume_after_5_seconds)
+
+experimenter.get_table()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>dataset</th>
+      <th>cross_validation_splits</th>
+      <th>seed</th>
+      <th>kernel</th>
+      <th>creation_date</th>
+      <th>status</th>
+      <th>start_date</th>
+      <th>name</th>
+      <th>machine</th>
+      <th>pipeline</th>
+      <th>train_f1</th>
+      <th>train_accuracy</th>
+      <th>test_f1</th>
+      <th>test_accuracy</th>
+      <th>paused_at_seconds</th>
+      <th>resumed_at_seconds</th>
+      <th>end_date</th>
+      <th>error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>linear</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>done</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>example_notebook</td>
+      <td>Worklaptop</td>
+      <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.708350e+09</td>
+      <td>1.708350e+09</td>
+      <td>2024-02-19 14:35:01</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>linear</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>linear</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>poly</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>poly</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>poly</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>rbf</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>rbf</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>rbf</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>2</td>
+      <td>sigmoid</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>11</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>4</td>
+      <td>sigmoid</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>iris</td>
+      <td>5</td>
+      <td>6</td>
+      <td>sigmoid</td>
+      <td>2024-02-19 14:34:46</td>
+      <td>created</td>
+      <td>NaT</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="CodeCarbon-Entries">
+<h2>CodeCarbon Entries<a class="headerlink" href="#CodeCarbon-Entries" title="Permalink to this heading"></a></h2>
+<p>Note that for each execution a different <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> entry is created.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_codecarbon_table()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>experiment_id</th>
+      <th>codecarbon_timestamp</th>
+      <th>project_name</th>
+      <th>run_id</th>
+      <th>duration_seconds</th>
+      <th>emissions_kg</th>
+      <th>emissions_rate_kg_sec</th>
+      <th>cpu_power_watt</th>
+      <th>gpu_power_watt</th>
+      <th>...</th>
+      <th>cpu_model</th>
+      <th>gpu_count</th>
+      <th>gpu_model</th>
+      <th>longitude</th>
+      <th>latitude</th>
+      <th>ram_total_size</th>
+      <th>tracking_mode</th>
+      <th>on_cloud</th>
+      <th>power_usage_efficiency</th>
+      <th>offline_mode</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>2024-02-19 14:34:56</td>
+      <td>codecarbon</td>
+      <td>90e1b965-1fa2-4a34-818e-acd21c35a774</td>
+      <td>5.058335</td>
+      <td>2.182486e-05</td>
+      <td>0.000004</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>9.5312</td>
+      <td>52.4771</td>
+      <td>15.474918</td>
+      <td>process</td>
+      <td>N</td>
+      <td>1.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>1</td>
+      <td>2024-02-19 14:35:01</td>
+      <td>codecarbon</td>
+      <td>94335fd1-ea83-4bb9-8a37-b91ed39f39b6</td>
+      <td>0.246198</td>
+      <td>9.941419e-07</td>
+      <td>0.000004</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>9.5312</td>
+      <td>52.4771</td>
+      <td>15.474918</td>
+      <td>process</td>
+      <td>N</td>
+      <td>1.0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 34 columns</p>
+</div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="example_logtables.html" class="btn btn-neutral float-left" title="Example: Usage of Logtables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../autoapi/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Tanja Tornede, Alexander Tornede, Lukas Fehring, Lukas Gehring, Helena Graf, Jonas Hanselle, Felix Mohr, Marcel Wever.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

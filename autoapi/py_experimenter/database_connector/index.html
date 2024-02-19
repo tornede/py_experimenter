@@ -229,7 +229,7 @@ inheritance.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector.get_experiment_configuration">
-<span class="sig-name descname"><span class="pre">get_experiment_configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">random_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector.get_experiment_configuration" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_experiment_configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">random_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector.get_experiment_configuration" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -255,6 +255,11 @@ inheritance.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector._write_to_database">
 <span class="sig-name descname"><span class="pre">_write_to_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">List[str]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector._write_to_database" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector.pull_paused_experiment">
+<span class="sig-name descname"><span class="pre">pull_paused_experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector.pull_paused_experiment" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">

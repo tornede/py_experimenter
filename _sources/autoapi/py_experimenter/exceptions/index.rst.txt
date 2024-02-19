@@ -103,6 +103,14 @@ Module Contents
    Common base class for all non-exit exceptions.
 
 
+.. py:exception:: NoPausedExperimentsException
+
+
+   Bases: :py:obj:`PyExperimenterError`
+
+   Common base class for all non-exit exceptions.
+
+
 .. py:exception:: ConfigError
 
 
