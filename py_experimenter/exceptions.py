@@ -68,3 +68,11 @@ class InvalidValuesInConfiguration(ConfigError):
 
 class MissingLogTableError(ConfigError):
     pass
+
+
+class InvalidColumnError(Exception):  # todo Move
+    pass
+
+
+class InvalidLogtableError(Exception):  # todo Move
+    pass

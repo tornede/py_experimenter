@@ -1,0 +1,18 @@
+PY_EXPERIMENTER:
+  n_jobs: 5
+  Database:
+    provider: mysql
+    database: py_experimenter
+    table:
+      name: sqlite
+      database: py_experimenter
+      keyfields:
+        value:
+          type: int
+          values: [1,2,3,4,5,6,7,8,9,10]
+        exponent:
+          type: int
+          values: [1,2,3]
+      resultfields:
+          sin: float
+          cos: float

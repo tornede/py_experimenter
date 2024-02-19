@@ -1,40 +1,29 @@
 import logging
-from configparser import ConfigParser
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 import numpy as np
+from omegaconf import OmegaConf
 from pymysql import Error, connect
 
 from py_experimenter.database_connector import DatabaseConnector
 from py_experimenter.exceptions import DatabaseConnectionError, DatabaseCreationError
-from py_experimenter.utils import load_config
+from py_experimenter.utils import load_credential_config
 
 
 class DatabaseConnectorMYSQL(DatabaseConnector):
     _prepared_statement_placeholder = "%s"
+    _prepared_statement_placeholder = "%s"
 
-    def __init__(
-        self,
-        experiment_configuration: ConfigParser,
-        use_codecarbon: bool,
-        codecarbon_config: ConfigParser,
-        database_credential_file_path: str,
-        logger,
-    ):
-        database_credentials = load_config(database_credential_file_path)
-        self.host = database_credentials.get("CREDENTIALS", "host")
-        self.user = database_credentials.get("CREDENTIALS", "user")
-        self.password = database_credentials.get("CREDENTIALS", "password")
+    def __init__(self, database_configuration: OmegaConf, use_codecarbon: bool, credential_path: str, logger):
+        self.credential_path = credential_path
 
-        super().__init__(experiment_configuration, use_codecarbon, codecarbon_config, logger)
+        super().__init__(database_configuration, use_codecarbon, logger)
 
         self._create_database_if_not_existing()
 
     def _test_connection(self):
-        modified_credentials = self.database_credentials.copy()
-        del modified_credentials["database"]
         try:
-            connection = self.connect(modified_credentials)
+            connection = self.connect()
         except Exception as err:
             logging.error(err)
             raise DatabaseConnectionError(err)
@@ -42,38 +31,46 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             self.close_connection(connection)
 
     def _create_database_if_not_existing(self):
-        modified_credentials = self.database_credentials.copy()
-        del modified_credentials["database"]
         try:
-            connection = self.connect(modified_credentials)
+            connection = self.connect()
             cursor = self.cursor(connection)
             self.execute(cursor, "SHOW DATABASES")
             databases = [database[0] for database in self.fetchall(cursor)]
 
-            if self.database_name not in databases:
-                self.execute(cursor, f"CREATE DATABASE {self.database_name}")
+            if self.database_configuration.database_name not in databases:
+                self.execute(cursor, f"CREATE DATABASE {self.database_configuration.database_name}")
                 self.commit(connection)
             self.close_connection(connection)
         except Exception as err:
             raise DatabaseCreationError(f"Error when creating database: \n {err}")
+            raise DatabaseCreationError(f"Error when creating database: \n {err}")
 
-    def _extract_credentials(self):
-        return dict(host=self.host, user=self.user, database=self.database_name, password=self.password)
+    def connect(self):
+        def _get_credentials():
+            try:
+                credentials = load_credential_config(self.credential_path)
+                return {
+                    **credentials,
+                    "database": self.database_configuration.database_name,
+                }
+            except Exception as err:
+                logging.error(err)
+                raise DatabaseCreationError("Invalid credentials file!")
 
-    def connect(self, credentials=None):
+        credentials = _get_credentials()
         try:
-            if credentials is None:
-                credentials = self.database_credentials
             return connect(**credentials)
         except Error as err:
             raise DatabaseConnectionError(err)
+        finally:
+            credentials = None
 
     def _start_transaction(self, connection, readonly=False):
         if not readonly:
             connection.begin()
 
     def _table_exists(self, cursor, table_name: str = None) -> bool:
-        table_name = table_name if table_name is not None else self.table_name
+        table_name = table_name if table_name is not None else self.database_configuration.table_name
         self.execute(cursor, f"SHOW TABLES LIKE '{table_name}'")
         return self.fetchall(cursor)
 
@@ -81,16 +78,15 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
     def get_autoincrement():
         return "AUTO_INCREMENT"
 
-    def _table_has_correct_structure(self, cursor, typed_fields):
+    def _table_has_correct_structure(self, cursor, typed_fields: Dict[str, str]):
         self.execute(
             cursor,
             f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = {self._prepared_statement_placeholder} AND TABLE_SCHEMA = {self._prepared_statement_placeholder}",
-            (self.table_name, self.database_name),
+            (self.database_configuration.table_name, self.database_configuration.database_name),
         )
-
-        columns = self._exclude_fixed_columns([k[0] for k in self.fetchall(cursor)])
-        config_columns = [k[0] for k in typed_fields]
-        return set(columns) == set(config_columns)
+        columns = self.fetchall(cursor)
+        columns = self._exclude_fixed_columns([column[0] for column in columns])
+        return set(columns) == set(typed_fields.keys())
 
     def _pull_open_experiment(self, random_order) -> Tuple[int, List, List]:
         try:
@@ -109,30 +105,23 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
     def _get_pull_experiment_query(self, order_by: str):
         return super()._get_pull_experiment_query(order_by) + " FOR UPDATE;"
 
+
     @staticmethod
     def random_order_string():
         return "RAND()"
+        return "RAND()"
 
     def _get_existing_rows(self, column_names):
-        def _remove_double_whitespaces(existing_rows):
-            return [" ".join(row.split()) for row in existing_rows]
-
-        def _remove_string_markers(existing_rows):
-            return [row.replace("'", "") for row in existing_rows]
-
         connection = self.connect()
         cursor = self.cursor(connection)
-        self.execute(cursor, f"SELECT {','.join(column_names)} FROM {self.table_name}")
-        existing_rows = list(map(np.array2string, np.array(self.fetchall(cursor))))
-        existing_rows = _remove_string_markers(existing_rows)
-        existing_rows = _remove_double_whitespaces(existing_rows)
-        self.close_connection(connection)
-        return existing_rows
+        self.execute(cursor, f"SELECT {','.join(column_names)} FROM {self.database_configuration.table_name}")
+        values = self.fetchall(cursor)
+        return [dict(zip(column_names, existing_row)) for existing_row in values]
 
     def get_structure_from_table(self, cursor):
         def _get_column_names_from_entries(entries):
             return [entry[0] for entry in entries]
 
-        self.execute(cursor, f"SHOW COLUMNS FROM {self.table_name}")
+        self.execute(cursor, f"SHOW COLUMNS FROM {self.database_configuration.table_name}")
         column_names = _get_column_names_from_entries(self.fetchall(cursor))
         return column_names

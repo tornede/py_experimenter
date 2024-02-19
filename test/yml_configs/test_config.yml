@@ -1,0 +1,58 @@
+PY_EXPERIMENTER:
+  n_jobs: 5
+
+  Database:
+    provider: sqlite
+    database: py_experimenter
+    table: 
+      name: test_table_sqlite
+      keyfields:
+        datasetName:
+          type: VARCHAR(255)
+          values:
+          - A
+          - B
+        internal_performance_measure:
+          type: VARCHAR(255)
+          values:
+          - X
+          - Z
+        featureObjectiveMeasure:
+          type: VARCHAR(255)
+          values:
+          - M
+        seed:
+          type: INT
+          values:
+          - 1
+          - 2
+        range_values:
+          type: int
+          values:
+            start: 0
+            stop: 5
+            step: 1
+      result_timestamps: True
+      resultfields:
+        final_pipeline: LONGTEXT
+        internal_performance: FLOAT
+        performance_asymmetric_loss: FLOAT
+    logtables:
+      new_best_performance: 
+        new_best_performance: INT
+      epochs:
+        runtime: FLOAT
+        performance: FLOAT
+
+
+    
+  Custom:
+    datapath: path/to/data
+  
+  CodeCarbon:
+    offline_mode: False
+    measure_power_secs: 15
+    tracking_mode: machine
+    log_level: error
+    save_to_file: True
+    output_dir: output/CodeCarbon

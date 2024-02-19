@@ -1,0 +1,41 @@
+PY_EXPERIMENTER:
+  n_jobs: 5
+
+  Database:
+    provider: sqlite
+    database: py_experimenter
+    table:
+      name: example_logtables
+      keyfields:
+        dataset:
+          type: VARCHAR(50)
+          values:
+          - iris
+        cross_validation_splits:
+          type: INT
+          values:
+          - 5
+        seed:
+          type: INT
+          values:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+      result_timestamps: false
+      resultfields:
+        best_kernel_f1: VARCHAR(50)
+        best_kernel_accuracy: VARCHAR(50)
+    logtables:
+      train_scores:
+        f1: DOUBLE
+        accuracy: DOUBLE
+        kernel: VARCHAR(50)
+      test_f1: 
+        test_f1: DOUBLE
+      test_accuracy:
+        test_accuracy: DOUBLE
+
+  Custom:
+    path: sample_data

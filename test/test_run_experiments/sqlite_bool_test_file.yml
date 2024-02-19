@@ -1,0 +1,15 @@
+PY_EXPERIMENTER:
+  n_jobs: 1
+  Database:
+    provider: sqlite
+    database: py_experimenter
+    table:
+      name: test_table
+      keyfields:
+        value:
+          type: bool
+          values:
+          - True
+          - False
+      resultfields:
+          given_bool: BOOLEAN
