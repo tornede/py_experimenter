@@ -8,11 +8,11 @@ from py_experimenter.database_connector import DatabaseConnector
 from py_experimenter.experimenter import PyExperimenter
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def experimenter_sqlite():
     # Create config directory if it does not exist
-    if not os.path.exists('config'):
-        os.mkdir('config')
+    if not os.path.exists("config"):
+        os.mkdir("config")
 
     # Create config file
     content = """
@@ -35,37 +35,35 @@ def experimenter_sqlite():
     [CUSTOM] 
     path = sample_data
     """
-    experiment_configuration = os.path.join('config', 'example_logtables.cfg')
+    experiment_configuration = os.path.join("config", "example_logtables.cfg")
     with open(experiment_configuration, "w") as f:
         f.write(content)
 
-    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration, name='example_notebook')
+    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration, name="example_notebook")
     yield experimenter
 
     experimenter.delete_table()
 
 
 def test_delete_table_sqlite(experimenter_sqlite):
-    with patch.object(DatabaseConnector, 'connect', return_value=None), \
-            patch.object(DatabaseConnector, 'cursor', return_value=None), \
-            patch.object(DatabaseConnector, 'commit', return_value=None):
-
-        with patch.object(DatabaseConnector, 'execute', return_value=None) as mock_execute:
+    with patch.object(DatabaseConnector, "connect", return_value=None), patch.object(DatabaseConnector, "cursor", return_value=None), patch.object(
+        DatabaseConnector, "commit", return_value=None
+    ):
+        with patch.object(DatabaseConnector, "execute", return_value=None) as mock_execute:
             experimenter_sqlite.delete_table()
 
             assert mock_execute.call_count == 5
-            assert mock_execute.call_args_list[0][0][1] == 'DROP TABLE IF EXISTS example_logtables__train_scores'
-            assert mock_execute.call_args_list[1][0][1] == 'DROP TABLE IF EXISTS example_logtables__test_f1'
-            assert mock_execute.call_args_list[2][0][1] == 'DROP TABLE IF EXISTS example_logtables__test_accuracy'
-            assert mock_execute.call_args_list[3][0][1] == 'DROP TABLE IF EXISTS example_logtables_codecarbon'
-            assert mock_execute.call_args_list[4][0][1] == 'DROP TABLE IF EXISTS example_logtables'
+            assert mock_execute.call_args_list[0][0][1] == "DROP TABLE IF EXISTS example_logtables__train_scores"
+            assert mock_execute.call_args_list[1][0][1] == "DROP TABLE IF EXISTS example_logtables__test_f1"
+            assert mock_execute.call_args_list[2][0][1] == "DROP TABLE IF EXISTS example_logtables__test_accuracy"
+            assert mock_execute.call_args_list[3][0][1] == "DROP TABLE IF EXISTS example_logtables_codecarbon"
+            assert mock_execute.call_args_list[4][0][1] == "DROP TABLE IF EXISTS example_logtables"
 
 
 def test_get_table_sqlite(experimenter_sqlite):
-    with patch.object(DatabaseConnector, 'connect', return_value=None), \
-            patch.object(pandas, 'read_sql', return_value=pandas.DataFrame()), \
-            patch.object(DatabaseConnector, 'close_connection', return_value=None) as mock_close:
-
+    with patch.object(DatabaseConnector, "connect", return_value=None), patch.object(
+        pandas, "read_sql", return_value=pandas.DataFrame()
+    ), patch.object(DatabaseConnector, "close_connection", return_value=None) as mock_close:
         df = experimenter_sqlite.get_codecarbon_table()
 
         assert df.empty is True

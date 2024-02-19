@@ -8,13 +8,18 @@ import numpy as np
 import pandas as pd
 
 from py_experimenter import utils
-from py_experimenter.exceptions import (CreatingTableError, DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperimentsLeftException,
-                                        NoPausedExperimentsException, TableHasWrongStructureError)
+from py_experimenter.exceptions import (
+    CreatingTableError,
+    DatabaseConnectionError,
+    EmptyFillDatabaseCallError,
+    NoExperimentsLeftException,
+    NoPausedExperimentsException,
+    TableHasWrongStructureError,
+)
 from py_experimenter.experiment_status import ExperimentStatus
 
 
 class DatabaseConnector(abc.ABC):
-
     def __init__(self, config: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser, logger):
         self.logger = logger
         self.config = config
@@ -267,7 +272,7 @@ class DatabaseConnector(abc.ABC):
     def pull_paused_experiment(self, experiment_id: int) -> Dict[str, Any]:
         connnection = self.connect()
         cursor = self.cursor(connnection)
-        keyfields = ','.join(utils.get_keyfield_names(self.config))
+        keyfields = ",".join(utils.get_keyfield_names(self.config))
         query = f"SELECT {keyfields} FROM {self.table_name} WHERE id = {self._prepared_statement_placeholder} AND status = {self._prepared_statement_placeholder};"
         self.execute(cursor, query, (experiment_id, ExperimentStatus.PAUSED.value))
         keyfield_values = self.fetchall(cursor)
