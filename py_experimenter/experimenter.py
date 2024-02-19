@@ -362,17 +362,17 @@ class PyExperimenter:
 
     def unpause_experiment(self, experiment_id: int, experiment_function: Callable) -> None:
         """
-        Pulls the experiment with the given `experiment_id` from the database (if its `paused`) table and executes it. In
-        this context executing means that `experiment_function` is executed with the keyfield values of the pulled experiment. 
+        Pulls the experiment with the given `experiment_id` from the database (if it is `paused`) table and executes it. In
+        this context "executing" means that the given `experiment_function` is executed with the keyfield values of the pulled experiment.
 
-        After pulling the epxeriment its status is changed to `running` before and changed to `done` after the
+        After pulling the experiment its status is changed to `running` before and changed to `done` after the
         execution of `experiment_function` if no error occurred. If the function tries to pull an experiment that is
         not in the `paused` state, an error is raised.
 
         :raises NoPausedExperimentsException if there are no paused experiment with id `experiment_id`.
-        :param experiment_id: Id of the experiment that should be unpaused and executed.
+        :param experiment_id: _description_ The id of the experiment to be executed.
         :type experiment_id: int
-        :param experiment_function: Function that should be executed. Note that the function should likely return
+        :param experiment_function: _description_ The experiment function to use to continue the given experiment
         :type experiment_function: Callable
         """
         keyfield_dict, _ = self.dbconnector.pull_paused_experiment(experiment_id)

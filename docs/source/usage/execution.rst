@@ -89,6 +89,7 @@ Alternatively, or additionally, specific rows can be added to the table. Note th
         }
     ])
 
+.. _execute_experiments:
 
 -------------------
 Execute Experiments
@@ -163,5 +164,40 @@ Tracking information about the carbon footprint of experiments is supported via 
 Pausing and Unpausing Experiments
 ---------------------------------
 
-For convenience, we support pausing and unpausing experiments. This means that you can use one experiment to run multiple experiment functions, by finishing the first experiment with a pause and then continuing with a second (differing) experiment function.
-Note that this function does not support parallelization and the experiment_id has to be given explicitly. For more information check the example.
+For convenience, we support pausing and unpausing experiments. This means that you can use one ``PyExperimenter`` to start an experiment, which will be paused after certain operations. Therefore, it can be resumed later on. Afterwards, depending on the parametrization of ``execute()`` of the ``PyExperimenter`` instance (see :ref:`asdf <execute_experiments:>`), the experimenter terminates or another experiment will be started. 
+
+To pause an experiment, the experiment function has to return the state ``paused``:
+
+.. code-block:: 
+
+    def run_experiment_until_pause(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+        # do something
+        
+        if some_reason_to_pause:
+            return ExperimentStatus.PAUSED.value # or return 'paused'
+        
+        # do further things
+        return ExperimentStatus.DONE.value
+    
+    experimenter = PyExperimenter()
+    experimenter.execute(
+        experiment_function=run_experiment_until_pause, 
+        max_experiments=1
+    )
+
+At a later point in time, the experiment can be unpaused and continued. This can be done by calling ``unpause_experiment()`` on ``PyExperimenter`` instance given the specific ``experiment_id`` of the experiment to continue, together with a separate experiment function, which only contains experiment code to be executed after the pause. Note that only a single ``experiment_id`` can be executed at the same time, i.e. there is no parallelization of unpausing multiple ``experiment_id`` supported.
+
+.. code-block:: 
+
+    def run_experiment_after_pause(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+        # do something
+        return
+
+    experimenter = PyExperimenter()
+    experimenter.unpause_experiment(
+        experiment_id=1, 
+        experiment_function=run_experiment_after_pause
+    )
+
+A complete example about how to pause and continue an experiment can be found in the :ref:`examples section <examples>`.
+
