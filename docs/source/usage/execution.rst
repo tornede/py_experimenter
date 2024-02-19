@@ -166,7 +166,7 @@ Pausing and Unpausing Experiments
 
 For convenience, we support pausing and unpausing experiments. This means that you can use one ``PyExperimenter`` to start an experiment, which will be paused after certain operations. Therefore, it can be resumed later on. Afterwards, depending on the parametrization of ``execute()`` of the ``PyExperimenter`` instance (see :ref:`asdf <execute_experiments:>`), the experimenter terminates or another experiment will be started. 
 
-To pause an experiment, the experiment function has to return the state ``paused``:
+To pause an experiment, the experiment function has to return the state ``ExperimentStatus.PAUSED``:
 
 .. code-block:: 
 
@@ -174,10 +174,10 @@ To pause an experiment, the experiment function has to return the state ``paused
         # do something
         
         if some_reason_to_pause:
-            return ExperimentStatus.PAUSED.value # or return 'paused'
+            return ExperimentStatus.PAUSED
         
         # do further things
-        return ExperimentStatus.DONE.value
+        return ExperimentStatus.DONE
     
     experimenter = PyExperimenter()
     experimenter.execute(
@@ -191,7 +191,7 @@ At a later point in time, the experiment can be unpaused and continued. This can
 
     def run_experiment_after_pause(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
         # do something
-        return
+        return ExperimentStatus.DONE
 
     experimenter = PyExperimenter()
     experimenter.unpause_experiment(
@@ -199,5 +199,5 @@ At a later point in time, the experiment can be unpaused and continued. This can
         experiment_function=run_experiment_after_pause
     )
 
-A complete example about how to pause and continue an experiment can be found in the :ref:`examples section <examples>`.
+A complete example on how to pause and continue an experiment can be found in the :ref:`examples section <examples>`.
 

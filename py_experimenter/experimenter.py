@@ -318,7 +318,7 @@ class PyExperimenter:
 
     def execute(
         self,
-        experiment_function: Callable[[Dict, Dict, ResultProcessor], str],
+        experiment_function: Callable[[Dict, Dict, ResultProcessor], Optional[ExperimentStatus]],
         max_experiments: int = -1,
         random_order=False,
     ) -> None:
@@ -337,13 +337,13 @@ class PyExperimenter:
         After pulling an experiment, `experiment_function` is executed with keyfield values of the pulled open
         experiment and the experiments status is set to `running`. Results can be continuously written to the database
         during the execution via `ResultProcessor` that is given as parameter to `experiment_function`. If the execution
-        was successful (returns `None` or `ExperimentStatus.Done.value`), the status of the corresponding experiment is set to `done`.
-        Otherwise, if an error occurred (error raised or `ExperimentStatus.Error.value` returned), the status is changed to  `error`
+        was successful (returns `None` or `ExperimentStatus.Done.`), the status of the corresponding experiment is set to `done`.
+        Otherwise, if an error occurred (error raised or `ExperimentStatus.Error` returned), the status is changed to  `error`
         and, in case an error occured, it is logged into the database table. Alternatively the experiment can be paused by returning
-        `ExperimentStatus.PAUSED.value`. In this case the status of the experiment is set to `paused` and the experiment
+        `ExperimentStatus.PAUSED`. In this case the status of the experiment is set to `paused` and the experiment
         can be unpaused and executed again with the `unpause_experiment` method.
 
-        To pause the experiment the `experiment_function` can return `ExperimentStatus.PAUSED.value`. In this case the
+        To pause the experiment the `experiment_function` can return `ExperimentStatus.PAUSED`. In this case the
         status of the experiment is set to `paused` and the experiment can be unpaused and executed again with the
         `unpause_experiment` method.
 
@@ -352,7 +352,7 @@ class PyExperimenter:
         logging configuration and do not appear in the table.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
-        :type experiment_function:  Callable[[Dict, Dict, ResultProcessor], str],
+        :type experiment_function:  Callable[[Dict, Dict, ResultProcessor], Optional[ExperimentStatus]]
         :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments
             should be executed, set this to `-1`. Defaults to `-1`.
         :type max_experiments: int, optional
@@ -465,7 +465,7 @@ class PyExperimenter:
             if self.use_codecarbon:
                 tracker.start()
             final_status = experiment_function(keyfield_values, result_processor, custom_fields)
-            if final_status not in (None, ExperimentStatus.DONE.value, ExperimentStatus.ERROR.value, ExperimentStatus.PAUSED.value):
+            if final_status not in (None, ExperimentStatus.DONE, ExperimentStatus.ERROR, ExperimentStatus.PAUSED):
                 raise ValueError(f"Invalid final status {final_status}")
 
         except Exception:
@@ -474,11 +474,11 @@ class PyExperimenter:
             result_processor._write_error(error_msg)
             result_processor._change_status(ExperimentStatus.ERROR.value)
         else:
-            if final_status is None or final_status == ExperimentStatus.DONE.value:
+            if final_status is None or final_status == ExperimentStatus.DONE:
                 result_processor._change_status(ExperimentStatus.DONE.value)
-            elif final_status == ExperimentStatus.ERROR.value:
+            elif final_status == ExperimentStatus.ERROR:
                 result_processor._change_status(ExperimentStatus.ERROR.value)
-            elif final_status == ExperimentStatus.PAUSED.value:
+            elif final_status == ExperimentStatus.PAUSED:
                 result_processor._change_status(ExperimentStatus.PAUSED.value)
         finally:
             if self.use_codecarbon:
