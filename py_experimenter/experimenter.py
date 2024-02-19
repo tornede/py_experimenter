@@ -318,9 +318,7 @@ class PyExperimenter:
 
     def execute(
         self,
-        experiment_function: Callable[
-            [Dict, Dict, ResultProcessor], Optional[Union[ExperimentStatus.Done.value, ExperimentStatus.Error.value, ExperimentStatus.Paused.value]]
-        ],
+        experiment_function: Callable[[Dict, Dict, ResultProcessor], str],
         max_experiments: int = -1,
         random_order=False,
     ) -> None:
@@ -354,9 +352,7 @@ class PyExperimenter:
         logging configuration and do not appear in the table.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
-        :type experiment_function: Callable[
-              [Dict, Dict, ResultProcessor], Optional[Union[ExperimentStatus.Done.value, ExperimentStatus.Error.value, ExperimentStatus.Paused.value]]
-            ]
+        :type experiment_function:  Callable[[Dict, Dict, ResultProcessor], str],
         :param max_experiments: The number of experiments to be executed by this `PyExperimenter`. If all experiments
             should be executed, set this to `-1`. Defaults to `-1`.
         :type max_experiments: int, optional
