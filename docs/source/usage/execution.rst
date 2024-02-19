@@ -104,7 +104,7 @@ An experiment can be executed easily with the following call:
         random_order = False
     )
 
-- ``experiment_function`` is the previously defined :ref:`experiment funtion <experiment_function>`.
+- ``experiment_function`` is the previously defined :ref:`experiment function <experiment_function>`.
 - ``max_experiments`` determines how many experiments will be executed by this ``PyExperimenter``. If set to ``-1``, it will execute experiments in a sequential fashion until no more open experiments are available.
 - ``random_order`` determines if the experiments will be executed in a random order. By default, the parameter is set to ``False``, meaning that experiments will be executed ordered by their ``id``.
 
@@ -114,19 +114,19 @@ An experiment can be executed easily with the following call:
 Reset Experiments
 -----------------
 
-Each database table contains a ``status`` column, summarizing the current state of an experiment. Experiments can be reset based on these status. If this is done, the table rows having a given status will be deleted, and corresponding new rows without results will be created. A comma separated list of ``status`` has to be provided.
+Each database table contains a ``status`` column, summarizing the current state of an experiment. Experiments can be reset based on these states. If this is done, the table rows having a given status will be deleted, and corresponding new rows without results will be created. A comma separated list of ``status`` has to be provided.
 
 .. code-block:: 
     
     experimenter.reset_experiments(<status>, <status>, ...)
 
-The following status exist:
+The following states exist:
 
 - ``created``: All parameters for the experiment are defined and the experiment is ready for execution.
 - ``running``: The experiment is currently in execution.
 - ``done``: The execution of the experiment terminated without interruption and the results are written into the database.
 - ``error``: An error occurred during execution, which is also logged into the database.
-- ``paused``: The experiment was paused during execution. For more information check :ref:`pausing and unpausing experiments <pausing_and_unpausing_experiments>`.
+- ``paused``: The experiment was paused during execution. For more information check :ref:`pausing and unpausing experiments <_pausing_and_unpausing_experiments>`.
 
 
 .. _obtain_results:
@@ -156,9 +156,12 @@ Tracking information about the carbon footprint of experiments is supported via 
 
     experimenter.get_codecarbon_table()
 
+
+.. _pausing_and_unpausing_experiments:
+
 ---------------------------------
 Pausing and Unpausing Experiments
 ---------------------------------
 
-For convenience, we support pausing and unpausing experiments. This means that you can use one experiment to run multiple experiment funcitons, by finishing the first experiment with a pause and then continuing with a second (differing) experiment function.
-Note that this function does not support parralelisation and the experimentid has to be given explicitly. For more information check the exmaple.
+For convenience, we support pausing and unpausing experiments. This means that you can use one experiment to run multiple experiment functions, by finishing the first experiment with a pause and then continuing with a second (differing) experiment function.
+Note that this function does not support parallelization and the experiment_id has to be given explicitly. For more information check the example.
