@@ -328,7 +328,11 @@ class PyExperimenter:
         experiment and the experiments status is set to `running`. Results can be continuously written to the database
         during the execution via `ResultProcessor` that is given as parameter to `experiment_function`. If the execution
         was successful, the status of the corresponding experiment is set to `done`. Otherwise, if an error occurred
-        during the execution, the status is changed to  `error` and the raised error is logged into the database table.
+        during the execution, the status is changed to  `error` and the raised error is logged into the database table. 
+        
+        To pause the experiment the `experiment_function` can return `ExperimentStatus.PAUSED.value`. In this case the
+        status of the experiment is set to `paused` and the experiment can be unpaused and executed again with the
+        `unpause_experiment` method.
 
         Note that only errors raised within `experiment_function` are logged in to the database table. Therefore all
         errors raised before or after the execution of `experiment_function` are logged according to the local
@@ -366,9 +370,9 @@ class PyExperimenter:
         not in the `paused` state, an error is raised.
 
         :raises NoPausedExperimentsException if there are no paused experiment with id `experiment_id`.
-        :param experiment_id: _description_
+        :param experiment_id: Id of the experiment that should be unpaused and executed.
         :type experiment_id: int
-        :param experiment_function: _description_
+        :param experiment_function: Function that should be executed. Note that the function should likely return
         :type experiment_function: Callable
         """
         keyfield_dict, _ = self.dbconnector.pull_paused_experiment(experiment_id)
