@@ -11,13 +11,20 @@ from py_experimenter.utils import load_config
 
 
 class DatabaseConnectorMYSQL(DatabaseConnector):
-    _prepared_statement_placeholder = '%s'
+    _prepared_statement_placeholder = "%s"
 
-    def __init__(self, experiment_configuration: ConfigParser, use_codecarbon: bool, codecarbon_config: ConfigParser, database_credential_file_path: str, logger):
+    def __init__(
+        self,
+        experiment_configuration: ConfigParser,
+        use_codecarbon: bool,
+        codecarbon_config: ConfigParser,
+        database_credential_file_path: str,
+        logger,
+    ):
         database_credentials = load_config(database_credential_file_path)
-        self.host = database_credentials.get('CREDENTIALS', 'host')
-        self.user = database_credentials.get('CREDENTIALS', 'user')
-        self.password = database_credentials.get('CREDENTIALS', 'password')
+        self.host = database_credentials.get("CREDENTIALS", "host")
+        self.user = database_credentials.get("CREDENTIALS", "user")
+        self.password = database_credentials.get("CREDENTIALS", "password")
 
         super().__init__(experiment_configuration, use_codecarbon, codecarbon_config, logger)
 
@@ -25,7 +32,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
     def _test_connection(self):
         modified_credentials = self.database_credentials.copy()
-        del modified_credentials['database']
+        del modified_credentials["database"]
         try:
             connection = self.connect(modified_credentials)
         except Exception as err:
@@ -36,7 +43,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
     def _create_database_if_not_existing(self):
         modified_credentials = self.database_credentials.copy()
-        del modified_credentials['database']
+        del modified_credentials["database"]
         try:
             connection = self.connect(modified_credentials)
             cursor = self.cursor(connection)
@@ -48,7 +55,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
                 self.commit(connection)
             self.close_connection(connection)
         except Exception as err:
-            raise DatabaseCreationError(f'Error when creating database: \n {err}')
+            raise DatabaseCreationError(f"Error when creating database: \n {err}")
 
     def _extract_credentials(self):
         return dict(host=self.host, user=self.user, database=self.database_name, password=self.password)
@@ -75,9 +82,11 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         return "AUTO_INCREMENT"
 
     def _table_has_correct_structure(self, cursor, typed_fields):
-        self.execute(cursor,
-                     f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = {self._prepared_statement_placeholder} AND TABLE_SCHEMA = {self._prepared_statement_placeholder}",
-                     (self.table_name, self.database_name))
+        self.execute(
+            cursor,
+            f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = {self._prepared_statement_placeholder} AND TABLE_SCHEMA = {self._prepared_statement_placeholder}",
+            (self.table_name, self.database_name),
+        )
 
         columns = self._exclude_fixed_columns([k[0] for k in self.fetchall(cursor)])
         config_columns = [k[0] for k in typed_fields]
@@ -99,14 +108,14 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
     def _get_pull_experiment_query(self, order_by: str):
         return super()._get_pull_experiment_query(order_by) + " FOR UPDATE;"
-    
+
     @staticmethod
     def random_order_string():
-        return 'RAND()'
+        return "RAND()"
 
     def _get_existing_rows(self, column_names):
         def _remove_double_whitespaces(existing_rows):
-            return [' '.join(row.split()) for row in existing_rows]
+            return [" ".join(row.split()) for row in existing_rows]
 
         def _remove_string_markers(existing_rows):
             return [row.replace("'", "") for row in existing_rows]

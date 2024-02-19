@@ -10,6 +10,7 @@ Feature
 -------
 
 - Add `random_order` parameter to `PyExperimenter.execute()` to allow for random order of experiments.
+- Add pause functionality to `PyExperimenter` to allow for pausing the execution of experiments, which can be continued later on.
 
 Fix
 ---
