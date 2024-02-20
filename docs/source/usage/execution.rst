@@ -164,7 +164,7 @@ Tracking information about the carbon footprint of experiments is supported via 
 Pausing and Unpausing Experiments
 ---------------------------------
 
-For convenience, we support pausing and unpausing experiments. This means that you can use one ``PyExperimenter`` to start an experiment, which will be paused after certain operations. Therefore, it can be resumed later on. Afterwards, depending on the parametrization of ``execute()`` of the ``PyExperimenter`` instance (see :ref:`asdf <execute_experiments>`), the experimenter terminates or another experiment will be started. 
+For convenience, we support pausing and unpausing experiments. This means that you can use one ``PyExperimenter`` to start an experiment, which will be paused after certain operations. Therefore, it can be resumed later on. Afterwards, depending on the parametrization of ``execute()`` of the ``PyExperimenter`` instance (see :ref:`in Execute Experiments <execute_experiments>`), the experimenter terminates or another experiment will be started. 
 
 To pause an experiment, the experiment function has to return the state ``ExperimentStatus.PAUSED``:
 
@@ -209,7 +209,7 @@ A complete example on how to pause and continue an experiment can be found in th
 Close SSH Tunnel
 ----------------
 
-If an SSH tunnel was opened during the creation of the ``PyExperimenter``, it has to be closed manually by calling
+If an SSH tunnel was opened during the creation of the ``PyExperimenter``, it has to be closed manually by calling the following method:
 
 .. code-block:: python 
 
