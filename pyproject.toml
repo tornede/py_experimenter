@@ -36,6 +36,7 @@ joblib = "^1.2.0"
 codecarbon = ">=2.2.1"
 pymysql = "^1.0.3"
 omegaconf = "^2.3.0"
+sshtunnel = "^0.4.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.0"
