@@ -2,17 +2,19 @@
 Changelog
 =========
 
-v1.4.0 (??.??.2024)
+v1.4.0 (20.02.2024)
 ===================
 
 Feature
 -------
+- Add functionality to pause and later continue experiments. 
 - Change the supported database configuration file type to YAML.
 - Change the supported credentials file type to YAML.
 - Add support for ssh jump hosts in the database connection.
 
 Fix
 ---
+- Fix a problem when executing fill_table that caused some entries to occur twice.
 - Temporary CodeCarbon files are automatically removed at termination.
 
 
