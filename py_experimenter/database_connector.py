@@ -129,7 +129,6 @@ class DatabaseConnector(abc.ABC):
             self.execute(cursor, query)
         except Exception as err:
             raise CreatingTableError(f"Error when creating table: {err}")
-            raise CreatingTableError(f"Error when creating table: {err}")
 
     def _get_create_table_query(self, columns: List[Tuple["str"]], table_name: str, table_type: str = "standard"):
         columns = ["%s %s DEFAULT NULL" % (field, datatype) for field, datatype in columns.items()]
@@ -351,6 +350,7 @@ class DatabaseConnector(abc.ABC):
 
         self.execute(cursor, f"DROP TABLE IF EXISTS {self.database_configuration.table_name}")
         self.commit(connection)
+        self.close_connection(connection)
 
     def get_logtable(self, logtable_name: str) -> pd.DataFrame:
         return self.get_table(f"{self.database_configuration.table_name}__{logtable_name}")

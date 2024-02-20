@@ -32,7 +32,7 @@ def test_init(create_database_if_not_existing_mock, test_connection_mysql, test_
 
     logger = logging.getLogger("test_logger")
 
-    experimenter = PyExperimenter(config_path, name="test_logger")
+    experimenter = PyExperimenter(config_path, name="test_logger", use_ssh_tunnel=False)
     result_processor = ResultProcessor(experimenter.config.database_configuration, experimenter.db_connector, 0, logger)
 
     assert table_name == result_processor.database_config.table_name
@@ -60,7 +60,9 @@ def test_process_results_raises_error(create_database_mock, test_connection_mock
     test_connection_mock.return_value = None
     table_name = "test_table"
 
-    experimenter = PyExperimenter(os.path.join("test", "test_config_files", "load_config_test_file", "mysql_test_file.yml"), name="test_logger")
+    experimenter = PyExperimenter(
+        os.path.join("test", "test_config_files", "load_config_test_file", "mysql_test_file.yml"), use_ssh_tunnel=False, name="test_logger"
+    )
     result_processor = ResultProcessor(experimenter.config.database_configuration, experimenter.db_connector, experiment_id, experimenter.logger)
     with pytest.raises(error, match=errorstring):
         result_processor.process_results(results)
@@ -103,7 +105,7 @@ def test_add_timestamps_to_results(results, expected_results):
 def result_processor(test_connection_mock, create_database_mock):
     test_connection_mock.return_value = None
     create_database_mock.return_value = None
-    experimenter = PyExperimenter(os.path.join("test", "test_logtables", "mysql_logtables.yml"), name="test_logger")
+    experimenter = PyExperimenter(os.path.join("test", "test_logtables", "mysql_logtables.yml"), name="test_logger", use_ssh_tunnel=False)
     result_processor = ResultProcessor(experimenter.config.database_configuration, experimenter.db_connector, 0, experimenter.logger)
     return result_processor
 

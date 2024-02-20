@@ -16,13 +16,22 @@ from py_experimenter.result_processor import ResultProcessor
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL._create_database_if_not_existing")
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL._test_connection")
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL.fill_table")
+@patch("py_experimenter.experimenter.DatabaseConnectorMYSQL.start_ssh_tunnel")
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL.connect")
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL.cursor")
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL.fetchall")
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL.close_connection")
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL.execute")
 def test_tables_created(
-    execute_mock, close_connection_mock, fetchall_mock, cursor_mock, connect_mock, fill_table_mock, test_connection_mock, create_database_mock
+    execute_mock,
+    close_connection_mock,
+    fetchall_mock,
+    cursor_mock,
+    connect_mock,
+    fill_table_mock,
+    shh_tunnel_mock,
+    test_connection_mock,
+    create_database_mock,
 ):
     execute_mock.return_value = None
     fetchall_mock.return_value = None
@@ -30,6 +39,7 @@ def test_tables_created(
     cursor_mock.return_value = None
     connect_mock.return_value = None
     fill_table_mock.return_value = None
+    shh_tunnel_mock.return_value = None
     create_database_mock.return_value = None
     test_connection_mock.return_value = None
     experimenter = PyExperimenter(os.path.join("test", "test_logtables", "mysql_logtables.yml"))
@@ -47,8 +57,10 @@ def test_tables_created(
     )
 
 
+@patch("py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.start_ssh_tunnel")
 @freeze_time("2012-01-14 03:21:34")
-def test_logtable_insertion():
+def test_logtable_insertion(ssh_mock):
+    ssh_mock.return_value = None
     logger = logging.getLogger("test_logger")
     config = OmegaConf.load(os.path.join("test", "test_logtables", "mysql_logtables.yml"))
     config = DatabaseCfg.extract_config(config, logger)
@@ -62,6 +74,7 @@ def test_logtable_insertion():
 
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL._create_database_if_not_existing")
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL._test_connection")
+@patch("py_experimenter.experimenter.DatabaseConnectorMYSQL.start_ssh_tunnel")
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL.connect")
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL.cursor")
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL.commit")
@@ -69,11 +82,21 @@ def test_logtable_insertion():
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL.close_connection")
 @patch("py_experimenter.experimenter.DatabaseConnectorMYSQL.execute")
 def test_delete_logtable(
-    execution_mock, close_connection_mock, commit_mocck, fetchall_mock, cursor_mock, connect_mock, test_connection_mock, create_database_mock
+    execution_mock,
+    close_connection_mock,
+    commit_mocck,
+    fetchall_mock,
+    cursor_mock,
+    connect_mock,
+    ssh_mock,
+    test_connection_mock,
+    create_database_mock,
 ):
     fetchall_mock.return_value = cursor_mock.return_value = connect_mock.return_value = commit_mocck.return_value = None
-    close_connection_mock.return_value = test_connection_mock.return_value = create_database_mock.return_value = execution_mock.return_value = None
-    experimenter = PyExperimenter(os.path.join("test", "test_logtables", "mysql_logtables.yml"), use_codecarbon=False)
+    close_connection_mock.return_value = test_connection_mock.return_value = create_database_mock.return_value = execution_mock.return_value = (
+        ssh_mock.return_value
+    ) = None
+    experimenter = PyExperimenter(os.path.join("test", "test_logtables", "mysql_logtables.yml"), use_codecarbon=False, use_ssh_tunnel=False)
     experimenter.delete_table()
     execution_mock.assert_has_calls(
         [
@@ -120,6 +143,7 @@ def test_integration_with_resultfields():
     logtable2 = [x[:2] + x[3:] for x in logtable2]
     assert logtable2 == [(1, 1, 1), (2, 1, 3)]
     assert timesteps == timesteps2
+    experimenter.close_ssh()
 
 
 # Integration Test without Resultfields
@@ -132,7 +156,7 @@ def own_function_without_resultfields(keyfields: dict, result_processor: ResultP
 
 
 def test_integration_without_resultfields():
-    experimenter = PyExperimenter(os.path.join("test", "test_logtables", "mysql_logtables_no_resultfields.yml"))
+    experimenter = PyExperimenter(os.path.join("test", "test_logtables", "mysql_logtables_no_resultfields.yml"), use_ssh_tunnel=False)
     try:
         experimenter.delete_table()
     except Exception:
@@ -152,3 +176,4 @@ def test_integration_without_resultfields():
     logtable2 = [x[:2] + x[3:] for x in logtable2]
     assert logtable2 == [(1, 1, 1), (2, 1, 3)]
     assert timesteps == timesteps2
+    experimenter.close_ssh()

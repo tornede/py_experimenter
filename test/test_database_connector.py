@@ -18,7 +18,6 @@ from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
 from py_experimenter.experiment_status import ExperimentStatus
 from py_experimenter.experimenter import PyExperimenter
-from py_experimenter.utils import load_credential_config
 
 CONFIG_PATH = os.path.join("test", "test_config_files", "load_config_test_file", "sqlite_test_file.yml")
 CREDENTIAL_PATH = os.path.join("test", "test_config_files", "load_config_test_file", "mysql_fake_credentials.cfg")
@@ -130,7 +129,13 @@ def test_fill_table(
 
     config = OmegaConf.load(experiment_configuration_file_path)
     experiment_configuration = DatabaseCfg.extract_config(config, logger)
-    database_connector = DatabaseConnectorMYSQL(experiment_configuration, False, CREDENTIAL_PATH, logger=logger)
+    database_connector = DatabaseConnectorMYSQL(
+        experiment_configuration,
+        False,
+        CREDENTIAL_PATH,
+        False,
+        logger=logger,
+    )
 
     database_connector.fill_table(parameters)
     combinations = write_to_database_mock.call_args_list[0][0][0]
@@ -151,16 +156,18 @@ def test_fill_table(
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "_test_connection")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "_create_database_if_not_existing")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "connect")
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "start_ssh_tunnel")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "close_connection")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "cursor")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "execute")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "commit")
 def test_delete_experiments_with_condition(
-    commit_mock, execute_mock, cursor_mock, close_conenction_mock, connect_mock, create_database_if_not_existing_mock, _test_connection_mock
+    commit_mock, execute_mock, cursor_mock, close_conenction_mock, ssh_mock, connect_mock, create_database_if_not_existing_mock, _test_connection_mock
 ):
     create_database_if_not_existing_mock.return_value = None
     _test_connection_mock.return_value = None
     connect_mock.return_value = None
+    ssh_mock.return_value = None
     close_conenction_mock.return_value = None
     execute_mock.return_value = None
     cursor_mock.return_value = None
@@ -169,7 +176,7 @@ def test_delete_experiments_with_condition(
 
     config = OmegaConf.load(CONFIG_PATH)
     experiment_configuration = DatabaseCfg.extract_config(config, logger)
-    database_connector = DatabaseConnectorMYSQL(experiment_configuration, False, CREDENTIAL_PATH, logger=logger)
+    database_connector = DatabaseConnectorMYSQL(experiment_configuration, False, CREDENTIAL_PATH, use_ssh_tunnel=True, logger=logger)
 
     database_connector._delete_experiments_with_condition(f'WHERE status = "{ExperimentStatus.CREATED.value}"')
 
@@ -215,7 +222,7 @@ def test_get_experiments_with_condition(
 
     config = OmegaConf.load(CONFIG_PATH)
     experiment_configuration = DatabaseCfg.extract_config(config, logger)
-    database_connector = DatabaseConnectorMYSQL(experiment_configuration, False, CREDENTIAL_PATH, logger=logger)
+    database_connector = DatabaseConnectorMYSQL(experiment_configuration, False, CREDENTIAL_PATH, False, logger=logger)
 
     database_connector._get_experiments_with_condition(f'WHERE status = "{ExperimentStatus.CREATED.value}"')
 
@@ -225,13 +232,17 @@ def test_get_experiments_with_condition(
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "_test_connection")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "_create_database_if_not_existing")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "connect")
+@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "close_connection")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "cursor")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "execute")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "commit")
-def test_delete_table(commit_mock, execute_mock, cursor_mock, connect_mock, create_database_if_not_existing_mock, _test_connection_mock):
+def test_delete_table(
+    commit_mock, execute_mock, cursor_mock, close_connection_mock, connect_mock, create_database_if_not_existing_mock, _test_connection_mock
+):
     create_database_if_not_existing_mock.return_value = None
     _test_connection_mock.return_value = None
     connect_mock.return_value = None
+    close_connection_mock.return_value = None
     execute_mock.return_value = None
     cursor_mock.return_value = None
     commit_mock.return_value = None
@@ -240,7 +251,7 @@ def test_delete_table(commit_mock, execute_mock, cursor_mock, connect_mock, crea
 
     config = OmegaConf.load(CONFIG_PATH)
     experiment_configuration = DatabaseCfg.extract_config(config, logger)
-    database_connector = DatabaseConnectorMYSQL(experiment_configuration, False, CREDENTIAL_PATH, logger=logger)
+    database_connector = DatabaseConnectorMYSQL(experiment_configuration, False, CREDENTIAL_PATH, False, logger=logger)
 
     database_connector.delete_table()
 

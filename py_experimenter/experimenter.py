@@ -28,7 +28,8 @@ class PyExperimenter:
     def __init__(
         self,
         experiment_configuration_file_path: str = os.path.join("config", "experiment_configuration.yml"),
-        database_credential_file_path: str = os.path.join("config", "database_credentials.cfg"),
+        database_credential_file_path: str = os.path.join("config", "database_credentials.yml"),
+        use_ssh_tunnel: bool = False,
         table_name: str = None,
         database_name: str = None,
         use_codecarbon: bool = True,
@@ -47,6 +48,11 @@ class PyExperimenter:
         :param database_credential_file_path: The path to the database configuration file storing the credentials
             for the database connection, i.e., host, user and password. Defaults to 'config/database_credentials.cfg'.
         :type database_credential_file_path: str, optional
+        :param use_ssh_tunnel: If the used dataabse is sqlite this parameter is ignored Otherwise: If the database is mysql,
+            and `use_ssh_tunnel == True` the ssh credentials provided in `database_credential_file_path` used to establish
+            a ssh tunnel to the database. If `use_ssh_tunnel == True` but no ssh credentials are provided in
+            `database_credential_file_path`, no ssh tunnel is established. Defaults to True.
+        :type use_ssh_tunnel: bool
         :param table_name: The name of the database table, if given it will overwrite the table_name given in the
             `experiment_configuration_file_path`. If None, the table table name is taken from the experiment
             configuration file. Defaults to None.
@@ -106,6 +112,7 @@ class PyExperimenter:
             utils.write_codecarbon_config(self.config.codecarbon_configuration.config)
 
         self.database_credential_file_path = database_credential_file_path
+        self.use_ssh_tunnel = use_ssh_tunnel
 
         if table_name is not None:
             self.config.database_configuration.table_name = table_name
@@ -119,12 +126,21 @@ class PyExperimenter:
             self.db_connector = DatabaseConnectorLITE(self.config.database_configuration, self.use_codecarbon, self.logger)
         elif self.config.database_configuration.provider == "mysql":
             self.db_connector = DatabaseConnectorMYSQL(
-                self.config.database_configuration, self.use_codecarbon, database_credential_file_path, self.logger
+                self.config.database_configuration, self.use_codecarbon, database_credential_file_path, use_ssh_tunnel, self.logger
             )
         else:
             raise ValueError("The provider indicated in the config file is not supported")
 
         self.logger.info("Initialized and connected to database")
+
+    def close_ssh(self) -> None:
+        """
+        Closes the ssh tunnel if it is used.
+        """
+        if self.config.database_configuration.provider == "mysql" and self.use_ssh_tunnel:
+            self.db_connector.close_ssh_tunnel()
+        else:
+            self.logger.warning("No ssh tunnel to close")
 
     def fill_table_from_combination(self, fixed_parameter_combinations: List[dict] = None, parameters: dict = None) -> None:
         """
@@ -302,7 +318,9 @@ class PyExperimenter:
             except NoExperimentsLeftException:
                 break
 
-    def _execution_wrapper(self, experiment_function: Callable[[dict, dict, ResultProcessor], None], random_order: bool) -> None:
+    def _execution_wrapper(
+        self, experiment_function: Callable[[Dict, Dict, ResultProcessor], Optional[ExperimentStatus]], random_order: bool
+    ) -> None:
         """
         Executes the given `experiment_function` on one open experiment. To that end, one of the open experiments is pulled
         from the database table. Then `experiment_function` is executed on the keyfield values of the pulled experiment.
