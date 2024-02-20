@@ -18,6 +18,10 @@ class DatabaseConnectionError(DatabaseError):
     pass
 
 
+class SshTunnelError(DatabaseError):
+    pass
+
+
 class DatabaseQueryError(DatabaseError):
     pass
 

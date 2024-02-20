@@ -6,14 +6,14 @@ from typing import Dict
 
 import pytest
 
-from py_experimenter.exceptions import ConfigError, MissingLogTableError, NoConfigFileError, ParameterCombinationError
-from py_experimenter.utils import combine_fill_table_parameters, load_credential_config
+from py_experimenter.exceptions import (
+    ConfigError,
+    MissingLogTableError,
+    NoConfigFileError,
+    ParameterCombinationError,
+)
+from py_experimenter.utils import combine_fill_table_parameters
 
-
-def test_load_config_raises_error():  # todo adapt test
-    path = os.path.join("config", "file", "missing.yml")
-    with pytest.raises(NoConfigFileError, match=re.escape(f"Configuration file missing! Please add file: {path}")):
-        load_credential_config(path)
 
 
 @pytest.mark.parametrize(

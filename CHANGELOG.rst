@@ -7,7 +7,9 @@ v1.4.0 (??.??.2024)
 
 Feature
 -------
-- Changed supported experiment configuration file type to YAML. 
+- Change the supported database configuration file type to YAML.
+- Change the supported credentials file type to YAML.
+- Add support for ssh jump hosts in the database connection.
 
 
 v1.3.2 (23.01.2024)

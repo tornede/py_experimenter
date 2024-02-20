@@ -95,7 +95,11 @@ def test_init(
     mock_fn.return_value = None
     create_database_if_not_existing_mock.return_value = None
     experimenter = PyExperimenter(
-        config_file, os.path.join("test", "test_config_files", "load_config_test_file", "mysql_fake_credentials.cfg"), table_name, database_name
+        config_file,
+        os.path.join("test", "test_config_files", "load_config_test_file", "mysql_fake_credentials.cfg"),
+        False,
+        table_name,
+        database_name,
     )
 
     assert experimenter.config.database_configuration.table_name == expected_table_name

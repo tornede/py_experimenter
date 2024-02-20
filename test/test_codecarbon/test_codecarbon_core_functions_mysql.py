@@ -16,9 +16,7 @@ def experimenter_mysql():
 
     configuration_path = os.path.join("test", "test_codecarbon", "configs", "test_config_mysql.yml")
 
-    experimenter = PyExperimenter(
-        experiment_configuration_file_path=configuration_path,
-    )
+    experimenter = PyExperimenter(experiment_configuration_file_path=configuration_path, use_ssh_tunnel=False)
     yield experimenter
 
     experimenter.delete_table()
