@@ -73,7 +73,6 @@ class ResultProcessor:
         with the keys as columnsnames and values as results.
 
         :param logs: Logs to be appended to the logtables.
-        :param logs: Logs to be appended to the logtables.
         :type logs: Dict[str, Dict[str, str]]
         """
         if not self._valid_logtable_logs(logs):

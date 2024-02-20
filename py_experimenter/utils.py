@@ -7,7 +7,11 @@ from typing import Any, Dict, List, Union
 import numpy as np
 from omegaconf import DictConfig
 
-from py_experimenter.exceptions import ConfigError, NoConfigFileError, ParameterCombinationError
+from py_experimenter.exceptions import (
+    ConfigError,
+    NoConfigFileError,
+    ParameterCombinationError,
+)
 
 
 def load_credential_config(path):
@@ -125,7 +129,6 @@ def combine_fill_table_parameters(
 
     if not combinations:
         raise ParameterCombinationError("No parameter combination found!")
-        raise ParameterCombinationError("No parameter combination found!")
 
     for combination in combinations:
         if len(combination.keys()) != len(set(combination.keys())):
@@ -140,5 +143,4 @@ def combine_fill_table_parameters(
 
 
 def get_timestamp_representation() -> str:
-    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")

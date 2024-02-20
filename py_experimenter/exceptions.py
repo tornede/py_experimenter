@@ -70,9 +70,9 @@ class MissingLogTableError(ConfigError):
     pass
 
 
-class InvalidColumnError(Exception):  # todo Move
+class InvalidColumnError(Exception):
     pass
 
 
-class InvalidLogtableError(Exception):  # todo Move
+class InvalidLogtableError(Exception):
     pass

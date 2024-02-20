@@ -12,7 +12,6 @@ from py_experimenter.utils import load_credential_config
 
 class DatabaseConnectorMYSQL(DatabaseConnector):
     _prepared_statement_placeholder = "%s"
-    _prepared_statement_placeholder = "%s"
 
     def __init__(self, database_configuration: OmegaConf, use_codecarbon: bool, credential_path: str, logger):
         self.credential_path = credential_path
@@ -42,7 +41,6 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
                 self.commit(connection)
             self.close_connection(connection)
         except Exception as err:
-            raise DatabaseCreationError(f"Error when creating database: \n {err}")
             raise DatabaseCreationError(f"Error when creating database: \n {err}")
 
     def connect(self):
@@ -105,10 +103,8 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
     def _get_pull_experiment_query(self, order_by: str):
         return super()._get_pull_experiment_query(order_by) + " FOR UPDATE;"
 
-
     @staticmethod
     def random_order_string():
-        return "RAND()"
         return "RAND()"
 
     def _get_existing_rows(self, column_names):

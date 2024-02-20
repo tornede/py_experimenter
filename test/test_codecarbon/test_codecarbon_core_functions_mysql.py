@@ -11,7 +11,6 @@ from py_experimenter.experimenter import PyExperimenter
 @pytest.fixture(scope="module")
 def experimenter_mysql():
     # Create config directory if it does not exist
-    # Create config directory if it does not exist
     if not os.path.exists("config"):
         os.mkdir("config")
 

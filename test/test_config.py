@@ -12,7 +12,6 @@ from py_experimenter.config import (
 )
 
 
-# define pytest fixture for a read config using omegaconf
 @pytest.fixture
 def config_file():
     return omegaconf.OmegaConf.load("test/yml_configs/test_config.yml")
