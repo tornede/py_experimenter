@@ -312,11 +312,12 @@ class PyExperimenter:
         * `running` when the experiment has been pulled from the database table, which will be executed directly afterwards.
         * `error` if an exception was raised during the execution of the experiment.
         * `done` if the execution of the experiment has finished successfully.
+        * `paused` if the experiment was paused during the execution.
 
         Errors raised during the execution of `experiment_function` are logged to the `error` column in the database table.
         Note that only errors raised within `experiment_function` are logged in to the database table. Therefore all errors
         raised before or after the execution of `experiment_function` are logged according to the local logging configuration
-        and do not appear in the table.
+        and do not appear in the table. Additionally errors due to returning `ExperimentStatus.ERROR` are not logged.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
         :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
