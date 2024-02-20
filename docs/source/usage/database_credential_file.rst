@@ -18,7 +18,7 @@ Below is an example of a database credential file, that connects to a server wit
         Standard: 
           server: example.mysqlserver.com
 
-However, for security reasons, databases might only be accessible from a specific IP address. In these cases, one can use an ssh jumphost. This means that ``pyexperimenter`` will first connect to the ssh server
+However, for security reasons, databases might only be accessible from a specific IP address. In these cases, one can use an ssh jumphost. This means that ``PyExperimenter`` will first connect to the ssh server
 that has access to the database and then connect to the database server from there. This is done by adding an additional ``Ssh`` section to the database credential file.
 The following example shows how to connect to a database server using an SSH server with the address ``ssh_hostname`` and the port ``optional_ssh_port``.
 
@@ -41,4 +41,5 @@ The following example shows how to connect to a database server using an SSH ser
           local_address: optional_local_address (default: 127.0.0.1)
           local_port: optional_local_port (default: 3306)
 
-Note that we do not support further parameters for the SSH connection, such as explicitly setting the private key file. To use these adapt you local ssh config file.
+.. note::
+  Note that we do not support further parameters for the SSH connection, such as explicitly setting the private key file. To use these, you have to adapt your local ssh config file.
