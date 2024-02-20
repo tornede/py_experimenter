@@ -11,6 +11,10 @@ Feature
 - Change the supported credentials file type to YAML.
 - Add support for ssh jump hosts in the database connection.
 
+Fix
+---
+- Temporary CodeCarbon files are automatically removed at termination.
+
 
 v1.3.2 (23.01.2024)
 ===================
