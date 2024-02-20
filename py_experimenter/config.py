@@ -330,6 +330,9 @@ class CodeCarbonCfg(Cfg):
 
 
 class PyExperimenterCfg:
+    """
+    Configuration of a PyExperimenter object. Contains the configuration of the database, custom values, and the CodeCarbon API.
+    """
     def __init__(
         self,
         n_jobs: int,
