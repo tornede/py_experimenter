@@ -55,6 +55,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter</span></code></a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../database_connector/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../database_connector_lite/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector_lite</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../database_connector_mysql/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector_mysql</span></code></a></li>
@@ -121,53 +122,17 @@
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.load_config" title="py_experimenter.utils.load_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_config</span></code></a>(path)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.load_credential_config" title="py_experimenter.utils.load_credential_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_credential_config</span></code></a>(path)</p></td>
 <td><p>Load and return configuration file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.extract_codecarbon_config" title="py_experimenter.utils.extract_codecarbon_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_codecarbon_config</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.write_codecarbon_config" title="py_experimenter.utils.write_codecarbon_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_codecarbon_config</span></code></a>(codecarbon_config)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.write_codecarbon_config" title="py_experimenter.utils.write_codecarbon_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_codecarbon_config</span></code></a>(codecarbon_config)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.extract_codecarbon_columns" title="py_experimenter.utils.extract_codecarbon_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_codecarbon_columns</span></code></a>(→ Dict[str, str])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.extract_codecarbon_columns" title="py_experimenter.utils.extract_codecarbon_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_codecarbon_columns</span></code></a>([with_type])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.get_keyfield_data" title="py_experimenter.utils.get_keyfield_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_keyfield_data</span></code></a>(config)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.extract_db_credentials_and_table_name_from_config" title="py_experimenter.utils.extract_db_credentials_and_table_name_from_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_db_credentials_and_table_name_from_config</span></code></a>(config)</p></td>
-<td><p>Initialize connection to database based on configuration file. If the tables does not exist, a new one will be</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.get_keyfield_names" title="py_experimenter.utils.get_keyfield_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_keyfield_names</span></code></a>(→ List[str])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.get_keyfields" title="py_experimenter.utils.get_keyfields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_keyfields</span></code></a>(→ List[Tuple[str, str]])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.get_result_field_names" title="py_experimenter.utils.get_result_field_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_result_field_names</span></code></a>(→ List[str])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.get_resultfields" title="py_experimenter.utils.get_resultfields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_resultfields</span></code></a>(→ List[Tuple[str, str]])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.extract_logtables" title="py_experimenter.utils.extract_logtables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_logtables</span></code></a>(→ Optional[Dict[str, List[str]]])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.extract_columns" title="py_experimenter.utils.extract_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_columns</span></code></a>(→ List[Tuple[str, str]])</p></td>
-<td><p>Clean field names</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.timestamps_for_result_fields" title="py_experimenter.utils.timestamps_for_result_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timestamps_for_result_fields</span></code></a>(→ bool)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.add_timestep_result_columns" title="py_experimenter.utils.add_timestep_result_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_timestep_result_columns</span></code></a>(result_field_configuration)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.combine_fill_table_parameters" title="py_experimenter.utils.combine_fill_table_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_fill_table_parameters</span></code></a>(keyfield_names, ...)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils._generate_int_data" title="py_experimenter.utils._generate_int_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_generate_int_data</span></code></a>(keyfield_values)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.utils.combine_fill_table_parameters" title="py_experimenter.utils.combine_fill_table_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_fill_table_parameters</span></code></a>(keyfield_names, parameters)</p></td>
+<td><p>Combiens different parameters to a list of parameter combinations.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.utils.get_timestamp_representation" title="py_experimenter.utils.get_timestamp_representation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_timestamp_representation</span></code></a>(→ str)</p></td>
 <td><p></p></td>
@@ -175,94 +140,34 @@
 </tbody>
 </table>
 <dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils.load_config">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">load_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.utils.load_config" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="py_experimenter.utils.load_credential_config">
+<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">load_credential_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.utils.load_credential_config" title="Permalink to this definition"></a></dt>
 <dd><p>Load and return configuration file.
 :param path: path to the config file
 :return: configuration file</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils.extract_codecarbon_config">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">extract_codecarbon_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser.ConfigParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">configparser.ConfigParser</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.utils.extract_codecarbon_config" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="py_experimenter.utils.write_codecarbon_config">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">write_codecarbon_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">codecarbon_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser.ConfigParser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.utils.write_codecarbon_config" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">write_codecarbon_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">codecarbon_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.DictConfig</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.utils.write_codecarbon_config" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="py_experimenter.utils.extract_codecarbon_columns">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">extract_codecarbon_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">with_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.utils.extract_codecarbon_columns" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils.get_keyfield_data">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">get_keyfield_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.utils.get_keyfield_data" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils.extract_db_credentials_and_table_name_from_config">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">extract_db_credentials_and_table_name_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.utils.extract_db_credentials_and_table_name_from_config" title="Permalink to this definition"></a></dt>
-<dd><p>Initialize connection to database based on configuration file. If the tables does not exist, a new one will be
-created automatically.
-:param config: Configuration file with database and experiment information
-:return: mysql_connector and table name from the config file</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils.get_keyfield_names">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">get_keyfield_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser.ConfigParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.utils.get_keyfield_names" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils.get_keyfields">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">get_keyfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser.ConfigParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.utils.get_keyfields" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils.get_result_field_names">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">get_result_field_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser.ConfigParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.utils.get_result_field_names" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils.get_resultfields">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">get_resultfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser.ConfigParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.utils.get_resultfields" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils.extract_logtables">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">extract_logtables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser.ConfigParser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment_table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.utils.extract_logtables" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils.extract_columns">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">extract_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.utils.extract_columns" title="Permalink to this definition"></a></dt>
-<dd><p>Clean field names
-:param fields: List of field names
-:return: Cleaned list of field names</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils.timestamps_for_result_fields">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">timestamps_for_result_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser.ConfigParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#py_experimenter.utils.timestamps_for_result_fields" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils.add_timestep_result_columns">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">add_timestep_result_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result_field_configuration</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.utils.add_timestep_result_columns" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">extract_codecarbon_columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.utils.extract_codecarbon_columns" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="py_experimenter.utils.combine_fill_table_parameters">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">combine_fill_table_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyfield_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_parameter_combinations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.utils.combine_fill_table_parameters" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="py_experimenter.utils._generate_int_data">
-<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">_generate_int_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyfield_values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.utils._generate_int_data" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">py_experimenter.utils.</span></span><span class="sig-name descname"><span class="pre">combine_fill_table_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyfield_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_parameter_combinations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.utils.combine_fill_table_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Combiens different parameters to a list of parameter combinations.
+:param keyfield_names: names of the keyfields
+:type keyfield_names: List[str]
+:param parameters: These values are combiend with each other and every fixed parameter combination. This combination is similar to the cartesian product.
+:type parameters: Dict[str, Union[str, int, float, bool]]
+:param fixed_parameter_combinations: These values are combiend with every parameter like in the cartesian product. However, the values inside of two different list items
+are not combined with each other.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="py_experimenter.utils.get_timestamp_representation">

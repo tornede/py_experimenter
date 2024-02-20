@@ -1,0 +1,153 @@
+:py:mod:`py_experimenter.config`
+================================
+
+.. py:module:: py_experimenter.config
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   py_experimenter.config.Cfg
+   py_experimenter.config.Keyfield
+   py_experimenter.config.DatabaseCfg
+   py_experimenter.config.CustomCfg
+   py_experimenter.config.CodeCarbonCfg
+   py_experimenter.config.PyExperimenterCfg
+
+
+
+
+.. py:class:: Cfg
+
+
+   Bases: :py:obj:`abc.ABC`
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+   .. py:method:: extract_config(**kwargs) -> Cfg
+      :classmethod:
+
+      Abstract method for extracting the configuration from a given OmegaConf object.
+
+
+   .. py:method:: valid() -> bool
+
+      Abstract method for checking the validity of the configuration.
+
+
+
+.. py:class:: Keyfield
+
+
+   .. py:attribute:: name
+      :type: str
+
+      
+
+   .. py:attribute:: dtype
+      :type: str
+
+      
+
+   .. py:attribute:: values
+      :type: List[Union[int, str, bool, Any]]
+
+      
+
+
+.. py:class:: DatabaseCfg(provider: str, database_name: str, table_name: str, result_timestamps: bool, keyfields: List[Keyfield], resultfields: Dict[str, str], logtables: Dict[str, Dict[str, str]], logger: logging.Logger)
+
+
+   Bases: :py:obj:`Cfg`
+
+   Class for the configuration of the database connection. In addition to `provider`, `database_name`, and `table_name`, the class also defined the structure
+   of tables in the `keyfields`, `resultfields`, and `logtables` attributes.
+
+   .. py:method:: extract_config(config: omegaconf.OmegaConf, logger: logging.Logger) -> Tuple[DatabaseCfg, List[str]]
+      :staticmethod:
+
+      Abstract method for extracting the configuration from a given OmegaConf object.
+
+
+   .. py:method:: _extract_keyfields(keyfields: omegaconf.DictConfig, logger) -> Dict[str, Keyfield]
+      :staticmethod:
+
+
+   .. py:method:: _extract_value_range(keyfield_name: str, keyfield_content: omegaconf.DictConfig, logger) -> Tuple[str, List[Union[int, str, bool, Any]]]
+      :staticmethod:
+
+
+   .. py:method:: _extract_resultfields(table_config: omegaconf.OmegaConf, logger) -> Dict[str, str]
+      :staticmethod:
+
+
+   .. py:method:: _extract_logtables(table_name: str, table_config: omegaconf.OmegaConf, logger: logging.Logger) -> Dict[str, Dict[str, str]]
+      :staticmethod:
+
+
+   .. py:method:: get_experiment_configuration()
+
+
+   .. py:method:: valid() -> bool
+
+      Abstract method for checking the validity of the configuration.
+
+
+
+.. py:class:: CustomCfg(custom_values: Dict[str, Union[str, int]], logger: logging.Logger)
+
+
+   Bases: :py:obj:`Cfg`
+
+   Class for custom values given to every experiment.
+
+   .. py:method:: extract_config(config: omegaconf.OmegaConf, logger: logging.Logger) -> CustomCfg
+      :staticmethod:
+
+      Abstract method for extracting the configuration from a given OmegaConf object.
+
+
+   .. py:method:: valid()
+
+      Abstract method for checking the validity of the configuration.
+
+
+
+.. py:class:: CodeCarbonCfg(config: Dict[str, str], logger: logging.Logger)
+
+
+   Bases: :py:obj:`Cfg`
+
+   Class for the configuration of the CodeCarbon API.
+
+   .. py:method:: extract_config(config: omegaconf.OmegaConf, logger: logging.Logger) -> CodeCarbonCfg
+      :staticmethod:
+
+      Abstract method for extracting the configuration from a given OmegaConf object.
+
+
+   .. py:method:: valid()
+
+      Abstract method for checking the validity of the configuration.
+
+
+
+.. py:class:: PyExperimenterCfg(n_jobs: int, database_configuration: DatabaseCfg, custom_configuration: CustomCfg, codecarbon_configuration: CodeCarbonCfg, logger: logging.Logger)
+
+
+   Configuration of a PyExperimenter object. Contains the configuration of the database, custom values, and the CodeCarbon API.
+
+   .. py:method:: extract_config(config_path: str, logger: logging.Logger) -> PyExperimenterCfg
+      :staticmethod:
+
+
+   .. py:method:: valid() -> bool
+
+
+

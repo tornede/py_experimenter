@@ -32,9 +32,6 @@ Classes
 
       
 
-   .. py:method:: _extract_credentials()
-
-
    .. py:method:: _test_connection()
 
 
@@ -62,10 +59,10 @@ Classes
       :staticmethod:
 
 
-   .. py:method:: _table_has_correct_structure(cursor, typed_fields) -> List[str]
+   .. py:method:: _table_has_correct_structure(cursor, config_columns) -> List[str]
 
 
-   .. py:method:: _get_existing_rows(column_names: List[str])
+   .. py:method:: _get_existing_rows(column_names: List[str]) -> List[Dict[str, str]]
 
 
    .. py:method:: get_structure_from_table(cursor)

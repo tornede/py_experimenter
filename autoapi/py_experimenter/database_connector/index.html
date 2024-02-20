@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="py_experimenter.database_connector_lite" href="../database_connector_lite/index.html" />
-    <link rel="prev" title="py_experimenter" href="../index.html" /> 
+    <link rel="prev" title="py_experimenter.config" href="../config/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,6 +55,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter</span></code></a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.config</span></code></a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../database_connector_lite/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector_lite</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../database_connector_mysql/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector_mysql</span></code></a></li>
@@ -128,15 +129,10 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">DatabaseConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser.ConfigParser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_codecarbon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">codecarbon_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">configparser.ConfigParser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">DatabaseConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database_configuration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../config/index.html#py_experimenter.config.DatabaseCfg" title="py_experimenter.config.DatabaseCfg"><span class="pre">py_experimenter.config.DatabaseCfg</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_codecarbon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Helper class that provides a standard way to create an ABC using
 inheritance.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector._extract_credentials">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_extract_credentials</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector._extract_credentials" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector._test_connection">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_test_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector._test_connection" title="Permalink to this definition"></a></dt>
@@ -184,7 +180,7 @@ inheritance.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector._compute_columns">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_compute_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyfields</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resultfields</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector._compute_columns" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_compute_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyfields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../config/index.html#py_experimenter.config.Keyfield" title="py_experimenter.config.Keyfield"><span class="pre">py_experimenter.config.Keyfield</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resultfields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector._compute_columns" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -214,17 +210,17 @@ inheritance.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector.fill_table">
-<span class="sig-name descname"><span class="pre">fill_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_parameter_combinations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector.fill_table" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fill_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">combinations</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector.fill_table" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector._check_combination_in_existing_rows">
-<span class="sig-name descname"><span class="pre">_check_combination_in_existing_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">combination</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">existing_rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyfield_names</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector._check_combination_in_existing_rows" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_check_combination_in_existing_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">combination</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">existing_rows</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector._check_combination_in_existing_rows" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector._get_existing_rows">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_get_existing_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_names</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector._get_existing_rows" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_get_existing_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_names</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector._get_existing_rows" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -254,7 +250,7 @@ inheritance.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector._write_to_database">
-<span class="sig-name descname"><span class="pre">_write_to_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">List[str]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector._write_to_database" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_write_to_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">combinations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector._write_to_database" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -337,7 +333,7 @@ inheritance.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="py_experimenter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../config/index.html" class="btn btn-neutral float-left" title="py_experimenter.config" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../database_connector_lite/index.html" class="btn btn-neutral float-right" title="py_experimenter.database_connector_lite" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

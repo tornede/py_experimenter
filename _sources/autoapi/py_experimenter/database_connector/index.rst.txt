@@ -17,17 +17,13 @@ Classes
 
 
 
-.. py:class:: DatabaseConnector(config: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, logger)
+.. py:class:: DatabaseConnector(database_configuration: py_experimenter.config.DatabaseCfg, use_codecarbon: bool, logger: logging.Logger)
 
 
    Bases: :py:obj:`abc.ABC`
 
    Helper class that provides a standard way to create an ABC using
    inheritance.
-
-   .. py:method:: _extract_credentials()
-      :abstractmethod:
-
 
    .. py:method:: _test_connection()
       :abstractmethod:
@@ -59,7 +55,7 @@ Classes
       :abstractmethod:
 
 
-   .. py:method:: _compute_columns(keyfields, resultfields)
+   .. py:method:: _compute_columns(keyfields: Dict[str, py_experimenter.config.Keyfield], resultfields: Dict[str, str]) -> Dict[str, str]
       :staticmethod:
 
 
@@ -80,13 +76,13 @@ Classes
       :abstractmethod:
 
 
-   .. py:method:: fill_table(parameters=None, fixed_parameter_combinations=None) -> None
+   .. py:method:: fill_table(combinations) -> None
 
 
-   .. py:method:: _check_combination_in_existing_rows(combination, existing_rows, keyfield_names) -> bool
+   .. py:method:: _check_combination_in_existing_rows(combination, existing_rows) -> bool
 
 
-   .. py:method:: _get_existing_rows(column_names)
+   .. py:method:: _get_existing_rows(column_names) -> List[str]
       :abstractmethod:
 
 
@@ -108,7 +104,7 @@ Classes
       :abstractmethod:
 
 
-   .. py:method:: _write_to_database(values: List, columns=List[str]) -> None
+   .. py:method:: _write_to_database(combinations: List[Dict[str, str]]) -> None
 
 
    .. py:method:: pull_paused_experiment(experiment_id: int) -> Dict[str, Any]

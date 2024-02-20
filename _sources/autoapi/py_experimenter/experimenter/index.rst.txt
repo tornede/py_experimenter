@@ -17,80 +17,10 @@ Classes
 
 
 
-.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.cfg'), database_credential_file_path: str = os.path.join('config', 'database_credentials.cfg'), table_name: str = None, database_name: str = None, use_codecarbon: bool = True, name='PyExperimenter', logger_name: str = 'py-experimenter', log_level: Union[int, str] = logging.INFO, log_file: str = './logs/py-experimenter.log')
+.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.yml'), database_credential_file_path: str = os.path.join('config', 'database_credentials.cfg'), table_name: str = None, database_name: str = None, use_codecarbon: bool = True, name='PyExperimenter', logger_name: str = 'py-experimenter', log_level: Union[int, str] = logging.INFO, log_file: str = './logs/py-experimenter.log')
 
 
    Module handling the initialization, execution and collection of experiments and their respective results.
-
-   .. py:method:: set_config_value(section_name: str, key: str, value: str) -> None
-
-      Modifies the experiment configuration so that within the given `section_name` the value of the  property identified by
-      the given `key` is overwritten, or created if it was not existing beforehand.
-
-      :param section_name: The name of the section of the experiment configuration in which a value should be set.
-      :type section_name: str
-      :param key: The name of the key identifying the property within the given section whose value should be set.
-      :type key: str
-      :param value: The value which should be set to the property identified by the given key in the given section.
-      :type value: str
-      :raises InvalidConfigError: If the modified configuration either misses, or has invalid information.
-
-
-   .. py:method:: get_config_value(section_name: str, key: str) -> str
-
-      Returns the value of the property of the experiment configuration identified by the given key. If the `key`
-      is not contained within the section, an exception is raised.
-
-      :param section_name: The name of the section containing the property whose value should be returned.
-      :type section_name: str
-      :param key: The name of the key identifying the property within the given section of the experiment
-          configuration of which a value should be returned.
-      :type key: str
-      :return: The value of the property identified by the given key within the section `section_name` of the
-          experiment configuration.
-      :rtype: str
-      :raises NoOptionError: If the section called `section_name` is not part of the experiment configuration, or
-          the `key` is not contained within that section.
-
-
-   .. py:method:: has_section(section_name: str) -> bool
-
-      Checks whether the experiment configuration contains a section with the given name.
-
-      :param section_name: The name of the section which should be checked for existence.
-      :type section_name: str
-      :return: True if the section exists, False otherwise.
-      :rtype: bool
-
-
-   .. py:method:: has_option(section_name: str, key: str) -> bool
-
-      Checks whether the experiment configuration contains a property identified by the given 'key' within the
-      section called 'section_name'.
-
-      :param section_name: The name of the section of the experiment configuration of which the `key` should be
-          checked.
-      :type section_name: str
-      :param key: The name of the key to check within the given section.
-      :type key: str
-      :return: True if the given `key` is contained in the experiment configuration within the section called
-          `section_name`. False otherwise.
-      :rtype: bool
-
-
-   .. py:method:: _is_valid_configuration(config: configparser.ConfigParser, database_credential_file_path: str = None) -> bool
-
-      Checks whether the given experiment configuration is valid, i.e., it contains all necessary fields, the database provider
-      is either mysql or sqlite, and in case of a mysql database provider, that the database credentials are available.
-
-      :param config: The experiment configuration.
-      :type config: ConfigParser
-      :param database_credential_file_path: The path to the database configuration file, i.e., the file defining
-          the host, user and password. Defaults to None.
-      :type database_credential_file_path: str, optional
-      :return: True if the experiment configuration contains all necessary fields.
-      :rtype: bool
-
 
    .. py:method:: fill_table_from_combination(fixed_parameter_combinations: List[dict] = None, parameters: dict = None) -> None
 
@@ -169,7 +99,7 @@ Classes
           configuration file
 
 
-   .. py:method:: execute(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], Optional[py_experimenter.experiment_status.ExperimentStatus]], max_experiments: int = -1, random_order=False) -> None
+   .. py:method:: execute(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], Optional[py_experimenter.experiment_status.ExperimentStatus]], random_order: bool = False, n_jobs: Optional[int] = None, max_experiments: int = -1) -> None
 
       Pulls open experiments from the database table and executes them.
 
@@ -206,6 +136,9 @@ Classes
       :type max_experiments: int, optional
       :param random_order: If True, the order of the experiments is determined randomly. Defaults to False.
       :type random_order: bool, optional
+      :param n_jobs: The number parallel processes that should be created and started. If None, the number is taken
+          from the experiment configuration file. Defaults to None.
+      :type n_jobs: int, optional
       :raises InvalidValuesInConfiguration: If any value of the experiment parameters is of wrong data type.
 
 
@@ -245,11 +178,12 @@ Classes
       * `running` when the experiment has been pulled from the database table, which will be executed directly afterwards.
       * `error` if an exception was raised during the execution of the experiment.
       * `done` if the execution of the experiment has finished successfully.
+      * `paused` if the experiment was paused during the execution.
 
       Errors raised during the execution of `experiment_function` are logged to the `error` column in the database table.
       Note that only errors raised within `experiment_function` are logged in to the database table. Therefore all errors
       raised before or after the execution of `experiment_function` are logged according to the local logging configuration
-      and do not appear in the table.
+      and do not appear in the table. Additionally errors due to returning `ExperimentStatus.ERROR` are not logged.
 
       :param experiment_function: The function that should be executed with the different parametrizations.
       :type experiment_function: Callable[[dict, dict, ResultProcessor], None]

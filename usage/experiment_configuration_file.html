@@ -52,10 +52,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Experiment Configuration File</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#database-information">Database Information</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#keyfields">Keyfields</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#resultfields">Resultfields</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#logtables">Logtables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#database-information">Database Information</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#keyfields">Keyfields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resultfields">Resultfields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logtables">Logtables</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#execution-information">Execution Information</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#custom-fields">Custom Fields</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#codecarbon">CodeCarbon</a></li>
@@ -113,111 +115,169 @@
              
   <section id="experiment-configuration-file">
 <span id="id1"></span><h1>Experiment Configuration File<a class="headerlink" href="#experiment-configuration-file" title="Permalink to this heading"></a></h1>
-<p>The experiment configuration file is primarily used to define the database backend, as well as execution parameters, i.e. keyfields, resultfields, and logtables. An example experiment configuration can be found in the following, covering the main functionality <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> provides. Each paragraph is described in the subsections below.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">PY_EXPERIMENTER</span><span class="p">]</span>
-<span class="n">provider</span> <span class="o">=</span> <span class="n">sqlite</span>
-<span class="n">database</span> <span class="o">=</span> <span class="n">database_name</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">table_name</span>
+<p>The experiment configuration file is primarily used to define the database backend, as well as execution parameters, i.e. keyfields, resultfields, and logtables. An example experiment configuration can be found in the following, covering the main functionality <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> provides. Each part is described in the subsections below.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">PY_EXPERIMENTER</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">n_jobs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 
-<span class="n">keyfields</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">cross_validation_splits</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">kernel</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">iris</span>
-<span class="n">cross_validation_splits</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">seed</span> <span class="o">=</span> <span class="mi">2</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">2</span>
-<span class="n">kernel</span> <span class="o">=</span> <span class="n">linear</span><span class="p">,</span> <span class="n">poly</span><span class="p">,</span> <span class="n">rbf</span><span class="p">,</span> <span class="n">sigmoid</span>
+<span class="w">    </span><span class="nt">Database</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqlite</span>
+<span class="w">        </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">py_experimenter</span>
+<span class="w">        </span><span class="nt">table</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_general_usage</span>
+<span class="w">            </span><span class="nt">keyfields</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">dataset</span><span class="p">:</span>
+<span class="w">                    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(255)</span>
+<span class="w">                    </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;dataset1&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;dataset2&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;dataset3&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">                </span><span class="nt">cross_validation_splits</span><span class="p">:</span>
+<span class="w">                    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+<span class="w">                    </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5</span><span class="p p-Indicator">]</span>
+<span class="w">                </span><span class="nt">seed</span><span class="p">:</span>
+<span class="w">                    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+<span class="w">                    </span><span class="nt">values</span><span class="p">:</span>
+<span class="w">                        </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">                        </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">                        </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">                </span><span class="nt">kernel</span><span class="p">:</span>
+<span class="w">                    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(255)</span>
+<span class="w">                    </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;linear&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;poly&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;rbf&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;sigmoid&#39;</span><span class="p p-Indicator">]</span>
 
-<span class="n">resultfields</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">:</span><span class="n">LONGTEXT</span><span class="p">,</span> <span class="n">train_f1</span><span class="p">:</span><span class="n">DECIMAL</span><span class="p">,</span> <span class="n">train_accuracy</span><span class="p">:</span><span class="n">DECIMAL</span><span class="p">,</span> <span class="n">test_f1</span><span class="p">:</span><span class="n">DECIMAL</span><span class="p">,</span> <span class="n">test_accuracy</span><span class="p">:</span><span class="n">DECIMAL</span>
-<span class="n">resultfields</span><span class="o">.</span><span class="n">timestamps</span> <span class="o">=</span> <span class="n">false</span>
+<span class="w">            </span><span class="nt">resultfields</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LONGTEXT</span>
+<span class="w">                </span><span class="nt">train_f1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">                </span><span class="nt">train_accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">                </span><span class="nt">test_f1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">                </span><span class="nt">test_accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">            </span><span class="nt">result_timestamps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 
-<span class="n">logtables</span> <span class="o">=</span> <span class="n">new_best_performance</span><span class="p">:</span><span class="n">INT</span><span class="p">,</span> <span class="n">epochs</span><span class="p">:</span><span class="n">LogEpochs</span>
-<span class="n">LogEpochs</span> <span class="o">=</span> <span class="n">runtime</span><span class="p">:</span><span class="n">FLOAT</span><span class="p">,</span> <span class="n">performance</span><span class="p">:</span><span class="n">FLOAT</span>
+<span class="w">            </span><span class="nt">logtables</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">pipeline_evaluations</span><span class="p">:</span>
+<span class="w">                    </span><span class="nt">kernel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(50)</span>
+<span class="w">                    </span><span class="nt">f1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">                    </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">                </span><span class="nt">incumbents</span><span class="p">:</span>
+<span class="w">                    </span><span class="nt">pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LONGTEXT</span>
+<span class="w">                    </span><span class="nt">performance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
 
-<span class="n">n_jobs</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="w">    </span><span class="nt">Custom</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">datapath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">path/to/data</span>
 
-<span class="p">[</span><span class="n">CUSTOM</span><span class="p">]</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">sample_data</span>
-
-<span class="p">[</span><span class="n">codecarbon</span><span class="p">]</span>
-<span class="n">offline_mode</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">measure_power_secs</span> <span class="o">=</span> <span class="mi">15</span>
-<span class="n">tracking_mode</span> <span class="o">=</span> <span class="n">machine</span>
-<span class="n">log_level</span> <span class="o">=</span> <span class="n">error</span>
-<span class="n">save_to_file</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">output_dir</span> <span class="o">=</span> <span class="n">output</span><span class="o">/</span><span class="n">CodeCarbon</span>
+<span class="w">    </span><span class="nt">CodeCarbon</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">offline_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">        </span><span class="nt">measure_power_secs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
+<span class="w">        </span><span class="nt">tracking_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">process</span>
+<span class="w">        </span><span class="nt">log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">error</span>
+<span class="w">        </span><span class="nt">save_to_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">        </span><span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output/CodeCarbon</span>
 </pre></div>
 </div>
 <section id="database-information">
 <h2>Database Information<a class="headerlink" href="#database-information" title="Permalink to this heading"></a></h2>
-<p>The database information have to be defined in the experiment configuration file. It contains the <code class="docutils literal notranslate"><span class="pre">provider</span></code> of the database connection (either <code class="docutils literal notranslate"><span class="pre">sqlite</span></code> or <code class="docutils literal notranslate"><span class="pre">mysql</span></code>). Furthermore, the name of the <code class="docutils literal notranslate"><span class="pre">database</span></code> has to be given, together with the name of the <code class="docutils literal notranslate"><span class="pre">table</span></code> to write the experiment information into.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>In case of <code class="docutils literal notranslate"><span class="pre">mysql</span></code> an additional <a class="reference internal" href="database_credential_file.html#database-credential-file"><span class="std std-ref">database credential file</span></a> has to be created.</p>
-</div>
-</section>
+<p>The <code class="docutils literal notranslate"><span class="pre">Database</span></code> section defines the database and its structure.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">provider</span></code>: The provider of the database connection. Currently, <code class="docutils literal notranslate"><span class="pre">sqlite</span></code> and <code class="docutils literal notranslate"><span class="pre">mysql</span></code> are supported. In the case of <code class="docutils literal notranslate"><span class="pre">mysql</span></code> an additional <a class="reference internal" href="database_credential_file.html#database-credential-file"><span class="std std-ref">database credential file</span></a> has to be created.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">database</span></code>: The name of the database to create or connect to.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">table</span></code>: Defines the structure and predefined values for the experiment table.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The name of the experiment table to create or connect to.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keyfields</span></code>: The keyfields of the table, which define an experiment. More details about the keyfields can be found in the <a class="reference internal" href="#keyfields"><span class="std std-ref">keyfields section</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resultfields</span></code>: The resultfields of the table, i.e. the fields to write resulting information of the experiments to. More details about the resultfields can be found in the <a class="reference internal" href="#resultfields"><span class="std std-ref">resultfields section</span></a>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
 <section id="keyfields">
-<span id="id2"></span><h2>Keyfields<a class="headerlink" href="#keyfields" title="Permalink to this heading"></a></h2>
-<p>Experiments are identified by <code class="docutils literal notranslate"><span class="pre">keyfields</span></code>, hence, keyfields define the execution of experiments. A keyfield can be thought of as a parameter, whose value defines an experiment together with the values of all other experiments. For example, if our experiment was to compute the exponential function for several input values, the input would be a keyfield. They have to be specified in the experiment configuration file by adding a line containing a comma separated list of <code class="docutils literal notranslate"><span class="pre">keyfield_name</span></code>. Furthermore, each keyfield can be further annotated by a <code class="docutils literal notranslate"><span class="pre">keyfield_datatype</span></code>, which is specified by adding a standard datatype to the according field. If no datatype is explicitly specified, <code class="docutils literal notranslate"><span class="pre">VARCHAR(255)</span></code> is used.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">keyfields</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">keyfield_name</span><span class="o">&gt;</span><span class="p">[:</span><span class="o">&lt;</span><span class="n">keyfield_datatype</span><span class="o">&gt;</span><span class="p">],</span> <span class="o">...</span>
-</pre></div>
-</div>
-<p>For each keyfield, an additional entry starting with the same <code class="docutils literal notranslate"><span class="pre">keyfield_name</span></code> has to be added to the experiment configuration file, which defines the domain, i.e., possible values, of the keyfield. Usually this is done with a comma separated list of strings or numbers. In the example below, the key field <code class="docutils literal notranslate"><span class="pre">kernel</span></code> can be any of the four given values: <code class="docutils literal notranslate"><span class="pre">linear</span></code>, <code class="docutils literal notranslate"><span class="pre">poly</span></code>, <code class="docutils literal notranslate"><span class="pre">rbf</span></code>, or <code class="docutils literal notranslate"><span class="pre">sigmoid</span></code>. Note that strings are neither allowed to contain any quotation marks nor whitespace. Alternatively, this can be <a class="reference internal" href="execution.html#fill-table-with-rows"><span class="std std-ref">defined via code</span></a>.</p>
-<p>As the manual definition can be a tedious task, especially for a list of integers, there is the option to define the start and the end of the list, together with the step size in the form: <code class="docutils literal notranslate"><span class="pre">start:end:stepsize</span></code>. In the example below, <code class="docutils literal notranslate"><span class="pre">seed</span></code> is meant to be <code class="docutils literal notranslate"><span class="pre">2,</span> <span class="pre">4,</span> <span class="pre">6,</span> <span class="pre">8,</span> <span class="pre">10</span></code>, but instead of the explicit list <code class="docutils literal notranslate"><span class="pre">2:10:2</span></code> is given.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">keyfields</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">cross_validation_splits</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">kernel</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">iris</span>
-<span class="n">cross_validation_splits</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">seed</span> <span class="o">=</span> <span class="mi">2</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">2</span>
-<span class="n">kernel</span> <span class="o">=</span> <span class="n">linear</span><span class="p">,</span> <span class="n">poly</span><span class="p">,</span> <span class="n">rbf</span><span class="p">,</span> <span class="n">sigmoid</span>
+<span id="id2"></span><h3>Keyfields<a class="headerlink" href="#keyfields" title="Permalink to this heading"></a></h3>
+<p>Experiments are identified by <code class="docutils literal notranslate"><span class="pre">keyfields</span></code>, hence, keyfields define the execution of experiments. A keyfield can be thought of as a parameter, whose value defines an experiment together with the values of all other experiments. Each <code class="docutils literal notranslate"><span class="pre">keyfield</span></code> is defined by a name and the following information in the <code class="docutils literal notranslate"><span class="pre">table</span></code> section of the experiment configuration file:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: The type of the keyfield. Supported types are <code class="docutils literal notranslate"><span class="pre">VARCHAR</span></code>, <code class="docutils literal notranslate"><span class="pre">INT</span></code>, <code class="docutils literal notranslate"><span class="pre">NUMERIC</span></code>, <code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code>, <code class="docutils literal notranslate"><span class="pre">LONGTEXT</span></code>, <code class="docutils literal notranslate"><span class="pre">DATETIME</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">values</span></code>: The values the keyfield can take. This can be a comma separated list of values or a range of values. The range of values can be defined by:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code>: The starting value of the range (including).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stop</span></code>: The end value of the range (excluding).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">step</span></code> (optional): The step size to use to generate all values. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>In the following, an example of keyfields is given for each typically used type. An in-depth example showcasing the usage general usage can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Database</span><span class="p">:</span>
+
+<span class="w">    </span><span class="nt">keyfields</span><span class="p">:</span>
+
+<span class="w">        </span><span class="nt">string_input_name</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(255)</span>
+<span class="w">            </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;dataset1&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;dataset2&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;dataset3&#39;</span><span class="p p-Indicator">]</span>
+
+<span class="w">        </span><span class="nt">int_input_name</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+<span class="w">            </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">int_shortened_input_name</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+<span class="w">            </span><span class="nt">values</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">                </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">                </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+
+<span class="w">        </span><span class="nt">numeric_input_name</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NUMERIC</span>
+<span class="w">            </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">numeric_shortened_input_name</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NUMERIC</span>
+<span class="w">            </span><span class="nt">values</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">                </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">                </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
 </pre></div>
 </div>
 </section>
 <section id="resultfields">
-<span id="id3"></span><h2>Resultfields<a class="headerlink" href="#resultfields" title="Permalink to this heading"></a></h2>
-<p>The results of the experiments will be stored in the database in the form of <code class="docutils literal notranslate"><span class="pre">resultfields</span></code>. They are optional and can be be specified in the experiment configuration file by adding a line containing a comma separated list of <code class="docutils literal notranslate"><span class="pre">resultfield_name</span></code> and according <code class="docutils literal notranslate"><span class="pre">resultfield_datatype</span></code>. The datatype can be defined as explained above for <a class="reference internal" href="#keyfields"><span class="std std-ref">keyfields</span></a>, and if no datatype is explicitly specified, <code class="docutils literal notranslate"><span class="pre">VARCHAR(255)</span></code> is used. Note that in case some resultfield should contain arbitrarily long strings, <code class="docutils literal notranslate"><span class="pre">LONGTEXT</span></code> should be used as datatype.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">resultfields</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">resultfield_name</span><span class="o">&gt;</span><span class="p">[:</span><span class="o">&lt;</span><span class="n">resultfield_datatype</span><span class="o">&gt;</span><span class="p">],</span> <span class="o">...</span>
+<span id="id3"></span><h3>Resultfields<a class="headerlink" href="#resultfields" title="Permalink to this heading"></a></h3>
+<p>The results of the experiments will be stored in the database in the form of <code class="docutils literal notranslate"><span class="pre">resultfields</span></code>. They are optional and are also contained in the <code class="docutils literal notranslate"><span class="pre">table</span></code> section of the experiment configuration file. Each resultfield consists of a name and type. Supported types are <code class="docutils literal notranslate"><span class="pre">VARCHAR</span></code>, <code class="docutils literal notranslate"><span class="pre">INT</span></code>, <code class="docutils literal notranslate"><span class="pre">NUMERIC</span></code>, <code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code>, <code class="docutils literal notranslate"><span class="pre">LONGTEXT</span></code>, <code class="docutils literal notranslate"><span class="pre">DATETIME</span></code>. Additionally, it is possible to store the timestamps at which the results have been obtained in the database (Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>). They are <a class="reference internal" href="experiment_function.html#experiment-function-resultfields"><span class="std std-ref">filled with the information provided by the experiment function</span></a>.</p>
+<p>In the following, an example of resultfields is given for two typically used types. An in-depth example showcasing the usage general usage can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Database</span><span class="p">:</span>
+
+<span class="w">    </span><span class="nt">resultfields</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LONGTEXT</span>
+<span class="w">        </span><span class="nt">performance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">    </span><span class="nt">result_timestamps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 </pre></div>
-</div>
-<p>Additionally, it is possible to store the timestamps at which the results have been obtatined in the database. This can be done by adding the following line to the experiment configuration file (Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">resultfields</span><span class="o">.</span><span class="n">timestamps</span> <span class="o">=</span> <span class="kc">True</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">resultfields</span></code> are optional. If they are not specified, the database will only contain the keyfields and the according experiment id.</p>
 </div>
 </section>
 <section id="logtables">
-<span id="id4"></span><h2>Logtables<a class="headerlink" href="#logtables" title="Permalink to this heading"></a></h2>
-<p>In addition to the functionality stated above, <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> also supports <code class="docutils literal notranslate"><span class="pre">logtables</span></code> thereby enabling the logging of information into separate tables. This is helpful in cases where one is intereted in intermediate results of an experiment, which one might regularily want to write to the databse. Logtables have to be specified in the experiment configuration file by adding a line containing a comma separated list of <code class="docutils literal notranslate"><span class="pre">logtable_name</span></code> and according <code class="docutils literal notranslate"><span class="pre">logtable_datatype</span></code>. Note that the tables in the database are prefixed with the experiment table name, i.e., they are called <code class="docutils literal notranslate"><span class="pre">&lt;table_name&gt;__&lt;logtable_name&gt;</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logtables</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">logtable_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">logtable_datatype</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span>
+<span id="id4"></span><h3>Logtables<a class="headerlink" href="#logtables" title="Permalink to this heading"></a></h3>
+<p>In addition to the functionality stated above, <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> also supports <code class="docutils literal notranslate"><span class="pre">logtables</span></code>, thereby enabling the logging of information into separate tables. This is helpful in cases where one is interested in the intermediate results of an experiment. Logtables have to be specified within the <code class="docutils literal notranslate"><span class="pre">Database</span></code> section of the experiment configuration file. The logtables are defined similarly to the <a class="reference internal" href="#resultfields"><span class="std std-ref">resultfields</span></a> by a name for the logtable and the fields it contains. The fields are defined by a name and type. Supported types depend on the underlying database. They genereally include, but are not limited to <code class="docutils literal notranslate"><span class="pre">VARCHAR</span></code>, <code class="docutils literal notranslate"><span class="pre">INT</span></code>, <code class="docutils literal notranslate"><span class="pre">NUMERIC</span></code>, <code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code>, <code class="docutils literal notranslate"><span class="pre">LONGTEXT</span></code>, <code class="docutils literal notranslate"><span class="pre">DATETIME</span></code>, and <code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code>. Logtables automatically contain the <code class="docutils literal notranslate"><span class="pre">experiment_id</span> <span class="pre">(INT)</span></code> of the experiment the logtable entry belongs to, as well as a <code class="docutils literal notranslate"><span class="pre">timestamp</span> <span class="pre">(DATETIME)</span></code> of when it has been created.</p>
+<p>The logtables are automatically created in the database and can be found with a modified name, which has the name of the main table as a prefix: <code class="docutils literal notranslate"><span class="pre">&lt;table_name&gt;__&lt;logtable_name&gt;</span></code>. They are <a class="reference internal" href="experiment_function.html#experiment-function-logtables"><span class="std std-ref">filled with the information provided by the experiment function</span></a>.</p>
+<p>An example of two commonly used logtable is given below. An in-depth example showcasing the usage of logtables can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Database</span><span class="p">:</span>
+
+<span class="w">    </span><span class="nt">logtables</span><span class="p">:</span>
+
+<span class="w">        </span><span class="nt">pipeline_evaluations</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">kernel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(50)</span>
+<span class="w">            </span><span class="nt">f1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">            </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+
+<span class="w">        </span><span class="nt">incumbents</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LONGTEXT</span>
+<span class="w">            </span><span class="nt">performance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
 </pre></div>
 </div>
-<p>If the logtable should contain only a single column, you can directly use a standard datatype, like <code class="docutils literal notranslate"><span class="pre">INT</span></code> in this example.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logtables</span> <span class="o">=</span> <span class="n">new_best_performance</span><span class="p">:</span><span class="n">INT</span><span class="p">,</span> <span class="o">...</span>
-</pre></div>
-</div>
-<p>If a logtable should contain more than one field, you can define custom <code class="docutils literal notranslate"><span class="pre">logtable_datatype</span></code> by listing the field names and the corresponding datatypes in the same format as <a class="reference internal" href="#keyfields"><span class="std std-ref">keyfields</span></a>. In the example below, the logtable would be called <code class="docutils literal notranslate"><span class="pre">epochs</span></code> and has the datatype <code class="docutils literal notranslate"><span class="pre">LogEpochs</span></code>, which is define in the line below. It features two fields with the names <code class="docutils literal notranslate"><span class="pre">runtime</span></code>, and <code class="docutils literal notranslate"><span class="pre">performance</span></code>, having the corresponding column types <code class="docutils literal notranslate"><span class="pre">FLOAT</span></code>, and <code class="docutils literal notranslate"><span class="pre">FLOAT</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logtables</span> <span class="o">=</span> <span class="n">epochs</span><span class="p">:</span><span class="n">LogEpochs</span><span class="p">,</span> <span class="o">...</span>
-<span class="n">LogEpochs</span> <span class="o">=</span> <span class="n">runtime</span><span class="p">:</span><span class="n">FLOAT</span><span class="p">,</span> <span class="n">performance</span><span class="p">:</span><span class="n">FLOAT</span>
-</pre></div>
-</div>
-<p>Note that every logtable, however it is defined, additionally has the following fields:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">experiment_id</span> <span class="pre">(int)</span></code>: The id of the experiment the logtable entry belongs to.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">timestamp</span> <span class="pre">(datetime)</span></code>: The timestamp the logtable entry has been created.</p></li>
-</ul>
-<p>An in-depth example showcasing the usage of logtables can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
+</section>
 </section>
 <section id="execution-information">
 <h2>Execution Information<a class="headerlink" href="#execution-information" title="Permalink to this heading"></a></h2>
-<p>Furthermore it is possible to define parameters for execution. They will not be part of the database, but are only used to configure the PyExperimenter. Currently, the following parameters are supported:</p>
+<p>Furthermore, it is possible to define parameters for execution. They will not be part of the database but are only used when executing <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>. Currently, the following parameter is supported:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">n_jobs</span> <span class="pre">(int)</span></code>: The maximum number of experiments that will be executed in parallel. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_jobs:</span> <span class="pre">&lt;INT&gt;</span></code>: The maximum number of experiments that will be executed in parallel. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
 </ul>
 </section>
 <section id="custom-fields">
 <h2>Custom Fields<a class="headerlink" href="#custom-fields" title="Permalink to this heading"></a></h2>
-<p>Optionally, custom fields can be defined under the <code class="docutils literal notranslate"><span class="pre">CUSTOM</span></code> section, which will be ignored when creating or filling the database, but can provide fixed parameters for the actual execution of experiments. A common example is the path to some folder in which the data is located. The values of such custom fields are passed to the experiment function.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">CUSTOM</span><span class="p">]</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">sample_data</span>
+<p>Optionally, custom fields can be defined under the <code class="docutils literal notranslate"><span class="pre">Custom</span></code> section, which will be ignored when creating or filling the database, but can provide fixed parameters for the actual execution of experiments. A common example is the path to some folder in which the data is located. The values of such custom fields are passed to the experiment function.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Custom</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">datapath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">path/to/data</span>
 </pre></div>
 </div>
 </section>
@@ -226,13 +286,13 @@
 <p>Tracking information about the carbon footprint of experiments is supported via <a class="reference external" href="https://mlco2.github.io/codecarbon/">CodeCarbon</a>. It is enabled by default, if you want to completely deactivate it, please check the <a class="reference internal" href="execution.html#execution"><span class="std std-ref">documentation on how to execute PyExperimenter</span></a>.</p>
 <p>Per default, <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> will track the carbon footprint of the whole machine, including the execution of the experiment function. It measures the power consumption every 15 seconds and estimates the carbon emissions based on the region of the device. The resulting information is saved to a file in the <code class="docutils literal notranslate"><span class="pre">output/CodeCarbon</span></code> as well as written into its own table in the database, called <code class="docutils literal notranslate"><span class="pre">&lt;table_name&gt;_codecarbon</span></code>. A description about how to access the data can be found in the <a class="reference internal" href="execution.html#execution-codecarbon"><span class="std std-ref">CodeCarbon explanation of the execution of PyExperimenter</span></a>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> can be configured via its own section in the experiment configuration file. The default configuration is shown below, but can be extended by any of the parameters listed in the <a class="reference external" href="https://mlco2.github.io/codecarbon/usage.html#configuration">CodeCarbon documentation</a>. During the execution, the section will be automatically copied into a <code class="docutils literal notranslate"><span class="pre">.codecarbon.config</span></code> file in you working directory, as this is required by <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">codecarbon</span><span class="p">]</span>
-<span class="n">measure_power_secs</span> <span class="o">=</span> <span class="mi">15</span>
-<span class="n">tracking_mode</span> <span class="o">=</span> <span class="n">machine</span>
-<span class="n">log_level</span> <span class="o">=</span> <span class="n">error</span>
-<span class="n">save_to_file</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">output_dir</span> <span class="o">=</span> <span class="n">output</span><span class="o">/</span><span class="n">CodeCarbon</span>
-<span class="n">offline_mode</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">CodeCarbon</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">offline_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">    </span><span class="nt">measure_power_secs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
+<span class="w">    </span><span class="nt">tracking_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">process</span>
+<span class="w">    </span><span class="nt">log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">error</span>
+<span class="w">    </span><span class="nt">save_to_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">    </span><span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output/CodeCarbon</span>
 </pre></div>
 </div>
 </section>

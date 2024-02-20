@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>py_experimenter.config &mdash; PyExperimenter 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=359c27e9"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="py_experimenter.database_connector" href="../database_connector/index.html" />
+    <link rel="prev" title="py_experimenter" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyExperimenter
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../database_connector/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../database_connector_lite/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector_lite</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../database_connector_mysql/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector_mysql</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../exceptions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.exceptions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../experiment_status/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.experiment_status</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../experimenter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.experimenter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../result_processor/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.result_processor</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.utils</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../help.html">Need Help?</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../issues.html">Creating an Issue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-contribute.html">How to Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../3rd-party.html">Usage of 3rd Party Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-version.html">Release Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About PyExperimenter</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">Cite PyExperimenter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tornede/py_experimenter/">Repository</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyExperimenter</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.config</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/py_experimenter/config/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-py_experimenter.config">
+<span id="py-experimenter-config"></span><h1><a class="reference internal" href="#module-py_experimenter.config" title="py_experimenter.config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.config</span></code></a><a class="headerlink" href="#module-py_experimenter.config" title="Permalink to this heading"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.config.Cfg" title="py_experimenter.config.Cfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cfg</span></code></a></p></td>
+<td><p>Helper class that provides a standard way to create an ABC using</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.config.Keyfield" title="py_experimenter.config.Keyfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Keyfield</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.config.DatabaseCfg" title="py_experimenter.config.DatabaseCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatabaseCfg</span></code></a></p></td>
+<td><p>Class for the configuration of the database connection. In addition to <cite>provider</cite>, <cite>database_name</cite>, and <cite>table_name</cite>, the class also defined the structure</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.config.CustomCfg" title="py_experimenter.config.CustomCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CustomCfg</span></code></a></p></td>
+<td><p>Class for custom values given to every experiment.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.config.CodeCarbonCfg" title="py_experimenter.config.CodeCarbonCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CodeCarbonCfg</span></code></a></p></td>
+<td><p>Class for the configuration of the CodeCarbon API.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.config.PyExperimenterCfg" title="py_experimenter.config.PyExperimenterCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyExperimenterCfg</span></code></a></p></td>
+<td><p>Configuration of a PyExperimenter object. Contains the configuration of the database, custom values, and the CodeCarbon API.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="py_experimenter.config.Cfg">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.config.</span></span><span class="sig-name descname"><span class="pre">Cfg</span></span><a class="headerlink" href="#py_experimenter.config.Cfg" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Helper class that provides a standard way to create an ABC using
+inheritance.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.Cfg.extract_config">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extract_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#py_experimenter.config.Cfg" title="py_experimenter.config.Cfg"><span class="pre">Cfg</span></a></span></span><a class="headerlink" href="#py_experimenter.config.Cfg.extract_config" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method for extracting the configuration from a given OmegaConf object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.Cfg.valid">
+<span class="sig-name descname"><span class="pre">valid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#py_experimenter.config.Cfg.valid" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method for checking the validity of the configuration.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="py_experimenter.config.Keyfield">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.config.</span></span><span class="sig-name descname"><span class="pre">Keyfield</span></span><a class="headerlink" href="#py_experimenter.config.Keyfield" title="Permalink to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="py_experimenter.config.Keyfield.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#py_experimenter.config.Keyfield.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="py_experimenter.config.Keyfield.dtype">
+<span class="sig-name descname"><span class="pre">dtype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#py_experimenter.config.Keyfield.dtype" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="py_experimenter.config.Keyfield.values">
+<span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#py_experimenter.config.Keyfield.values" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="py_experimenter.config.DatabaseCfg">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.config.</span></span><span class="sig-name descname"><span class="pre">DatabaseCfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_timestamps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyfields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#py_experimenter.config.Keyfield" title="py_experimenter.config.Keyfield"><span class="pre">Keyfield</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resultfields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logtables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.config.DatabaseCfg" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py_experimenter.config.Cfg" title="py_experimenter.config.Cfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cfg</span></code></a></p>
+<p>Class for the configuration of the database connection. In addition to <cite>provider</cite>, <cite>database_name</cite>, and <cite>table_name</cite>, the class also defined the structure
+of tables in the <cite>keyfields</cite>, <cite>resultfields</cite>, and <cite>logtables</cite> attributes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.DatabaseCfg.extract_config">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extract_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.OmegaConf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#py_experimenter.config.DatabaseCfg" title="py_experimenter.config.DatabaseCfg"><span class="pre">DatabaseCfg</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.config.DatabaseCfg.extract_config" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method for extracting the configuration from a given OmegaConf object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.DatabaseCfg._extract_keyfields">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_extract_keyfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyfields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.DictConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#py_experimenter.config.Keyfield" title="py_experimenter.config.Keyfield"><span class="pre">Keyfield</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.config.DatabaseCfg._extract_keyfields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.DatabaseCfg._extract_value_range">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_extract_value_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyfield_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyfield_content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.DictConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.config.DatabaseCfg._extract_value_range" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.DatabaseCfg._extract_resultfields">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_extract_resultfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.OmegaConf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.config.DatabaseCfg._extract_resultfields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.DatabaseCfg._extract_logtables">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_extract_logtables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.OmegaConf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.config.DatabaseCfg._extract_logtables" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.DatabaseCfg.get_experiment_configuration">
+<span class="sig-name descname"><span class="pre">get_experiment_configuration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.config.DatabaseCfg.get_experiment_configuration" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.DatabaseCfg.valid">
+<span class="sig-name descname"><span class="pre">valid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#py_experimenter.config.DatabaseCfg.valid" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method for checking the validity of the configuration.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="py_experimenter.config.CustomCfg">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.config.</span></span><span class="sig-name descname"><span class="pre">CustomCfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">custom_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.config.CustomCfg" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py_experimenter.config.Cfg" title="py_experimenter.config.Cfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cfg</span></code></a></p>
+<p>Class for custom values given to every experiment.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.CustomCfg.extract_config">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extract_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.OmegaConf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#py_experimenter.config.CustomCfg" title="py_experimenter.config.CustomCfg"><span class="pre">CustomCfg</span></a></span></span><a class="headerlink" href="#py_experimenter.config.CustomCfg.extract_config" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method for extracting the configuration from a given OmegaConf object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.CustomCfg.valid">
+<span class="sig-name descname"><span class="pre">valid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.config.CustomCfg.valid" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method for checking the validity of the configuration.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="py_experimenter.config.CodeCarbonCfg">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.config.</span></span><span class="sig-name descname"><span class="pre">CodeCarbonCfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.config.CodeCarbonCfg" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#py_experimenter.config.Cfg" title="py_experimenter.config.Cfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cfg</span></code></a></p>
+<p>Class for the configuration of the CodeCarbon API.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.CodeCarbonCfg.extract_config">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extract_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.OmegaConf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#py_experimenter.config.CodeCarbonCfg" title="py_experimenter.config.CodeCarbonCfg"><span class="pre">CodeCarbonCfg</span></a></span></span><a class="headerlink" href="#py_experimenter.config.CodeCarbonCfg.extract_config" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method for extracting the configuration from a given OmegaConf object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.CodeCarbonCfg.valid">
+<span class="sig-name descname"><span class="pre">valid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.config.CodeCarbonCfg.valid" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method for checking the validity of the configuration.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="py_experimenter.config.PyExperimenterCfg">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.config.</span></span><span class="sig-name descname"><span class="pre">PyExperimenterCfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_configuration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#py_experimenter.config.DatabaseCfg" title="py_experimenter.config.DatabaseCfg"><span class="pre">DatabaseCfg</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_configuration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#py_experimenter.config.CustomCfg" title="py_experimenter.config.CustomCfg"><span class="pre">CustomCfg</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">codecarbon_configuration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#py_experimenter.config.CodeCarbonCfg" title="py_experimenter.config.CodeCarbonCfg"><span class="pre">CodeCarbonCfg</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.config.PyExperimenterCfg" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration of a PyExperimenter object. Contains the configuration of the database, custom values, and the CodeCarbon API.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.PyExperimenterCfg.extract_config">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extract_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#py_experimenter.config.PyExperimenterCfg" title="py_experimenter.config.PyExperimenterCfg"><span class="pre">PyExperimenterCfg</span></a></span></span><a class="headerlink" href="#py_experimenter.config.PyExperimenterCfg.extract_config" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.config.PyExperimenterCfg.valid">
+<span class="sig-name descname"><span class="pre">valid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#py_experimenter.config.PyExperimenterCfg.valid" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="py_experimenter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../database_connector/index.html" class="btn btn-neutral float-right" title="py_experimenter.database_connector" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Tanja Tornede, Alexander Tornede, Lukas Fehring, Lukas Gehring, Helena Graf, Jonas Hanselle, Felix Mohr, Marcel Wever.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

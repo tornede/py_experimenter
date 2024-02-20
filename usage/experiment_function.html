@@ -153,7 +153,7 @@
 </pre></div>
 </div>
 <section id="push-data-to-resultfields">
-<h2>Push Data To Resultfields<a class="headerlink" href="#push-data-to-resultfields" title="Permalink to this heading"></a></h2>
+<span id="experiment-function-resultfields"></span><h2>Push Data To Resultfields<a class="headerlink" href="#push-data-to-resultfields" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">Resultfields</span></code> can be filled any time during the execution process by calling the following code within your experiment function, e.g. <code class="docutils literal notranslate"><span class="pre">run_ml</span></code>. Note that a resultfield is meant to be written once, if you re-write a resultfield, the old value will be overwritten. Furthermore note that you do not have to write all resultfields at once, but can also only write a subset as demonstrated in the example above. Multiple in-depth examples showcasing the usage of resultfields can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result_processor</span><span class="o">.</span><span class="n">process_results</span><span class="p">({</span>
         <span class="s1">&#39;&lt;resultfield_name&gt;&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">resultfield_value</span><span class="o">&gt;</span><span class="p">,</span>
@@ -164,7 +164,7 @@
 </div>
 </section>
 <section id="push-data-to-logtables">
-<h2>Push Data To Logtables<a class="headerlink" href="#push-data-to-logtables" title="Permalink to this heading"></a></h2>
+<span id="experiment-function-logtables"></span><h2>Push Data To Logtables<a class="headerlink" href="#push-data-to-logtables" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">Logtables</span></code> can be filled any time during the execution process by calling the following code within your experiment function, e.g. <code class="docutils literal notranslate"><span class="pre">run_ml</span></code>. An in-depth example showcasing the usage of logtables can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result_processor</span><span class="o">.</span><span class="n">process_logs</span><span class="p">({</span>
     <span class="s1">&#39;&lt;logtable_name&gt;&#39;</span><span class="p">:</span> <span class="p">{</span>

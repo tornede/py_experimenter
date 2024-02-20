@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: DatabaseConnectorMYSQL(experiment_configuration: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, database_credential_file_path: str, logger)
+.. py:class:: DatabaseConnectorMYSQL(database_configuration: omegaconf.OmegaConf, use_codecarbon: bool, credential_path: str, logger)
 
 
    Bases: :py:obj:`py_experimenter.database_connector.DatabaseConnector`
@@ -33,10 +33,7 @@ Classes
    .. py:method:: _create_database_if_not_existing()
 
 
-   .. py:method:: _extract_credentials()
-
-
-   .. py:method:: connect(credentials=None)
+   .. py:method:: connect()
 
 
    .. py:method:: _start_transaction(connection, readonly=False)
@@ -49,7 +46,7 @@ Classes
       :staticmethod:
 
 
-   .. py:method:: _table_has_correct_structure(cursor, typed_fields)
+   .. py:method:: _table_has_correct_structure(cursor, typed_fields: Dict[str, str])
 
 
    .. py:method:: _pull_open_experiment(random_order) -> Tuple[int, List, List]

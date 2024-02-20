@@ -151,3 +151,19 @@ Module Contents
    Common base class for all non-exit exceptions.
 
 
+.. py:exception:: InvalidColumnError
+
+
+   Bases: :py:obj:`Exception`
+
+   Common base class for all non-exit exceptions.
+
+
+.. py:exception:: InvalidLogtableError
+
+
+   Bases: :py:obj:`Exception`
+
+   Common base class for all non-exit exceptions.
+
+

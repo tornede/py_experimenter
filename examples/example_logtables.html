@@ -128,30 +128,46 @@ pip install scikit-learn
 <p>This notebook shows an example execution of <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> based the configuration file that is used in the <a class="reference external" href="https://tornede.github.io/py_experimenter/examples/example_general_usage.html">general usage</a> notebook. However, this file is slightly adapted to show the usage of logtables. The goal in this small example is to find the best kernel for an SVM on some dataset using grid search and log the performance of SVMs initialized with different kernels. Further explanation of logtables can
 be found in the <a class="reference external" href="https://tornede.github.io/py_experimenter/usage.html#logtables">documentation</a>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import os
 
 content = &quot;&quot;&quot;
-[PY_EXPERIMENTER]
-provider = sqlite
-database = py_experimenter
-table = example_logtables
+PY_EXPERIMENTER:
+  n_jobs : 1
 
-keyfields = dataset, cross_validation_splits:int, seed:int
-dataset = iris
-cross_validation_splits = 5
-seed = 1,2,3,4,5
+  Database:
+    provider: mysql
+    database: py_experimenter
+    table:
+      name: example_logtables
+      keyfields:
+        dataset:
+          type: VARCHAR(50)
+          values: [&#39;iris&#39;]
+        cross_validation_splits:
+          type: int
+          values: [5]
+        seed:
+          type: int
+          values: [1, 2, 3, 4, 5]
+      result_timestamps: false
+      resultfields:
+        best_kernel_accuracy: VARCHAR(50)
+        best_kernel_f1: VARCHAR(50)
+    logtables:
+      train_scores:
+        f1: DOUBLE
+        accuracy: DOUBLE
+        kernel: VARCHAR(50)
+      test_f1:
+        test_f1: DOUBLE
+      test_accuracy:
+        test_accuracy: DOUBLE
 
-resultfields = best_kernel_f1:VARCHAR(50), best_kernel_accuracy:VARCHAR(50)
-resultfields.timestamps = false
-
-logtables = train_scores:log_train_scores, test_f1:DOUBLE, test_accuracy:DOUBLE
-log_train_scores = f1:DOUBLE, accuracy:DOUBLE, kernel:VARCHAR(50)
-
-[CUSTOM]
-path = sample_data
+  CUSTOM:
+    path: sample_data
 &quot;&quot;&quot;
 
 # Create config directory if it does not exist
@@ -159,7 +175,7 @@ if not os.path.exists(&#39;config&#39;):
     os.mkdir(&#39;config&#39;)
 
 # Create config file
-experiment_configuration_file_path = os.path.join(&#39;config&#39;, &#39;example_logtables.cfg&#39;)
+experiment_configuration_file_path = os.path.join(&#39;config&#39;, &#39;example_logtables.yml&#39;)
 with open(experiment_configuration_file_path, &quot;w&quot;) as f:
   f.write(content)
 </pre></div>
@@ -170,7 +186,7 @@ with open(experiment_configuration_file_path, &quot;w&quot;) as f:
 <h2>Defining the execution function<a class="headerlink" href="#Defining-the-execution-function" title="Permalink to this heading"></a></h2>
 <p>Next, the execution of a single experiment has to be defined. Note that this dummy example is a slightly modified version of the <a class="reference external" href="https://tornede.github.io/py_experimenter/examples/example_general_usage.html">general usage</a> notebook. Instead of executing with one kernel we iterate over kernels to find the best one. Additionally, the results get logged.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import random
@@ -243,7 +259,7 @@ def run_ml(parameters: dict, result_processor: ResultProcessor, custom_config: d
 <h2>Executing PyExperimenter<a class="headerlink" href="#Executing-PyExperimenter" title="Permalink to this heading"></a></h2>
 <p>Now we create a <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> object with the experiment configuration above. We also fill the database with with values from that experiment configuration file.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from py_experimenter.experimenter import PyExperimenter
@@ -260,12 +276,15 @@ experimenter.get_table()
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2023-07-24 12:52:44,399  | py-experimenter - INFO     | Initialized and connected to database
-2023-07-24 12:52:44,402  | py-experimenter - INFO     | No rows to add. All the 5 experiments already exist.
+2024-02-19 17:12:15,578  | py-experimenter - INFO     | Found 3 keyfields
+2024-02-19 17:12:15,582  | py-experimenter - WARNING  | No custom section defined in config
+2024-02-19 17:12:15,585  | py-experimenter - WARNING  | No codecarbon section defined in config
+2024-02-19 17:12:15,623  | py-experimenter - INFO     | Initialized and connected to database
+2024-02-19 17:12:15,803  | py-experimenter - INFO     | 5 rows successfully added to database. 0 rows were skipped.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -296,8 +315,8 @@ experimenter.get_table()
       <th>start_date</th>
       <th>name</th>
       <th>machine</th>
-      <th>best_kernel_f1</th>
       <th>best_kernel_accuracy</th>
+      <th>best_kernel_f1</th>
       <th>end_date</th>
       <th>error</th>
     </tr>
@@ -309,14 +328,14 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>1</td>
-      <td>2023-07-20 18:58:42</td>
-      <td>done</td>
-      <td>2023-07-20 18:58:42</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>linear</td>
-      <td>linear</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:15</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -325,14 +344,14 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>2</td>
-      <td>2023-07-20 18:58:42</td>
-      <td>done</td>
-      <td>2023-07-20 18:58:44</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>linear</td>
-      <td>linear</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:15</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -341,14 +360,14 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>3</td>
-      <td>2023-07-20 18:58:42</td>
-      <td>done</td>
-      <td>2023-07-20 18:58:45</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>linear</td>
-      <td>linear</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:15</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -357,14 +376,14 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>4</td>
-      <td>2023-07-20 18:58:42</td>
-      <td>done</td>
-      <td>2023-07-20 18:58:47</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>linear</td>
-      <td>linear</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:15</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
     <tr>
@@ -373,14 +392,14 @@ experimenter.get_table()
       <td>iris</td>
       <td>5</td>
       <td>5</td>
-      <td>2023-07-20 18:58:42</td>
-      <td>done</td>
-      <td>2023-07-20 18:58:49</td>
-      <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
-      <td>linear</td>
-      <td>linear</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:15</td>
+      <td>created</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>None</td>
     </tr>
   </tbody>
@@ -388,7 +407,7 @@ experimenter.get_table()
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Read one of the logtables
@@ -397,7 +416,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -428,186 +447,6 @@ experimenter.get_logtable(&#39;train_scores&#39;)
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>1</td>
-      <td>2023-07-20 18:58:44</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>'linear'</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>1</td>
-      <td>2023-07-20 18:58:44</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>'poly'</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>1</td>
-      <td>2023-07-20 18:58:44</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>'rbf'</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>1</td>
-      <td>2023-07-20 18:58:44</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>'sigmoid'</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>2</td>
-      <td>2023-07-20 18:58:45</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>'linear'</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>6</td>
-      <td>2</td>
-      <td>2023-07-20 18:58:45</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>'poly'</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>7</td>
-      <td>2</td>
-      <td>2023-07-20 18:58:45</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>'rbf'</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>8</td>
-      <td>2</td>
-      <td>2023-07-20 18:58:45</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>'sigmoid'</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>9</td>
-      <td>3</td>
-      <td>2023-07-20 18:58:47</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>'linear'</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>10</td>
-      <td>3</td>
-      <td>2023-07-20 18:58:47</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>'poly'</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>11</td>
-      <td>3</td>
-      <td>2023-07-20 18:58:47</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>'rbf'</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>12</td>
-      <td>3</td>
-      <td>2023-07-20 18:58:47</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>'sigmoid'</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>13</td>
-      <td>4</td>
-      <td>2023-07-20 18:58:49</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>'linear'</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>14</td>
-      <td>4</td>
-      <td>2023-07-20 18:58:49</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>'poly'</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>15</td>
-      <td>4</td>
-      <td>2023-07-20 18:58:49</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>'rbf'</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>16</td>
-      <td>4</td>
-      <td>2023-07-20 18:58:49</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>'sigmoid'</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>17</td>
-      <td>5</td>
-      <td>2023-07-20 18:58:51</td>
-      <td>0.971667</td>
-      <td>0.971667</td>
-      <td>'linear'</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>18</td>
-      <td>5</td>
-      <td>2023-07-20 18:58:51</td>
-      <td>0.936667</td>
-      <td>0.936667</td>
-      <td>'poly'</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>19</td>
-      <td>5</td>
-      <td>2023-07-20 18:58:51</td>
-      <td>0.975000</td>
-      <td>0.975000</td>
-      <td>'rbf'</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>20</td>
-      <td>5</td>
-      <td>2023-07-20 18:58:51</td>
-      <td>0.896667</td>
-      <td>0.896667</td>
-      <td>'sigmoid'</td>
-    </tr>
   </tbody>
 </table>
 </div></div>
@@ -618,19 +457,121 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 <p>All experiments are executed sequentially by the same <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> due to <code class="docutils literal notranslate"><span class="pre">max_experiments=-1</span></code> and the implicit <code class="docutils literal notranslate"><span class="pre">n_jobs=1</span></code> as no amount of jobs is specified in the configuration file. If just a single one or a predifined number of experiments should be executed, the <code class="docutils literal notranslate"><span class="pre">-1</span></code> has to be replaced by the corresponding amount.</p>
 <p>The first parameter, i.e. <code class="docutils literal notranslate"><span class="pre">run_ml</span></code>, relates to the actual method that should be executed with the given keyfields of the table.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.execute(run_ml, max_experiments=-1)
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+[codecarbon INFO @ 17:12:16] [setup] RAM Tracking...
+[codecarbon INFO @ 17:12:16] [setup] GPU Tracking...
+[codecarbon INFO @ 17:12:16] No GPU found.
+[codecarbon INFO @ 17:12:16] [setup] CPU Tracking...
+[codecarbon WARNING @ 17:12:16] No CPU tracking mode found. Falling back on CPU constant mode.
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2023-07-24 12:52:44,424  | py-experimenter - INFO     | All configured executions finished.
+[codecarbon WARNING @ 17:12:17] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
+[codecarbon INFO @ 17:12:17] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 17:12:17] &gt;&gt;&gt; Tracker&#39;s metadata:
+[codecarbon INFO @ 17:12:17]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+[codecarbon INFO @ 17:12:17]   Python version: 3.9.0
+[codecarbon INFO @ 17:12:17]   CodeCarbon version: 2.3.4
+[codecarbon INFO @ 17:12:17]   Available RAM : 15.475 GB
+[codecarbon INFO @ 17:12:17]   CPU count: 16
+[codecarbon INFO @ 17:12:17]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 17:12:17]   GPU count: None
+[codecarbon INFO @ 17:12:17]   GPU model: None
+[codecarbon INFO @ 17:12:22] Energy consumed for RAM : 0.000002 kWh. RAM Power : 5.803094387054443 W
+[codecarbon INFO @ 17:12:22] Energy consumed for all CPUs : 0.000017 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:12:22] 0.000020 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:12:22] [setup] RAM Tracking...
+[codecarbon INFO @ 17:12:22] [setup] GPU Tracking...
+[codecarbon INFO @ 17:12:22] No GPU found.
+[codecarbon INFO @ 17:12:22] [setup] CPU Tracking...
+[codecarbon WARNING @ 17:12:22] No CPU tracking mode found. Falling back on CPU constant mode.
+[codecarbon WARNING @ 17:12:24] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
+[codecarbon INFO @ 17:12:24] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 17:12:24] &gt;&gt;&gt; Tracker&#39;s metadata:
+[codecarbon INFO @ 17:12:24]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+[codecarbon INFO @ 17:12:24]   Python version: 3.9.0
+[codecarbon INFO @ 17:12:24]   CodeCarbon version: 2.3.4
+[codecarbon INFO @ 17:12:24]   Available RAM : 15.475 GB
+[codecarbon INFO @ 17:12:24]   CPU count: 16
+[codecarbon INFO @ 17:12:24]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 17:12:24]   GPU count: None
+[codecarbon INFO @ 17:12:24]   GPU model: None
+[codecarbon INFO @ 17:12:28] Energy consumed for RAM : 0.000001 kWh. RAM Power : 5.803094387054443 W
+[codecarbon INFO @ 17:12:28] Energy consumed for all CPUs : 0.000004 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:12:28] 0.000005 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:12:28] [setup] RAM Tracking...
+[codecarbon INFO @ 17:12:28] [setup] GPU Tracking...
+[codecarbon INFO @ 17:12:28] No GPU found.
+[codecarbon INFO @ 17:12:28] [setup] CPU Tracking...
+[codecarbon WARNING @ 17:12:28] No CPU tracking mode found. Falling back on CPU constant mode.
+[codecarbon WARNING @ 17:12:30] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
+[codecarbon INFO @ 17:12:30] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 17:12:30] &gt;&gt;&gt; Tracker&#39;s metadata:
+[codecarbon INFO @ 17:12:30]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+[codecarbon INFO @ 17:12:30]   Python version: 3.9.0
+[codecarbon INFO @ 17:12:30]   CodeCarbon version: 2.3.4
+[codecarbon INFO @ 17:12:30]   Available RAM : 15.475 GB
+[codecarbon INFO @ 17:12:30]   CPU count: 16
+[codecarbon INFO @ 17:12:30]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 17:12:30]   GPU count: None
+[codecarbon INFO @ 17:12:30]   GPU model: None
+[codecarbon INFO @ 17:12:33] Energy consumed for RAM : 0.000001 kWh. RAM Power : 5.803094387054443 W
+[codecarbon INFO @ 17:12:33] Energy consumed for all CPUs : 0.000006 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:12:33] 0.000007 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:12:33] [setup] RAM Tracking...
+[codecarbon INFO @ 17:12:33] [setup] GPU Tracking...
+[codecarbon INFO @ 17:12:33] No GPU found.
+[codecarbon INFO @ 17:12:33] [setup] CPU Tracking...
+[codecarbon WARNING @ 17:12:33] No CPU tracking mode found. Falling back on CPU constant mode.
+[codecarbon WARNING @ 17:12:35] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
+[codecarbon INFO @ 17:12:35] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 17:12:35] &gt;&gt;&gt; Tracker&#39;s metadata:
+[codecarbon INFO @ 17:12:35]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+[codecarbon INFO @ 17:12:35]   Python version: 3.9.0
+[codecarbon INFO @ 17:12:35]   CodeCarbon version: 2.3.4
+[codecarbon INFO @ 17:12:35]   Available RAM : 15.475 GB
+[codecarbon INFO @ 17:12:35]   CPU count: 16
+[codecarbon INFO @ 17:12:35]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 17:12:35]   GPU count: None
+[codecarbon INFO @ 17:12:35]   GPU model: None
+[codecarbon INFO @ 17:12:38] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
+[codecarbon INFO @ 17:12:38] Energy consumed for all CPUs : 0.000004 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:12:38] 0.000004 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:12:39] [setup] RAM Tracking...
+[codecarbon INFO @ 17:12:39] [setup] GPU Tracking...
+[codecarbon INFO @ 17:12:39] No GPU found.
+[codecarbon INFO @ 17:12:39] [setup] CPU Tracking...
+[codecarbon WARNING @ 17:12:39] No CPU tracking mode found. Falling back on CPU constant mode.
+[codecarbon WARNING @ 17:12:40] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
+[codecarbon INFO @ 17:12:40] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 17:12:40] &gt;&gt;&gt; Tracker&#39;s metadata:
+[codecarbon INFO @ 17:12:40]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+[codecarbon INFO @ 17:12:40]   Python version: 3.9.0
+[codecarbon INFO @ 17:12:40]   CodeCarbon version: 2.3.4
+[codecarbon INFO @ 17:12:40]   Available RAM : 15.475 GB
+[codecarbon INFO @ 17:12:40]   CPU count: 16
+[codecarbon INFO @ 17:12:40]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 17:12:40]   GPU count: None
+[codecarbon INFO @ 17:12:40]   GPU model: None
+[codecarbon INFO @ 17:12:43] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
+[codecarbon INFO @ 17:12:43] Energy consumed for all CPUs : 0.000003 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:12:43] 0.000004 kWh of electricity used since the beginning.
+2024-02-19 17:12:44,019  | py-experimenter - INFO     | All configured executions finished.
 </pre></div></div>
 </div>
 </section>
@@ -638,7 +579,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 <h2>Check Results<a class="headerlink" href="#Check-Results" title="Permalink to this heading"></a></h2>
 <p>The content of all database tables having keyfields and resultfields, as well as every logtable can be easily obtained.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_table()
@@ -646,7 +587,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -677,8 +618,8 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>start_date</th>
       <th>name</th>
       <th>machine</th>
-      <th>best_kernel_f1</th>
       <th>best_kernel_accuracy</th>
+      <th>best_kernel_f1</th>
       <th>end_date</th>
       <th>error</th>
     </tr>
@@ -690,14 +631,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>1</td>
-      <td>2023-07-20 18:58:42</td>
+      <td>2024-02-19 17:12:15</td>
       <td>done</td>
-      <td>2023-07-20 18:58:42</td>
+      <td>2024-02-19 17:12:16</td>
       <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Worklaptop</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:22</td>
       <td>None</td>
     </tr>
     <tr>
@@ -706,14 +647,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>2</td>
-      <td>2023-07-20 18:58:42</td>
+      <td>2024-02-19 17:12:15</td>
       <td>done</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:22</td>
       <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Worklaptop</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>None</td>
     </tr>
     <tr>
@@ -722,14 +663,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>3</td>
-      <td>2023-07-20 18:58:42</td>
+      <td>2024-02-19 17:12:15</td>
       <td>done</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Worklaptop</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>None</td>
     </tr>
     <tr>
@@ -738,14 +679,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>4</td>
-      <td>2023-07-20 18:58:42</td>
+      <td>2024-02-19 17:12:15</td>
       <td>done</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Worklaptop</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>None</td>
     </tr>
     <tr>
@@ -754,14 +695,14 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <td>iris</td>
       <td>5</td>
       <td>5</td>
-      <td>2023-07-20 18:58:42</td>
+      <td>2024-02-19 17:12:15</td>
       <td>done</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>example_notebook</td>
-      <td>MacBook-Pro-von-Tanja.local</td>
+      <td>Worklaptop</td>
       <td>linear</td>
       <td>linear</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:43</td>
       <td>None</td>
     </tr>
   </tbody>
@@ -769,7 +710,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_logtable(&#39;train_scores&#39;)
@@ -777,7 +718,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -812,7 +753,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>0</th>
       <td>1</td>
       <td>1</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:20</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -821,7 +762,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>1</th>
       <td>2</td>
       <td>1</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:20</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -830,7 +771,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>2</th>
       <td>3</td>
       <td>1</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:22</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -839,7 +780,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>3</th>
       <td>4</td>
       <td>1</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:22</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -848,7 +789,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>4</th>
       <td>5</td>
       <td>2</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -857,7 +798,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>5</th>
       <td>6</td>
       <td>2</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -866,7 +807,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>6</th>
       <td>7</td>
       <td>2</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -875,7 +816,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>7</th>
       <td>8</td>
       <td>2</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -884,7 +825,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>8</th>
       <td>9</td>
       <td>3</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -893,7 +834,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>9</th>
       <td>10</td>
       <td>3</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -902,7 +843,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>10</th>
       <td>11</td>
       <td>3</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -911,7 +852,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>11</th>
       <td>12</td>
       <td>3</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -920,7 +861,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>12</th>
       <td>13</td>
       <td>4</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -929,7 +870,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>13</th>
       <td>14</td>
       <td>4</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -938,7 +879,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>14</th>
       <td>15</td>
       <td>4</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -947,7 +888,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>15</th>
       <td>16</td>
       <td>4</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -956,7 +897,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>16</th>
       <td>17</td>
       <td>5</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:43</td>
       <td>0.971667</td>
       <td>0.971667</td>
       <td>'linear'</td>
@@ -965,7 +906,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>17</th>
       <td>18</td>
       <td>5</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:43</td>
       <td>0.936667</td>
       <td>0.936667</td>
       <td>'poly'</td>
@@ -974,7 +915,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>18</th>
       <td>19</td>
       <td>5</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:43</td>
       <td>0.975000</td>
       <td>0.975000</td>
       <td>'rbf'</td>
@@ -983,7 +924,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>19</th>
       <td>20</td>
       <td>5</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:43</td>
       <td>0.896667</td>
       <td>0.896667</td>
       <td>'sigmoid'</td>
@@ -993,7 +934,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_logtable(&#39;test_f1&#39;)
@@ -1001,7 +942,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1034,140 +975,140 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>0</th>
       <td>1</td>
       <td>1</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:20</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2</td>
       <td>1</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:20</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>2</th>
       <td>3</td>
       <td>1</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:22</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>3</th>
       <td>4</td>
       <td>1</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:22</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
       <td>2</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>5</th>
       <td>6</td>
       <td>2</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>6</th>
       <td>7</td>
       <td>2</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>7</th>
       <td>8</td>
       <td>2</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>8</th>
       <td>9</td>
       <td>3</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>9</th>
       <td>10</td>
       <td>3</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>10</th>
       <td>11</td>
       <td>3</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>11</th>
       <td>12</td>
       <td>3</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>12</th>
       <td>13</td>
       <td>4</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>13</th>
       <td>14</td>
       <td>4</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>14</th>
       <td>15</td>
       <td>4</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>15</th>
       <td>16</td>
       <td>4</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>16</th>
       <td>17</td>
       <td>5</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:43</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>17</th>
       <td>18</td>
       <td>5</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:43</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>18</th>
       <td>19</td>
       <td>5</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:43</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>19</th>
       <td>20</td>
       <td>5</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:43</td>
       <td>0.893333</td>
     </tr>
   </tbody>
@@ -1175,7 +1116,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_logtable(&#39;test_accuracy&#39;)
@@ -1183,7 +1124,7 @@ experimenter.get_logtable(&#39;train_scores&#39;)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1216,140 +1157,140 @@ experimenter.get_logtable(&#39;train_scores&#39;)
       <th>0</th>
       <td>1</td>
       <td>1</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:20</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2</td>
       <td>1</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:20</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>2</th>
       <td>3</td>
       <td>1</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:22</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>3</th>
       <td>4</td>
       <td>1</td>
-      <td>2023-07-20 18:58:44</td>
+      <td>2024-02-19 17:12:22</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
       <td>2</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>5</th>
       <td>6</td>
       <td>2</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>6</th>
       <td>7</td>
       <td>2</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>7</th>
       <td>8</td>
       <td>2</td>
-      <td>2023-07-20 18:58:45</td>
+      <td>2024-02-19 17:12:28</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>8</th>
       <td>9</td>
       <td>3</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>9</th>
       <td>10</td>
       <td>3</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>10</th>
       <td>11</td>
       <td>3</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>11</th>
       <td>12</td>
       <td>3</td>
-      <td>2023-07-20 18:58:47</td>
+      <td>2024-02-19 17:12:33</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>12</th>
       <td>13</td>
       <td>4</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>13</th>
       <td>14</td>
       <td>4</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>14</th>
       <td>15</td>
       <td>4</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>15</th>
       <td>16</td>
       <td>4</td>
-      <td>2023-07-20 18:58:49</td>
+      <td>2024-02-19 17:12:38</td>
       <td>0.893333</td>
     </tr>
     <tr>
       <th>16</th>
       <td>17</td>
       <td>5</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:43</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>17</th>
       <td>18</td>
       <td>5</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:43</td>
       <td>0.933333</td>
     </tr>
     <tr>
       <th>18</th>
       <td>19</td>
       <td>5</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:43</td>
       <td>0.966667</td>
     </tr>
     <tr>
       <th>19</th>
       <td>20</td>
       <td>5</td>
-      <td>2023-07-20 18:58:51</td>
+      <td>2024-02-19 17:12:43</td>
       <td>0.893333</td>
     </tr>
   </tbody>

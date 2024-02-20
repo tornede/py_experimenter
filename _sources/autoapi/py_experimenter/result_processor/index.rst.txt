@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: ResultProcessor(config: configparser.ConfigParser, use_codecarbon: bool, codecarbon_config: configparser.ConfigParser, credential_path, table_name: str, experiment_id: int, logger)
+.. py:class:: ResultProcessor(database_config: py_experimenter.config.DatabaseCfg, db_connector: py_experimenter.database_connector.DatabaseConnector, experiment_id: int, logger)
 
 
    Class for processing the results from an experiment. Use this class whenever you want to write results to the
