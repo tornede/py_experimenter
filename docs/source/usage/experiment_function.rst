@@ -6,7 +6,7 @@ Experiment Function
 
 The execution of a single experiment has to be defined within a function. The function is called with the ``keyfields`` values of a database entry. The results are meant to be processed to be written into the database, i.e. as ``resultfields``. During the experiment different information can be logged into ``logtables``.
 
-.. code-block:: 
+.. code-block:: python
 
     import os
     from py_experimenter.result_processor import ResultProcessor
@@ -50,7 +50,7 @@ The execution of a single experiment has to be defined within a function. The fu
             'test_accuracy': np.mean(scores['test_accuracy'])}
         result_processor.process_results(resultfields)
 
-
+.. _experiment_function_resultfields:
 
 """""""""""""""""""""""""
 Push Data To Resultfields
@@ -58,7 +58,7 @@ Push Data To Resultfields
 
 ``Resultfields`` can be filled any time during the execution process by calling the following code within your experiment function, e.g. ``run_ml``. Note that a resultfield is meant to be written once, if you re-write a resultfield, the old value will be overwritten. Furthermore note that you do not have to write all resultfields at once, but can also only write a subset as demonstrated in the example above. Multiple in-depth examples showcasing the usage of resultfields can be found within the :ref:`examples section <examples>`.
 
-.. code-block:: 
+.. code-block:: python
 
     result_processor.process_results({
             '<resultfield_name>': <resultfield_value>, 
@@ -67,13 +67,15 @@ Push Data To Resultfields
     })
 
 
+.. _experiment_function_logtables:
+
 """"""""""""""""""""""
 Push Data To Logtables
 """"""""""""""""""""""
 
 ``Logtables`` can be filled any time during the execution process by calling the following code within your experiment function, e.g. ``run_ml``. An in-depth example showcasing the usage of logtables can be found within the :ref:`examples section <examples>`.
 
-.. code-block:: 
+.. code-block:: python
 
     result_processor.process_logs({
         '<logtable_name>': {

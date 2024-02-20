@@ -1,0 +1,28 @@
+PY_EXPERIMENTER:
+  n_jobs: 1
+
+  Database:
+    provider: sqlite
+    database: py_experimenter
+    table:
+      name: integration_test_sqlite
+      keyfields:
+        dataset:
+          type: str
+          values: [iris]
+        cross_validation_splits:
+          type: int
+          values: [5]
+        seed:
+          type: int
+          values: [2,4,6]
+        kernel:
+          type: str
+          values: [linear, poly, rbf, sigmoid]
+      result_timestamps: false
+      resultfields:
+        pipeline: LONGTEXT
+        train_f1: DECIMAL
+        train_accuracy: DECIMAL
+        test_f1: DECIMAL
+        test_accuracy: DECIMAL

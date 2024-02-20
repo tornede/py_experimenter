@@ -18,6 +18,10 @@ class DatabaseConnectionError(DatabaseError):
     pass
 
 
+class SshTunnelError(DatabaseError):
+    pass
+
+
 class DatabaseQueryError(DatabaseError):
     pass
 
@@ -46,6 +50,10 @@ class NoExperimentsLeftException(PyExperimenterError):
     pass
 
 
+class NoPausedExperimentsException(PyExperimenterError):
+    pass
+
+
 class ConfigError(PyExperimenterError):
     pass
 
@@ -63,4 +71,12 @@ class InvalidValuesInConfiguration(ConfigError):
 
 
 class MissingLogTableError(ConfigError):
+    pass
+
+
+class InvalidColumnError(Exception):
+    pass
+
+
+class InvalidLogtableError(Exception):
     pass

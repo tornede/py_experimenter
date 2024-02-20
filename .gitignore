@@ -137,10 +137,18 @@ dmypy.json
 
 # todo
 todo.md
-config/database_credentials.cfg
-config/example*.cfg
+
+# Configs
+config/database_credentials.yml
+config/example_conditional_grid.yml
+config/example_general_usage.yml
+config/example_logtables.yml
+config/example_pause_and_continue.yml
 output/
 
 # codecarbon
 .codecarbon.config
 emissions.csv
+
+# development folder
+development/
