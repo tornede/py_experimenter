@@ -17,10 +17,15 @@ Classes
 
 
 
-.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.yml'), database_credential_file_path: str = os.path.join('config', 'database_credentials.cfg'), table_name: str = None, database_name: str = None, use_codecarbon: bool = True, name='PyExperimenter', logger_name: str = 'py-experimenter', log_level: Union[int, str] = logging.INFO, log_file: str = './logs/py-experimenter.log')
+.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.yml'), database_credential_file_path: str = os.path.join('config', 'database_credentials.yml'), use_ssh_tunnel: bool = False, table_name: str = None, database_name: str = None, use_codecarbon: bool = True, name='PyExperimenter', logger_name: str = 'py-experimenter', log_level: Union[int, str] = logging.INFO, log_file: str = './logs/py-experimenter.log')
 
 
    Module handling the initialization, execution and collection of experiments and their respective results.
+
+   .. py:method:: close_ssh() -> None
+
+      Closes the ssh tunnel if it is used.
+
 
    .. py:method:: fill_table_from_combination(fixed_parameter_combinations: List[dict] = None, parameters: dict = None) -> None
 
@@ -168,7 +173,7 @@ Classes
       :type random_order: bool
 
 
-   .. py:method:: _execution_wrapper(experiment_function: Callable[[dict, dict, py_experimenter.result_processor.ResultProcessor], None], random_order: bool) -> None
+   .. py:method:: _execution_wrapper(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], Optional[py_experimenter.experiment_status.ExperimentStatus]], random_order: bool) -> None
 
       Executes the given `experiment_function` on one open experiment. To that end, one of the open experiments is pulled
       from the database table. Then `experiment_function` is executed on the keyfield values of the pulled experiment.

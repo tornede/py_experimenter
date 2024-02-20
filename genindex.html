@@ -109,6 +109,7 @@
  | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
@@ -147,6 +148,8 @@
       <li><a href="autoapi/py_experimenter/config/index.html#py_experimenter.config.DatabaseCfg._extract_value_range">_extract_value_range() (py_experimenter.config.DatabaseCfg static method)</a>
 </li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector._get_create_table_query">_get_create_table_query() (py_experimenter.database_connector.DatabaseConnector method)</a>
+</li>
+      <li><a href="autoapi/py_experimenter/database_connector_mysql/index.html#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL._get_database_credentials">_get_database_credentials() (py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL method)</a>
 </li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector._get_existing_rows">_get_existing_rows() (py_experimenter.database_connector.DatabaseConnector method)</a>
 
@@ -249,6 +252,14 @@
       <li><a href="autoapi/py_experimenter/config/index.html#py_experimenter.config.Cfg">Cfg (class in py_experimenter.config)</a>
 </li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector.close_connection">close_connection() (py_experimenter.database_connector.DatabaseConnector method)</a>
+
+      <ul>
+        <li><a href="autoapi/py_experimenter/database_connector_mysql/index.html#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.close_connection">(py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/py_experimenter/experimenter/index.html#py_experimenter.experimenter.PyExperimenter.close_ssh">close_ssh() (py_experimenter.experimenter.PyExperimenter method)</a>
+</li>
+      <li><a href="autoapi/py_experimenter/database_connector_mysql/index.html#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.close_ssh_tunnel">close_ssh_tunnel() (py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL method)</a>
 </li>
       <li><a href="autoapi/py_experimenter/config/index.html#py_experimenter.config.CodeCarbonCfg">CodeCarbonCfg (class in py_experimenter.config)</a>
 </li>
@@ -256,6 +267,8 @@
 </li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector.commit">commit() (py_experimenter.database_connector.DatabaseConnector method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/py_experimenter/exceptions/index.html#py_experimenter.exceptions.ConfigError">ConfigError</a>
 </li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector.connect">connect() (py_experimenter.database_connector.DatabaseConnector method)</a>
@@ -266,8 +279,6 @@
         <li><a href="autoapi/py_experimenter/database_connector_mysql/index.html#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.connect">(py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector.create_table_if_not_existing">create_table_if_not_existing() (py_experimenter.database_connector.DatabaseConnector method)</a>
 </li>
       <li><a href="autoapi/py_experimenter/experiment_status/index.html#py_experimenter.experiment_status.ExperimentStatus.CREATED">CREATED (py_experimenter.experiment_status.ExperimentStatus attribute)</a>
@@ -394,14 +405,16 @@
         <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector.get_experiment_configuration">(py_experimenter.database_connector.DatabaseConnector method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector.get_logtable">get_logtable() (py_experimenter.database_connector.DatabaseConnector method)</a>
 
       <ul>
         <li><a href="autoapi/py_experimenter/experimenter/index.html#py_experimenter.experimenter.PyExperimenter.get_logtable">(py_experimenter.experimenter.PyExperimenter method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/py_experimenter/database_connector_mysql/index.html#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.get_ssh_tunnel">get_ssh_tunnel() (py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL method)</a>
+</li>
       <li><a href="autoapi/py_experimenter/database_connector/index.html#py_experimenter.database_connector.DatabaseConnector.get_structure_from_table">get_structure_from_table() (py_experimenter.database_connector.DatabaseConnector method)</a>
 
       <ul>
@@ -624,6 +637,18 @@
       <li><a href="autoapi/py_experimenter/result_processor/index.html#py_experimenter.result_processor.ResultProcessor">ResultProcessor (class in py_experimenter.result_processor)</a>
 </li>
       <li><a href="autoapi/py_experimenter/experiment_status/index.html#py_experimenter.experiment_status.ExperimentStatus.RUNNING">RUNNING (py_experimenter.experiment_status.ExperimentStatus attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/py_experimenter/exceptions/index.html#py_experimenter.exceptions.SshTunnelError">SshTunnelError</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/py_experimenter/database_connector_mysql/index.html#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.start_ssh_tunnel">start_ssh_tunnel() (py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL method)</a>
 </li>
   </ul></td>
 </tr></table>

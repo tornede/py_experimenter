@@ -129,11 +129,26 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector_mysql.</span></span><span class="sig-name descname"><span class="pre">DatabaseConnectorMYSQL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database_configuration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.OmegaConf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_codecarbon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credential_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector_mysql.</span></span><span class="sig-name descname"><span class="pre">DatabaseConnectorMYSQL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database_configuration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.OmegaConf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_codecarbon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credential_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ssh_tunnel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../database_connector/index.html#py_experimenter.database_connector.DatabaseConnector" title="py_experimenter.database_connector.DatabaseConnector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">py_experimenter.database_connector.DatabaseConnector</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL._prepared_statement_placeholder">
 <span class="sig-name descname"><span class="pre">_prepared_statement_placeholder</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'%s'</span></em><a class="headerlink" href="#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL._prepared_statement_placeholder" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.get_ssh_tunnel">
+<span class="sig-name descname"><span class="pre">get_ssh_tunnel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.get_ssh_tunnel" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.start_ssh_tunnel">
+<span class="sig-name descname"><span class="pre">start_ssh_tunnel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.start_ssh_tunnel" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.close_ssh_tunnel">
+<span class="sig-name descname"><span class="pre">close_ssh_tunnel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.close_ssh_tunnel" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -149,6 +164,16 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.connect">
 <span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.connect" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.close_connection">
+<span class="sig-name descname"><span class="pre">close_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL.close_connection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL._get_database_credentials">
+<span class="sig-name descname"><span class="pre">_get_database_credentials</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL._get_database_credentials" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">

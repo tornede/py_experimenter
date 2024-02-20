@@ -109,7 +109,7 @@
   <section id="experiment-function">
 <span id="id1"></span><h1>Experiment Function<a class="headerlink" href="#experiment-function" title="Permalink to this heading"></a></h1>
 <p>The execution of a single experiment has to be defined within a function. The function is called with the <code class="docutils literal notranslate"><span class="pre">keyfields</span></code> values of a database entry. The results are meant to be processed to be written into the database, i.e. as <code class="docutils literal notranslate"><span class="pre">resultfields</span></code>. During the experiment different information can be logged into <code class="docutils literal notranslate"><span class="pre">logtables</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">py_experimenter.result_processor</span> <span class="kn">import</span> <span class="n">ResultProcessor</span>
 
 <span class="k">def</span> <span class="nf">run_experiment</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
@@ -155,7 +155,7 @@
 <section id="push-data-to-resultfields">
 <span id="experiment-function-resultfields"></span><h2>Push Data To Resultfields<a class="headerlink" href="#push-data-to-resultfields" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">Resultfields</span></code> can be filled any time during the execution process by calling the following code within your experiment function, e.g. <code class="docutils literal notranslate"><span class="pre">run_ml</span></code>. Note that a resultfield is meant to be written once, if you re-write a resultfield, the old value will be overwritten. Furthermore note that you do not have to write all resultfields at once, but can also only write a subset as demonstrated in the example above. Multiple in-depth examples showcasing the usage of resultfields can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result_processor</span><span class="o">.</span><span class="n">process_results</span><span class="p">({</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result_processor</span><span class="o">.</span><span class="n">process_results</span><span class="p">({</span>
         <span class="s1">&#39;&lt;resultfield_name&gt;&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">resultfield_value</span><span class="o">&gt;</span><span class="p">,</span>
         <span class="s1">&#39;&lt;resultfield_name&gt;&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">resultfield_value</span><span class="o">&gt;</span><span class="p">,</span>
         <span class="o">...</span>
@@ -166,7 +166,7 @@
 <section id="push-data-to-logtables">
 <span id="experiment-function-logtables"></span><h2>Push Data To Logtables<a class="headerlink" href="#push-data-to-logtables" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">Logtables</span></code> can be filled any time during the execution process by calling the following code within your experiment function, e.g. <code class="docutils literal notranslate"><span class="pre">run_ml</span></code>. An in-depth example showcasing the usage of logtables can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result_processor</span><span class="o">.</span><span class="n">process_logs</span><span class="p">({</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result_processor</span><span class="o">.</span><span class="n">process_logs</span><span class="p">({</span>
     <span class="s1">&#39;&lt;logtable_name&gt;&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;&lt;logtable_field_name&gt;&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">logtable_field_value</span><span class="o">&gt;</span><span class="p">,</span>
         <span class="s1">&#39;&lt;logtable_field_name&gt;&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">logtable_field_value</span><span class="o">&gt;</span><span class="p">,</span>

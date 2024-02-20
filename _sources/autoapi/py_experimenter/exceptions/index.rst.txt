@@ -47,6 +47,14 @@ Module Contents
    Common base class for all non-exit exceptions.
 
 
+.. py:exception:: SshTunnelError
+
+
+   Bases: :py:obj:`DatabaseError`
+
+   Common base class for all non-exit exceptions.
+
+
 .. py:exception:: DatabaseQueryError
 
 

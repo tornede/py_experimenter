@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: DatabaseConnectorMYSQL(database_configuration: omegaconf.OmegaConf, use_codecarbon: bool, credential_path: str, logger)
+.. py:class:: DatabaseConnectorMYSQL(database_configuration: omegaconf.OmegaConf, use_codecarbon: bool, credential_path: str, use_ssh_tunnel: bool, logger: logging.Logger)
 
 
    Bases: :py:obj:`py_experimenter.database_connector.DatabaseConnector`
@@ -27,6 +27,15 @@ Classes
 
       
 
+   .. py:method:: get_ssh_tunnel(logger: logging.Logger)
+
+
+   .. py:method:: start_ssh_tunnel(logger: logging.Logger)
+
+
+   .. py:method:: close_ssh_tunnel()
+
+
    .. py:method:: _test_connection()
 
 
@@ -34,6 +43,12 @@ Classes
 
 
    .. py:method:: connect()
+
+
+   .. py:method:: close_connection(connection)
+
+
+   .. py:method:: _get_database_credentials()
 
 
    .. py:method:: _start_transaction(connection, readonly=False)

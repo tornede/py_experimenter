@@ -66,6 +66,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#obtain-results">Obtain Results</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#codecarbon">CodeCarbon</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pausing-and-unpausing-experiments">Pausing and Unpausing Experiments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#close-ssh-tunnel">Close SSH Tunnel</a></li>
 </ul>
 </li>
 </ul>
@@ -118,7 +119,7 @@
   <section id="executing-pyexperimenter">
 <span id="execution"></span><h1>Executing PyExperimenter<a class="headerlink" href="#executing-pyexperimenter" title="Permalink to this heading"></a></h1>
 <p>The actual execution of <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> only needs a few lines of code. Please make sure that you have created the <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file"><span class="std std-ref">experiment configuration file</span></a> and defined the <a class="reference internal" href="experiment_function.html#experiment-function"><span class="std std-ref">experiment function</span></a> beforehand.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">py_experimenter.experimenter</span> <span class="kn">import</span> <span class="n">PyExperimenter</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">py_experimenter.experimenter</span> <span class="kn">import</span> <span class="n">PyExperimenter</span>
 
 <span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">()</span>
 <span class="n">experimenter</span><span class="o">.</span><span class="n">fill_table_from_config</span><span class="p">()</span>
@@ -129,13 +130,14 @@
 <section id="creating-a-pyexperimenter">
 <span id="execution-creating-pyexperimenter"></span><h2>Creating a PyExperimenter<a class="headerlink" href="#creating-a-pyexperimenter" title="Permalink to this heading"></a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> can be created without any further information, assuming the <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file"><span class="std std-ref">experiment configuration file</span></a> can be accessed at its default location.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Additionally, further information can be given to <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">experiment_configuration_file_path</span></code>: The path of the <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file"><span class="std std-ref">experiment configuration file</span></a>. Default: <code class="docutils literal notranslate"><span class="pre">config/experiment_configuration.cfg</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">database_credential_file_path</span></code>: The path of the <a class="reference internal" href="database_credential_file.html#database-credential-file"><span class="std std-ref">database credential file</span></a>. Default: <code class="docutils literal notranslate"><span class="pre">config/database_credentials.cfg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">use_ssh_tunnel</span></code>: Specifies if a SSH tunnel will be used to connect to the database. Default: <code class="docutils literal notranslate"><span class="pre">False</span></code>. If <code class="docutils literal notranslate"><span class="pre">use_ssh_tunnel</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, creating a <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> will also open an ssh tunnel, which should be <a class="reference internal" href="#close-ssh-tunnel"><span class="std std-ref">closed manually</span></a>. The details of the ssh-connection have to be specified in the <a class="reference internal" href="database_credential_file.html#database-credential-file"><span class="std std-ref">database credential file</span></a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">database_name</span></code>: The name of the database to manage the experiments. If given, it will overwrite the database name given in the <cite>experiment_configuration_file_path</cite>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">table_name</span></code>: The name of the database table to manage the experiments. If given, it will overwrite the table name given in the <cite>experiment_configuration_file_path</cite>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">use_codecarbon</span></code>: Specifies if <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file-codecarbon"><span class="std std-ref">CodeCarbon</span></a> will be used to track experiment emissions. Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
@@ -155,14 +157,14 @@
 <section id="fill-table-from-experiment-configuration-file">
 <span id="fill-table-from-config"></span><h3>Fill Table From Experiment Configuration File<a class="headerlink" href="#fill-table-from-experiment-configuration-file" title="Permalink to this heading"></a></h3>
 <p>The database table can be filled with the cartesian product of the keyfields defined in the <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file"><span class="std std-ref">experiment configuration file</span></a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">fill_table_from_config</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">fill_table_from_config</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
 <section id="fill-table-with-specific-rows">
 <span id="fill-table-with-rows"></span><h3>Fill Table With Specific Rows<a class="headerlink" href="#fill-table-with-specific-rows" title="Permalink to this heading"></a></h3>
 <p>Alternatively, or additionally, specific rows can be added to the table. Note that <code class="docutils literal notranslate"><span class="pre">rows</span></code> is a list of dicts, where each dict has to contain a value for each keyfield. A more complex example featuring a conditional experiment grid can be found in the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">fill_table_with_rows</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="p">[</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">fill_table_with_rows</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="p">[</span>
     <span class="p">{</span>
         <span class="s1">&#39;dataset&#39;</span><span class="p">:</span> <span class="s1">&#39;new_data&#39;</span><span class="p">,</span>
         <span class="s1">&#39;cross_validation_splits&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
@@ -183,7 +185,7 @@
 <section id="execute-experiments">
 <span id="id1"></span><h2>Execute Experiments<a class="headerlink" href="#execute-experiments" title="Permalink to this heading"></a></h2>
 <p>An experiment can be executed easily with the following call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
     <span class="n">experiment_function</span> <span class="o">=</span> <span class="n">run_experiment</span><span class="p">,</span>
     <span class="n">max_experiments</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="n">random_order</span> <span class="o">=</span> <span class="kc">False</span>
@@ -199,7 +201,7 @@
 <section id="reset-experiments">
 <span id="id2"></span><h2>Reset Experiments<a class="headerlink" href="#reset-experiments" title="Permalink to this heading"></a></h2>
 <p>Each database table contains a <code class="docutils literal notranslate"><span class="pre">status</span></code> column, summarizing the current state of an experiment. Experiments can be reset based on these states. If this is done, the table rows having a given status will be deleted, and corresponding new rows without results will be created. A comma separated list of <code class="docutils literal notranslate"><span class="pre">status</span></code> has to be provided.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">reset_experiments</span><span class="p">(</span><span class="o">&lt;</span><span class="n">status</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">status</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">reset_experiments</span><span class="p">(</span><span class="o">&lt;</span><span class="n">status</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">status</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The following states exist:</p>
@@ -214,7 +216,7 @@
 <section id="obtain-results">
 <span id="id3"></span><h2>Obtain Results<a class="headerlink" href="#obtain-results" title="Permalink to this heading"></a></h2>
 <p>The current content of the database table can be obtained as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>. This can, for example, be used to generate a result table and export it to LaTeX.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result_table</span> <span class="o">=</span> <span class="n">experimenter</span><span class="o">.</span><span class="n">get_table</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result_table</span> <span class="o">=</span> <span class="n">experimenter</span><span class="o">.</span><span class="n">get_table</span><span class="p">()</span>
 <span class="n">result_table</span> <span class="o">=</span> <span class="n">result_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;dataset&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()[[</span><span class="s1">&#39;seed&#39;</span><span class="p">]]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result_table</span><span class="o">.</span><span class="n">to_latex</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;seed&#39;</span><span class="p">],</span> <span class="n">index_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">]))</span>
 </pre></div>
@@ -229,9 +231,9 @@
 </section>
 <section id="pausing-and-unpausing-experiments">
 <span id="id4"></span><h2>Pausing and Unpausing Experiments<a class="headerlink" href="#pausing-and-unpausing-experiments" title="Permalink to this heading"></a></h2>
-<p>For convenience, we support pausing and unpausing experiments. This means that you can use one <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> to start an experiment, which will be paused after certain operations. Therefore, it can be resumed later on. Afterwards, depending on the parametrization of <code class="docutils literal notranslate"><span class="pre">execute()</span></code> of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> instance (see <span class="xref std std-ref">asdf</span>), the experimenter terminates or another experiment will be started.</p>
+<p>For convenience, we support pausing and unpausing experiments. This means that you can use one <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> to start an experiment, which will be paused after certain operations. Therefore, it can be resumed later on. Afterwards, depending on the parametrization of <code class="docutils literal notranslate"><span class="pre">execute()</span></code> of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> instance (see <a class="reference internal" href="#execute-experiments"><span class="std std-ref">in Execute Experiments</span></a>), the experimenter terminates or another experiment will be started.</p>
 <p>To pause an experiment, the experiment function has to return the state <code class="docutils literal notranslate"><span class="pre">ExperimentStatus.PAUSED</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_experiment_until_pause</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_experiment_until_pause</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
     <span class="c1"># do something</span>
 
     <span class="k">if</span> <span class="n">some_reason_to_pause</span><span class="p">:</span>
@@ -248,7 +250,7 @@
 </pre></div>
 </div>
 <p>At a later point in time, the experiment can be unpaused and continued. This can be done by calling <code class="docutils literal notranslate"><span class="pre">unpause_experiment()</span></code> on <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> instance given the specific <code class="docutils literal notranslate"><span class="pre">experiment_id</span></code> of the experiment to continue, together with a separate experiment function, which only contains experiment code to be executed after the pause. Note that only a single <code class="docutils literal notranslate"><span class="pre">experiment_id</span></code> can be executed at the same time, i.e. there is no parallelization of unpausing multiple <code class="docutils literal notranslate"><span class="pre">experiment_id</span></code> supported.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_experiment_after_pause</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_experiment_after_pause</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
     <span class="c1"># do something</span>
     <span class="k">return</span> <span class="n">ExperimentStatus</span><span class="o">.</span><span class="n">DONE</span>
 
@@ -260,6 +262,14 @@
 </pre></div>
 </div>
 <p>A complete example on how to pause and continue an experiment can be found in the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
+</section>
+<section id="close-ssh-tunnel">
+<span id="id5"></span><h2>Close SSH Tunnel<a class="headerlink" href="#close-ssh-tunnel" title="Permalink to this heading"></a></h2>
+<p>If an SSH tunnel was opened during the creation of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>, it has to be closed manually by calling the following method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">experimenter</span><span class="o">.</span><span class="n">close_ssh_tunnel</span><span class="p">()</span>
+</pre></div>
+</div>
 </section>
 </section>
 
