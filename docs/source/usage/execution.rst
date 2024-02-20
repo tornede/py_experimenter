@@ -32,14 +32,14 @@ Additionally, further information can be given to ``PyExperimenter``:
 
 - ``experiment_configuration_file_path``: The path of the :ref:`experiment configuration file <experiment_configuration_file>`. Default: ``config/experiment_configuration.cfg``.
 - ``database_credential_file_path``: The path of the :ref:`database credential file <database_credential_file>`. Default: ``config/database_credentials.cfg``
+- ``use_ssh_tunnel``: Specifies if a SSH tunnel will be used to connect to the database. Default: ``False``. If ``use_ssh_tunnel`` is set to ``True``, creating a ``PyExperimenter`` will also open an ssh tunnel, which should be closed manually. For more information check :ref:`close_ssh_tunnel <close_ssh_tunnel>`.
 - ``database_name``: The name of the database to manage the experiments. If given, it will overwrite the database name given in the `experiment_configuration_file_path`.
 - ``table_name``: The name of the database table to manage the experiments. If given, it will overwrite the table name given in the `experiment_configuration_file_path`.
 - ``use_codecarbon``: Specifies if :ref:`CodeCarbon <experiment_configuration_file_codecarbon>` will be used to track experiment emissions. Default: ``True``. 
 - ``name``: The name of the experimenter, which will be added to the database table of each executed experiment. If using the PyExperimenter on an HPC system, this can be used for the job ID, so that the according log file can easily be found. Default: ``PyExperimenter``.
 - ``logger_name``: The name of the logger, which will be used to log information about the execution of the PyExperimenter. If there already exists a logger with the given ``logger_name``, it will be used instead. However, the ``log_file`` will be ignored in this case. The logger will then be passed to every component of ``PyExperimenter``, so that all information is logged to the same file. Default: ``py-experimenter``.
 - ``log_level``: The log level of the logger. Default: ``INFO``.
-- ``log_file``: The path of the log file. Default: ``py-experimenter.log``.	 
-
+- ``log_file``: The path of the log file. Default: ``py-experimenter.log``.     
 
 -------------------
 Fill Database Table
@@ -164,7 +164,7 @@ Tracking information about the carbon footprint of experiments is supported via 
 Pausing and Unpausing Experiments
 ---------------------------------
 
-For convenience, we support pausing and unpausing experiments. This means that you can use one ``PyExperimenter`` to start an experiment, which will be paused after certain operations. Therefore, it can be resumed later on. Afterwards, depending on the parametrization of ``execute()`` of the ``PyExperimenter`` instance (see :ref:`asdf <execute_experiments:>`), the experimenter terminates or another experiment will be started. 
+For convenience, we support pausing and unpausing experiments. This means that you can use one ``PyExperimenter`` to start an experiment, which will be paused after certain operations. Therefore, it can be resumed later on. Afterwards, depending on the parametrization of ``execute()`` of the ``PyExperimenter`` instance (see :ref:`asdf <execute_experiments>`), the experimenter terminates or another experiment will be started. 
 
 To pause an experiment, the experiment function has to return the state ``ExperimentStatus.PAUSED``:
 
@@ -201,3 +201,16 @@ At a later point in time, the experiment can be unpaused and continued. This can
 
 A complete example on how to pause and continue an experiment can be found in the :ref:`examples section <examples>`.
 
+
+
+.. _close_ssh_tunnel:
+
+----------------
+Close SSH Tunnel
+----------------
+
+If an SSH tunnel was opened during the creation of the ``PyExperimenter``, it has to be closed manually by calling
+
+.. code-block:: python 
+
+    experimenter.close_ssh_tunnel()
