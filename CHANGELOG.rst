@@ -2,6 +2,13 @@
 Changelog
 =========
 
+v1.4.0 (??.??.2024)
+===================
+
+Feature
+-------
+- Changed supported experiment configuration file type to YAML. 
+
 
 v1.3.2 (23.01.2024)
 ===================

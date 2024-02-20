@@ -50,7 +50,7 @@ The execution of a single experiment has to be defined within a function. The fu
             'test_accuracy': np.mean(scores['test_accuracy'])}
         result_processor.process_results(resultfields)
 
-
+.. _experiment_function_resultfields:
 
 """""""""""""""""""""""""
 Push Data To Resultfields
@@ -66,6 +66,8 @@ Push Data To Resultfields
             ...
     })
 
+
+.. _experiment_function_logtables:
 
 """"""""""""""""""""""
 Push Data To Logtables

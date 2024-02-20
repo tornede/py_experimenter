@@ -14,32 +14,11 @@ def experimenter_mysql():
     if not os.path.exists("config"):
         os.mkdir("config")
 
-    # Create config file
-    content = """
-    [PY_EXPERIMENTER]
-    provider = mysql 
-    database = py_experimenter
-    table = example_logtables
-    
-    keyfields = dataset, cross_validation_splits:int, seed:int
-    dataset = iris
-    cross_validation_splits = 5
-    seed = 1,2,3,4,5
-    
-    resultfields = best_kernel_f1:VARCHAR(50), best_kernel_accuracy:VARCHAR(50)
-    resultfields.timestamps = false
-    
-    logtables = train_scores:log_train_scores, test_f1:DOUBLE, test_accuracy:DOUBLE 
-    log_train_scores = f1:DOUBLE, accuracy:DOUBLE, kernel:VARCHAR(50)
-    
-    [CUSTOM] 
-    path = sample_data
-    """
-    experiment_configuration = os.path.join("config", "example_logtables.cfg")
-    with open(experiment_configuration, "w") as f:
-        f.write(content)
+    configuration_path = os.path.join("test", "test_codecarbon", "configs", "test_config_mysql.yml")
 
-    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration, name="example_notebook")
+    experimenter = PyExperimenter(
+        experiment_configuration_file_path=configuration_path,
+    )
     yield experimenter
 
     experimenter.delete_table()

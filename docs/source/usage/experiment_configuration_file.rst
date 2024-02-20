@@ -4,151 +4,191 @@
 Experiment Configuration File
 =============================
 
-The experiment configuration file is primarily used to define the database backend, as well as execution parameters, i.e. keyfields, resultfields, and logtables. An example experiment configuration can be found in the following, covering the main functionality ``PyExperimenter`` provides. Each paragraph is described in the subsections below.
+The experiment configuration file is primarily used to define the database backend, as well as execution parameters, i.e. keyfields, resultfields, and logtables. An example experiment configuration can be found in the following, covering the main functionality ``PyExperimenter`` provides. Each part is described in the subsections below.
 
-.. code-block:: 
+.. code-block:: yaml
 
-    [PY_EXPERIMENTER]
-    provider = sqlite 
-    database = database_name
-    table = table_name 
+    PY_EXPERIMENTER:
+        n_jobs: 1
 
-    keyfields = dataset, cross_validation_splits:int, seed:int, kernel
-    dataset = iris
-    cross_validation_splits = 5
-    seed = 2:10:2 
-    kernel = linear, poly, rbf, sigmoid
-
-    resultfields = pipeline:LONGTEXT, train_f1:DECIMAL, train_accuracy:DECIMAL, test_f1:DECIMAL, test_accuracy:DECIMAL
-    resultfields.timestamps = false
-
-    logtables = new_best_performance:INT, epochs:LogEpochs
-    LogEpochs = runtime:FLOAT, performance:FLOAT
-
-    n_jobs = 5 
-
-    [CUSTOM] 
-    path = sample_data
-
-    [codecarbon]
-    offline_mode = False
-    measure_power_secs = 15
-    tracking_mode = machine
-    log_level = error
-    save_to_file = True
-    output_dir = output/CodeCarbon
+        Database:
+            provider: sqlite
+            database: py_experimenter
+            table: 
+                name: example_general_usage
+                keyfields:
+                    dataset:
+                        type: VARCHAR(255)
+                        values: ['dataset1', 'dataset2', 'dataset3']
+                    cross_validation_splits:
+                        type: INT
+                        values: [3, 5]
+                    seed:
+                        type: INT 
+                        values:
+                            start: 0
+                            stop: 5
+                            step: 1
+                    kernel:
+                        type: VARCHAR(255)
+                        values: ['linear', 'poly', 'rbf', 'sigmoid']
+                
+                resultfields:
+                    pipeline: LONGTEXT
+                    train_f1: DOUBLE
+                    train_accuracy: DOUBLE
+                    test_f1: DOUBLE
+                    test_accuracy: DOUBLE
+                result_timestamps: False
+                
+                logtables:
+                    pipeline_evaluations:
+                        kernel: VARCHAR(50)
+                        f1: DOUBLE
+                        accuracy: DOUBLE
+                    incumbents:
+                        pipeline: LONGTEXT
+                        performance: DOUBLE
+        
+        Custom:
+            datapath: path/to/data
+        
+        CodeCarbon:
+            offline_mode: False
+            measure_power_secs: 25
+            tracking_mode: process
+            log_level: error
+            save_to_file: True
+            output_dir: output/CodeCarbon
 
 --------------------
 Database Information
 --------------------
 
-The database information have to be defined in the experiment configuration file. It contains the ``provider`` of the database connection (either ``sqlite`` or ``mysql``). Furthermore, the name of the ``database`` has to be given, together with the name of the ``table`` to write the experiment information into.
+The ``Database`` section defines the database and its structure.
 
+- ``provider``: The provider of the database connection. Currently, ``sqlite`` and ``mysql`` are supported. In the case of ``mysql`` an additional :ref:`database credential file <database_credential_file>` has to be created.
+- ``database``: The name of the database to create or connect to.
+- ``table``: Defines the structure and predefined values for the experiment table. 
 
-.. note::
-   In case of ``mysql`` an additional :ref:`database credential file <database_credential_file>` has to be created.
-
+    - ``name``: The name of the experiment table to create or connect to.
+    - ``keyfields``: The keyfields of the table, which define an experiment. More details about the keyfields can be found in the :ref:`keyfields section <keyfields>`.
+    - ``resultfields``: The resultfields of the table, i.e. the fields to write resulting information of the experiments to. More details about the resultfields can be found in the :ref:`resultfields section <resultfields>`.
+ 
 
 .. _keyfields:
 
----------
+
 Keyfields
 ---------
 
-Experiments are identified by ``keyfields``, hence, keyfields define the execution of experiments. A keyfield can be thought of as a parameter, whose value defines an experiment together with the values of all other experiments. For example, if our experiment was to compute the exponential function for several input values, the input would be a keyfield. They have to be specified in the experiment configuration file by adding a line containing a comma separated list of ``keyfield_name``. Furthermore, each keyfield can be further annotated by a ``keyfield_datatype``, which is specified by adding a standard datatype to the according field. If no datatype is explicitly specified, ``VARCHAR(255)`` is used.
+Experiments are identified by ``keyfields``, hence, keyfields define the execution of experiments. A keyfield can be thought of as a parameter, whose value defines an experiment together with the values of all other experiments. Each ``keyfield`` is defined by a name and the following information in the ``table`` section of the experiment configuration file:
 
-.. code-block:: 
+- ``type``: The type of the keyfield. Supported types are ``VARCHAR``, ``INT``, ``NUMERIC``, ``DOUBLE``, ``LONGTEXT``, ``DATETIME``.
+- ``values``: The values the keyfield can take. This can be a comma separated list of values or a range of values. The range of values can be defined by:
 
-    keyfields = <keyfield_name>[:<keyfield_datatype>], ...
-    
-For each keyfield, an additional entry starting with the same ``keyfield_name`` has to be added to the experiment configuration file, which defines the domain, i.e., possible values, of the keyfield. Usually this is done with a comma separated list of strings or numbers. In the example below, the key field ``kernel`` can be any of the four given values: ``linear``, ``poly``, ``rbf``, or ``sigmoid``. Note that strings are neither allowed to contain any quotation marks nor whitespace. Alternatively, this can be :ref:`defined via code <fill_table_with_rows>`.
+    - ``start``: The starting value of the range (including).
+    - ``stop``: The end value of the range (excluding).
+    - ``step`` (optional): The step size to use to generate all values. Default is ``1``.
 
-As the manual definition can be a tedious task, especially for a list of integers, there is the option to define the start and the end of the list, together with the step size in the form: ``start:end:stepsize``. In the example below, ``seed`` is meant to be ``2, 4, 6, 8, 10``, but instead of the explicit list ``2:10:2`` is given.
+In the following, an example of keyfields is given for each typically used type. An in-depth example showcasing the usage general usage can be found within the :ref:`examples section <examples>`.
 
-.. code-block:: 
+.. code-block:: yaml
 
-    keyfields = dataset, cross_validation_splits:int, seed:int, kernel
-    dataset = iris
-    cross_validation_splits = 5
-    seed = 2:10:2 
-    kernel = linear, poly, rbf, sigmoid
+    Database:
+
+        keyfields:
+
+            string_input_name:
+                type: VARCHAR(255)
+                values: ['dataset1', 'dataset2', 'dataset3']
+
+            int_input_name:
+                type: INT
+                values: [1, 2, 3, 4, 5]
+            int_shortened_input_name:
+                type: INT
+                values:
+                    start: 1
+                    stop: 5
+                    step: 1
+
+            numeric_input_name:
+                type: NUMERIC
+                values: [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
+            numeric_shortened_input_name:
+                type: NUMERIC
+                values:
+                    start: 1
+                    stop: 5
+                    step: 0.5
 
 
 .. _resultfields:
 
-------------
 Resultfields
 ------------
 
-The results of the experiments will be stored in the database in the form of ``resultfields``. They are optional and can be be specified in the experiment configuration file by adding a line containing a comma separated list of ``resultfield_name`` and according ``resultfield_datatype``. The datatype can be defined as explained above for :ref:`keyfields <keyfields>`, and if no datatype is explicitly specified, ``VARCHAR(255)`` is used. Note that in case some resultfield should contain arbitrarily long strings, ``LONGTEXT`` should be used as datatype.
+The results of the experiments will be stored in the database in the form of ``resultfields``. They are optional and are also contained in the ``table`` section of the experiment configuration file. Each resultfield consists of a name and type. Supported types are ``VARCHAR``, ``INT``, ``NUMERIC``, ``DOUBLE``, ``LONGTEXT``, ``DATETIME``. Additionally, it is possible to store the timestamps at which the results have been obtained in the database (Default is ``False``). They are :ref:`filled with the information provided by the experiment function <experiment_function_resultfields>`.
 
-.. code-block:: 
+In the following, an example of resultfields is given for two typically used types. An in-depth example showcasing the usage general usage can be found within the :ref:`examples section <examples>`.
 
-    resultfields = <resultfield_name>[:<resultfield_datatype>], ...
+.. code-block:: yaml
 
-Additionally, it is possible to store the timestamps at which the results have been obtatined in the database. This can be done by adding the following line to the experiment configuration file (Default is ``False``).
+    Database:
 
-.. code-block:: 
-
-    resultfields.timestamps = True
-
-.. note::
-
-   The ``resultfields`` are optional. If they are not specified, the database will only contain the keyfields and the according experiment id.
+        resultfields:
+            pipeline: LONGTEXT
+            performance: DOUBLE
+        result_timestamps: False
 
 
 .. _logtables:
 
----------
 Logtables
 ---------
 
-In addition to the functionality stated above, ``PyExperimenter`` also supports ``logtables`` thereby enabling the logging of information into separate tables. This is helpful in cases where one is intereted in intermediate results of an experiment, which one might regularily want to write to the databse. Logtables have to be specified in the experiment configuration file by adding a line containing a comma separated list of ``logtable_name`` and according ``logtable_datatype``. Note that the tables in the database are prefixed with the experiment table name, i.e., they are called ``<table_name>__<logtable_name>``.
+In addition to the functionality stated above, ``PyExperimenter`` also supports ``logtables``, thereby enabling the logging of information into separate tables. This is helpful in cases where one is interested in the intermediate results of an experiment. Logtables have to be specified within the ``Database`` section of the experiment configuration file. The logtables are defined similarly to the :ref:`resultfields <resultfields>` by a name for the logtable and the fields it contains. The fields are defined by a name and type. Supported types depend on the underlying database. They genereally include, but are not limited to ``VARCHAR``, ``INT``, ``NUMERIC``, ``DOUBLE``, ``LONGTEXT``, ``DATETIME``, and ``BOOLEAN``. Logtables automatically contain the ``experiment_id (INT)`` of the experiment the logtable entry belongs to, as well as a ``timestamp (DATETIME)`` of when it has been created.
 
-.. code-block:: 
+The logtables are automatically created in the database and can be found with a modified name, which has the name of the main table as a prefix: ``<table_name>__<logtable_name>``. They are :ref:`filled with the information provided by the experiment function <experiment_function_logtables>`.
 
-    logtables = <logtable_name>:<logtable_datatype>, ...
-    
-If the logtable should contain only a single column, you can directly use a standard datatype, like ``INT`` in this example.
+An example of two commonly used logtable is given below. An in-depth example showcasing the usage of logtables can be found within the :ref:`examples section <examples>`.
 
-.. code-block:: 
+.. code-block:: yaml
 
-    logtables = new_best_performance:INT, ...
+    Database:
 
-If a logtable should contain more than one field, you can define custom ``logtable_datatype`` by listing the field names and the corresponding datatypes in the same format as :ref:`keyfields <keyfields>`. In the example below, the logtable would be called ``epochs`` and has the datatype ``LogEpochs``, which is define in the line below. It features two fields with the names ``runtime``, and ``performance``, having the corresponding column types ``FLOAT``, and ``FLOAT``. 
+        logtables:
 
-.. code-block:: 
+            pipeline_evaluations:
+                kernel: VARCHAR(50)
+                f1: DOUBLE
+                accuracy: DOUBLE
 
-    logtables = epochs:LogEpochs, ...
-    LogEpochs = runtime:FLOAT, performance:FLOAT
-
-Note that every logtable, however it is defined, additionally has the following fields:
-
-- ``experiment_id (int)``: The id of the experiment the logtable entry belongs to.
-- ``timestamp (datetime)``: The timestamp the logtable entry has been created.
-
-An in-depth example showcasing the usage of logtables can be found within the :ref:`examples section <examples>`.
+            incumbents:
+                pipeline: LONGTEXT
+                performance: DOUBLE
 
 
 ---------------------
 Execution Information 
 ---------------------
 
-Furthermore it is possible to define parameters for execution. They will not be part of the database, but are only used to configure the PyExperimenter. Currently, the following parameters are supported:
+Furthermore, it is possible to define parameters for execution. They will not be part of the database but are only used when executing ``PyExperimenter``. Currently, the following parameter is supported:
 
-- ``n_jobs (int)``: The maximum number of experiments that will be executed in parallel. Default is ``1``.
+- ``n_jobs: <INT>``: The maximum number of experiments that will be executed in parallel. Default is ``1``.
 
 
 -------------
 Custom Fields
 -------------
 
-Optionally, custom fields can be defined under the ``CUSTOM`` section, which will be ignored when creating or filling the database, but can provide fixed parameters for the actual execution of experiments. A common example is the path to some folder in which the data is located. The values of such custom fields are passed to the experiment function.
+Optionally, custom fields can be defined under the ``Custom`` section, which will be ignored when creating or filling the database, but can provide fixed parameters for the actual execution of experiments. A common example is the path to some folder in which the data is located. The values of such custom fields are passed to the experiment function.
 
-.. code-block:: 
+.. code-block:: yaml
 
-    [CUSTOM] 
-    path = sample_data
+    Custom:
+        datapath: path/to/data
 
 
 .. _experiment_configuration_file_codecarbon:
@@ -163,12 +203,12 @@ Per default, ``CodeCarbon`` will track the carbon footprint of the whole machine
 
 ``CodeCarbon`` can be configured via its own section in the experiment configuration file. The default configuration is shown below, but can be extended by any of the parameters listed in the `CodeCarbon documentation <https://mlco2.github.io/codecarbon/usage.html#configuration>`_. During the execution, the section will be automatically copied into a ``.codecarbon.config`` file in you working directory, as this is required by ``CodeCarbon``.
 
-.. code-block:: 
+.. code-block:: yaml
 
-    [codecarbon]
-    measure_power_secs = 15
-    tracking_mode = machine
-    log_level = error
-    save_to_file = True
-    output_dir = output/CodeCarbon
-    offline_mode = False
+    CodeCarbon:
+        offline_mode: False
+        measure_power_secs: 25
+        tracking_mode: process
+        log_level: error
+        save_to_file: True
+        output_dir: output/CodeCarbon

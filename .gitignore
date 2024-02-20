@@ -144,3 +144,7 @@ output/
 # codecarbon
 .codecarbon.config
 emissions.csv
+config/*.yml
+
+# development folder
+development/

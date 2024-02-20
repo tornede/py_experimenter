@@ -1,6 +1,5 @@
 import random
-import tempfile
-
+import os
 import numpy as np
 import pytest
 
@@ -10,31 +9,9 @@ from py_experimenter.result_processor import ResultProcessor
 
 @pytest.fixture
 def experimenter():
-    content = """
-    [PY_EXPERIMENTER]
-    provider = mysql 
-    database = py_experimenter
-    table = integration_test_mysql 
+    configuration_path = os.path.join("test", "test_codecarbon", "configs", "integration_test_sqlite.yml")
 
-    keyfields = dataset, cross_validation_splits:int, seed:int, kernel
-    dataset = iris
-    cross_validation_splits = 5
-    seed = 2:6:2 
-    kernel = linear, poly, rbf, sigmoid
-
-    resultfields = pipeline:LONGTEXT, train_f1:DECIMAL, train_accuracy:DECIMAL, test_f1:DECIMAL, test_accuracy:DECIMAL
-    resultfields.timestamps = false
-
-    [CUSTOM] 
-    path = sample_data
-    """
-
-    # Create temporary experiment configuration file
-    with tempfile.NamedTemporaryFile(mode="w", delete=False) as f:
-        f.write(content)
-        experiment_configuration = f.name
-
-    return PyExperimenter(experiment_configuration)
+    return PyExperimenter(configuration_path)
 
 
 def run_ml(parameters: dict, result_processor: ResultProcessor, custom_config: dict):
