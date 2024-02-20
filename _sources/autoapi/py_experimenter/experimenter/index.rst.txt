@@ -201,6 +201,17 @@ Classes
    .. py:method:: _execute_experiment(experiment_id, keyfield_values, experiment_function)
 
 
+   .. py:method:: _write_codecarbon_config() -> None
+
+      "
+      Writes the CodeCarbon config file if CodeCarbon is used in this experiment.
+
+
+   .. py:method:: _delete_codecarbon_config() -> None
+
+      Deletes the CodeCarbon config file if CodeCarbon is used in this experiment.
+
+
    .. py:method:: reset_experiments(*states: Tuple[str]) -> None
 
       Deletes the experiments from the database table that have the given `states`. Afterward, all deleted rows are added to the

@@ -328,6 +328,19 @@ and do not appear in the table. Additionally errors due to returning <cite>Exper
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter._write_codecarbon_config">
+<span class="sig-name descname"><span class="pre">_write_codecarbon_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._write_codecarbon_config" title="Permalink to this definition"></a></dt>
+<dd><p>”
+Writes the CodeCarbon config file if CodeCarbon is used in this experiment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter._delete_codecarbon_config">
+<span class="sig-name descname"><span class="pre">_delete_codecarbon_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter._delete_codecarbon_config" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the CodeCarbon config file if CodeCarbon is used in this experiment.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.experimenter.PyExperimenter.reset_experiments">
 <span class="sig-name descname"><span class="pre">reset_experiments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.experimenter.PyExperimenter.reset_experiments" title="Permalink to this definition"></a></dt>
 <dd><p>Deletes the experiments from the database table that have the given <cite>states</cite>. Afterward, all deleted rows are added to the
