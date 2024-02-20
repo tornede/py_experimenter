@@ -67,7 +67,7 @@
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#v1-4-0-2024">v1.4.0 (??.??.2024)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v1-4-0-20-02-2024">v1.4.0 (20.02.2024)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#feature">Feature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#fix">Fix</a></li>
 </ul>
@@ -152,11 +152,12 @@
              
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading"></a></h1>
-<section id="v1-4-0-2024">
-<h2>v1.4.0 (??.??.2024)<a class="headerlink" href="#v1-4-0-2024" title="Permalink to this heading"></a></h2>
+<section id="v1-4-0-20-02-2024">
+<h2>v1.4.0 (20.02.2024)<a class="headerlink" href="#v1-4-0-20-02-2024" title="Permalink to this heading"></a></h2>
 <section id="feature">
 <h3>Feature<a class="headerlink" href="#feature" title="Permalink to this heading"></a></h3>
 <ul class="simple">
+<li><p>Add functionality to pause and later continue experiments.</p></li>
 <li><p>Change the supported database configuration file type to YAML.</p></li>
 <li><p>Change the supported credentials file type to YAML.</p></li>
 <li><p>Add support for ssh jump hosts in the database connection.</p></li>
@@ -165,6 +166,7 @@
 <section id="fix">
 <h3>Fix<a class="headerlink" href="#fix" title="Permalink to this heading"></a></h3>
 <ul class="simple">
+<li><p>Fix a problem when executing fill_table that caused some entries to occur twice.</p></li>
 <li><p>Temporary CodeCarbon files are automatically removed at termination.</p></li>
 </ul>
 </section>
