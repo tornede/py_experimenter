@@ -101,7 +101,7 @@ def combine_fill_table_parameters(
                 used_keys.append(keyfield_name)
 
         if keyfield_data:
-            combinations = np.array(np.meshgrid(*keyfield_data)).T.reshape(-1, len(keyfield_data))
+            combinations = np.array(np.meshgrid(*keyfield_data), dtype=object).T.reshape(-1, len(keyfield_data))
             combinations = [dict(zip(used_keys, combination)) for combination in combinations]
         else:
             combinations = []

@@ -186,11 +186,11 @@ class DatabaseCfg(Cfg):
                 else:
                     logger.warning(f"Invalid logtable content for {logtable_name}")
                     raise InvalidLogtableError(f"Invalid logtable content for {logtable_name}")
+            return logtables
         else:
             logger.warning("No logtables given")
             logtables = dict()
-
-        return logtables
+            return logtables
 
     def get_experiment_configuration(self):
         keyfield_names = [keyfield.name for keyfield in self.keyfields.values()]
@@ -333,6 +333,7 @@ class PyExperimenterCfg:
     """
     Configuration of a PyExperimenter object. Contains the configuration of the database, custom values, and the CodeCarbon API.
     """
+
     def __init__(
         self,
         n_jobs: int,

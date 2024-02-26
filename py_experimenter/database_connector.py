@@ -237,16 +237,16 @@ class DatabaseConnector(abc.ABC):
     def _write_to_database(self, combinations: List[Dict[str, str]]) -> None:
         columns = list(combinations[0].keys())
         values = [list(combination.values()) for combination in combinations]
-        values_prepared = ",".join([f"({', '.join([self._prepared_statement_placeholder] * len(columns))})"] * len(combinations))
-
-        stmt = f"INSERT INTO {self.database_configuration.table_name} ({','.join(columns)}) VALUES {values_prepared}"
-        values = reduce(concat, values)
-        values = [str(value) for value in values]
+        prepared_statement_palcehodler = ','.join([f"({', '.join([self._prepared_statement_placeholder] * len(columns))})"] * len(combinations))
+        
+        stmt = f"INSERT INTO {self.database_configuration.table_name} ({','.join(columns)}) VALUES {prepared_statement_palcehodler}"
+        values =  reduce(concat, values)
         connection = self.connect()
         cursor = self.cursor(connection)
         self.execute(cursor, stmt, values)
         self.commit(connection)
         self.close_connection(connection)
+        
 
     def pull_paused_experiment(self, experiment_id: int) -> Dict[str, Any]:
         connnection = self.connect()
