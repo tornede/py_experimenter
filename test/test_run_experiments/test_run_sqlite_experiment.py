@@ -176,8 +176,8 @@ def test_boolean_in_table():
     experimenter.execute(run_boolean_experiment, 2)
 
     table = experimenter.get_table()
-    assert table["given_bool"].dtype == int
-    assert table["value"].dtype == int
+    assert table["given_bool"].dtype == "int64"
+    assert table["value"].dtype == "int64"
     assert (table["value"] == [1, 0]).all()
     assert (table["given_bool"] == [1, 0]).all()
     assert (table["status"] == ["done", "done"]).all()
