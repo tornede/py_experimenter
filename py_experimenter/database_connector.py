@@ -50,8 +50,10 @@ class DatabaseConnector(abc.ABC):
     def execute(self, cursor, sql_statement, values=None) -> None:
         try:
             if values is None:
+                self.logger.debug(f"Executing sql statement: {sql_statement}")
                 cursor.execute(sql_statement)
             else:
+                self.logger.debug(f"Executing sql statement: {sql_statement} with prepared statement values: {values}")
                 cursor.execute(sql_statement, values)
         except Exception as e:
             raise DatabaseConnectionError(f"error \n{e}\n raised when executing sql statement.")
