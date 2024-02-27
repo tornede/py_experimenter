@@ -5,6 +5,11 @@ Changelog
 v1.4.? (??.??.2024)
 ===================
 
+Feature
+-------
+
+- Add logging whenever a sql statement is executed.
+
 Fix
 ---
 
