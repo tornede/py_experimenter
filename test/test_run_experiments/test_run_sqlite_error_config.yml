@@ -4,7 +4,7 @@ PY_EXPERIMENTER:
     provider: sqlite
     database: py_experimenter
     table:
-      name: test_table
+      name: test_table_error
       keyfields:
         error_code:
           type: NUMERIC

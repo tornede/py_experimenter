@@ -140,6 +140,7 @@ todo.md
 
 # Configs
 config/database_credentials.yml
+config/database_credentials.cfg
 config/example_conditional_grid.yml
 config/example_general_usage.yml
 config/example_logtables.yml
