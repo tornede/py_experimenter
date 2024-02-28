@@ -1,0 +1,11 @@
+PY_EXPERIMENTER:
+  n_jobs: 5
+  Database:
+    provider: mysql
+    database: py_experimenter
+    table:
+      name: test_table
+      keyfields:
+        error_code:
+          type: NUMERIC
+          values: [0,1,2]

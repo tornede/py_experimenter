@@ -1,6 +1,6 @@
 import logging
 from sqlite3 import Error, connect
-from typing import Dict, List, Tuple
+from typing import Dict, Iterable, List, Tuple
 
 from py_experimenter.database_connector import DatabaseConnector
 from py_experimenter.exceptions import DatabaseConnectionError
@@ -47,18 +47,6 @@ class DatabaseConnectorLITE(DatabaseConnector):
     @staticmethod
     def random_order_string():
         return "RANDOM()"
-
-    @staticmethod
-    def escape_sql_chars(*args):
-        modified_args = list()
-        for arg in args:
-            arg = str(arg)
-            if type(arg) == str:
-                modified_args.append(arg.replace("`", "``").replace("'", "''").replace('"', '""'))
-
-            else:
-                modified_args.append(arg)
-        return modified_args
 
     @staticmethod
     def get_autoincrement():

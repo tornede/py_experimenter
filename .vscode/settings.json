@@ -59,10 +59,7 @@
 		"**/node_modules/*/**": true
 	},
 	"esbonio.sphinx.confDir": "${workspaceFolder}\\docs",
-	"grammarly.selectors": [
-		{
-			"language": "restructuredtext",
-			"scheme": "file"
-		}
-	]
+	"[python]": {
+		"editor.defaultFormatter": "ms-python.black-formatter"
+	},
 }
