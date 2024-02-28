@@ -131,7 +131,7 @@ pip install scikit-learn
 <h2>Experiment Configuration File<a class="headerlink" href="#Experiment-Configuration-File" title="Permalink to this heading"></a></h2>
 <p>This notebook shows an example execution of <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> based on an experiment configuration file. Further explanation about the usage of <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> can be found in the <a class="reference external" href="https://tornede.github.io/py_experimenter/usage.html">documentation</a>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import os
@@ -141,7 +141,7 @@ PY_EXPERIMENTER:
   n_jobs: 1
 
   Database:
-    provider: mysql
+    provider: sqlite
     database: py_experimenter
     table:
       name: example_general_usage
@@ -197,7 +197,7 @@ with open(experiment_configuration_file_path, &quot;w&quot;) as f:
 <p>Next, the execution of a single experiment has to be defined. Note that this is a dummy example, which contains limited reasonable code. It is meant to show the core functionality of the PyExperimenter.</p>
 <p>The method is called with the parameters, i.e. <code class="docutils literal notranslate"><span class="pre">keyfields</span></code>, of a database entry. The results are meant to be processed to be written into the database, i.e. as <code class="docutils literal notranslate"><span class="pre">resultfields</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import random
@@ -258,7 +258,7 @@ def run_ml(parameters: dict, result_processor: ResultProcessor, custom_config: d
 <h3>Initialize PyExperimenter<a class="headerlink" href="#Initialize-PyExperimenter" title="Permalink to this heading"></a></h3>
 <p>The PyExperimenter is initialized with the previously created configuration file. Additionally, <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> is given a <code class="docutils literal notranslate"><span class="pre">name</span></code>, i.e. job id, which is especially useful for parallel executions of multiple experiments on HPC.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from py_experimenter.experimenter import PyExperimenter
@@ -272,11 +272,11 @@ experimenter = PyExperimenter(experiment_configuration_file_path=experiment_conf
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2024-02-19 17:12:07,873  | py-experimenter - INFO     | Found 4 keyfields
-2024-02-19 17:12:07,875  | py-experimenter - WARNING  | No logtables given
-2024-02-19 17:12:07,878  | py-experimenter - INFO     | Found 1 custom values
-2024-02-19 17:12:07,881  | py-experimenter - INFO     | Found 6 codecarbon values
-2024-02-19 17:12:07,930  | py-experimenter - INFO     | Initialized and connected to database
+2024-02-27 09:21:57,147  | py-experimenter - INFO     | Found 4 keyfields
+2024-02-27 09:21:57,149  | py-experimenter - WARNING  | No logtables given
+2024-02-27 09:21:57,150  | py-experimenter - INFO     | Found 1 custom values
+2024-02-27 09:21:57,151  | py-experimenter - INFO     | Found 6 codecarbon values
+2024-02-27 09:21:57,152  | py-experimenter - INFO     | Initialized and connected to database
 </pre></div></div>
 </div>
 </section>
@@ -285,7 +285,7 @@ experimenter = PyExperimenter(experiment_configuration_file_path=experiment_conf
 <p>The table is filled based on the above created configuration file with <code class="docutils literal notranslate"><span class="pre">fill_table_from_config()</span></code>. Therefore, the cartesian product of all keyfields makes up the content of the table. Additionally, a custom defined row, i.e. a custom defined keyfield tuple, is added with <code class="docutils literal notranslate"><span class="pre">fill_table_with_rows()</span></code>.</p>
 <p>Note that the table can easily be obtained as <code class="docutils literal notranslate"><span class="pre">pandas.Dataframe</span></code> via <code class="docutils literal notranslate"><span class="pre">experimenter.get_table()</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.fill_table_from_config()
@@ -303,12 +303,12 @@ experimenter.get_table()
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2024-02-19 17:12:08,052  | py-experimenter - INFO     | 12 rows successfully added to database. 0 rows were skipped.
-2024-02-19 17:12:08,111  | py-experimenter - INFO     | 1 rows successfully added to database. 0 rows were skipped.
+2024-02-27 09:21:57,226  | py-experimenter - INFO     | 12 rows successfully added to database. 0 rows were skipped.
+2024-02-27 09:21:57,242  | py-experimenter - INFO     | 1 rows successfully added to database. 0 rows were skipped.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -357,7 +357,7 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -377,7 +377,7 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -397,7 +397,7 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -417,7 +417,7 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -437,7 +437,7 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -457,7 +457,7 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>poly</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -477,7 +477,7 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>rbf</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -497,7 +497,7 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>rbf</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -517,7 +517,7 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>rbf</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -537,7 +537,7 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>sigmoid</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -557,7 +557,7 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>sigmoid</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -577,7 +577,7 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>sigmoid</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -597,7 +597,7 @@ experimenter.get_table()
       <td>3</td>
       <td>42</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -619,7 +619,7 @@ experimenter.get_table()
 <h3>Execute PyExperimenter<a class="headerlink" href="#Execute-PyExperimenter" title="Permalink to this heading"></a></h3>
 <p>First two randmly chosen experiments are exeecuted by setting <code class="docutils literal notranslate"><span class="pre">max_experiments=2</span></code> and <code class="docutils literal notranslate"><span class="pre">random_order=True</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.execute(run_ml, max_experiments=-1)
@@ -638,227 +638,40 @@ experimenter.get_table()
   df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
 /home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
   df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
-[codecarbon INFO @ 17:12:18] [setup] RAM Tracking...
-[codecarbon INFO @ 17:12:18] [setup] GPU Tracking...
-[codecarbon INFO @ 17:12:18] No GPU found.
-[codecarbon INFO @ 17:12:18] [setup] CPU Tracking...
-[codecarbon WARNING @ 17:12:18] No CPU tracking mode found. Falling back on CPU constant mode.
-[codecarbon WARNING @ 17:12:19] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 17:12:19] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:19] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 17:12:19]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 17:12:19]   Python version: 3.9.0
-[codecarbon INFO @ 17:12:19]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 17:12:19]   Available RAM : 15.475 GB
-[codecarbon INFO @ 17:12:19]   CPU count: 16
-[codecarbon INFO @ 17:12:19]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:19]   GPU count: None
-[codecarbon INFO @ 17:12:19]   GPU model: None
-[codecarbon INFO @ 17:12:23] Energy consumed for RAM : 0.000001 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 17:12:23] Energy consumed for all CPUs : 0.000004 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 17:12:23] 0.000004 kWh of electricity used since the beginning.
-[codecarbon INFO @ 17:12:23] [setup] RAM Tracking...
-[codecarbon INFO @ 17:12:23] [setup] GPU Tracking...
-[codecarbon INFO @ 17:12:23] No GPU found.
-[codecarbon INFO @ 17:12:23] [setup] CPU Tracking...
-[codecarbon WARNING @ 17:12:23] No CPU tracking mode found. Falling back on CPU constant mode.
-[codecarbon WARNING @ 17:12:25] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 17:12:25] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:25] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 17:12:25]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 17:12:25]   Python version: 3.9.0
-[codecarbon INFO @ 17:12:25]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 17:12:25]   Available RAM : 15.475 GB
-[codecarbon INFO @ 17:12:25]   CPU count: 16
-[codecarbon INFO @ 17:12:25]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:25]   GPU count: None
-[codecarbon INFO @ 17:12:25]   GPU model: None
-[codecarbon INFO @ 17:12:28] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 17:12:28] Energy consumed for all CPUs : 0.000002 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 17:12:28] 0.000002 kWh of electricity used since the beginning.
-[codecarbon INFO @ 17:12:28] [setup] RAM Tracking...
-[codecarbon INFO @ 17:12:28] [setup] GPU Tracking...
-[codecarbon INFO @ 17:12:28] No GPU found.
-[codecarbon INFO @ 17:12:28] [setup] CPU Tracking...
-[codecarbon WARNING @ 17:12:28] No CPU tracking mode found. Falling back on CPU constant mode.
-[codecarbon WARNING @ 17:12:30] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 17:12:30] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:30] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 17:12:30]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 17:12:30]   Python version: 3.9.0
-[codecarbon INFO @ 17:12:30]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 17:12:30]   Available RAM : 15.475 GB
-[codecarbon INFO @ 17:12:30]   CPU count: 16
-[codecarbon INFO @ 17:12:30]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:30]   GPU count: None
-[codecarbon INFO @ 17:12:30]   GPU model: None
-[codecarbon INFO @ 17:12:33] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 17:12:33] Energy consumed for all CPUs : 0.000002 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 17:12:33] 0.000003 kWh of electricity used since the beginning.
-[codecarbon INFO @ 17:12:33] [setup] RAM Tracking...
-[codecarbon INFO @ 17:12:33] [setup] GPU Tracking...
-[codecarbon INFO @ 17:12:33] No GPU found.
-[codecarbon INFO @ 17:12:33] [setup] CPU Tracking...
-[codecarbon WARNING @ 17:12:33] No CPU tracking mode found. Falling back on CPU constant mode.
-[codecarbon WARNING @ 17:12:35] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 17:12:35] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:35] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 17:12:35]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 17:12:35]   Python version: 3.9.0
-[codecarbon INFO @ 17:12:35]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 17:12:35]   Available RAM : 15.475 GB
-[codecarbon INFO @ 17:12:35]   CPU count: 16
-[codecarbon INFO @ 17:12:35]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:35]   GPU count: None
-[codecarbon INFO @ 17:12:35]   GPU model: None
-[codecarbon INFO @ 17:12:38] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 17:12:38] Energy consumed for all CPUs : 0.000001 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 17:12:38] 0.000002 kWh of electricity used since the beginning.
-[codecarbon INFO @ 17:12:39] [setup] RAM Tracking...
-[codecarbon INFO @ 17:12:39] [setup] GPU Tracking...
-[codecarbon INFO @ 17:12:39] No GPU found.
-[codecarbon INFO @ 17:12:39] [setup] CPU Tracking...
-[codecarbon WARNING @ 17:12:39] No CPU tracking mode found. Falling back on CPU constant mode.
-[codecarbon WARNING @ 17:12:41] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 17:12:41] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:41] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 17:12:41]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 17:12:41]   Python version: 3.9.0
-[codecarbon INFO @ 17:12:41]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 17:12:41]   Available RAM : 15.475 GB
-[codecarbon INFO @ 17:12:41]   CPU count: 16
-[codecarbon INFO @ 17:12:41]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:41]   GPU count: None
-[codecarbon INFO @ 17:12:41]   GPU model: None
-[codecarbon INFO @ 17:12:44] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 17:12:44] Energy consumed for all CPUs : 0.000003 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 17:12:44] 0.000003 kWh of electricity used since the beginning.
-[codecarbon INFO @ 17:12:44] [setup] RAM Tracking...
-[codecarbon INFO @ 17:12:44] [setup] GPU Tracking...
-[codecarbon INFO @ 17:12:44] No GPU found.
-[codecarbon INFO @ 17:12:44] [setup] CPU Tracking...
-[codecarbon WARNING @ 17:12:44] No CPU tracking mode found. Falling back on CPU constant mode.
-[codecarbon WARNING @ 17:12:46] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 17:12:46] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:46] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 17:12:46]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 17:12:46]   Python version: 3.9.0
-[codecarbon INFO @ 17:12:46]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 17:12:46]   Available RAM : 15.475 GB
-[codecarbon INFO @ 17:12:46]   CPU count: 16
-[codecarbon INFO @ 17:12:46]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:46]   GPU count: None
-[codecarbon INFO @ 17:12:46]   GPU model: None
-[codecarbon INFO @ 17:12:49] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 17:12:49] Energy consumed for all CPUs : 0.000001 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 17:12:49] 0.000002 kWh of electricity used since the beginning.
-[codecarbon INFO @ 17:12:49] [setup] RAM Tracking...
-[codecarbon INFO @ 17:12:49] [setup] GPU Tracking...
-[codecarbon INFO @ 17:12:49] No GPU found.
-[codecarbon INFO @ 17:12:49] [setup] CPU Tracking...
-[codecarbon WARNING @ 17:12:49] No CPU tracking mode found. Falling back on CPU constant mode.
-[codecarbon WARNING @ 17:12:51] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 17:12:51] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:51] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 17:12:51]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 17:12:51]   Python version: 3.9.0
-[codecarbon INFO @ 17:12:51]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 17:12:51]   Available RAM : 15.475 GB
-[codecarbon INFO @ 17:12:51]   CPU count: 16
-[codecarbon INFO @ 17:12:51]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:51]   GPU count: None
-[codecarbon INFO @ 17:12:51]   GPU model: None
-[codecarbon INFO @ 17:12:54] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 17:12:54] Energy consumed for all CPUs : 0.000001 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 17:12:54] 0.000001 kWh of electricity used since the beginning.
-[codecarbon INFO @ 17:12:54] [setup] RAM Tracking...
-[codecarbon INFO @ 17:12:54] [setup] GPU Tracking...
-[codecarbon INFO @ 17:12:54] No GPU found.
-[codecarbon INFO @ 17:12:54] [setup] CPU Tracking...
-[codecarbon WARNING @ 17:12:54] No CPU tracking mode found. Falling back on CPU constant mode.
-[codecarbon WARNING @ 17:12:55] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 17:12:55] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:55] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 17:12:55]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 17:12:55]   Python version: 3.9.0
-[codecarbon INFO @ 17:12:55]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 17:12:55]   Available RAM : 15.475 GB
-[codecarbon INFO @ 17:12:55]   CPU count: 16
-[codecarbon INFO @ 17:12:55]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:12:55]   GPU count: None
-[codecarbon INFO @ 17:12:55]   GPU model: None
-[codecarbon INFO @ 17:12:59] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 17:12:59] Energy consumed for all CPUs : 0.000001 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 17:12:59] 0.000001 kWh of electricity used since the beginning.
-[codecarbon INFO @ 17:12:59] [setup] RAM Tracking...
-[codecarbon INFO @ 17:12:59] [setup] GPU Tracking...
-[codecarbon INFO @ 17:12:59] No GPU found.
-[codecarbon INFO @ 17:12:59] [setup] CPU Tracking...
-[codecarbon WARNING @ 17:12:59] No CPU tracking mode found. Falling back on CPU constant mode.
-[codecarbon WARNING @ 17:13:00] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 17:13:00] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:13:00] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 17:13:00]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 17:13:00]   Python version: 3.9.0
-[codecarbon INFO @ 17:13:00]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 17:13:00]   Available RAM : 15.475 GB
-[codecarbon INFO @ 17:13:00]   CPU count: 16
-[codecarbon INFO @ 17:13:00]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:13:00]   GPU count: None
-[codecarbon INFO @ 17:13:00]   GPU model: None
-[codecarbon INFO @ 17:13:03] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 17:13:03] Energy consumed for all CPUs : 0.000001 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 17:13:03] 0.000002 kWh of electricity used since the beginning.
-[codecarbon INFO @ 17:13:03] [setup] RAM Tracking...
-[codecarbon INFO @ 17:13:03] [setup] GPU Tracking...
-[codecarbon INFO @ 17:13:03] No GPU found.
-[codecarbon INFO @ 17:13:03] [setup] CPU Tracking...
-[codecarbon WARNING @ 17:13:03] No CPU tracking mode found. Falling back on CPU constant mode.
-[codecarbon WARNING @ 17:13:05] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 17:13:05] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:13:05] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 17:13:05]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 17:13:05]   Python version: 3.9.0
-[codecarbon INFO @ 17:13:05]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 17:13:05]   Available RAM : 15.475 GB
-[codecarbon INFO @ 17:13:05]   CPU count: 16
-[codecarbon INFO @ 17:13:05]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:13:05]   GPU count: None
-[codecarbon INFO @ 17:13:05]   GPU model: None
-[codecarbon INFO @ 17:13:08] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 17:13:08] Energy consumed for all CPUs : 0.000003 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 17:13:08] 0.000003 kWh of electricity used since the beginning.
-[codecarbon INFO @ 17:13:08] [setup] RAM Tracking...
-[codecarbon INFO @ 17:13:08] [setup] GPU Tracking...
-[codecarbon INFO @ 17:13:08] No GPU found.
-[codecarbon INFO @ 17:13:08] [setup] CPU Tracking...
-[codecarbon WARNING @ 17:13:08] No CPU tracking mode found. Falling back on CPU constant mode.
-[codecarbon WARNING @ 17:13:10] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 17:13:10] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:13:10] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 17:13:10]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 17:13:10]   Python version: 3.9.0
-[codecarbon INFO @ 17:13:10]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 17:13:10]   Available RAM : 15.475 GB
-[codecarbon INFO @ 17:13:10]   CPU count: 16
-[codecarbon INFO @ 17:13:10]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:13:10]   GPU count: None
-[codecarbon INFO @ 17:13:10]   GPU model: None
-2024-02-19 17:13:13,235  | py-experimenter - ERROR    | Traceback (most recent call last):
-  File &#34;/home/lukas/py_experimenter/py_experimenter/experimenter.py&#34;, line 353, in _execute_experiment
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+2024-02-27 09:22:55,476  | py-experimenter - ERROR    | Traceback (most recent call last):
+  File &#34;/home/lukas/py_experimenter/py_experimenter/experimenter.py&#34;, line 368, in _execute_experiment
     final_status = experiment_function(keyfield_values, result_processor, self.config.custom_configuration.custom_values)
-  File &#34;/tmp/ipykernel_58753/1244630566.py&#34;, line 31, in run_ml
+  File &#34;/tmp/ipykernel_866/1244630566.py&#34;, line 31, in run_ml
     raise ValueError(&#34;Example error&#34;)
 ValueError: Example error
 
-[codecarbon INFO @ 17:13:13] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 17:13:13] Energy consumed for all CPUs : 0.000001 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 17:13:13] 0.000001 kWh of electricity used since the beginning.
-2024-02-19 17:13:13,381  | py-experimenter - INFO     | All configured executions finished.
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+2024-02-27 09:22:55,529  | py-experimenter - INFO     | All configured executions finished.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -907,17 +720,17 @@ ValueError: Example error
       <td>5</td>
       <td>2</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:13</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:01</td>
       <td>None</td>
     </tr>
     <tr>
@@ -927,17 +740,17 @@ ValueError: Example error
       <td>5</td>
       <td>4</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:13</td>
+      <td>2024-02-27 09:22:01</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:17</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:06</td>
       <td>None</td>
     </tr>
     <tr>
@@ -947,17 +760,17 @@ ValueError: Example error
       <td>5</td>
       <td>6</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:17</td>
+      <td>2024-02-27 09:22:06</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:23</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:10</td>
       <td>None</td>
     </tr>
     <tr>
@@ -967,17 +780,17 @@ ValueError: Example error
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:23</td>
+      <td>2024-02-27 09:22:10</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:28</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2024-02-27 09:22:15</td>
       <td>None</td>
     </tr>
     <tr>
@@ -987,17 +800,17 @@ ValueError: Example error
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:28</td>
+      <td>2024-02-27 09:22:15</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:33</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2024-02-27 09:22:19</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1007,17 +820,17 @@ ValueError: Example error
       <td>5</td>
       <td>6</td>
       <td>poly</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:33</td>
+      <td>2024-02-27 09:22:19</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:38</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2024-02-27 09:22:24</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1027,17 +840,17 @@ ValueError: Example error
       <td>5</td>
       <td>2</td>
       <td>rbf</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:38</td>
+      <td>2024-02-27 09:22:24</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:44</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:28</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1047,17 +860,17 @@ ValueError: Example error
       <td>5</td>
       <td>4</td>
       <td>rbf</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:44</td>
+      <td>2024-02-27 09:22:28</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:49</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:33</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1067,17 +880,17 @@ ValueError: Example error
       <td>5</td>
       <td>6</td>
       <td>rbf</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:49</td>
+      <td>2024-02-27 09:22:33</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:54</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:37</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1087,17 +900,17 @@ ValueError: Example error
       <td>5</td>
       <td>2</td>
       <td>sigmoid</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:54</td>
+      <td>2024-02-27 09:22:37</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:58</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2024-02-27 09:22:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1107,17 +920,17 @@ ValueError: Example error
       <td>5</td>
       <td>4</td>
       <td>sigmoid</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:59</td>
+      <td>2024-02-27 09:22:42</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:13:03</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2024-02-27 09:22:46</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1127,17 +940,17 @@ ValueError: Example error
       <td>5</td>
       <td>6</td>
       <td>sigmoid</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:13:03</td>
+      <td>2024-02-27 09:22:46</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:13:08</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2024-02-27 09:22:50</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1147,9 +960,9 @@ ValueError: Example error
       <td>3</td>
       <td>42</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>error</td>
-      <td>2024-02-19 17:13:08</td>
+      <td>2024-02-27 09:22:51</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
@@ -1157,7 +970,7 @@ ValueError: Example error
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2024-02-19 17:13:13</td>
+      <td>2024-02-27 09:22:55</td>
       <td>Traceback (most recent call last):\n  File "/h...</td>
     </tr>
   </tbody>
@@ -1170,7 +983,7 @@ ValueError: Example error
 <p>As experiments fail at some time, those experiments were reset for another try with <code class="docutils literal notranslate"><span class="pre">reset_experiments()</span></code>. The <code class="docutils literal notranslate"><span class="pre">status</span></code> describes which table rows should be replace. In this example all failed experiments, i.e. having <code class="docutils literal notranslate"><span class="pre">status==error</span></code>, are reset. Experiments can also be reset based on multiple status by simply passing a list of status, e.g. <code class="docutils literal notranslate"><span class="pre">experimenter.reset_experiments('error',</span> <span class="pre">'done')</span></code>. In that case, all experiments with status ‘error’ or ‘done’ will be reset.</p>
 <p>Now all remaining experiments are executed due to <code class="docutils literal notranslate"><span class="pre">max_experiments=-1</span></code>. Note that the <code class="docutils literal notranslate"><span class="pre">random_order</span></code> parameter is set to <code class="docutils literal notranslate"><span class="pre">False</span></code> by default meaning they are executed in orer of increasing id. The first parameter, i.e. <code class="docutils literal notranslate"><span class="pre">run_ml</span></code>, relates to the actual method that should be executed with the given keyfields of the table.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.reset_experiments(&#39;error&#39;)
@@ -1185,12 +998,12 @@ experimenter.get_table()
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2024-02-19 17:13:13,513  | py-experimenter - INFO     | 1 rows successfully added to database. 0 rows were skipped.
-2024-02-19 17:13:13,515  | py-experimenter - INFO     | 1 experiments with status error were reset
+2024-02-27 09:22:55,594  | py-experimenter - INFO     | 1 rows successfully added to database. 0 rows were skipped.
+2024-02-27 09:22:55,595  | py-experimenter - INFO     | 1 experiments with status error were reset
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1239,17 +1052,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:13</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:01</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1259,17 +1072,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:13</td>
+      <td>2024-02-27 09:22:01</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:17</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:06</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1279,17 +1092,17 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:17</td>
+      <td>2024-02-27 09:22:06</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:23</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:10</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1299,17 +1112,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:23</td>
+      <td>2024-02-27 09:22:10</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:28</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2024-02-27 09:22:15</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1319,17 +1132,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:28</td>
+      <td>2024-02-27 09:22:15</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:33</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2024-02-27 09:22:19</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1339,17 +1152,17 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>poly</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:33</td>
+      <td>2024-02-27 09:22:19</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:38</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2024-02-27 09:22:24</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1359,17 +1172,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>rbf</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:38</td>
+      <td>2024-02-27 09:22:24</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:44</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:28</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1379,17 +1192,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>rbf</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:44</td>
+      <td>2024-02-27 09:22:28</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:49</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:33</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1399,17 +1212,17 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>rbf</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:49</td>
+      <td>2024-02-27 09:22:33</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:54</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:37</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1419,17 +1232,17 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>sigmoid</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:54</td>
+      <td>2024-02-27 09:22:37</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:58</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2024-02-27 09:22:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1439,17 +1252,17 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>sigmoid</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:59</td>
+      <td>2024-02-27 09:22:42</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:13:03</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2024-02-27 09:22:46</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1459,17 +1272,17 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>sigmoid</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:13:03</td>
+      <td>2024-02-27 09:22:46</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:13:08</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2024-02-27 09:22:50</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1479,17 +1292,17 @@ experimenter.get_table()
       <td>3</td>
       <td>42</td>
       <td>linear</td>
-      <td>2024-02-19 17:13:13</td>
+      <td>2024-02-27 09:22:55</td>
       <td>created</td>
-      <td>NaT</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
+      <td>None</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaT</td>
+      <td>None</td>
       <td>None</td>
     </tr>
   </tbody>
@@ -1498,7 +1311,7 @@ experimenter.get_table()
 </div>
 <p>After the reset of failed experiments, they can be executed again as described above.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.execute(run_ml, max_experiments=-1)
@@ -1513,44 +1326,20 @@ experimenter.get_table()
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[codecarbon INFO @ 17:13:13] [setup] RAM Tracking...
-[codecarbon INFO @ 17:13:13] [setup] GPU Tracking...
-[codecarbon INFO @ 17:13:13] No GPU found.
-[codecarbon INFO @ 17:13:13] [setup] CPU Tracking...
-[codecarbon WARNING @ 17:13:13] No CPU tracking mode found. Falling back on CPU constant mode.
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-[codecarbon WARNING @ 17:13:15] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 17:13:15] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:13:15] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 17:13:15]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 17:13:15]   Python version: 3.9.0
-[codecarbon INFO @ 17:13:15]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 17:13:15]   Available RAM : 15.475 GB
-[codecarbon INFO @ 17:13:15]   CPU count: 16
-[codecarbon INFO @ 17:13:15]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 17:13:15]   GPU count: None
-[codecarbon INFO @ 17:13:15]   GPU model: None
-2024-02-19 17:13:18,275  | py-experimenter - ERROR    | Traceback (most recent call last):
-  File &#34;/home/lukas/py_experimenter/py_experimenter/experimenter.py&#34;, line 353, in _execute_experiment
+2024-02-27 09:22:59,989  | py-experimenter - ERROR    | Traceback (most recent call last):
+  File &#34;/home/lukas/py_experimenter/py_experimenter/experimenter.py&#34;, line 368, in _execute_experiment
     final_status = experiment_function(keyfield_values, result_processor, self.config.custom_configuration.custom_values)
-  File &#34;/tmp/ipykernel_58753/1244630566.py&#34;, line 31, in run_ml
+  File &#34;/tmp/ipykernel_866/1244630566.py&#34;, line 31, in run_ml
     raise ValueError(&#34;Example error&#34;)
 ValueError: Example error
 
-[codecarbon INFO @ 17:13:18] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 17:13:18] Energy consumed for all CPUs : 0.000002 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 17:13:18] 0.000002 kWh of electricity used since the beginning.
-2024-02-19 17:13:18,646  | py-experimenter - INFO     | All configured executions finished.
+/home/lukas/anaconda3/envs/py-experimenter/lib/python3.9/site-packages/codecarbon/output.py:168: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat([df, pd.DataFrame.from_records([dict(data.values)])])
+2024-02-27 09:23:00,058  | py-experimenter - INFO     | All configured executions finished.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1599,17 +1388,17 @@ ValueError: Example error
       <td>5</td>
       <td>2</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:13</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:01</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1619,17 +1408,17 @@ ValueError: Example error
       <td>5</td>
       <td>4</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:13</td>
+      <td>2024-02-27 09:22:01</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:17</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:06</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1639,17 +1428,17 @@ ValueError: Example error
       <td>5</td>
       <td>6</td>
       <td>linear</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:17</td>
+      <td>2024-02-27 09:22:06</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:23</td>
+      <td>0.971667</td>
+      <td>0.971667</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:10</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1659,17 +1448,17 @@ ValueError: Example error
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:23</td>
+      <td>2024-02-27 09:22:10</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:28</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2024-02-27 09:22:15</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1679,17 +1468,17 @@ ValueError: Example error
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:28</td>
+      <td>2024-02-27 09:22:15</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:33</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2024-02-27 09:22:19</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1699,17 +1488,17 @@ ValueError: Example error
       <td>5</td>
       <td>6</td>
       <td>poly</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:33</td>
+      <td>2024-02-27 09:22:19</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:38</td>
+      <td>0.936667</td>
+      <td>0.936667</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>2024-02-27 09:22:24</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1719,17 +1508,17 @@ ValueError: Example error
       <td>5</td>
       <td>2</td>
       <td>rbf</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:38</td>
+      <td>2024-02-27 09:22:24</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:44</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:28</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1739,17 +1528,17 @@ ValueError: Example error
       <td>5</td>
       <td>4</td>
       <td>rbf</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:44</td>
+      <td>2024-02-27 09:22:28</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:49</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:33</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1759,17 +1548,17 @@ ValueError: Example error
       <td>5</td>
       <td>6</td>
       <td>rbf</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:49</td>
+      <td>2024-02-27 09:22:33</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:54</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.966667</td>
+      <td>0.966667</td>
+      <td>2024-02-27 09:22:37</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1779,17 +1568,17 @@ ValueError: Example error
       <td>5</td>
       <td>2</td>
       <td>sigmoid</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:54</td>
+      <td>2024-02-27 09:22:37</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:12:58</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2024-02-27 09:22:41</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1799,17 +1588,17 @@ ValueError: Example error
       <td>5</td>
       <td>4</td>
       <td>sigmoid</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:12:59</td>
+      <td>2024-02-27 09:22:42</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:13:03</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2024-02-27 09:22:46</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1819,17 +1608,17 @@ ValueError: Example error
       <td>5</td>
       <td>6</td>
       <td>sigmoid</td>
-      <td>2024-02-19 17:12:08</td>
+      <td>2024-02-27 09:21:57</td>
       <td>done</td>
-      <td>2024-02-19 17:13:03</td>
+      <td>2024-02-27 09:22:46</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>2024-02-19 17:13:08</td>
+      <td>0.896667</td>
+      <td>0.896667</td>
+      <td>0.893333</td>
+      <td>0.893333</td>
+      <td>2024-02-27 09:22:50</td>
       <td>None</td>
     </tr>
     <tr>
@@ -1839,9 +1628,9 @@ ValueError: Example error
       <td>3</td>
       <td>42</td>
       <td>linear</td>
-      <td>2024-02-19 17:13:13</td>
+      <td>2024-02-27 09:22:55</td>
       <td>error</td>
-      <td>2024-02-19 17:13:13</td>
+      <td>2024-02-27 09:22:55</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
@@ -1849,7 +1638,7 @@ ValueError: Example error
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2024-02-19 17:13:18</td>
+      <td>2024-02-27 09:23:00</td>
       <td>Traceback (most recent call last):\n  File "/h...</td>
     </tr>
   </tbody>
@@ -1861,7 +1650,7 @@ ValueError: Example error
 <h3>Generating Result Table<a class="headerlink" href="#Generating-Result-Table" title="Permalink to this heading"></a></h3>
 <p>The table containes single experiment results. Those can be aggregated, e.g. to generate the mean over all seeds.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>result_table_agg = experimenter.get_table().groupby([&#39;dataset&#39;]).mean(numeric_only = True)
@@ -1870,7 +1659,7 @@ result_table_agg
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1927,10 +1716,10 @@ result_table_agg
       <td>6.5</td>
       <td>5.0</td>
       <td>4.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
+      <td>0.945</td>
+      <td>0.945</td>
+      <td>0.94</td>
+      <td>0.94</td>
     </tr>
   </tbody>
 </table>
@@ -1941,7 +1730,7 @@ result_table_agg
 <h3>Printing LaTex Table<a class="headerlink" href="#Printing-LaTex-Table" title="Permalink to this heading"></a></h3>
 <p>As <code class="docutils literal notranslate"><span class="pre">pandas.Dataframe</span></code>s can easily be printed as LaTex table, here is an example code for one of the above result columns.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(result_table_agg[[&#39;test_f1&#39;]].style.to_latex())
@@ -1957,7 +1746,7 @@ result_table_agg
  &amp; test_f1 \\
 dataset &amp;  \\
 error_dataset &amp; nan \\
-iris &amp; 1.000000 \\
+iris &amp; 0.940000 \\
 \end{tabular}
 
 </pre></div></div>
@@ -1967,7 +1756,7 @@ iris &amp; 1.000000 \\
 <h3>CodeCarbon<a class="headerlink" href="#CodeCarbon" title="Permalink to this heading"></a></h3>
 <p><a class="reference external" href="https://tornede.github.io/py_experimenter/usage/experiment_configuration_file.html#codecarbon">CodeCarbon</a> is integrated into <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> to provide information about the carbon emissions of experiments. <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> will create a table with suffix <code class="docutils literal notranslate"><span class="pre">_codecarbon</span></code> in the database, each row containing information about the carbon emissions of a single experiment.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_codecarbon_table()
@@ -1975,7 +1764,7 @@ iris &amp; 1.000000 \\
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -2025,11 +1814,11 @@ iris &amp; 1.000000 \\
       <th>0</th>
       <td>1</td>
       <td>1</td>
-      <td>2024-02-19 17:12:13</td>
+      <td>2024-02-27T09:22:01</td>
       <td>codecarbon</td>
-      <td>843f0efb-0f4a-4476-8da3-489b6ebe8b00</td>
-      <td>0.113513</td>
-      <td>4.634648e-07</td>
+      <td>0bbff25c-200b-407f-87c3-6e14e028eef5</td>
+      <td>0.078104</td>
+      <td>3.204225e-07</td>
       <td>0.000004</td>
       <td>42.5</td>
       <td>0.0</td>
@@ -2049,11 +1838,11 @@ iris &amp; 1.000000 \\
       <th>1</th>
       <td>2</td>
       <td>2</td>
-      <td>2024-02-19 17:12:17</td>
+      <td>2024-02-27T09:22:06</td>
       <td>codecarbon</td>
-      <td>a44eec9f-6e52-44a0-9e8d-e45eef155515</td>
-      <td>0.311403</td>
-      <td>1.230307e-06</td>
+      <td>2d0995a1-a6c7-46d1-af65-633ed371b0c6</td>
+      <td>0.088986</td>
+      <td>3.676233e-07</td>
       <td>0.000004</td>
       <td>42.5</td>
       <td>0.0</td>
@@ -2073,179 +1862,11 @@ iris &amp; 1.000000 \\
       <th>2</th>
       <td>3</td>
       <td>3</td>
-      <td>2024-02-19 17:12:23</td>
+      <td>2024-02-27T09:22:10</td>
       <td>codecarbon</td>
-      <td>671e7756-cdd9-4b75-bbc6-b916793ca951</td>
-      <td>0.581956</td>
-      <td>1.608087e-06</td>
-      <td>0.000003</td>
-      <td>42.5</td>
-      <td>0.0</td>
-      <td>...</td>
-      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
-      <td>None</td>
-      <td>None</td>
-      <td>9.5312</td>
-      <td>52.4771</td>
-      <td>15.474918</td>
-      <td>machine</td>
-      <td>N</td>
-      <td>1.0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>4</td>
-      <td>2024-02-19 17:12:28</td>
-      <td>codecarbon</td>
-      <td>61b968cc-1cfe-4ce7-9f0d-31bbded44a66</td>
-      <td>0.217466</td>
-      <td>6.655182e-07</td>
-      <td>0.000003</td>
-      <td>42.5</td>
-      <td>0.0</td>
-      <td>...</td>
-      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
-      <td>None</td>
-      <td>None</td>
-      <td>9.5312</td>
-      <td>52.4771</td>
-      <td>15.474918</td>
-      <td>machine</td>
-      <td>N</td>
-      <td>1.0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>5</td>
-      <td>2024-02-19 17:12:33</td>
-      <td>codecarbon</td>
-      <td>0082c007-5d92-4993-aa02-33a8fadcbae5</td>
-      <td>0.363271</td>
-      <td>1.017155e-06</td>
-      <td>0.000003</td>
-      <td>42.5</td>
-      <td>0.0</td>
-      <td>...</td>
-      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
-      <td>None</td>
-      <td>None</td>
-      <td>9.5312</td>
-      <td>52.4771</td>
-      <td>15.474918</td>
-      <td>machine</td>
-      <td>N</td>
-      <td>1.0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>6</td>
-      <td>6</td>
-      <td>2024-02-19 17:12:38</td>
-      <td>codecarbon</td>
-      <td>8192690a-dede-4492-9760-dc9fad20446d</td>
-      <td>0.188627</td>
-      <td>5.824416e-07</td>
-      <td>0.000003</td>
-      <td>42.5</td>
-      <td>0.0</td>
-      <td>...</td>
-      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
-      <td>None</td>
-      <td>None</td>
-      <td>9.5312</td>
-      <td>52.4771</td>
-      <td>15.474918</td>
-      <td>machine</td>
-      <td>N</td>
-      <td>1.0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>7</td>
-      <td>7</td>
-      <td>2024-02-19 17:12:44</td>
-      <td>codecarbon</td>
-      <td>f305160f-d6eb-4bde-9491-e5e440e5dd3d</td>
-      <td>0.401845</td>
-      <td>1.139996e-06</td>
-      <td>0.000003</td>
-      <td>42.5</td>
-      <td>0.0</td>
-      <td>...</td>
-      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
-      <td>None</td>
-      <td>None</td>
-      <td>9.5312</td>
-      <td>52.4771</td>
-      <td>15.474918</td>
-      <td>machine</td>
-      <td>N</td>
-      <td>1.0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>8</td>
-      <td>8</td>
-      <td>2024-02-19 17:12:49</td>
-      <td>codecarbon</td>
-      <td>2ec7681e-0e38-4888-bfce-5e84bc4a49d2</td>
-      <td>0.183886</td>
-      <td>5.956447e-07</td>
-      <td>0.000003</td>
-      <td>42.5</td>
-      <td>0.0</td>
-      <td>...</td>
-      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
-      <td>None</td>
-      <td>None</td>
-      <td>9.5312</td>
-      <td>52.4771</td>
-      <td>15.474918</td>
-      <td>machine</td>
-      <td>N</td>
-      <td>1.0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>9</td>
-      <td>9</td>
-      <td>2024-02-19 17:12:54</td>
-      <td>codecarbon</td>
-      <td>865e3419-615b-43c5-b572-c9eeb297b66c</td>
-      <td>0.150163</td>
-      <td>5.201372e-07</td>
-      <td>0.000003</td>
-      <td>42.5</td>
-      <td>0.0</td>
-      <td>...</td>
-      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
-      <td>None</td>
-      <td>None</td>
-      <td>9.5312</td>
-      <td>52.4771</td>
-      <td>15.474918</td>
-      <td>machine</td>
-      <td>N</td>
-      <td>1.0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>10</td>
-      <td>10</td>
-      <td>2024-02-19 17:12:59</td>
-      <td>codecarbon</td>
-      <td>ac5ecc2b-8dbb-43a0-bf6e-142e3e65c80d</td>
-      <td>0.137112</td>
-      <td>4.866089e-07</td>
+      <td>0ede3fc0-a1b3-46ed-98df-beae3e8e79e7</td>
+      <td>0.085246</td>
+      <td>3.509397e-07</td>
       <td>0.000004</td>
       <td>42.5</td>
       <td>0.0</td>
@@ -2256,7 +1877,175 @@ iris &amp; 1.000000 \\
       <td>9.5312</td>
       <td>52.4771</td>
       <td>15.474918</td>
-      <td>machine</td>
+      <td>process</td>
+      <td>N</td>
+      <td>1.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>4</td>
+      <td>2024-02-27T09:22:15</td>
+      <td>codecarbon</td>
+      <td>dddae288-4644-4e41-b51e-33029a24ec52</td>
+      <td>0.086559</td>
+      <td>3.552598e-07</td>
+      <td>0.000004</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>9.5312</td>
+      <td>52.4771</td>
+      <td>15.474918</td>
+      <td>process</td>
+      <td>N</td>
+      <td>1.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>5</td>
+      <td>2024-02-27T09:22:19</td>
+      <td>codecarbon</td>
+      <td>d4face0f-8c7c-437e-bab7-1ca88091f52c</td>
+      <td>0.118202</td>
+      <td>4.886736e-07</td>
+      <td>0.000004</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>9.5312</td>
+      <td>52.4771</td>
+      <td>15.474918</td>
+      <td>process</td>
+      <td>N</td>
+      <td>1.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>6</td>
+      <td>2024-02-27T09:22:24</td>
+      <td>codecarbon</td>
+      <td>0a51cb0f-a345-41bd-8a2b-7a62786f980d</td>
+      <td>0.110679</td>
+      <td>4.604451e-07</td>
+      <td>0.000004</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>9.5312</td>
+      <td>52.4771</td>
+      <td>15.474918</td>
+      <td>process</td>
+      <td>N</td>
+      <td>1.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>7</td>
+      <td>2024-02-27T09:22:28</td>
+      <td>codecarbon</td>
+      <td>ca6b66ca-3cc8-4378-a520-60bb9dfed7e8</td>
+      <td>0.107766</td>
+      <td>4.432145e-07</td>
+      <td>0.000004</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>9.5312</td>
+      <td>52.4771</td>
+      <td>15.474918</td>
+      <td>process</td>
+      <td>N</td>
+      <td>1.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>8</td>
+      <td>2024-02-27T09:22:33</td>
+      <td>codecarbon</td>
+      <td>23b847a8-4a23-4226-a8c7-bee22026b6fb</td>
+      <td>0.094371</td>
+      <td>3.906706e-07</td>
+      <td>0.000004</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>9.5312</td>
+      <td>52.4771</td>
+      <td>15.474918</td>
+      <td>process</td>
+      <td>N</td>
+      <td>1.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>9</td>
+      <td>2024-02-27T09:22:37</td>
+      <td>codecarbon</td>
+      <td>706b1083-e0b5-4a93-8e61-f25008007687</td>
+      <td>0.078157</td>
+      <td>3.159227e-07</td>
+      <td>0.000004</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>9.5312</td>
+      <td>52.4771</td>
+      <td>15.474918</td>
+      <td>process</td>
+      <td>N</td>
+      <td>1.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>10</td>
+      <td>2024-02-27T09:22:42</td>
+      <td>codecarbon</td>
+      <td>2068c5fa-5e14-465d-b645-aaf1d045e34f</td>
+      <td>0.101451</td>
+      <td>4.150326e-07</td>
+      <td>0.000004</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>9.5312</td>
+      <td>52.4771</td>
+      <td>15.474918</td>
+      <td>process</td>
       <td>N</td>
       <td>1.0</td>
       <td>0</td>
@@ -2265,12 +2054,12 @@ iris &amp; 1.000000 \\
       <th>10</th>
       <td>11</td>
       <td>11</td>
-      <td>2024-02-19 17:13:03</td>
+      <td>2024-02-27T09:22:46</td>
       <td>codecarbon</td>
-      <td>493daad2-ce17-45fe-b1f4-0041f62d925a</td>
-      <td>0.160686</td>
-      <td>5.608255e-07</td>
-      <td>0.000003</td>
+      <td>1f2b3f89-47ed-4f40-ad66-8ea4a1137d9c</td>
+      <td>0.099101</td>
+      <td>3.951686e-07</td>
+      <td>0.000004</td>
       <td>42.5</td>
       <td>0.0</td>
       <td>...</td>
@@ -2280,7 +2069,7 @@ iris &amp; 1.000000 \\
       <td>9.5312</td>
       <td>52.4771</td>
       <td>15.474918</td>
-      <td>machine</td>
+      <td>process</td>
       <td>N</td>
       <td>1.0</td>
       <td>0</td>
@@ -2289,12 +2078,12 @@ iris &amp; 1.000000 \\
       <th>11</th>
       <td>12</td>
       <td>12</td>
-      <td>2024-02-19 17:13:08</td>
+      <td>2024-02-27T09:22:51</td>
       <td>codecarbon</td>
-      <td>ce03fdeb-caca-49f1-afc3-990c08d9ba28</td>
-      <td>0.362366</td>
-      <td>1.080082e-06</td>
-      <td>0.000003</td>
+      <td>bab8d5cb-7cb6-4c9b-bfb5-6ab98370c954</td>
+      <td>0.092641</td>
+      <td>3.829344e-07</td>
+      <td>0.000004</td>
       <td>42.5</td>
       <td>0.0</td>
       <td>...</td>
@@ -2304,21 +2093,21 @@ iris &amp; 1.000000 \\
       <td>9.5312</td>
       <td>52.4771</td>
       <td>15.474918</td>
-      <td>machine</td>
+      <td>process</td>
       <td>N</td>
       <td>1.0</td>
       <td>0</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>14</td>
-      <td>14</td>
-      <td>2024-02-19 17:13:18</td>
+      <td>13</td>
+      <td>13</td>
+      <td>2024-02-27T09:22:55</td>
       <td>codecarbon</td>
-      <td>3a9da7be-6373-42ea-bfe9-ea0a0b44b7e6</td>
-      <td>0.355592</td>
-      <td>6.245809e-07</td>
-      <td>0.000002</td>
+      <td>b661a095-b148-4eac-9e5f-f57e579e11ee</td>
+      <td>0.065676</td>
+      <td>2.475328e-07</td>
+      <td>0.000004</td>
       <td>42.5</td>
       <td>0.0</td>
       <td>...</td>
@@ -2328,21 +2117,45 @@ iris &amp; 1.000000 \\
       <td>9.5312</td>
       <td>52.4771</td>
       <td>15.474918</td>
-      <td>machine</td>
+      <td>process</td>
+      <td>N</td>
+      <td>1.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>14</td>
+      <td>14</td>
+      <td>2024-02-27T09:23:00</td>
+      <td>codecarbon</td>
+      <td>e9125243-d0b9-49c8-aebe-7723d5d90832</td>
+      <td>0.067701</td>
+      <td>2.490735e-07</td>
+      <td>0.000004</td>
+      <td>42.5</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>12th Gen Intel(R) Core(TM) i7-1260P</td>
+      <td>None</td>
+      <td>None</td>
+      <td>9.5312</td>
+      <td>52.4771</td>
+      <td>15.474918</td>
+      <td>process</td>
       <td>N</td>
       <td>1.0</td>
       <td>0</td>
     </tr>
   </tbody>
 </table>
-<p>13 rows × 34 columns</p>
+<p>14 rows × 34 columns</p>
 </div></div>
 </div>
 <section id="Aggregating-CodeCarbon-Results">
 <h4>Aggregating CodeCarbon Results<a class="headerlink" href="#Aggregating-CodeCarbon-Results" title="Permalink to this heading"></a></h4>
 <p>The carbon emission information of <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> can be easily aggregated via <code class="docutils literal notranslate"><span class="pre">pandas.Dataframe</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>carbon_emissions = experimenter.get_codecarbon_table().groupby([&#39;project_name&#39;]).sum(numeric_only = True)
@@ -2351,7 +2164,7 @@ carbon_emissions
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -2413,21 +2226,21 @@ carbon_emissions
   <tbody>
     <tr>
       <th>codecarbon</th>
-      <td>92</td>
-      <td>92</td>
-      <td>3.527888</td>
-      <td>0.000011</td>
-      <td>0.000041</td>
-      <td>552.5</td>
+      <td>105</td>
+      <td>105</td>
+      <td>1.274641</td>
+      <td>0.000005</td>
+      <td>0.000057</td>
+      <td>595.0</td>
       <td>0.0</td>
-      <td>63.989439</td>
-      <td>0.000026</td>
+      <td>1.237344</td>
+      <td>0.000014</td>
       <td>0.0</td>
-      <td>0.000003</td>
-      <td>0.000029</td>
-      <td>208.0</td>
-      <td>201.173939</td>
-      <td>13.0</td>
+      <td>2.863966e-08</td>
+      <td>0.000014</td>
+      <td>224.0</td>
+      <td>216.648857</td>
+      <td>14.0</td>
       <td>0</td>
     </tr>
   </tbody>
@@ -2439,7 +2252,7 @@ carbon_emissions
 <h4>Printing CodeCarbon Results as LaTex Table<a class="headerlink" href="#Printing-CodeCarbon-Results-as-LaTex-Table" title="Permalink to this heading"></a></h4>
 <p>Furthermore, the resulting <code class="docutils literal notranslate"><span class="pre">pandas.Dataframe</span></code> can easily be printed as LaTex table.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(carbon_emissions[[&#39;energy_consumed_kw&#39;, &#39;emissions_kg&#39;]].style.to_latex())
@@ -2454,7 +2267,7 @@ carbon_emissions
 \begin{tabular}{lrr}
  &amp; energy_consumed_kw &amp; emissions_kg \\
 project_name &amp;  &amp;  \\
-codecarbon &amp; 0.000029 &amp; 0.000011 \\
+codecarbon &amp; 0.000014 &amp; 0.000005 \\
 \end{tabular}
 
 </pre></div></div>

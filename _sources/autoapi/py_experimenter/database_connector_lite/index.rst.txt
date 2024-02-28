@@ -51,10 +51,6 @@ Classes
       :staticmethod:
 
 
-   .. py:method:: escape_sql_chars(*args)
-      :staticmethod:
-
-
    .. py:method:: get_autoincrement()
       :staticmethod:
 
