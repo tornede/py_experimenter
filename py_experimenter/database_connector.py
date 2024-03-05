@@ -2,7 +2,7 @@ import abc
 import logging
 from functools import reduce
 from operator import concat
-from typing import Dict, List, Optional, Tuple, Union, Any
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import pandas as pd
 
@@ -13,8 +13,8 @@ from py_experimenter.exceptions import (
     DatabaseConnectionError,
     EmptyFillDatabaseCallError,
     NoExperimentsLeftException,
+    NoPausedExperimentsException,
     TableHasWrongStructureError,
-    NoPausedExperimentsException
 )
 from py_experimenter.experiment_status import ExperimentStatus
 
@@ -214,7 +214,7 @@ class DatabaseConnector(abc.ABC):
 
         time = utils.get_timestamp_representation()
 
-        self.execute(cursor, f"SELECT id FROM {self.database_configuration.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;")
+        self.execute(cursor, self._get_pull_experiment_query(order_by))
         experiment_id = self.fetchall(cursor)[0][0]
         self.execute(
             cursor,

@@ -102,6 +102,26 @@ def test_mysql_shh():
     experimenter.db_connector.close_connection(connection)
     experimenter.close_ssh()
 
+def test_no_experiment_double_execution():
+    experiment_configuration_file_path = os.path.join("test", "test_run_experiments", "test_run_mysql_experiment_config.yml")
+    logging.basicConfig(level=logging.DEBUG)
+    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path, use_codecarbon=False, use_ssh_tunnel=False)
+    try:
+        experimenter.delete_table()
+    except ProgrammingError as e:
+        logging.warning(e)
+    experimenter.fill_table_from_config()
+    
+    # At most 30 experiments should be executed. If the experiment is executed twice, there should be less then 30 entries
+    experimenter.execute(own_function, max_experiments=30, n_jobs=5)
+
+    connection = experimenter.db_connector.connect()
+    cursor = experimenter.db_connector.cursor(connection)
+    cursor.execute(f"SELECT * FROM {experimenter.db_connector.database_configuration.table_name} WHERE status = 'done'")
+    entries = cursor.fetchall()
+
+    # If the experiment is executed twice, there should be less then 30 entries
+    assert len(entries) == 30
 
 def error_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
     raise Exception("Error with weird symbos '@#$%&/\()=")
@@ -140,7 +160,6 @@ def test_run_error_experiment():
         "Error with weird symbos '@#$%&/\\()=",
     ]:
         assert message in entries[0][11]
-
 
 def own_function_raising_errors(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
     error_code = keyfields["error_code"]
