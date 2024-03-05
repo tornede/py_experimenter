@@ -14,6 +14,7 @@ Fix
 ---
 
 - Booleans have been added as strings to the database table in SQLite. This has been fixed by adding a converting the values accordingly before writing them to the database.
+- Fix Experiments beeing pulled multiple times.
 
 
 v1.4.0 (20.02.2024)
