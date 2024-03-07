@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "py-experimenter"
-version = "1.4.1a1"
+version = "1.4.1a2"
 description = "The PyExperimenter is a tool for the automatic execution of experiments, e.g. for machine learning (ML), capturing corresponding results in a unified manner in a database."
 authors = [
     "Tanja Tornede <t.tornede@ai.uni-hannover.de>",
