@@ -8,7 +8,8 @@ v1.4.? (??.??.2024)
 Feature
 -------
 
-- Add logging whenever a sql statement is executed.
+- Added logging whenever a sql statement is executed.
+- Update CI such that the tests are run on Python 3.9 and 3.10, additionally removed the paper draft action. 
 
 Fix
 ---
