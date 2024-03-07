@@ -296,8 +296,12 @@ class PyExperimenter:
         :param experiment_function: _description_ The experiment function to use to continue the given experiment
         :type experiment_function: Callable
         """
+        self._write_codecarbon_config()
+
         keyfield_dict, _ = self.db_connector.pull_paused_experiment(experiment_id)
         self._execute_experiment(experiment_id, keyfield_dict, experiment_function)
+
+        self._delete_codecarbon_config()
 
     def _worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None], random_order: bool) -> None:
         """
