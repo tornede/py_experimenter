@@ -31,7 +31,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             parameters = dict(credentials["Ssh"])
             ssh_address_or_host = parameters["address"]
             ssh_address_or_host_port = parameters["port"] if "port" in parameters else 22
-            ssh_keypass = parameters["ssh_keypass"] if "ssh_keypass" in parameters else None
+            ssh_private_key_password = parameters["ssh_private_key_password"] if "ssh_private_key_password" in parameters else None
             remote_bind_address = parameters["remote_address"] if "remote_address" in parameters else "127.0.0.1"
             remote_bind_address_port = parameters["remote_port"] if "remote_port" in parameters else 3306
             local_bind_address = parameters["local_address"] if "local_address" in parameters else "127.0.0.1"
@@ -40,7 +40,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             try:
                 tunnel = sshtunnel.SSHTunnelForwarder(
                     ssh_address_or_host=(ssh_address_or_host, ssh_address_or_host_port),
-                    ssh_pkey=ssh_keypass,
+                    ssh_private_key_password=ssh_private_key_password,
                     remote_bind_address=(remote_bind_address, remote_bind_address_port),
                     local_bind_address=(local_bind_address, local_bind_address_port),
                     logger=logger,
