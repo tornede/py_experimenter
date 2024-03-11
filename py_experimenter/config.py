@@ -121,7 +121,7 @@ class DatabaseCfg(Cfg):
         return extracted_keyfields
 
     @staticmethod
-    def _extract_value_range(keyfield_name: str, keyfield_content: DictConfig, logger) -> Tuple[str, List[Union[int, str, bool, Any]]]:
+    def _extract_value_range(keyfield_name: str, keyfield_content: DictConfig, logger: Logger) -> Tuple[str, List[Union[int, str, bool, Any]]]:
         keyfield_type = keyfield_content["type"]
         if "values" not in keyfield_content:
             logger.warning(f"No values given for keyfield {keyfield_name}")
@@ -144,7 +144,7 @@ class DatabaseCfg(Cfg):
         return keyfield_type, values
 
     @staticmethod
-    def _extract_resultfields(table_config: OmegaConf, logger) -> Dict[str, str]:
+    def _extract_resultfields(table_config: OmegaConf, logger: Logger) -> Dict[str, str]:
         if "resultfields" not in table_config:
             logger.warning("No resultfields given")
             resultfields = dict()
@@ -170,6 +170,7 @@ class DatabaseCfg(Cfg):
         else:
             result_timestamps = False
 
+        logger.info(f"Found {len(resultfields)} resultfields")
         return result_timestamps, resultfields
 
     @staticmethod
@@ -186,6 +187,11 @@ class DatabaseCfg(Cfg):
                 else:
                     logger.warning(f"Invalid logtable content for {logtable_name}")
                     raise InvalidLogtableError(f"Invalid logtable content for {logtable_name}")
+            logger.info(f"Found {len(logtables)} logtables")
+
+            for logtable_name in logtables:
+                logger.info(f"Found logtable {logtable_name}")
+
             return logtables
         else:
             logger.warning("No logtables given")
