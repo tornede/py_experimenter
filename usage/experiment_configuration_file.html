@@ -117,57 +117,57 @@
 <span id="id1"></span><h1>Experiment Configuration File<a class="headerlink" href="#experiment-configuration-file" title="Permalink to this heading"></a></h1>
 <p>The experiment configuration file is primarily used to define the database backend, as well as execution parameters, i.e. keyfields, resultfields, and logtables. An example experiment configuration can be found in the following, covering the main functionality <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> provides. Each part is described in the subsections below.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">PY_EXPERIMENTER</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">n_jobs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">n_jobs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 
-<span class="w">    </span><span class="nt">Database</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqlite</span>
-<span class="w">        </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">py_experimenter</span>
-<span class="w">        </span><span class="nt">table</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_general_usage</span>
-<span class="w">            </span><span class="nt">keyfields</span><span class="p">:</span>
-<span class="w">                </span><span class="nt">dataset</span><span class="p">:</span>
-<span class="w">                    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(255)</span>
-<span class="w">                    </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;dataset1&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;dataset2&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;dataset3&#39;</span><span class="p p-Indicator">]</span>
-<span class="w">                </span><span class="nt">cross_validation_splits</span><span class="p">:</span>
-<span class="w">                    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-<span class="w">                    </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5</span><span class="p p-Indicator">]</span>
-<span class="w">                </span><span class="nt">seed</span><span class="p">:</span>
-<span class="w">                    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-<span class="w">                    </span><span class="nt">values</span><span class="p">:</span>
-<span class="w">                        </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<span class="w">                        </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
-<span class="w">                        </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">                </span><span class="nt">kernel</span><span class="p">:</span>
-<span class="w">                    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(255)</span>
-<span class="w">                    </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;linear&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;poly&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;rbf&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;sigmoid&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">Database</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqlite</span>
+<span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">py_experimenter</span>
+<span class="w">    </span><span class="nt">table</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_general_usage</span>
+<span class="w">      </span><span class="nt">keyfields</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">dataset</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(255)</span>
+<span class="w">          </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;dataset1&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;dataset2&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;dataset3&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">cross_validation_splits</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+<span class="w">          </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">seed</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+<span class="w">          </span><span class="nt">values</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">            </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">            </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">        </span><span class="nt">kernel</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(255)</span>
+<span class="w">          </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;linear&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;poly&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;rbf&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;sigmoid&#39;</span><span class="p p-Indicator">]</span>
 
-<span class="w">            </span><span class="nt">resultfields</span><span class="p">:</span>
-<span class="w">                </span><span class="nt">pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LONGTEXT</span>
-<span class="w">                </span><span class="nt">train_f1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
-<span class="w">                </span><span class="nt">train_accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
-<span class="w">                </span><span class="nt">test_f1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
-<span class="w">                </span><span class="nt">test_accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
-<span class="w">            </span><span class="nt">result_timestamps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">      </span><span class="nt">resultfields</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LONGTEXT</span>
+<span class="w">        </span><span class="nt">train_f1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">        </span><span class="nt">train_accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">        </span><span class="nt">test_f1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">        </span><span class="nt">test_accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">      </span><span class="nt">result_timestamps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 
-<span class="w">            </span><span class="nt">logtables</span><span class="p">:</span>
-<span class="w">                </span><span class="nt">pipeline_evaluations</span><span class="p">:</span>
-<span class="w">                    </span><span class="nt">kernel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(50)</span>
-<span class="w">                    </span><span class="nt">f1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
-<span class="w">                    </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
-<span class="w">                </span><span class="nt">incumbents</span><span class="p">:</span>
-<span class="w">                    </span><span class="nt">pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LONGTEXT</span>
-<span class="w">                    </span><span class="nt">performance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">    </span><span class="nt">logtables</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">pipeline_evaluations</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">kernel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(50)</span>
+<span class="w">        </span><span class="nt">f1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">        </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">      </span><span class="nt">incumbents</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LONGTEXT</span>
+<span class="w">        </span><span class="nt">performance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
 
-<span class="w">    </span><span class="nt">Custom</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">datapath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">path/to/data</span>
+<span class="w">  </span><span class="nt">Custom</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">datapath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">path/to/data</span>
 
-<span class="w">    </span><span class="nt">CodeCarbon</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">offline_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
-<span class="w">        </span><span class="nt">measure_power_secs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
-<span class="w">        </span><span class="nt">tracking_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">process</span>
-<span class="w">        </span><span class="nt">log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">error</span>
-<span class="w">        </span><span class="nt">save_to_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-<span class="w">        </span><span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output/CodeCarbon</span>
+<span class="w">  </span><span class="nt">CodeCarbon</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">offline_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">    </span><span class="nt">measure_power_secs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
+<span class="w">    </span><span class="nt">tracking_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">process</span>
+<span class="w">    </span><span class="nt">log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">error</span>
+<span class="w">    </span><span class="nt">save_to_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">    </span><span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output/CodeCarbon</span>
 </pre></div>
 </div>
 <section id="database-information">
@@ -204,31 +204,32 @@
 <p>In the following, an example of keyfields is given for each typically used type. An in-depth example showcasing the usage general usage can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Database</span><span class="p">:</span>
 
-<span class="w">    </span><span class="nt">keyfields</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">keyfields</span><span class="p">:</span>
 
-<span class="w">        </span><span class="nt">string_input_name</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(255)</span>
-<span class="w">            </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;dataset1&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;dataset2&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;dataset3&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">string_input_name</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(255)</span>
+<span class="w">      </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;dataset1&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;dataset2&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;dataset3&#39;</span><span class="p p-Indicator">]</span>
 
-<span class="w">        </span><span class="nt">int_input_name</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-<span class="w">            </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5</span><span class="p p-Indicator">]</span>
-<span class="w">        </span><span class="nt">int_shortened_input_name</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-<span class="w">            </span><span class="nt">values</span><span class="p">:</span>
-<span class="w">                </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">                </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
-<span class="w">                </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">int_input_name</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+<span class="w">      </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5</span><span class="p p-Indicator">]</span>
 
-<span class="w">        </span><span class="nt">numeric_input_name</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NUMERIC</span>
-<span class="w">            </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5</span><span class="p p-Indicator">]</span>
-<span class="w">        </span><span class="nt">numeric_shortened_input_name</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NUMERIC</span>
-<span class="w">            </span><span class="nt">values</span><span class="p">:</span>
-<span class="w">                </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">                </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
-<span class="w">                </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="w">    </span><span class="nt">int_shortened_input_name</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+<span class="w">      </span><span class="nt">values</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">        </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">        </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+
+<span class="w">    </span><span class="nt">numeric_input_name</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NUMERIC</span>
+<span class="w">      </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">numeric_shortened_input_name</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NUMERIC</span>
+<span class="w">      </span><span class="nt">values</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">        </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">        </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
 </pre></div>
 </div>
 </section>
@@ -238,10 +239,10 @@
 <p>In the following, an example of resultfields is given for two typically used types. An in-depth example showcasing the usage general usage can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Database</span><span class="p">:</span>
 
-<span class="w">    </span><span class="nt">resultfields</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LONGTEXT</span>
-<span class="w">        </span><span class="nt">performance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
-<span class="w">    </span><span class="nt">result_timestamps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">  </span><span class="nt">resultfields</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LONGTEXT</span>
+<span class="w">    </span><span class="nt">performance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">  </span><span class="nt">result_timestamps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 </pre></div>
 </div>
 </section>
@@ -252,16 +253,16 @@
 <p>An example of two commonly used logtable is given below. An in-depth example showcasing the usage of logtables can be found within the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Database</span><span class="p">:</span>
 
-<span class="w">    </span><span class="nt">logtables</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">logtables</span><span class="p">:</span>
 
-<span class="w">        </span><span class="nt">pipeline_evaluations</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">kernel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(50)</span>
-<span class="w">            </span><span class="nt">f1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
-<span class="w">            </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">    </span><span class="nt">pipeline_evaluations</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">kernel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VARCHAR(50)</span>
+<span class="w">      </span><span class="nt">f1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
 
-<span class="w">        </span><span class="nt">incumbents</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LONGTEXT</span>
-<span class="w">            </span><span class="nt">performance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+<span class="w">    </span><span class="nt">incumbents</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">pipeline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LONGTEXT</span>
+<span class="w">      </span><span class="nt">performance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
 </pre></div>
 </div>
 </section>
@@ -287,12 +288,12 @@
 <p>Per default, <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> will track the carbon footprint of the whole machine, including the execution of the experiment function. It measures the power consumption every 15 seconds and estimates the carbon emissions based on the region of the device. The resulting information is saved to a file in the <code class="docutils literal notranslate"><span class="pre">output/CodeCarbon</span></code> as well as written into its own table in the database, called <code class="docutils literal notranslate"><span class="pre">&lt;table_name&gt;_codecarbon</span></code>. A description about how to access the data can be found in the <a class="reference internal" href="execution.html#execution-codecarbon"><span class="std std-ref">CodeCarbon explanation of the execution of PyExperimenter</span></a>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> can be configured via its own section in the experiment configuration file. The default configuration is shown below, but can be extended by any of the parameters listed in the <a class="reference external" href="https://mlco2.github.io/codecarbon/usage.html#configuration">CodeCarbon documentation</a>. During the execution, the section will be automatically copied into a <code class="docutils literal notranslate"><span class="pre">.codecarbon.config</span></code> file in you working directory, as this is required by <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">CodeCarbon</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">offline_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
-<span class="w">    </span><span class="nt">measure_power_secs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
-<span class="w">    </span><span class="nt">tracking_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">process</span>
-<span class="w">    </span><span class="nt">log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">error</span>
-<span class="w">    </span><span class="nt">save_to_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-<span class="w">    </span><span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output/CodeCarbon</span>
+<span class="w">  </span><span class="nt">offline_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">  </span><span class="nt">measure_power_secs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
+<span class="w">  </span><span class="nt">tracking_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">process</span>
+<span class="w">  </span><span class="nt">log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">error</span>
+<span class="w">  </span><span class="nt">save_to_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">  </span><span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output/CodeCarbon</span>
 </pre></div>
 </div>
 </section>

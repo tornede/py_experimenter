@@ -9,57 +9,57 @@ The experiment configuration file is primarily used to define the database backe
 .. code-block:: yaml
 
     PY_EXPERIMENTER:
-        n_jobs: 1
+      n_jobs: 1
 
-        Database:
-            provider: sqlite
-            database: py_experimenter
-            table: 
-                name: example_general_usage
-                keyfields:
-                    dataset:
-                        type: VARCHAR(255)
-                        values: ['dataset1', 'dataset2', 'dataset3']
-                    cross_validation_splits:
-                        type: INT
-                        values: [3, 5]
-                    seed:
-                        type: INT 
-                        values:
-                            start: 0
-                            stop: 5
-                            step: 1
-                    kernel:
-                        type: VARCHAR(255)
-                        values: ['linear', 'poly', 'rbf', 'sigmoid']
+      Database:
+        provider: sqlite
+        database: py_experimenter
+        table: 
+          name: example_general_usage
+          keyfields:
+            dataset:
+              type: VARCHAR(255)
+              values: ['dataset1', 'dataset2', 'dataset3']
+            cross_validation_splits:
+              type: INT
+              values: [3, 5]
+            seed:
+              type: INT 
+              values:
+                start: 0
+                stop: 5
+                step: 1
+            kernel:
+              type: VARCHAR(255)
+              values: ['linear', 'poly', 'rbf', 'sigmoid']
+              
+          resultfields:
+            pipeline: LONGTEXT
+            train_f1: DOUBLE
+            train_accuracy: DOUBLE
+            test_f1: DOUBLE
+            test_accuracy: DOUBLE
+          result_timestamps: False
                 
-                resultfields:
-                    pipeline: LONGTEXT
-                    train_f1: DOUBLE
-                    train_accuracy: DOUBLE
-                    test_f1: DOUBLE
-                    test_accuracy: DOUBLE
-                result_timestamps: False
-                
-                logtables:
-                    pipeline_evaluations:
-                        kernel: VARCHAR(50)
-                        f1: DOUBLE
-                        accuracy: DOUBLE
-                    incumbents:
-                        pipeline: LONGTEXT
-                        performance: DOUBLE
+        logtables:
+          pipeline_evaluations:
+            kernel: VARCHAR(50)
+            f1: DOUBLE
+            accuracy: DOUBLE
+          incumbents:
+            pipeline: LONGTEXT
+            performance: DOUBLE
         
-        Custom:
-            datapath: path/to/data
+      Custom:
+        datapath: path/to/data
         
-        CodeCarbon:
-            offline_mode: False
-            measure_power_secs: 25
-            tracking_mode: process
-            log_level: error
-            save_to_file: True
-            output_dir: output/CodeCarbon
+      CodeCarbon:
+        offline_mode: False
+        measure_power_secs: 25
+        tracking_mode: process
+        log_level: error
+        save_to_file: True
+        output_dir: output/CodeCarbon
 
 --------------------
 Database Information
@@ -97,31 +97,32 @@ In the following, an example of keyfields is given for each typically used type.
 
     Database:
 
-        keyfields:
+      keyfields:
 
-            string_input_name:
-                type: VARCHAR(255)
-                values: ['dataset1', 'dataset2', 'dataset3']
+        string_input_name:
+          type: VARCHAR(255)
+          values: ['dataset1', 'dataset2', 'dataset3']
 
-            int_input_name:
-                type: INT
-                values: [1, 2, 3, 4, 5]
-            int_shortened_input_name:
-                type: INT
-                values:
-                    start: 1
-                    stop: 5
-                    step: 1
+        int_input_name:
+          type: INT
+          values: [1, 2, 3, 4, 5]
 
-            numeric_input_name:
-                type: NUMERIC
-                values: [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
-            numeric_shortened_input_name:
-                type: NUMERIC
-                values:
-                    start: 1
-                    stop: 5
-                    step: 0.5
+        int_shortened_input_name:
+          type: INT
+          values:
+            start: 1
+            stop: 5
+            step: 1
+
+        numeric_input_name:
+          type: NUMERIC
+          values: [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
+        numeric_shortened_input_name:
+          type: NUMERIC
+          values:
+            start: 1
+            stop: 5
+            step: 0.5
 
 
 .. _resultfields:
@@ -137,10 +138,10 @@ In the following, an example of resultfields is given for two typically used typ
 
     Database:
 
-        resultfields:
-            pipeline: LONGTEXT
-            performance: DOUBLE
-        result_timestamps: False
+      resultfields:
+        pipeline: LONGTEXT
+        performance: DOUBLE
+      result_timestamps: False
 
 
 .. _logtables:
@@ -158,16 +159,16 @@ An example of two commonly used logtable is given below. An in-depth example sho
 
     Database:
 
-        logtables:
+      logtables:
 
-            pipeline_evaluations:
-                kernel: VARCHAR(50)
-                f1: DOUBLE
-                accuracy: DOUBLE
+        pipeline_evaluations:
+          kernel: VARCHAR(50)
+          f1: DOUBLE
+          accuracy: DOUBLE
 
-            incumbents:
-                pipeline: LONGTEXT
-                performance: DOUBLE
+        incumbents:
+          pipeline: LONGTEXT
+          performance: DOUBLE
 
 
 ---------------------
@@ -206,9 +207,9 @@ Per default, ``CodeCarbon`` will track the carbon footprint of the whole machine
 .. code-block:: yaml
 
     CodeCarbon:
-        offline_mode: False
-        measure_power_secs: 25
-        tracking_mode: process
-        log_level: error
-        save_to_file: True
-        output_dir: output/CodeCarbon
+      offline_mode: False
+      measure_power_secs: 25
+      tracking_mode: process
+      log_level: error
+      save_to_file: True
+      output_dir: output/CodeCarbon
