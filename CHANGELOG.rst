@@ -17,6 +17,7 @@ Fix
 - Booleans have been added as strings to the database table in SQLite. This has been fixed by adding a converting the values accordingly before writing them to the database.
 - Bugfix, where the same experiment has been pulled multiple times when using `n_jobs` > 1.
 - Bugfix where the ssh passphrase was not correctly addressed in the documentation, and not been used correctly in the code.
+- Fix in the documentation, where logfields were indented incorrectly.
 
 
 v1.4.0 (20.02.2024)
