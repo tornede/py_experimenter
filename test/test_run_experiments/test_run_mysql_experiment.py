@@ -102,6 +102,26 @@ def test_mysql_shh():
     experimenter.db_connector.close_connection(connection)
     experimenter.close_ssh()
 
+def test_no_experiment_double_execution():
+    experiment_configuration_file_path = os.path.join("test", "test_run_experiments", "test_run_mysql_experiment_config.yml")
+    logging.basicConfig(level=logging.DEBUG)
+    experimenter = PyExperimenter(experiment_configuration_file_path=experiment_configuration_file_path, use_codecarbon=False, use_ssh_tunnel=False)
+    try:
+        experimenter.delete_table()
+    except ProgrammingError as e:
+        logging.warning(e)
+    experimenter.fill_table_from_config()
+    
+    # At most 30 experiments should be executed. If the experiment is executed twice, there should be less then 30 entries
+    experimenter.execute(own_function, max_experiments=30, n_jobs=5)
+
+    connection = experimenter.db_connector.connect()
+    cursor = experimenter.db_connector.cursor(connection)
+    cursor.execute(f"SELECT * FROM {experimenter.db_connector.database_configuration.table_name} WHERE status = 'done'")
+    entries = cursor.fetchall()
+
+    # If the experiment is executed twice, there should be less then 30 entries
+    assert len(entries) == 30
 
 def error_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
     raise Exception("Error with weird symbos '@#$%&/\()=")
@@ -140,3 +160,69 @@ def test_run_error_experiment():
         "Error with weird symbos '@#$%&/\\()=",
     ]:
         assert message in entries[0][11]
+
+def own_function_raising_errors(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+    error_code = keyfields["error_code"]
+
+    # give list of special characters that frequently cause problems
+    characters = ['"', "'", "@", "#", "$", "%", "&", "/", "\\", "(", ")", "=", "`", "`some_text`", "^"]
+    if error_code == 0:
+        raise Exception("Error with weird symbos" + "".join(characters))
+    elif error_code == 1:
+        raise LookupError("Error with weird symbos" + "".join(characters))
+    elif error_code == 2:
+        raise ProgrammingError("Error with weird symbos" + "".join(characters))
+
+
+def test_raising_error_experiment():
+    experimenter = PyExperimenter(
+        experiment_configuration_file_path=os.path.join("test", "test_run_experiments", "test_run_mysql_error_config.yml"),
+        name="name",
+        use_codecarbon=False,
+    )
+
+    try:
+        experimenter.delete_table()
+    except ProgrammingError as e:
+        logging.warning(e)
+
+    experimenter.fill_table_from_config()
+    experimenter.execute(own_function_raising_errors, -1)
+    table = experimenter.get_table()
+    table = table[["ID", "error_code", "status", "name"]]
+    pd.testing.assert_frame_equal(
+        table,
+        pd.DataFrame(
+            {
+                "ID": [1, 2, 3],
+                "error_code": [0., 1., 2.],
+                "status": ["error", "error", "error"],
+                "name": ["name", "name", "name"],
+            }
+        ),
+    )
+
+
+def run_boolean_experiment(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+    if keyfields["value"] == True:
+        result = True
+        result_processor.process_results({"given_bool": result})
+    elif keyfields["value"] == False:
+        result = False
+        result_processor.process_results({"given_bool": result})
+
+
+def test_boolean_in_table():
+    path = os.path.join("test", "test_run_experiments", "mysql_bool_test_file.yml")
+
+    experimenter = PyExperimenter(experiment_configuration_file_path=path, name="name", use_codecarbon=False)
+    experimenter.delete_table()
+    experimenter.fill_table_from_config()
+    experimenter.execute(run_boolean_experiment, 2)
+
+    table = experimenter.get_table()
+    assert table["given_bool"].dtype == int
+    assert table["value"].dtype == int
+    assert (table["value"] == [1, 0]).all()
+    assert (table["given_bool"] == [1, 0]).all()
+    assert (table["status"] == ["done", "done"]).all()

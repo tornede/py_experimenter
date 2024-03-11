@@ -2,11 +2,31 @@
 Changelog
 =========
 
+v1.4.1 (11.03.2024)
+===================
+
+Feature
+-------
+
+- Added logging whenever a sql statement is executed.
+- Update CI such that the tests are run on Python 3.9 and 3.10, additionally removed the paper draft action. 
+- Added logging when initializing database to contain resultfields and logfields.
+
+Fix
+---
+
+- Booleans have been added as strings to the database table in SQLite. This has been fixed by adding a converting the values accordingly before writing them to the database.
+- Bugfix, where the same experiment has been pulled multiple times when using `n_jobs` > 1.
+- Bugfix where the ssh passphrase was not correctly addressed in the documentation, and not been used correctly in the code.
+- Fix in the documentation, where logfields were indented incorrectly.
+
+
 v1.4.0 (20.02.2024)
 ===================
 
 Feature
 -------
+
 - Add functionality to pause and later continue experiments. 
 - Change the supported database configuration file type to YAML.
 - Change the supported credentials file type to YAML.
@@ -14,6 +34,7 @@ Feature
 
 Fix
 ---
+
 - Fix a problem when executing fill_table that caused some entries to occur twice.
 - Temporary CodeCarbon files are automatically removed at termination.
 
@@ -32,6 +53,7 @@ Fix
 
 - Hotfix cluster execution where multiple runners could pull the same experiment.
 - Update logger documentation to reflect the changes of the improved logging.
+
 
 v1.3.1 (24.07.2023)
 ===================
@@ -87,6 +109,7 @@ v1.2.1 (21/04/2023)
 
 Feature
 -------
+
 - Improve performance addding new experiments to database table
 - Create issue template 
 - Update documentation to include JOSS publication
@@ -103,6 +126,7 @@ Feature
 
 Examples
 --------
+
 - An additional logtable example has been added.
 - An issue of the example notebook has been fixed causing them to fail due to missing directories. 
 - Improved general example to cover extended functionality of ``PyExperimenter.reset_experiments()``.
@@ -155,6 +179,7 @@ Feature
 
 Examples
 --------
+
 - Updated due to latest changes and renamings
 - Referenced documentation within examples
 
@@ -207,6 +232,7 @@ Fix
 
 Tests
 -----
+
 - Added tests for all key components of ``PyExperimenter``.
 
 

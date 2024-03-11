@@ -2,7 +2,7 @@ import abc
 import logging
 from functools import reduce
 from operator import concat
-from typing import Dict, List, Optional, Tuple, Union, Any
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import pandas as pd
 
@@ -13,8 +13,8 @@ from py_experimenter.exceptions import (
     DatabaseConnectionError,
     EmptyFillDatabaseCallError,
     NoExperimentsLeftException,
+    NoPausedExperimentsException,
     TableHasWrongStructureError,
-    NoPausedExperimentsException
 )
 from py_experimenter.experiment_status import ExperimentStatus
 
@@ -50,8 +50,10 @@ class DatabaseConnector(abc.ABC):
     def execute(self, cursor, sql_statement, values=None) -> None:
         try:
             if values is None:
+                self.logger.debug(f"Executing sql statement: {sql_statement}")
                 cursor.execute(sql_statement)
             else:
+                self.logger.debug(f"Executing sql statement: {sql_statement} with prepared statement values: {values}")
                 cursor.execute(sql_statement, values)
         except Exception as e:
             raise DatabaseConnectionError(f"error \n{e}\n raised when executing sql statement.")
@@ -212,7 +214,7 @@ class DatabaseConnector(abc.ABC):
 
         time = utils.get_timestamp_representation()
 
-        self.execute(cursor, f"SELECT id FROM {self.database_configuration.table_name} WHERE status = 'created' ORDER BY {order_by} LIMIT 1;")
+        self.execute(cursor, self._get_pull_experiment_query(order_by))
         experiment_id = self.fetchall(cursor)[0][0]
         self.execute(
             cursor,
@@ -237,16 +239,16 @@ class DatabaseConnector(abc.ABC):
     def _write_to_database(self, combinations: List[Dict[str, str]]) -> None:
         columns = list(combinations[0].keys())
         values = [list(combination.values()) for combination in combinations]
-        values_prepared = ",".join([f"({', '.join([self._prepared_statement_placeholder] * len(columns))})"] * len(combinations))
-
-        stmt = f"INSERT INTO {self.database_configuration.table_name} ({','.join(columns)}) VALUES {values_prepared}"
-        values = reduce(concat, values)
-        values = [str(value) for value in values]
+        prepared_statement_palcehodler = ','.join([f"({', '.join([self._prepared_statement_placeholder] * len(columns))})"] * len(combinations))
+        
+        stmt = f"INSERT INTO {self.database_configuration.table_name} ({','.join(columns)}) VALUES {prepared_statement_palcehodler}"
+        values =  reduce(concat, values)
         connection = self.connect()
         cursor = self.cursor(connection)
         self.execute(cursor, stmt, values)
         self.commit(connection)
         self.close_connection(connection)
+        
 
     def pull_paused_experiment(self, experiment_id: int) -> Dict[str, Any]:
         connnection = self.connect()
