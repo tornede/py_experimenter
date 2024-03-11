@@ -79,11 +79,11 @@ Classes
       :staticmethod:
 
 
-   .. py:method:: _extract_value_range(keyfield_name: str, keyfield_content: omegaconf.DictConfig, logger) -> Tuple[str, List[Union[int, str, bool, Any]]]
+   .. py:method:: _extract_value_range(keyfield_name: str, keyfield_content: omegaconf.DictConfig, logger: logging.Logger) -> Tuple[str, List[Union[int, str, bool, Any]]]
       :staticmethod:
 
 
-   .. py:method:: _extract_resultfields(table_config: omegaconf.OmegaConf, logger) -> Dict[str, str]
+   .. py:method:: _extract_resultfields(table_config: omegaconf.OmegaConf, logger: logging.Logger) -> Dict[str, str]
       :staticmethod:
 
 

@@ -124,7 +124,7 @@ pip install scikit-learn
 <h2>Experiment Configuration File<a class="headerlink" href="#Experiment-Configuration-File" title="Permalink to this heading"></a></h2>
 <p>First we define an experiment configuraiton file. Note that in comparison to the basic example two resultfields <code class="docutils literal notranslate"><span class="pre">paused_at_seconds</span></code> and <code class="docutils literal notranslate"><span class="pre">resumed_at_seconds</span></code> were added.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import os
@@ -190,7 +190,7 @@ with open(experiment_configuration_file_path, &quot;w&quot;) as f:
 <h2>Defining Pausing Execution Function<a class="headerlink" href="#Defining-Pausing-Execution-Function" title="Permalink to this heading"></a></h2>
 <p>Next we fill the table, define the execution function that gets paused after five seconds and run this execution function.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import datetime
@@ -216,44 +216,38 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-2024-02-27 09:23:56,918  | py-experimenter - INFO     | Found 4 keyfields
-2024-02-27 09:23:56,920  | py-experimenter - WARNING  | No logtables given
-2024-02-27 09:23:56,922  | py-experimenter - WARNING  | No custom section defined in config
-2024-02-27 09:23:56,924  | py-experimenter - WARNING  | No codecarbon section defined in config
-2024-02-27 09:23:56,926  | py-experimenter - INFO     | Initialized and connected to database
-2024-02-27 09:23:56,975  | py-experimenter - INFO     | 12 rows successfully added to database. 0 rows were skipped.
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[codecarbon INFO @ 09:23:57] [setup] RAM Tracking...
-[codecarbon INFO @ 09:23:57] [setup] GPU Tracking...
-[codecarbon INFO @ 09:23:57] No GPU found.
-[codecarbon INFO @ 09:23:57] [setup] CPU Tracking...
-[codecarbon WARNING @ 09:23:57] No CPU tracking mode found. Falling back on CPU constant mode.
-[codecarbon WARNING @ 09:23:58] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 09:23:58] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 09:23:58] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 09:23:58]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 09:23:58]   Python version: 3.9.0
-[codecarbon INFO @ 09:23:58]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 09:23:58]   Available RAM : 15.475 GB
-[codecarbon INFO @ 09:23:58]   CPU count: 16
-[codecarbon INFO @ 09:23:58]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 09:23:58]   GPU count: None
-[codecarbon INFO @ 09:23:58]   GPU model: None
-[codecarbon INFO @ 09:24:06] Energy consumed for RAM : 0.000008 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 09:24:06] Energy consumed for all CPUs : 0.000060 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 09:24:06] 0.000068 kWh of electricity used since the beginning.
-2024-02-27 09:24:06,439  | py-experimenter - INFO     | All configured executions finished.
+2024-03-11 08:18:43,065  | py-experimenter - INFO     | Found 4 keyfields
+2024-03-11 08:18:43,066  | py-experimenter - INFO     | Found 7 resultfields
+2024-03-11 08:18:43,067  | py-experimenter - WARNING  | No logtables given
+2024-03-11 08:18:43,067  | py-experimenter - WARNING  | No custom section defined in config
+2024-03-11 08:18:43,068  | py-experimenter - WARNING  | No codecarbon section defined in config
+2024-03-11 08:18:43,069  | py-experimenter - INFO     | Initialized and connected to database
+2024-03-11 08:18:43,105  | py-experimenter - INFO     | 12 rows successfully added to database. 0 rows were skipped.
+[codecarbon INFO @ 08:18:43] [setup] RAM Tracking...
+[codecarbon INFO @ 08:18:43] [setup] GPU Tracking...
+[codecarbon INFO @ 08:18:43] No GPU found.
+[codecarbon INFO @ 08:18:43] [setup] CPU Tracking...
+[codecarbon WARNING @ 08:18:43] No CPU tracking mode found. Falling back on CPU constant mode.
+[codecarbon WARNING @ 08:18:44] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
+[codecarbon INFO @ 08:18:44] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 08:18:44] &gt;&gt;&gt; Tracker&#39;s metadata:
+[codecarbon INFO @ 08:18:44]   Platform system: Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+[codecarbon INFO @ 08:18:44]   Python version: 3.9.0
+[codecarbon INFO @ 08:18:44]   CodeCarbon version: 2.3.4
+[codecarbon INFO @ 08:18:44]   Available RAM : 15.475 GB
+[codecarbon INFO @ 08:18:44]   CPU count: 16
+[codecarbon INFO @ 08:18:44]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 08:18:44]   GPU count: None
+[codecarbon INFO @ 08:18:44]   GPU model: None
+[codecarbon INFO @ 08:18:52] Energy consumed for RAM : 0.000008 kWh. RAM Power : 5.803128719329834 W
+[codecarbon INFO @ 08:18:52] Energy consumed for all CPUs : 0.000059 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 08:18:52] 0.000068 kWh of electricity used since the beginning.
+2024-03-11 08:18:52,537  | py-experimenter - INFO     | All configured executions finished.
 </pre></div></div>
 </div>
 </section>
@@ -261,7 +255,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
 <h2>Showcase Paused Execution<a class="headerlink" href="#Showcase-Paused-Execution" title="Permalink to this heading"></a></h2>
 <p>Below we only show that the execution of the experiment with <code class="docutils literal notranslate"><span class="pre">id=1</span></code> has been paused.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_table()
@@ -269,7 +263,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -320,9 +314,9 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
       <td>5</td>
       <td>2</td>
       <td>linear</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>paused</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>None</td>
@@ -330,9 +324,9 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>1.709022e+09</td>
+      <td>1.710142e+09</td>
       <td>None</td>
-      <td>2024-02-27 09:24:06</td>
+      <td>2024-03-11 08:18:52</td>
       <td>None</td>
     </tr>
     <tr>
@@ -342,7 +336,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
       <td>5</td>
       <td>4</td>
       <td>linear</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -364,7 +358,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
       <td>5</td>
       <td>6</td>
       <td>linear</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -386,7 +380,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -408,7 +402,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -430,7 +424,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
       <td>5</td>
       <td>6</td>
       <td>poly</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -452,7 +446,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
       <td>5</td>
       <td>2</td>
       <td>rbf</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -474,7 +468,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
       <td>5</td>
       <td>4</td>
       <td>rbf</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -496,7 +490,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
       <td>5</td>
       <td>6</td>
       <td>rbf</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -518,7 +512,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
       <td>5</td>
       <td>2</td>
       <td>sigmoid</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -540,7 +534,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
       <td>5</td>
       <td>4</td>
       <td>sigmoid</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -562,7 +556,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
       <td>5</td>
       <td>6</td>
       <td>sigmoid</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -586,7 +580,7 @@ experimenter.execute(pause_after_5_seconds, max_experiments=1)
 <h2>Define resuming execution function<a class="headerlink" href="#Define-resuming-execution-function" title="Permalink to this heading"></a></h2>
 <p>Lastly, we can define a second execution function that resumes the paused execution function. After running this execution function, the experiment is finished and the resulting table is shown.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import random
@@ -650,36 +644,29 @@ experimenter.get_table()
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[codecarbon INFO @ 09:24:06] [setup] RAM Tracking...
-[codecarbon INFO @ 09:24:06] [setup] GPU Tracking...
-[codecarbon INFO @ 09:24:06] No GPU found.
-[codecarbon INFO @ 09:24:06] [setup] CPU Tracking...
-[codecarbon WARNING @ 09:24:06] No CPU tracking mode found. Falling back on CPU constant mode.
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-[codecarbon WARNING @ 09:24:07] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
-[codecarbon INFO @ 09:24:07] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 09:24:07] &gt;&gt;&gt; Tracker&#39;s metadata:
-[codecarbon INFO @ 09:24:07]   Platform system: Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
-[codecarbon INFO @ 09:24:07]   Python version: 3.9.0
-[codecarbon INFO @ 09:24:07]   CodeCarbon version: 2.3.4
-[codecarbon INFO @ 09:24:07]   Available RAM : 15.475 GB
-[codecarbon INFO @ 09:24:07]   CPU count: 16
-[codecarbon INFO @ 09:24:07]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
-[codecarbon INFO @ 09:24:07]   GPU count: None
-[codecarbon INFO @ 09:24:07]   GPU model: None
-[codecarbon INFO @ 09:24:10] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803094387054443 W
-[codecarbon INFO @ 09:24:10] Energy consumed for all CPUs : 0.000001 kWh. Total CPU Power : 42.5 W
-[codecarbon INFO @ 09:24:10] 0.000001 kWh of electricity used since the beginning.
+[codecarbon INFO @ 08:18:52] [setup] RAM Tracking...
+[codecarbon INFO @ 08:18:52] [setup] GPU Tracking...
+[codecarbon INFO @ 08:18:52] No GPU found.
+[codecarbon INFO @ 08:18:52] [setup] CPU Tracking...
+[codecarbon WARNING @ 08:18:52] No CPU tracking mode found. Falling back on CPU constant mode.
+[codecarbon WARNING @ 08:18:54] We saw that you have a 12th Gen Intel(R) Core(TM) i7-1260P but we don&#39;t know it. Please contact us.
+[codecarbon INFO @ 08:18:54] CPU Model on constant consumption mode: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 08:18:54] &gt;&gt;&gt; Tracker&#39;s metadata:
+[codecarbon INFO @ 08:18:54]   Platform system: Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+[codecarbon INFO @ 08:18:54]   Python version: 3.9.0
+[codecarbon INFO @ 08:18:54]   CodeCarbon version: 2.3.4
+[codecarbon INFO @ 08:18:54]   Available RAM : 15.475 GB
+[codecarbon INFO @ 08:18:54]   CPU count: 16
+[codecarbon INFO @ 08:18:54]   CPU model: 12th Gen Intel(R) Core(TM) i7-1260P
+[codecarbon INFO @ 08:18:54]   GPU count: None
+[codecarbon INFO @ 08:18:54]   GPU model: None
+[codecarbon INFO @ 08:18:57] Energy consumed for RAM : 0.000000 kWh. RAM Power : 5.803128719329834 W
+[codecarbon INFO @ 08:18:57] Energy consumed for all CPUs : 0.000001 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 08:18:57] 0.000001 kWh of electricity used since the beginning.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -730,9 +717,9 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>linear</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>done</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>example_notebook</td>
       <td>Worklaptop</td>
       <td>Pipeline(steps=[('standardscaler', StandardSca...</td>
@@ -740,9 +727,9 @@ experimenter.get_table()
       <td>0.971667</td>
       <td>0.966667</td>
       <td>0.966667</td>
-      <td>1.709022e+09</td>
-      <td>1.709022e+09</td>
-      <td>2024-02-27 09:24:10</td>
+      <td>1.710142e+09</td>
+      <td>1.710142e+09</td>
+      <td>2024-03-11 08:18:57</td>
       <td>None</td>
     </tr>
     <tr>
@@ -752,7 +739,7 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>linear</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -774,7 +761,7 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>linear</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -796,7 +783,7 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>poly</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -818,7 +805,7 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>poly</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -840,7 +827,7 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>poly</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -862,7 +849,7 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>rbf</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -884,7 +871,7 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>rbf</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -906,7 +893,7 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>rbf</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -928,7 +915,7 @@ experimenter.get_table()
       <td>5</td>
       <td>2</td>
       <td>sigmoid</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -950,7 +937,7 @@ experimenter.get_table()
       <td>5</td>
       <td>4</td>
       <td>sigmoid</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -972,7 +959,7 @@ experimenter.get_table()
       <td>5</td>
       <td>6</td>
       <td>sigmoid</td>
-      <td>2024-02-27 09:23:56</td>
+      <td>2024-03-11 08:18:43</td>
       <td>created</td>
       <td>None</td>
       <td>None</td>
@@ -996,7 +983,7 @@ experimenter.get_table()
 <h2>CodeCarbon Entries<a class="headerlink" href="#CodeCarbon-Entries" title="Permalink to this heading"></a></h2>
 <p>Note that for each execution a different <code class="docutils literal notranslate"><span class="pre">CodeCarbon</span></code> entry is created.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>experimenter.get_codecarbon_table()
@@ -1004,7 +991,7 @@ experimenter.get_table()
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1054,11 +1041,11 @@ experimenter.get_table()
       <th>0</th>
       <td>1</td>
       <td>1</td>
-      <td>2024-02-27T09:24:06</td>
+      <td>2024-03-11T08:18:52</td>
       <td>codecarbon</td>
-      <td>74cb8e37-84ab-4e8f-9fd5-3e1e55d4b7c3</td>
-      <td>5.103890</td>
-      <td>2.475416e-05</td>
+      <td>a87e6dcb-aace-44b1-9d83-c9744312ce62</td>
+      <td>5.096071</td>
+      <td>2.471057e-05</td>
       <td>0.000005</td>
       <td>42.5</td>
       <td>0.0</td>
@@ -1068,7 +1055,7 @@ experimenter.get_table()
       <td>None</td>
       <td>9.5312</td>
       <td>52.4771</td>
-      <td>15.474918</td>
+      <td>15.47501</td>
       <td>machine</td>
       <td>N</td>
       <td>1.0</td>
@@ -1078,11 +1065,11 @@ experimenter.get_table()
       <th>1</th>
       <td>2</td>
       <td>1</td>
-      <td>2024-02-27T09:24:10</td>
+      <td>2024-03-11T08:18:57</td>
       <td>codecarbon</td>
-      <td>cdf6e1c9-a168-4266-bb1b-eaa839c383e5</td>
-      <td>0.143559</td>
-      <td>4.489061e-07</td>
+      <td>5132d06c-9a59-4d0e-8dc5-0afa4984a5f8</td>
+      <td>0.133938</td>
+      <td>3.813803e-07</td>
       <td>0.000003</td>
       <td>42.5</td>
       <td>0.0</td>
@@ -1092,7 +1079,7 @@ experimenter.get_table()
       <td>None</td>
       <td>9.5312</td>
       <td>52.4771</td>
-      <td>15.474918</td>
+      <td>15.47501</td>
       <td>machine</td>
       <td>N</td>
       <td>1.0</td>
