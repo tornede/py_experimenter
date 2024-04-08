@@ -48,10 +48,10 @@ class PyExperimenter:
         :param database_credential_file_path: The path to the database configuration file storing the credentials
             for the database connection, i.e., host, user and password. Defaults to 'config/database_credentials.cfg'.
         :type database_credential_file_path: str, optional
-        :param use_ssh_tunnel: If the used dataabse is sqlite this parameter is ignored Otherwise: If the database is mysql,
-            and `use_ssh_tunnel == True` the ssh credentials provided in `database_credential_file_path` used to establish
-            a ssh tunnel to the database. If `use_ssh_tunnel == True` but no ssh credentials are provided in
-            `database_credential_file_path`, no ssh tunnel is established. Defaults to True.
+        :param use_ssh_tunnel: If the used database is sqlite this parameter is ignored. Otherwise: If the database is mysql,
+            and `use_ssh_tunnel == True` the ssh credentials provided in `database_credential_file_path` are used to establish
+            an ssh tunnel to the database. If `use_ssh_tunnel == True` but no ssh credentials are provided in
+            `database_credential_file_path`, an error is raised. Defaults to True.
         :type use_ssh_tunnel: bool
         :param table_name: The name of the database table, if given it will overwrite the table_name given in the
             `experiment_configuration_file_path`. If None, the table table name is taken from the experiment
@@ -74,6 +74,7 @@ class PyExperimenter:
         :type log_file: str
         :raises InvalidConfigError: If either the experiment or database configuration are missing mandatory information.
         :raises ValueError: If an unsupported or unknown database connection provider is given.
+        :raises SshTunnelError: If the ssh tunnel could not be established, or if the ssh credentials are missing/invalid.
         """
         # If the logger is not allready craeted, create it with the given name and level
         self.logger_name = logger_name

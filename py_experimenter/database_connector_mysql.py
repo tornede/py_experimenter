@@ -26,31 +26,36 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         super().__init__(database_configuration, use_codecarbon, logger)
 
     def get_ssh_tunnel(self, logger: Logger):
-        credentials = OmegaConf.load(self.credential_path)["CREDENTIALS"]["Connection"]
-        if "Ssh" in credentials:
-            parameters = dict(credentials["Ssh"])
-            ssh_address_or_host = parameters["address"]
-            ssh_address_or_host_port = parameters["port"] if "port" in parameters else 22
-            ssh_private_key_password = parameters["ssh_private_key_password"] if "ssh_private_key_password" in parameters else None
-            remote_bind_address = parameters["remote_address"] if "remote_address" in parameters else "127.0.0.1"
-            remote_bind_address_port = parameters["remote_port"] if "remote_port" in parameters else 3306
-            local_bind_address = parameters["local_address"] if "local_address" in parameters else "127.0.0.1"
-            local_bind_address_port = parameters["local_port"] if "local_port" in parameters else 3306
+        try:
+            credentials = OmegaConf.load(self.credential_path)["CREDENTIALS"]["Connection"]
+            if "Ssh" in credentials:
+                parameters = dict(credentials["Ssh"])
+                ssh_address_or_host = parameters["address"]
+                ssh_address_or_host_port = parameters["port"] if "port" in parameters else 22
+                ssh_private_key_password = parameters["ssh_private_key_password"] if "ssh_private_key_password" in parameters else None
+                remote_bind_address = parameters["remote_address"] if "remote_address" in parameters else "127.0.0.1"
+                remote_bind_address_port = parameters["remote_port"] if "remote_port" in parameters else 3306
+                local_bind_address = parameters["local_address"] if "local_address" in parameters else "127.0.0.1"
+                local_bind_address_port = parameters["local_port"] if "local_port" in parameters else 3306
 
-            try:
-                tunnel = sshtunnel.SSHTunnelForwarder(
-                    ssh_address_or_host=(ssh_address_or_host, ssh_address_or_host_port),
-                    ssh_private_key_password=ssh_private_key_password,
-                    remote_bind_address=(remote_bind_address, remote_bind_address_port),
-                    local_bind_address=(local_bind_address, local_bind_address_port),
-                    logger=logger,
-                )
-            except Exception as err:
-                logger.error(err)
-                raise SshTunnelError(err)
-            return tunnel
-        else:
-            return None
+                try:
+                    tunnel = sshtunnel.SSHTunnelForwarder(
+                        ssh_address_or_host=(ssh_address_or_host, ssh_address_or_host_port),
+                        ssh_private_key_password=ssh_private_key_password,
+                        remote_bind_address=(remote_bind_address, remote_bind_address_port),
+                        local_bind_address=(local_bind_address, local_bind_address_port),
+                        logger=logger,
+                    )
+                except Exception as err:
+                    logger.error(err)
+                    raise SshTunnelError(err)
+                return tunnel
+            else:
+                return None
+        except DatabaseConnectionError as err:
+            logger.error(err)
+            raise SshTunnelError("Error when creating SSH tunnel! Check the credentials file.")
+            
 
     def start_ssh_tunnel(self, logger: Logger):
         tunnel = self.get_ssh_tunnel(logger)
