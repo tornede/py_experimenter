@@ -14,6 +14,7 @@ The experiment configuration file is primarily used to define the database backe
       Database:
         provider: sqlite
         database: py_experimenter
+        use_ssh_tunnel: False             (Optional Parameter; Defautls to False)
         table: 
           name: example_general_usage
           keyfields:

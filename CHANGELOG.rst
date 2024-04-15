@@ -20,6 +20,7 @@ Feature
 - Added logging whenever a sql statement is executed.
 - Update CI such that the tests are run on Python 3.9 and 3.10, additionally removed the paper draft action. 
 - Added logging when initializing database to contain resultfields and logfields.
+- Adapt ssh tunnel usage to be more flexible and user friendly.
 
 Fix
 ---
