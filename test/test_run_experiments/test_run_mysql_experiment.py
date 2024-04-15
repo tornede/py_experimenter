@@ -7,6 +7,7 @@ from pymysql.err import ProgrammingError
 
 from py_experimenter.experimenter import PyExperimenter
 from py_experimenter.result_processor import ResultProcessor
+import pytest
 
 
 def own_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
@@ -102,6 +103,7 @@ def test_mysql_shh():
     experimenter.db_connector.close_connection(connection)
     experimenter.close_ssh()
 
+
 def test_no_experiment_double_execution():
     experiment_configuration_file_path = os.path.join("test", "test_run_experiments", "test_run_mysql_experiment_config.yml")
     logging.basicConfig(level=logging.DEBUG)
@@ -111,7 +113,7 @@ def test_no_experiment_double_execution():
     except ProgrammingError as e:
         logging.warning(e)
     experimenter.fill_table_from_config()
-    
+
     # At most 30 experiments should be executed. If the experiment is executed twice, there should be less then 30 entries
     experimenter.execute(own_function, max_experiments=30, n_jobs=5)
 
@@ -122,6 +124,7 @@ def test_no_experiment_double_execution():
 
     # If the experiment is executed twice, there should be less then 30 entries
     assert len(entries) == 30
+
 
 def error_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
     raise Exception("Error with weird symbos '@#$%&/\()=")
@@ -161,6 +164,7 @@ def test_run_error_experiment():
     ]:
         assert message in entries[0][11]
 
+
 def own_function_raising_errors(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
     error_code = keyfields["error_code"]
 
@@ -195,7 +199,7 @@ def test_raising_error_experiment():
         pd.DataFrame(
             {
                 "ID": [1, 2, 3],
-                "error_code": [0., 1., 2.],
+                "error_code": [0.0, 1.0, 2.0],
                 "status": ["error", "error", "error"],
                 "name": ["name", "name", "name"],
             }
@@ -212,17 +216,34 @@ def run_boolean_experiment(keyfields: dict, result_processor: ResultProcessor, c
         result_processor.process_results({"given_bool": result})
 
 
-def test_boolean_in_table():
+@pytest.fixture
+def boolean_experimenter():
     path = os.path.join("test", "test_run_experiments", "mysql_bool_test_file.yml")
-
     experimenter = PyExperimenter(experiment_configuration_file_path=path, name="name", use_codecarbon=False)
-    experimenter.delete_table()
-    experimenter.fill_table_from_config()
-    experimenter.execute(run_boolean_experiment, 2)
+    return experimenter
 
-    table = experimenter.get_table()
+
+def test_boolean_in_table(boolean_experimenter):
+    boolean_experimenter.delete_table()
+    boolean_experimenter.fill_table_from_config()
+    boolean_experimenter.execute(run_boolean_experiment, 2)
+
+    table = boolean_experimenter.get_table()
     assert table["given_bool"].dtype == int
     assert table["value"].dtype == int
     assert (table["value"] == [1, 0]).all()
     assert (table["given_bool"] == [1, 0]).all()
     assert (table["status"] == ["done", "done"]).all()
+
+
+def test_add_and_execute(boolean_experimenter:PyExperimenter):
+    boolean_experimenter.delete_table()
+    boolean_experimenter.create_table()
+    boolean_experimenter.add_experiment_and_execute(
+        {
+            "value": True,
+        },
+        run_boolean_experiment,
+    )
+    assert boolean_experimenter.get_table().shape[0] == 1
+    assert boolean_experimenter.get_table().iloc[0]["value"] == 1

@@ -219,6 +219,37 @@ class PyExperimenter:
         self.db_connector.create_table_if_not_existing()
         self.db_connector.fill_table(rows)
 
+    def create_table(self) -> None:
+        """
+        Creates Table in the database if it does not exist. If the table allready exists, nothing is done.
+        If the preexisting table has a different structure than the one defined in the experiment configuration file,
+        TableHasWrongStructureError is raised.
+
+        :raises DatabaseConnectionError: If an error occurred during the connection to the database.
+        :raises TableHasWrongStructureError
+        """
+        self.db_connector.create_table_if_not_existing()
+
+    def add_experiment_and_execute(
+        self, keyfield_values: Dict, experiment_function: Callable[[Dict, Dict, ResultProcessor], Optional[ExperimentStatus]]
+    ) -> None:
+        """
+        Add one new experiment to the database table and execute it.
+
+        The given `keyfield_values` are added to the database table. The status of the experiment is set to `Running`.
+        Then _execute_experiment is called with the given `experiment_function` and the `keyfield_values`, to immidiately start
+        execution
+
+        :param keyfield_values: The keyfield values of the experiment to be executed.
+        :type keyfield_values: Dict
+        :param experiment_function: The function that should be executed with the different parametrizations.
+        :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
+        """
+        experiment_id = self.db_connector.add_experiment(keyfield_values)
+        self.logger.info(f"Experiment with id {experiment_id} successfully added to database for immidiate execution.")
+        self._execute_experiment(experiment_id, keyfield_values, experiment_function)
+        self.logger.info(f"Experiment with id {experiment_id} successfully executed.")
+
     def execute(
         self,
         experiment_function: Callable[[Dict, Dict, ResultProcessor], Optional[ExperimentStatus]],
