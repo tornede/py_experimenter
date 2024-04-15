@@ -29,7 +29,7 @@ class PyExperimenter:
         self,
         experiment_configuration_file_path: str = os.path.join("config", "experiment_configuration.yml"),
         database_credential_file_path: str = os.path.join("config", "database_credentials.yml"),
-        use_ssh_tunnel: bool = False,
+        use_ssh_tunnel: Optional[bool] = None,
         table_name: str = None,
         database_name: str = None,
         use_codecarbon: bool = True,
@@ -49,9 +49,11 @@ class PyExperimenter:
             for the database connection, i.e., host, user and password. Defaults to 'config/database_credentials.cfg'.
         :type database_credential_file_path: str, optional
         :param use_ssh_tunnel: If the used database is sqlite this parameter is ignored. Otherwise: If the database is mysql,
-            and `use_ssh_tunnel == True` the ssh credentials provided in `database_credential_file_path` are used to establish
+            and `use_ssh_tunnel == None` the ssh decision is based on the configuration file (defaults to false).
+            If `use_ssh_tunnel != True` the ssh credentials provided in `database_credential_file_path` are used to establish
             an ssh tunnel to the database. If `use_ssh_tunnel == True` but no ssh credentials are provided in
-            `database_credential_file_path`, an error is raised. Defaults to True.
+            `database_credential_file_path`, an error is raised. If `use_shh_tunnel==False` PxExperimenter directly connects
+            to the databse. Defaults to None.
         :type use_ssh_tunnel: bool
         :param table_name: The name of the database table, if given it will overwrite the table_name given in the
             `experiment_configuration_file_path`. If None, the table table name is taken from the experiment
