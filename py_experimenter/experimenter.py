@@ -234,7 +234,7 @@ class PyExperimenter:
         self, keyfield_values: Dict, experiment_function: Callable[[Dict, Dict, ResultProcessor], Optional[ExperimentStatus]]
     ) -> None:
         """
-        Add one new experiment to the database table and execute it.
+        Add one new experiment to the database table with status CREATED_FOR_EXECUTION and execute it. 
 
         The given `keyfield_values` are added to the database table. The status of the experiment is set to `Running`.
         Then _execute_experiment is called with the given `experiment_function` and the `keyfield_values`, to immidiately start

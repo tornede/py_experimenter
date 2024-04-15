@@ -8,11 +8,7 @@ from omegaconf import OmegaConf
 from pymysql import Error, connect
 
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.exceptions import (
-    DatabaseConnectionError,
-    DatabaseCreationError,
-    SshTunnelError,
-)
+from py_experimenter.exceptions import DatabaseConnectionError, DatabaseCreationError, SshTunnelError
 
 
 class DatabaseConnectorMYSQL(DatabaseConnector):
@@ -157,6 +153,9 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             self.close_connection(connection)
 
         return experiment_id, description, values
+
+    def _last_insert_id_string(self) -> str:
+        return "LAST_INSERT_ID()"
 
     def _get_pull_experiment_query(self, order_by: str):
         return super()._get_pull_experiment_query(order_by) + " FOR UPDATE;"

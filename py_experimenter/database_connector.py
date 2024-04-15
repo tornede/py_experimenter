@@ -8,14 +8,8 @@ import pandas as pd
 
 from py_experimenter import utils
 from py_experimenter.config import DatabaseCfg, Keyfield
-from py_experimenter.exceptions import (
-    CreatingTableError,
-    DatabaseConnectionError,
-    EmptyFillDatabaseCallError,
-    NoExperimentsLeftException,
-    NoPausedExperimentsException,
-    TableHasWrongStructureError,
-)
+from py_experimenter.exceptions import (CreatingTableError, DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperimentsLeftException,
+                                        NoPausedExperimentsException, TableHasWrongStructureError)
 from py_experimenter.experiment_status import ExperimentStatus
 
 
@@ -191,14 +185,13 @@ class DatabaseConnector(abc.ABC):
         connection = self.connect()
         try:
             cursor = self.cursor(connection)
-            combination = self._add_metadata(combination, utils.get_timestamp_representation())
+            combination = self._add_metadata(combination, utils.get_timestamp_representation(), ExperimentStatus.CREATED_FOR_EXECUTION.value)
             insert_query = self._get_insert_query(self.database_configuration.table_name, list(combination.keys()))
             self.execute(cursor, insert_query, list(combination.values()))
-            cursor.execute("SELECT LAST_INSERT_ID();")
+            cursor.execute(f"SELECT {self._last_insert_id_string()};")
             experiment_id = cursor.fetchone()[0]
             self.commit(connection)
         except Exception as e:
-            cursor.rollback()
             raise DatabaseConnectionError(f"error \n{e}\n raised when adding experiment to database.")
         finally:
             self.close_connection(connection)
@@ -207,9 +200,18 @@ class DatabaseConnector(abc.ABC):
     def _get_insert_query(self, table_name: str, columns: List[str]) -> str:
         return f"INSERT INTO {table_name} ({', '.join(columns)}) VALUES ({', '.join([self._prepared_statement_placeholder] * len(columns))})"
 
-    def _add_metadata(self, combination: Dict[str, Any], time: str) -> Dict[str, Any]:
-        combination["status"] = ExperimentStatus.CREATED.value
+    @abc.abstractmethod
+    def _last_insert_id_string(self) -> str:
+        pass
+
+    def _add_metadata(
+        self,
+        combination: Dict[str, Any],
+        time: str,
+        status: ExperimentStatus = ExperimentStatus.CREATED.value,
+    ) -> Dict[str, Any]:
         combination["creation_date"] = time
+        combination["status"] = status
         return combination
 
     def _check_combination_in_existing_rows(self, combination, existing_rows) -> bool:
