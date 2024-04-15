@@ -10,6 +10,7 @@ Feature
 -------
 
 - Added documentation about how to execute PyExperimenter on distributed machines.
+- Add add_experiment_and_execute method to PyExperimenter to add and execute an experiment in one step.
 
 v1.4.1 (11.03.2024)
 ===================
