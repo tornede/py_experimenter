@@ -172,8 +172,7 @@ class DatabaseConnector(abc.ABC):
             if self._check_combination_in_existing_rows(combination, existing_rows):
                 rows_skipped += 1
                 continue
-            combination["status"] = ExperimentStatus.CREATED.value
-            combination["creation_date"] = time
+            combination = self._add_metadata(combination, time)
             rows.append(combination)
 
         if rows:
@@ -182,6 +181,36 @@ class DatabaseConnector(abc.ABC):
             self.logger.info(f"{len(rows)} rows successfully added to database. {rows_skipped} rows were skipped.")
         else:
             self.logger.info(f"No rows to add. All the {len(combinations)} experiments already exist.")
+
+    def add_experiment(self, combination: Dict[str, str]) -> None:
+        existing_rows = self._get_existing_rows(list(self.database_configuration.keyfields.keys()))
+        if self._check_combination_in_existing_rows(combination, existing_rows):
+            self.logger.info("Experiment already exists in database. Skipping.")
+            return
+
+        connection = self.connect()
+        try:
+            cursor = self.cursor(connection)
+            combination = self._add_metadata(combination, utils.get_timestamp_representation())
+            insert_query = self._get_insert_query(self.database_configuration.table_name, list(combination.keys()))
+            self.execute(cursor, insert_query, list(combination.values()))
+            cursor.execute("SELECT LAST_INSERT_ID();")
+            experiment_id = cursor.fetchone()[0]
+            self.commit(connection)
+        except Exception as e:
+            cursor.rollback()
+            raise DatabaseConnectionError(f"error \n{e}\n raised when adding experiment to database.")
+        finally:
+            self.close_connection(connection)
+        return experiment_id
+
+    def _get_insert_query(self, table_name: str, columns: List[str]) -> str:
+        return f"INSERT INTO {table_name} ({', '.join(columns)}) VALUES ({', '.join([self._prepared_statement_placeholder] * len(columns))})"
+
+    def _add_metadata(self, combination: Dict[str, Any], time: str) -> Dict[str, Any]:
+        combination["status"] = ExperimentStatus.CREATED.value
+        combination["creation_date"] = time
+        return combination
 
     def _check_combination_in_existing_rows(self, combination, existing_rows) -> bool:
         if combination in existing_rows:
@@ -239,16 +268,15 @@ class DatabaseConnector(abc.ABC):
     def _write_to_database(self, combinations: List[Dict[str, str]]) -> None:
         columns = list(combinations[0].keys())
         values = [list(combination.values()) for combination in combinations]
-        prepared_statement_palcehodler = ','.join([f"({', '.join([self._prepared_statement_placeholder] * len(columns))})"] * len(combinations))
-        
+        prepared_statement_palcehodler = ",".join([f"({', '.join([self._prepared_statement_placeholder] * len(columns))})"] * len(combinations))
+
         stmt = f"INSERT INTO {self.database_configuration.table_name} ({','.join(columns)}) VALUES {prepared_statement_palcehodler}"
-        values =  reduce(concat, values)
+        values = reduce(concat, values)
         connection = self.connect()
         cursor = self.cursor(connection)
         self.execute(cursor, stmt, values)
         self.commit(connection)
         self.close_connection(connection)
-        
 
     def pull_paused_experiment(self, experiment_id: int) -> Dict[str, Any]:
         connnection = self.connect()
