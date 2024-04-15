@@ -62,4 +62,10 @@
 	"[python]": {
 		"editor.defaultFormatter": "ms-python.black-formatter"
 	},
+	"grammarly.selectors": [
+		{
+			"language": "restructuredtext",
+			"scheme": "file"
+		}
+	],
 }
