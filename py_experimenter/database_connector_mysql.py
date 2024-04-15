@@ -7,21 +7,17 @@ import sshtunnel
 from omegaconf import OmegaConf
 from pymysql import Error, connect
 
+from py_experimenter.config import DatabaseCfg
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.exceptions import (
-    DatabaseConnectionError,
-    DatabaseCreationError,
-    SshTunnelError,
-)
+from py_experimenter.exceptions import DatabaseConnectionError, DatabaseCreationError, SshTunnelError
 
 
 class DatabaseConnectorMYSQL(DatabaseConnector):
     _prepared_statement_placeholder = "%s"
 
-    def __init__(self, database_configuration: OmegaConf, use_codecarbon: bool, credential_path: str, use_ssh_tunnel: bool, logger: Logger):
+    def __init__(self, database_configuration: DatabaseCfg, use_codecarbon: bool, credential_path: str, logger: Logger):
         self.credential_path = credential_path
-        self.use_ssh_tunnel = use_ssh_tunnel
-        if self.use_ssh_tunnel:
+        if database_configuration.use_ssh_tunnel:
             self.start_ssh_tunnel(logger)
         super().__init__(database_configuration, use_codecarbon, logger)
 
@@ -55,7 +51,6 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         except DatabaseConnectionError as err:
             logger.error(err)
             raise SshTunnelError("Error when creating SSH tunnel! Check the credentials file.")
-            
 
     def start_ssh_tunnel(self, logger: Logger):
         tunnel = self.get_ssh_tunnel(logger)
@@ -64,6 +59,8 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             tunnel.start()
 
     def close_ssh_tunnel(self):
+        if not self.database_configuration.use_ssh_tunnel:
+            self.logger.warning("Attempt to close SSH tunnel, but ssh tunnel is not used.")
         tunnel = self.get_ssh_tunnel(self.logger)
         if tunnel is not None:
             tunnel.stop(force=True)
@@ -108,7 +105,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         try:
             credential_config = OmegaConf.load(self.credential_path)
             database_configuration = credential_config["CREDENTIALS"]["Database"]
-            if self.use_ssh_tunnel:
+            if self.database_configuration.use_ssh_tunnel:
                 server_address = credential_config["CREDENTIALS"]["Connection"]["Ssh"]["server"]
             else:
                 server_address = credential_config["CREDENTIALS"]["Connection"]["Standard"]["server"]

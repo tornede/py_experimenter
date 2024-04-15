@@ -12,10 +12,7 @@ from py_experimenter import utils
 from py_experimenter.config import PyExperimenterCfg
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
-from py_experimenter.exceptions import (
-    InvalidConfigError,
-    NoExperimentsLeftException,
-)
+from py_experimenter.exceptions import InvalidConfigError, NoExperimentsLeftException
 from py_experimenter.experiment_status import ExperimentStatus
 from py_experimenter.result_processor import ResultProcessor
 
@@ -107,7 +104,10 @@ class PyExperimenter:
             raise InvalidConfigError("Invalid configuration")
 
         self.database_credential_file_path = database_credential_file_path
-        self.use_ssh_tunnel = use_ssh_tunnel
+
+        # If use_ssh_tunnel is not None, the decision is based on the given kwarg
+        if use_ssh_tunnel is not None:
+            self.config.database_configuration.use_ssh_tunnel = use_ssh_tunnel
 
         if table_name is not None:
             self.config.database_configuration.table_name = table_name
@@ -121,7 +121,7 @@ class PyExperimenter:
             self.db_connector = DatabaseConnectorLITE(self.config.database_configuration, self.use_codecarbon, self.logger)
         elif self.config.database_configuration.provider == "mysql":
             self.db_connector = DatabaseConnectorMYSQL(
-                self.config.database_configuration, self.use_codecarbon, database_credential_file_path, use_ssh_tunnel, self.logger
+                self.config.database_configuration, self.use_codecarbon, database_credential_file_path, self.logger
             )
         else:
             raise ValueError("The provider indicated in the config file is not supported")
@@ -132,7 +132,7 @@ class PyExperimenter:
         """
         Closes the ssh tunnel if it is used.
         """
-        if self.config.database_configuration.provider == "mysql" and self.use_ssh_tunnel:
+        if self.config.database_configuration.provider == "mysql":
             self.db_connector.close_ssh_tunnel()
         else:
             self.logger.warning("No ssh tunnel to close")
