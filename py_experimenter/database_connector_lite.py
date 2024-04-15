@@ -44,6 +44,9 @@ class DatabaseConnectorLITE(DatabaseConnector):
         table_names = self.fetchall(cursor)
         return self.database_configuration.table_name in [x[0] for x in table_names]
 
+    def _last_insert_id_string(self) -> str:
+        return "last_insert_rowid()"
+
     @staticmethod
     def random_order_string():
         return "RANDOM()"

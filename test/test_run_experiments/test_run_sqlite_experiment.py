@@ -5,6 +5,7 @@ from math import cos, sin
 from tempfile import TemporaryFile
 
 import pandas as pd
+import pytest
 from pymysql.err import ProgrammingError
 
 from py_experimenter.experimenter import PyExperimenter
@@ -167,17 +168,34 @@ def run_boolean_experiment(keyfields: dict, result_processor: ResultProcessor, c
         result_processor.process_results({"given_bool": result})
 
 
-def test_boolean_in_table():
+@pytest.fixture
+def boolean_experimenter():
     path = os.path.join("test", "test_run_experiments", "sqlite_bool_test_file.yml")
-
     experimenter = PyExperimenter(experiment_configuration_file_path=path, name="name", use_codecarbon=False)
-    experimenter.delete_table()
-    experimenter.fill_table_from_config()
-    experimenter.execute(run_boolean_experiment, 2)
+    return experimenter
 
-    table = experimenter.get_table()
+
+def test_boolean_in_table(boolean_experimenter: PyExperimenter):
+    boolean_experimenter.delete_table()
+    boolean_experimenter.fill_table_from_config()
+    boolean_experimenter.execute(run_boolean_experiment, 2)
+
+    table = boolean_experimenter.get_table()
     assert table["given_bool"].dtype == "int64"
     assert table["value"].dtype == "int64"
     assert (table["value"] == [1, 0]).all()
     assert (table["given_bool"] == [1, 0]).all()
     assert (table["status"] == ["done", "done"]).all()
+
+
+def test_add_and_execute(boolean_experimenter: PyExperimenter):
+    boolean_experimenter.delete_table()
+    boolean_experimenter.create_table()
+    boolean_experimenter.add_experiment_and_execute(
+        {
+            "value": True,
+        },
+        run_boolean_experiment,
+    )
+    assert boolean_experimenter.get_table().shape[0] == 1
+    assert boolean_experimenter.get_table().iloc[0]["value"] == 1
