@@ -49,7 +49,7 @@ Multiple ``experiment executer`` processes execute the experiments in parallel o
 Add Experiment and Execute
 --------------------------
 
-When executing jobs on clusters one might want to use `hydra submitit <https://hydra.cc/docs/plugins/submitit_launcher/>` or a similar software that configures different jobs. If so it makes sense to create the database initially
+When executing jobs on clusters one might want to use `hydra combined with submitit <hydra_submitit_>`_ or a similar software that configures different jobs. If so it makes sense to create the database initially
 
 .. code-block:: python
 
@@ -77,3 +77,5 @@ and then add the configured experiments experiments in the worker job, followed 
             database_credential_file_path = "path/to/file"
         )
         experimenter.add_experiment_and_execute(keyfield_values_from_config, _experiment_function)
+
+.. _hydra_submitit: https://hydra.cc/docs/plugins/submitit_launcher/
