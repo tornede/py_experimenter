@@ -2,6 +2,15 @@
 Changelog
 =========
 
+
+v1.4.2 (??.??.2024)
+===================
+
+Feature
+-------
+
+- Added documentation about how to execute PyExperimenter on distributed machines.
+
 v1.4.1 (11.03.2024)
 ===================
 
