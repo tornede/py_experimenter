@@ -8,8 +8,14 @@ import pandas as pd
 
 from py_experimenter import utils
 from py_experimenter.config import DatabaseCfg, Keyfield
-from py_experimenter.exceptions import (CreatingTableError, DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperimentsLeftException,
-                                        NoPausedExperimentsException, TableHasWrongStructureError)
+from py_experimenter.exceptions import (
+    CreatingTableError,
+    DatabaseConnectionError,
+    EmptyFillDatabaseCallError,
+    NoExperimentsLeftException,
+    NoPausedExperimentsException,
+    TableHasWrongStructureError,
+)
 from py_experimenter.experiment_status import ExperimentStatus
 
 
