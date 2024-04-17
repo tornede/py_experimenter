@@ -38,3 +38,4 @@ The following steps are necessary to execute the ``PyExperimenter``.
    ./database_credential_file
    ./experiment_function
    ./execution
+   ./distributed_execution
