@@ -19,7 +19,7 @@ Below is an example of a database credential file, that connects to a server wit
           server: example.mysqlserver.com
 
 However, for security reasons, databases might only be accessible from a specific IP address. In these cases, one can use an ssh jumphost. This means that ``PyExperimenter`` will first connect to the ssh server
-that has access to the database and then connect to the database server from there. This is done by adding an additional ``Ssh`` section to the database credential file, and can be activated either by a PyExperimenter keyword argument or in the :ref:`experimenter configuration file <_experiment_configuration_file>`.
+that has access to the database and then connect to the database server from there. This is done by adding an additional ``Ssh`` section to the database credential file, and can be activated either by a ``PyExperimenter`` keyword argument or in the :ref:`experimenter configuration file <_experiment_configuration_file>`.
 The following example shows how to connect to a database server using an SSH server with the address ``ssh_hostname`` and the port ``optional_ssh_port``.
 
 .. code-block:: yaml

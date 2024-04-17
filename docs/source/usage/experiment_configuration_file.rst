@@ -14,7 +14,7 @@ The experiment configuration file is primarily used to define the database backe
       Database:
         provider: sqlite
         database: py_experimenter
-        use_ssh_tunnel: False             (Optional Parameter; Defautls to False)
+        use_ssh_tunnel: False
         table: 
           name: example_general_usage
           keyfields:
@@ -70,6 +70,7 @@ The ``Database`` section defines the database and its structure.
 
 - ``provider``: The provider of the database connection. Currently, ``sqlite`` and ``mysql`` are supported. In the case of ``mysql`` an additional :ref:`database credential file <database_credential_file>` has to be created.
 - ``database``: The name of the database to create or connect to.
+- ``use_ssh_tunnel``: Flag to decide if the database is connected via ssh as defined in the :ref:`database credential file <database_credential_file>`. This is ignored if ``sqlite`` is chosen as provider. Optional Parameter, default is False.
 - ``table``: Defines the structure and predefined values for the experiment table. 
 
     - ``name``: The name of the experiment table to create or connect to.
