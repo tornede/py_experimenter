@@ -8,8 +8,14 @@ import pandas as pd
 
 from py_experimenter import utils
 from py_experimenter.config import DatabaseCfg, Keyfield
-from py_experimenter.exceptions import (CreatingTableError, DatabaseConnectionError, EmptyFillDatabaseCallError, NoExperimentsLeftException,
-                                        NoPausedExperimentsException, TableHasWrongStructureError)
+from py_experimenter.exceptions import (
+    CreatingTableError,
+    DatabaseConnectionError,
+    EmptyFillDatabaseCallError,
+    NoExperimentsLeftException,
+    NoPausedExperimentsException,
+    TableHasWrongStructureError,
+)
 from py_experimenter.experiment_status import ExperimentStatus
 
 
@@ -185,7 +191,7 @@ class DatabaseConnector(abc.ABC):
         connection = self.connect()
         try:
             cursor = self.cursor(connection)
-            combination = self._add_metadata(combination, utils.get_timestamp_representation(), ExperimentStatus.CREATED_FOR_EXECUTION.value)
+            combination = self._add_metadata(combination, utils.get_timestamp_representation(), ExperimentStatus.RUNNING.value)
             insert_query = self._get_insert_query(self.database_configuration.table_name, list(combination.keys()))
             self.execute(cursor, insert_query, list(combination.values()))
             cursor.execute(f"SELECT {self._last_insert_id_string()};")
