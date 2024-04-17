@@ -104,6 +104,30 @@ Classes
           configuration file
 
 
+   .. py:method:: create_table() -> None
+
+      Creates Table in the database if it does not exist. If the table allready exists, nothing is done.
+      If the preexisting table has a different structure than the one defined in the experiment configuration file,
+      TableHasWrongStructureError is raised.
+
+      :raises DatabaseConnectionError: If an error occurred during the connection to the database.
+      :raises TableHasWrongStructureError
+
+
+   .. py:method:: add_experiment_and_execute(keyfield_values: Dict, experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], Optional[py_experimenter.experiment_status.ExperimentStatus]]) -> None
+
+      Add one new experiment to the database table with status CREATED_FOR_EXECUTION and execute it. 
+
+      The given `keyfield_values` are added to the database table. The status of the experiment is set to `Running`.
+      Then _execute_experiment is called with the given `experiment_function` and the `keyfield_values`, to immidiately start
+      execution
+
+      :param keyfield_values: The keyfield values of the experiment to be executed.
+      :type keyfield_values: Dict
+      :param experiment_function: The function that should be executed with the different parametrizations.
+      :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
+
+
    .. py:method:: execute(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], Optional[py_experimenter.experiment_status.ExperimentStatus]], random_order: bool = False, n_jobs: Optional[int] = None, max_experiments: int = -1) -> None
 
       Pulls open experiments from the database table and executes them.

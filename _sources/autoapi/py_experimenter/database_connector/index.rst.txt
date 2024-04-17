@@ -79,6 +79,19 @@ Classes
    .. py:method:: fill_table(combinations) -> None
 
 
+   .. py:method:: add_experiment(combination: Dict[str, str]) -> None
+
+
+   .. py:method:: _get_insert_query(table_name: str, columns: List[str]) -> str
+
+
+   .. py:method:: _last_insert_id_string() -> str
+      :abstractmethod:
+
+
+   .. py:method:: _add_metadata(combination: Dict[str, Any], time: str, status: py_experimenter.experiment_status.ExperimentStatus = ExperimentStatus.CREATED.value) -> Dict[str, Any]
+
+
    .. py:method:: _check_combination_in_existing_rows(combination, existing_rows) -> bool
 
 

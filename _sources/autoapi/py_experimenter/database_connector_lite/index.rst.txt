@@ -47,6 +47,9 @@ Classes
    .. py:method:: _table_exists(cursor) -> bool
 
 
+   .. py:method:: _last_insert_id_string() -> str
+
+
    .. py:method:: random_order_string()
       :staticmethod:
 
