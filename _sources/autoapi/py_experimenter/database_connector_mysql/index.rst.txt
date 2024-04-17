@@ -17,13 +17,10 @@ Classes
 
 
 
-.. py:class:: DatabaseConnectorMYSQL(database_configuration: omegaconf.OmegaConf, use_codecarbon: bool, credential_path: str, use_ssh_tunnel: bool, logger: logging.Logger)
+.. py:class:: DatabaseConnectorMYSQL(database_configuration: py_experimenter.config.DatabaseCfg, use_codecarbon: bool, credential_path: str, logger: logging.Logger)
 
 
    Bases: :py:obj:`py_experimenter.database_connector.DatabaseConnector`
-
-   Helper class that provides a standard way to create an ABC using
-   inheritance.
 
    .. py:attribute:: _prepared_statement_placeholder
       :value: '%s'

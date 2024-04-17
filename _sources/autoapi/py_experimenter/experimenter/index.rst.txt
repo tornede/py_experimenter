@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.yml'), database_credential_file_path: str = os.path.join('config', 'database_credentials.yml'), use_ssh_tunnel: bool = False, table_name: str = None, database_name: str = None, use_codecarbon: bool = True, name='PyExperimenter', logger_name: str = 'py-experimenter', log_level: Union[int, str] = logging.INFO, log_file: str = './logs/py-experimenter.log')
+.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.yml'), database_credential_file_path: str = os.path.join('config', 'database_credentials.yml'), use_ssh_tunnel: Optional[bool] = None, table_name: str = None, database_name: str = None, use_codecarbon: bool = True, name='PyExperimenter', logger_name: str = 'py-experimenter', log_level: Union[int, str] = logging.INFO, log_file: str = './logs/py-experimenter.log')
 
 
    Module handling the initialization, execution and collection of experiments and their respective results.

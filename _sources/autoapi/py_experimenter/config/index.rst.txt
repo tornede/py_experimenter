@@ -61,7 +61,7 @@ Classes
       
 
 
-.. py:class:: DatabaseCfg(provider: str, database_name: str, table_name: str, result_timestamps: bool, keyfields: List[Keyfield], resultfields: Dict[str, str], logtables: Dict[str, Dict[str, str]], logger: logging.Logger)
+.. py:class:: DatabaseCfg(provider: str, use_ssh_tunnel: bool, database_name: str, table_name: str, result_timestamps: bool, keyfields: List[Keyfield], resultfields: Dict[str, str], logtables: Dict[str, Dict[str, str]], logger: logging.Logger)
 
 
    Bases: :py:obj:`Cfg`
