@@ -31,11 +31,6 @@ Classes
 
       
 
-   .. py:attribute:: CREATED_FOR_EXECUTION
-      :value: 'created_for_execution'
-
-      
-
    .. py:attribute:: RUNNING
       :value: 'running'
 

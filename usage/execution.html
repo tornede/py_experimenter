@@ -62,7 +62,6 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#execute-experiments">Execute Experiments</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#add-experiment-and-execute">Add Experiment and Execute</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#reset-experiments">Reset Experiments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#obtain-results">Obtain Results</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#codecarbon">CodeCarbon</a></li>
@@ -200,19 +199,8 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">random_order</span></code> determines if the experiments will be executed in a random order. By default, the parameter is set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, meaning that experiments will be executed ordered by their <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p></li>
 </ul>
 </section>
-<section id="add-experiment-and-execute">
-<span id="id2"></span><h2>Add Experiment and Execute<a class="headerlink" href="#add-experiment-and-execute" title="Permalink to this heading"></a></h2>
-<p>Instead of filling the database table with rows and then executing the experiments, it is also possible to add an experiment and execute it directly. This can be done with the following call:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">add_experiment_and_execute</span><span class="p">(</span>
-    <span class="n">keyfields</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;dataset&#39;</span><span class="p">:</span> <span class="s1">&#39;new_data&#39;</span><span class="p">,</span> <span class="s1">&#39;cross_validation_splits&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;seed&#39;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> <span class="s1">&#39;kernel&#39;</span><span class="p">:</span> <span class="s1">&#39;poly&#39;</span><span class="p">},</span>
-    <span class="n">experiment_function</span> <span class="o">=</span> <span class="n">run_experiment</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p>This function may be useful in case of dependencies, where the result of one experiment is needed to configure the next one, or if the experiments are supposed to be configured with software such as <a class="reference external" href="https://hydra.cc/">Hydra</a>.</p>
-</section>
 <section id="reset-experiments">
-<span id="id3"></span><h2>Reset Experiments<a class="headerlink" href="#reset-experiments" title="Permalink to this heading"></a></h2>
+<span id="id2"></span><h2>Reset Experiments<a class="headerlink" href="#reset-experiments" title="Permalink to this heading"></a></h2>
 <p>Each database table contains a <code class="docutils literal notranslate"><span class="pre">status</span></code> column, summarizing the current state of an experiment. Experiments can be reset based on these states. If this is done, the table rows having a given status will be deleted, and corresponding new rows without results will be created. A comma separated list of <code class="docutils literal notranslate"><span class="pre">status</span></code> has to be provided.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">reset_experiments</span><span class="p">(</span><span class="o">&lt;</span><span class="n">status</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">status</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
 </pre></div>
@@ -227,7 +215,7 @@
 </ul>
 </section>
 <section id="obtain-results">
-<span id="id4"></span><h2>Obtain Results<a class="headerlink" href="#obtain-results" title="Permalink to this heading"></a></h2>
+<span id="id3"></span><h2>Obtain Results<a class="headerlink" href="#obtain-results" title="Permalink to this heading"></a></h2>
 <p>The current content of the database table can be obtained as a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>. This can, for example, be used to generate a result table and export it to LaTeX.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result_table</span> <span class="o">=</span> <span class="n">experimenter</span><span class="o">.</span><span class="n">get_table</span><span class="p">()</span>
 <span class="n">result_table</span> <span class="o">=</span> <span class="n">result_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;dataset&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()[[</span><span class="s1">&#39;seed&#39;</span><span class="p">]]</span>
@@ -243,7 +231,7 @@
 </div>
 </section>
 <section id="pausing-and-unpausing-experiments">
-<span id="id5"></span><h2>Pausing and Unpausing Experiments<a class="headerlink" href="#pausing-and-unpausing-experiments" title="Permalink to this heading"></a></h2>
+<span id="id4"></span><h2>Pausing and Unpausing Experiments<a class="headerlink" href="#pausing-and-unpausing-experiments" title="Permalink to this heading"></a></h2>
 <p>For convenience, we support pausing and unpausing experiments. This means that you can use one <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> to start an experiment, which will be paused after certain operations. Therefore, it can be resumed later on. Afterwards, depending on the parametrization of <code class="docutils literal notranslate"><span class="pre">execute()</span></code> of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> instance (see <a class="reference internal" href="#execute-experiments"><span class="std std-ref">in Execute Experiments</span></a>), the experimenter terminates or another experiment will be started.</p>
 <p>To pause an experiment, the experiment function has to return the state <code class="docutils literal notranslate"><span class="pre">ExperimentStatus.PAUSED</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_experiment_until_pause</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
@@ -277,7 +265,7 @@
 <p>A complete example on how to pause and continue an experiment can be found in the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
 </section>
 <section id="close-ssh-tunnel">
-<span id="id6"></span><h2>Close SSH Tunnel<a class="headerlink" href="#close-ssh-tunnel" title="Permalink to this heading"></a></h2>
+<span id="id5"></span><h2>Close SSH Tunnel<a class="headerlink" href="#close-ssh-tunnel" title="Permalink to this heading"></a></h2>
 <p>If an SSH tunnel was opened during the creation of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>, it has to be closed manually by calling the following method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="n">experimenter</span><span class="o">.</span><span class="n">close_ssh_tunnel</span><span class="p">()</span>
