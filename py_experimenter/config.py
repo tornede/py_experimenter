@@ -9,11 +9,7 @@ from attr import dataclass
 from omegaconf import DictConfig, ListConfig, OmegaConf
 
 from py_experimenter import utils
-from py_experimenter.exceptions import (
-    InvalidColumnError,
-    InvalidConfigError,
-    InvalidLogtableError,
-)
+from py_experimenter.exceptions import InvalidColumnError, InvalidConfigError, InvalidLogtableError
 
 
 class Cfg(ABC):
@@ -45,6 +41,7 @@ class DatabaseCfg(Cfg):
     def __init__(
         self,
         provider: str,
+        use_ssh_tunnel: bool,
         database_name: str,
         table_name: str,
         result_timestamps: bool,
@@ -58,6 +55,8 @@ class DatabaseCfg(Cfg):
 
         :param provider: Database Provider; either `sqlite` or `mysql`
         :type provider: str
+        :param use_ssh_tunnel: Whether to use an SSH tunnel to connect to the database
+        :type use_ssh_tunnel: bool
         :param database_name: Name of the database
         :type database_name: str
         :param table_name: Name of the table
@@ -71,6 +70,7 @@ class DatabaseCfg(Cfg):
         :type logtables: Dict[str, Dict[str,str]]
         """
         self.provider = provider
+        self.use_ssh_tunnel = use_ssh_tunnel
         self.database_name = database_name
         self.table_name = table_name
         self.result_timestamps = result_timestamps
@@ -85,6 +85,8 @@ class DatabaseCfg(Cfg):
         database_config = config["PY_EXPERIMENTER"]["Database"]
         table_config = database_config["table"]
         provider = database_config["provider"]
+        # Optional use_ssh_tunnel
+        use_ssh_tunnel = database_config["use_ssh"] if "use_ssh" in database_config else False
         database_name = database_config["database"]
         table_name = database_config["table"]["name"]
 
@@ -97,6 +99,7 @@ class DatabaseCfg(Cfg):
 
         return DatabaseCfg(
             provider,
+            use_ssh_tunnel,
             database_name,
             table_name,
             result_timestamps,
@@ -207,6 +210,9 @@ class DatabaseCfg(Cfg):
     def valid(self) -> bool:
         if self.provider not in ["sqlite", "mysql"]:
             self.logger.error("Database provider must be either sqlite or mysql")
+            return False
+        if self.use_ssh_tunnel not in [True, False]:
+            self.logger.error("Use SSH tunnel must be a boolean.")
             return False
         if not isinstance(self.database_name, str):
             self.logger.error("Database name must be a string")
@@ -372,6 +378,7 @@ class PyExperimenterCfg:
     def valid(self) -> bool:
         if not isinstance(self.n_jobs, int) and self.n_jobs > 0:
             self.logger.error("n_jobs must be a positive integer")
+            return False
         if not (self.database_configuration.valid() and self.custom_configuration.valid() and self.codecarbon_configuration.valid()):
             self.logger.error("Database configuration invalid")
             return False

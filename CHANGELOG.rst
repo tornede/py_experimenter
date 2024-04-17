@@ -10,6 +10,13 @@ Feature
 -------
 
 - Added documentation about how to execute PyExperimenter on distributed machines.
+- Improved the usage and documentation of ssh tunnel to be more flexible and user friendly.
+
+Fix
+---
+
+
+
 
 v1.4.1 (11.03.2024)
 ===================
