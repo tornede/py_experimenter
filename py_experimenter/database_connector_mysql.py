@@ -56,14 +56,18 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         tunnel = self.get_ssh_tunnel(logger)
         # Tunnels may not be stopepd instantly, so we check if the tunnel is active before starting it
         if tunnel is not None and not tunnel.is_active:
-            tunnel.start()
+            try:
+                tunnel.start()
+            except Exception as e:
+                logger.warning("Failed at creating SSH tunnel. Maybe the tunnel is already active in other process?")
+                logger.warning(e)
 
     def close_ssh_tunnel(self):
         if not self.database_configuration.use_ssh_tunnel:
             self.logger.warning("Attempt to close SSH tunnel, but ssh tunnel is not used.")
         tunnel = self.get_ssh_tunnel(self.logger)
         if tunnel is not None:
-            tunnel.stop(force=True)
+            tunnel.stop(force=False)
 
     def _test_connection(self):
         try:

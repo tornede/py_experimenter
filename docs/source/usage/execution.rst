@@ -126,6 +126,54 @@ Instead of filling the database table with rows and then executing the experimen
 
 This function may be useful in case of dependencies, where the result of one experiment is needed to configure the next one, or if the experiments are supposed to be configured with software such as `Hydra <hydra_>`_.	 
 
+.. _attach:
+
+----------------------------
+Attach to Running Experiment
+----------------------------
+
+For cases of multiprocessing, where the ``experiment_function`` contains a main job, that runs multiple additional workers in other processes (maybe on a different machine), it is inconvenient to log all information through the main job. Therefore we allow these workers to also attach to the database and log their information about the same experiment. 
+
+This works as follows: Given two epxeriment functions
+
+.. code-block:: python
+
+    def main_experiment_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: Dict):
+        # Main Experiment Execution
+        do_something()
+
+        # Start worker in different process, and provide it with the experiment_id
+        result = worker(worker_experiment_function)
+
+        # Compute Something
+        do_something()
+
+        result_processor.process_results(
+            # Results
+        )
+
+    def worker_experiment_function(result_processor: ResultProcessor):
+        # Work Work Work
+        result_processor.process_logs(
+            # Some Logs 
+        )
+        return result
+
+we first start the main experiment
+
+.. code-block:: python
+    
+    experimenter.execute(main_experiment_function, max_experiments=-1)
+
+that in turn starts a new worker process that calls
+
+.. code-block:: python
+
+    return_value = experimenter.attach(worker_experiment_function, experiment_id)
+
+to attach to the already-running experiment. 
+
+Note that the attach function returns the result of worker_experiment_function.
 
 .. _reset_experiments:
 
