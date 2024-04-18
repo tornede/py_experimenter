@@ -172,7 +172,7 @@ class PyExperimenter:
         >>> ]
 
         :param fixed_parameter_combinations: List of predefined parameter combinations (each of type dict).
-                Defaults to None.
+            Defaults to None.
         :type fixed_parameter_combinations: List[dict], optional
         :param parameters: Dictionary of parameters and their lists of possible values. Defaults to None.
         :type parameters: dict, optional
@@ -224,24 +224,23 @@ class PyExperimenter:
 
     def create_table(self) -> None:
         """
-        Creates Table in the database if it does not exist. If the table allready exists, nothing is done.
+        Creates Table in the database if it does not exist. If the table already exists, nothing is done.
         If the preexisting table has a different structure than the one defined in the experiment configuration file,
         TableHasWrongStructureError is raised.
 
         :raises DatabaseConnectionError: If an error occurred during the connection to the database.
-        :raises TableHasWrongStructureError
+        :raises TableHasWrongStructureError: If the table has a different structure than the one defined in the
+            experiment configuration file.
         """
         self.db_connector.create_table_if_not_existing()
 
-    def add_experiment_and_execute(
-        self, keyfield_values: Dict, experiment_function: Callable[[Dict, Dict, ResultProcessor], Optional[ExperimentStatus]]
-    ) -> None:
+    def add_experiment_and_execute(self, keyfield_values: Dict, experiment_function: Callable[[Dict, Dict, ResultProcessor], Optional[ExperimentStatus]]) -> None:
         """
-        Add one new experiment to the database table with status CREATED_FOR_EXECUTION and execute it. 
-
+        Add one new experiment to the database table with status CREATED_FOR_EXECUTION and execute it.
+        
         The given `keyfield_values` are added to the database table. The status of the experiment is set to `Running`.
-        Then _execute_experiment is called with the given `experiment_function` and the `keyfield_values`, to immidiately start
-        execution
+        Then _execute_experiment is called with the given `experiment_function` and the `keyfield_values`, to immediately start
+        execution.
 
         :param keyfield_values: The keyfield values of the experiment to be executed.
         :type keyfield_values: Dict
@@ -249,7 +248,7 @@ class PyExperimenter:
         :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
         """
         experiment_id = self.db_connector.add_experiment(keyfield_values)
-        self.logger.info(f"Experiment with id {experiment_id} successfully added to database for immidiate execution.")
+        self.logger.info(f"Experiment with id {experiment_id} successfully added to database for immediate execution.")
         self._execute_experiment(experiment_id, keyfield_values, experiment_function)
         self.logger.info(f"Experiment with id {experiment_id} successfully executed.")
 
@@ -453,7 +452,7 @@ class PyExperimenter:
         table again.
 
         :param states: The status of experiments that should be reset. Either `created`, `running`, `error`, `done`, or `all`.
-        Note that `states` is a variable-length argument, so multiple states can be given as a tuple.
+            Note that `states` is a variable-length argument, so multiple states can be given as a tuple.
         :type status: Tuple[str]
         """
         if not states:
