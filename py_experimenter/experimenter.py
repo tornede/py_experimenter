@@ -222,22 +222,28 @@ class PyExperimenter:
         self.db_connector.create_table_if_not_existing()
         self.db_connector.fill_table(rows)
 
-    def create_table(self) -> None:
+    def create_table(self, create_database: bool = False) -> None:
         """
         Creates Table in the database if it does not exist. If the table already exists, nothing is done.
         If the preexisting table has a different structure than the one defined in the experiment configuration file,
         TableHasWrongStructureError is raised.
 
+        :param create_database: If True, the database is created if it does not exist. Defaults to False.
+        :type create_database: bool
         :raises DatabaseConnectionError: If an error occurred during the connection to the database.
         :raises TableHasWrongStructureError: If the table has a different structure than the one defined in the
             experiment configuration file.
         """
+        if create_database:
+            self.db_connector._create_database_if_not_existing()
+            self.logger.info(f"Database {self.config.database_configuration.database_name} created.")
         self.db_connector.create_table_if_not_existing()
+        self.logger.info(f"Table {self.config.database_configuration.table_name} created.")
 
     def add_experiment_and_execute(self, keyfield_values: Dict, experiment_function: Callable[[Dict, Dict, ResultProcessor], Optional[ExperimentStatus]]) -> None:
         """
-        Add one new experiment to the database table with status CREATED_FOR_EXECUTION and execute it.
-        
+        Add one new experiment to the database table with status RUNNING and execute it.
+
         The given `keyfield_values` are added to the database table. The status of the experiment is set to `Running`.
         Then _execute_experiment is called with the given `experiment_function` and the `keyfield_values`, to immediately start
         execution.
