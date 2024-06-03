@@ -60,6 +60,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#workflow">Workflow</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#database-handling">Database Handling</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#experiment-execution">Experiment Execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#add-experiment-and-execute">Add Experiment and Execute</a></li>
 </ul>
 </li>
 </ul>
@@ -144,6 +145,34 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">py_experimenter.experimenter</span> <span class="kn">import</span> <span class="n">PyExperimenter</span>
 
 <span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">experiment_function</span><span class="p">,</span> <span class="n">max_experiments</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="add-experiment-and-execute">
+<h3>Add Experiment and Execute<a class="headerlink" href="#add-experiment-and-execute" title="Permalink to this heading"></a></h3>
+<p>When executing jobs on clusters one might want to use <a class="reference external" href="https://hydra.cc/docs/plugins/submitit_launcher/">hydra combined with submitit</a> or a similar software that configures different jobs. If so it makes sense to create the database initially</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">(</span>
+    <span class="n">experiment_configuration_file_path</span> <span class="o">=</span> <span class="s2">&quot;path/to/file&quot;</span><span class="p">,</span>
+    <span class="n">database_credential_file_path</span> <span class="o">=</span> <span class="s2">&quot;path/to/file&quot;</span>
+<span class="p">)</span>
+<span class="n">experimenter</span><span class="o">.</span><span class="n">create_table</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>and then add the configured experiments experiments in the worker job, followed by an immediate execution.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_experiment_function</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="o">...</span>
+<span class="nd">@hydra</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">config_path</span><span class="o">=</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="n">config_name</span><span class="o">=</span><span class="s2">&quot;hydra_configname&quot;</span><span class="p">,</span> <span class="n">version_base</span><span class="o">=</span><span class="s2">&quot;1.1&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">experiment_wrapepr</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Configuration</span><span class="p">):</span>
+
+    <span class="o">...</span>
+    <span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">(</span>
+        <span class="n">experiment_configuration_file_path</span> <span class="o">=</span> <span class="s2">&quot;some/value/from/config&quot;</span><span class="p">,</span>
+        <span class="n">database_credential_file_path</span> <span class="o">=</span> <span class="s2">&quot;path/to/file&quot;</span>
+    <span class="p">)</span>
+    <span class="n">experimenter</span><span class="o">.</span><span class="n">add_experiment_and_execute</span><span class="p">(</span><span class="n">keyfield_values_from_config</span><span class="p">,</span> <span class="n">_experiment_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

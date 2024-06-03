@@ -1,15 +1,21 @@
-:py:mod:`py_experimenter.utils`
-===============================
+py_experimenter.utils
+=====================
 
 .. py:module:: py_experimenter.utils
 
 
-Module Contents
----------------
+Exceptions
+----------
+
+.. autoapisummary::
+
+   py_experimenter.utils.ConfigError
+   py_experimenter.utils.NoConfigFileError
+   py_experimenter.utils.ParameterCombinationError
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -19,6 +25,32 @@ Functions
    py_experimenter.utils.combine_fill_table_parameters
    py_experimenter.utils.get_timestamp_representation
 
+
+Module Contents
+---------------
+
+.. py:exception:: ConfigError
+
+   Bases: :py:obj:`PyExperimenterError`
+
+
+   Common base class for all non-exit exceptions.
+
+
+.. py:exception:: NoConfigFileError
+
+   Bases: :py:obj:`ConfigError`, :py:obj:`FileNotFoundError`
+
+
+   Common base class for all non-exit exceptions.
+
+
+.. py:exception:: ParameterCombinationError
+
+   Bases: :py:obj:`PyExperimenterError`
+
+
+   Common base class for all non-exit exceptions.
 
 
 .. py:function:: load_credential_config(path)
@@ -30,9 +62,7 @@ Functions
 
 .. py:function:: write_codecarbon_config(codecarbon_config: omegaconf.DictConfig)
 
-
 .. py:function:: extract_codecarbon_columns() -> Dict[str, str]
-
 
 .. py:function:: combine_fill_table_parameters(keyfield_names: List[str], parameters: Dict[str, Union[str, int, float, bool]], fixed_parameter_combinations: List[Dict[str, Union[str, int, float, bool]]] = None)
 
@@ -46,5 +76,4 @@ Functions
 
 
 .. py:function:: get_timestamp_representation() -> str
-
 

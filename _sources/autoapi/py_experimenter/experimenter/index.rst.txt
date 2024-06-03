@@ -1,30 +1,291 @@
-:py:mod:`py_experimenter.experimenter`
-======================================
+py_experimenter.experimenter
+============================
 
 .. py:module:: py_experimenter.experimenter
+
+
+Exceptions
+----------
+
+.. autoapisummary::
+
+   py_experimenter.experimenter.InvalidConfigError
+   py_experimenter.experimenter.NoExperimentsLeftException
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   py_experimenter.experimenter.PyExperimenterCfg
+   py_experimenter.experimenter.DatabaseConnectorLITE
+   py_experimenter.experimenter.DatabaseConnectorMYSQL
+   py_experimenter.experimenter.ExperimentStatus
+   py_experimenter.experimenter.ResultProcessor
+   py_experimenter.experimenter.PyExperimenter
 
 
 Module Contents
 ---------------
 
-Classes
-~~~~~~~
+.. py:class:: PyExperimenterCfg(n_jobs: int, database_configuration: DatabaseCfg, custom_configuration: CustomCfg, codecarbon_configuration: CodeCarbonCfg, logger: logging.Logger)
 
-.. autoapisummary::
-
-   py_experimenter.experimenter.PyExperimenter
+   Configuration of a PyExperimenter object. Contains the configuration of the database, custom values, and the CodeCarbon API.
 
 
+   .. py:method:: extract_config(config_path: str, logger: logging.Logger) -> PyExperimenterCfg
+      :staticmethod:
+
+
+
+   .. py:method:: valid() -> bool
+
+
+.. py:class:: DatabaseConnectorLITE(database_configuration: py_experimenter.config.DatabaseCfg, use_codecarbon: bool, logger: logging.Logger)
+
+   Bases: :py:obj:`py_experimenter.database_connector.DatabaseConnector`
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+   .. py:attribute:: _write_to_database_separator
+      :value: "','"
+
+
+
+   .. py:attribute:: _prepared_statement_placeholder
+      :value: '?'
+
+
+
+   .. py:method:: _test_connection()
+
+
+   .. py:method:: connect()
+
+
+   .. py:method:: _pull_open_experiment(random_order: bool) -> Tuple[int, List, List]
+
+
+   .. py:method:: _get_pull_experiment_query(order_by)
+
+
+   .. py:method:: _table_exists(cursor) -> bool
+
+
+   .. py:method:: _last_insert_id_string() -> str
+
+
+   .. py:method:: random_order_string()
+      :staticmethod:
+
+
+
+   .. py:method:: get_autoincrement()
+      :staticmethod:
+
+
+
+   .. py:method:: _table_has_correct_structure(cursor, config_columns) -> List[str]
+
+
+   .. py:method:: _get_existing_rows(column_names: List[str]) -> List[Dict[str, str]]
+
+
+   .. py:method:: get_structure_from_table(cursor)
+
+
+.. py:class:: DatabaseConnectorMYSQL(database_configuration: py_experimenter.config.DatabaseCfg, use_codecarbon: bool, credential_path: str, logger: logging.Logger)
+
+   Bases: :py:obj:`py_experimenter.database_connector.DatabaseConnector`
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+   .. py:attribute:: _prepared_statement_placeholder
+      :value: '%s'
+
+
+
+   .. py:method:: get_ssh_tunnel(logger: logging.Logger)
+
+
+   .. py:method:: start_ssh_tunnel(logger: logging.Logger)
+
+
+   .. py:method:: close_ssh_tunnel()
+
+
+   .. py:method:: _test_connection()
+
+
+   .. py:method:: _create_database_if_not_existing()
+
+
+   .. py:method:: connect()
+
+
+   .. py:method:: close_connection(connection)
+
+
+   .. py:method:: _get_database_credentials()
+
+
+   .. py:method:: _start_transaction(connection, readonly=False)
+
+
+   .. py:method:: _table_exists(cursor, table_name: str = None) -> bool
+
+
+   .. py:method:: get_autoincrement()
+      :staticmethod:
+
+
+
+   .. py:method:: _table_has_correct_structure(cursor, typed_fields: Dict[str, str])
+
+
+   .. py:method:: _pull_open_experiment(random_order) -> Tuple[int, List, List]
+
+
+   .. py:method:: _last_insert_id_string() -> str
+
+
+   .. py:method:: _get_pull_experiment_query(order_by: str)
+
+
+   .. py:method:: random_order_string()
+      :staticmethod:
+
+
+
+   .. py:method:: _get_existing_rows(column_names)
+
+
+   .. py:method:: get_structure_from_table(cursor)
+
+
+.. py:exception:: InvalidConfigError
+
+   Bases: :py:obj:`ConfigError`
+
+
+   Common base class for all non-exit exceptions.
+
+
+.. py:exception:: NoExperimentsLeftException
+
+   Bases: :py:obj:`PyExperimenterError`
+
+
+   Common base class for all non-exit exceptions.
+
+
+.. py:class:: ExperimentStatus
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Generic enumeration.
+
+   Derive from this class to define new enumerations.
+
+
+   .. py:attribute:: CREATED
+      :value: 'created'
+
+
+
+   .. py:attribute:: RUNNING
+      :value: 'running'
+
+
+
+   .. py:attribute:: DONE
+      :value: 'done'
+
+
+
+   .. py:attribute:: ERROR
+      :value: 'error'
+
+
+
+   .. py:attribute:: ALL
+      :value: 'all'
+
+
+
+   .. py:attribute:: PAUSED
+      :value: 'paused'
+
+
+
+.. py:class:: ResultProcessor(database_config: py_experimenter.config.DatabaseCfg, db_connector: py_experimenter.database_connector.DatabaseConnector, experiment_id: int, logger)
+
+   Class for processing the results from an experiment. Use this class whenever you want to write results to the
+   database.
+
+
+   .. py:method:: process_results(results: Dict) -> None
+
+      Process results from the experiment and write them to the database. You can call this method, whenever you
+      want to write results to the database.
+      :param results: Dictionary with result field name and result value pairs.
+
+
+
+   .. py:method:: _write_emissions(emission_data: codecarbon.output.EmissionsData, offline_mode: bool) -> None
+
+
+   .. py:method:: _add_timestamps_to_results(results: Dict) -> List[Tuple[str, object]]
+      :staticmethod:
+
+
+
+   .. py:method:: process_logs(logs: Dict[str, Dict[str, str]]) -> None
+
+      Appends logs to the logtables. Raises InvalidLogFieldError if the given logs are invalid.
+      The logs are of the following structure: Dictionary keys are the logtable_names (without the prefix `table_name__`). Each key refers to a inner dictionary
+      with the keys as columnsnames and values as results.
+
+      :param logs: Logs to be appended to the logtables.
+      :type logs: Dict[str, Dict[str, str]]
+
+
+
+   .. py:method:: _valid_logtable_logs(logs: Dict[str, Dict[str, str]]) -> bool
+
+
+   .. py:method:: _change_status(status: str)
+
+
+   .. py:method:: _write_error(error_msg)
+
+
+   .. py:method:: _set_machine(machine_id)
+
+
+   .. py:method:: _set_name(name)
+
+
+   .. py:method:: _valid_result_fields(result_fields)
 
 
 .. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.yml'), database_credential_file_path: str = os.path.join('config', 'database_credentials.yml'), use_ssh_tunnel: Optional[bool] = None, table_name: str = None, database_name: str = None, use_codecarbon: bool = True, name='PyExperimenter', logger_name: str = 'py-experimenter', log_level: Union[int, str] = logging.INFO, log_file: str = './logs/py-experimenter.log')
 
-
    Module handling the initialization, execution and collection of experiments and their respective results.
+
 
    .. py:method:: close_ssh() -> None
 
       Closes the ssh tunnel if it is used.
+
 
 
    .. py:method:: fill_table_from_combination(fixed_parameter_combinations: List[dict] = None, parameters: dict = None) -> None
@@ -62,12 +323,13 @@ Classes
       >>> ]
 
       :param fixed_parameter_combinations: List of predefined parameter combinations (each of type dict).
-              Defaults to None.
+          Defaults to None.
       :type fixed_parameter_combinations: List[dict], optional
       :param parameters: Dictionary of parameters and their lists of possible values. Defaults to None.
       :type parameters: dict, optional
       :raises ParameterCombinationError: If any parameter of the combinations (rows) does not match the keyfields
           from the experiment configuration.
+
 
 
    .. py:method:: fill_table_from_config() -> None
@@ -83,6 +345,7 @@ Classes
       Note that only rows are added whose parameter combinations do not already exist in the table. For each
       added row the status is set to 'created'. If the `keyfield` values do not match their respective types an
       error is raised.
+
 
 
    .. py:method:: fill_table_with_rows(rows: List[dict]) -> None
@@ -102,6 +365,36 @@ Classes
       :type rows: List[dict]
       :raises ValueError: If any key of any row in `rows` does not match the `keyfields` from the experiment
           configuration file
+
+
+
+   .. py:method:: create_table(create_database: bool = False) -> None
+
+      Creates Table in the database if it does not exist. If the table already exists, nothing is done.
+      If the preexisting table has a different structure than the one defined in the experiment configuration file,
+      TableHasWrongStructureError is raised.
+
+      :param create_database: If True, the database is created if it does not exist. Defaults to False.
+      :type create_database: bool
+      :raises DatabaseConnectionError: If an error occurred during the connection to the database.
+      :raises TableHasWrongStructureError: If the table has a different structure than the one defined in the
+          experiment configuration file.
+
+
+
+   .. py:method:: add_experiment_and_execute(keyfield_values: Dict, experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], Optional[py_experimenter.experiment_status.ExperimentStatus]]) -> None
+
+      Add one new experiment to the database table with status RUNNING and execute it.
+
+      The given `keyfield_values` are added to the database table. The status of the experiment is set to `Running`.
+      Then _execute_experiment is called with the given `experiment_function` and the `keyfield_values`, to immediately start
+      execution.
+
+      :param keyfield_values: The keyfield values of the experiment to be executed.
+      :type keyfield_values: Dict
+      :param experiment_function: The function that should be executed with the different parametrizations.
+      :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
+
 
 
    .. py:method:: execute(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], Optional[py_experimenter.experiment_status.ExperimentStatus]], random_order: bool = False, n_jobs: Optional[int] = None, max_experiments: int = -1) -> None
@@ -147,6 +440,7 @@ Classes
       :raises InvalidValuesInConfiguration: If any value of the experiment parameters is of wrong data type.
 
 
+
    .. py:method:: unpause_experiment(experiment_id: int, experiment_function: Callable) -> None
 
       Pulls the experiment with the given `experiment_id` from the database (if it is `paused`) table and executes it. In
@@ -163,6 +457,7 @@ Classes
       :type experiment_function: Callable
 
 
+
    .. py:method:: _worker(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], None], random_order: bool) -> None
 
       Worker that repeatedly pulls open experiments from the database table and executes them.
@@ -171,6 +466,7 @@ Classes
       :type experiment_function: Callable[[Dict, Dict, ResultProcessor], None]
       :param random_order: If True, the order of the experiments is determined randomly. Defaults to False.
       :type random_order: bool
+
 
 
    .. py:method:: _execution_wrapper(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], Optional[py_experimenter.experiment_status.ExperimentStatus]], random_order: bool) -> None
@@ -198,6 +494,7 @@ Classes
       :raises DatabaseConnectionError: If an error occurred during the connection to the database.
 
 
+
    .. py:method:: _execute_experiment(experiment_id, keyfield_values, experiment_function)
 
 
@@ -207,9 +504,11 @@ Classes
       Writes the CodeCarbon config file if CodeCarbon is used in this experiment.
 
 
+
    .. py:method:: _delete_codecarbon_config() -> None
 
       Deletes the CodeCarbon config file if CodeCarbon is used in this experiment.
+
 
 
    .. py:method:: reset_experiments(*states: Tuple[str]) -> None
@@ -218,13 +517,15 @@ Classes
       table again.
 
       :param states: The status of experiments that should be reset. Either `created`, `running`, `error`, `done`, or `all`.
-      Note that `states` is a variable-length argument, so multiple states can be given as a tuple.
+          Note that `states` is a variable-length argument, so multiple states can be given as a tuple.
       :type status: Tuple[str]
+
 
 
    .. py:method:: delete_table() -> None
 
       Drops the table defined in the configuration file. Additionally, all associated log tables are dropped.
+
 
 
    .. py:method:: get_table() -> pandas.DataFrame
@@ -235,6 +536,7 @@ Classes
       :rtype: pd.DataFrame
 
 
+
    .. py:method:: get_logtable(logtable_name: str) -> pandas.DataFrame
 
       Returns the log table as `Pandas.DataFrame`.
@@ -243,6 +545,7 @@ Classes
       :type table_name: str
       :return: The log table as `Pandas.DataFrame`.
       :rtype: pd.DataFrame
+
 
 
    .. py:method:: get_codecarbon_table() -> pandas.DataFrame

@@ -109,6 +109,24 @@ An experiment can be executed easily with the following call:
 - ``max_experiments`` determines how many experiments will be executed by this ``PyExperimenter``. If set to ``-1``, it will execute experiments in a sequential fashion until no more open experiments are available.
 - ``random_order`` determines if the experiments will be executed in a random order. By default, the parameter is set to ``False``, meaning that experiments will be executed ordered by their ``id``.
 
+.. _add_experiment_and_execute:
+
+--------------------------
+Add Experiment and Execute
+--------------------------
+
+Instead of filling the database table with rows and then executing the experiments, it is also possible to add an experiment and execute it directly. This can be done with the following call:
+
+.. code-block:: python
+
+    experimenter.add_experiment_and_execute(
+        keyfields = {'dataset': 'new_data', 'cross_validation_splits': 4, 'seed': 42, 'kernel': 'poly'},
+        experiment_function = run_experiment
+    )
+
+This function may be useful in case of dependencies, where the result of one experiment is needed to configure the next one, or if the experiments are supposed to be configured with software such as `Hydra <hydra_>`_.	 
+
+
 .. _reset_experiments:
 
 -----------------
@@ -215,3 +233,6 @@ If an SSH tunnel was opened during the creation of the ``PyExperimenter``, it ha
 
     experimenter.execute(...)
     experimenter.close_ssh_tunnel()
+
+
+.. _hydra: https://hydra.cc/

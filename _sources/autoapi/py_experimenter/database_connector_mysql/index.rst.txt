@@ -1,31 +1,274 @@
-:py:mod:`py_experimenter.database_connector_mysql`
-==================================================
+py_experimenter.database_connector_mysql
+========================================
 
 .. py:module:: py_experimenter.database_connector_mysql
+
+
+Exceptions
+----------
+
+.. autoapisummary::
+
+   py_experimenter.database_connector_mysql.DatabaseConnectionError
+   py_experimenter.database_connector_mysql.DatabaseCreationError
+   py_experimenter.database_connector_mysql.SshTunnelError
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   py_experimenter.database_connector_mysql.DatabaseCfg
+   py_experimenter.database_connector_mysql.DatabaseConnector
+   py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL
 
 
 Module Contents
 ---------------
 
-Classes
-~~~~~~~
+.. py:class:: DatabaseCfg(provider: str, use_ssh_tunnel: bool, database_name: str, table_name: str, result_timestamps: bool, keyfields: List[Keyfield], resultfields: Dict[str, str], logtables: Dict[str, Dict[str, str]], logger: logging.Logger)
 
-.. autoapisummary::
-
-   py_experimenter.database_connector_mysql.DatabaseConnectorMYSQL
+   Bases: :py:obj:`Cfg`
 
 
+   Class for the configuration of the database connection. In addition to `provider`, `database_name`, and `table_name`, the class also defined the structure
+   of tables in the `keyfields`, `resultfields`, and `logtables` attributes.
+
+
+   .. py:method:: extract_config(config: omegaconf.OmegaConf, logger: logging.Logger) -> Tuple[DatabaseCfg, List[str]]
+      :staticmethod:
+
+
+      Abstract method for extracting the configuration from a given OmegaConf object.
+
+
+
+   .. py:method:: _extract_keyfields(keyfields: omegaconf.DictConfig, logger) -> Dict[str, Keyfield]
+      :staticmethod:
+
+
+
+   .. py:method:: _extract_value_range(keyfield_name: str, keyfield_content: omegaconf.DictConfig, logger: logging.Logger) -> Tuple[str, List[Union[int, str, bool, Any]]]
+      :staticmethod:
+
+
+
+   .. py:method:: _extract_resultfields(table_config: omegaconf.OmegaConf, logger: logging.Logger) -> Dict[str, str]
+      :staticmethod:
+
+
+
+   .. py:method:: _extract_logtables(table_name: str, table_config: omegaconf.OmegaConf, logger: logging.Logger) -> Dict[str, Dict[str, str]]
+      :staticmethod:
+
+
+
+   .. py:method:: get_experiment_configuration()
+
+
+   .. py:method:: valid() -> bool
+
+      Abstract method for checking the validity of the configuration.
+
+
+
+.. py:class:: DatabaseConnector(database_configuration: py_experimenter.config.DatabaseCfg, use_codecarbon: bool, logger: logging.Logger)
+
+   Bases: :py:obj:`abc.ABC`
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+   .. py:method:: _test_connection()
+      :abstractmethod:
+
+
+
+   .. py:method:: connect()
+      :abstractmethod:
+
+
+
+   .. py:method:: close_connection(connection)
+
+
+   .. py:method:: commit(connection) -> None
+
+
+   .. py:method:: execute(cursor, sql_statement, values=None) -> None
+
+
+   .. py:method:: cursor(connection)
+
+
+   .. py:method:: fetchall(cursor)
+
+
+   .. py:method:: create_table_if_not_existing() -> None
+
+
+   .. py:method:: _table_exists(cursor, table_name: str)
+      :abstractmethod:
+
+
+
+   .. py:method:: _compute_columns(keyfields: Dict[str, py_experimenter.config.Keyfield], resultfields: Dict[str, str]) -> Dict[str, str]
+      :staticmethod:
+
+
+
+   .. py:method:: _exclude_fixed_columns(columns: List[str]) -> List[str]
+
+
+   .. py:method:: _create_table(cursor, columns: List[Tuple[str]], table_name: str, table_type: str = 'standard')
+
+
+   .. py:method:: _get_create_table_query(columns: List[Tuple[str]], table_name: str, table_type: str = 'standard')
+
+
+   .. py:method:: get_autoincrement(self)
+      :staticmethod:
+
+
+
+   .. py:method:: _table_has_correct_structure(cursor, typed_fields)
+      :abstractmethod:
+
+
+
+   .. py:method:: fill_table(combinations) -> None
+
+
+   .. py:method:: add_experiment(combination: Dict[str, str]) -> None
+
+
+   .. py:method:: _get_insert_query(table_name: str, columns: List[str]) -> str
+
+
+   .. py:method:: _last_insert_id_string() -> str
+      :abstractmethod:
+
+
+
+   .. py:method:: _add_metadata(combination: Dict[str, Any], time: str, status: py_experimenter.experiment_status.ExperimentStatus = ExperimentStatus.CREATED.value) -> Dict[str, Any]
+
+
+   .. py:method:: _check_combination_in_existing_rows(combination, existing_rows) -> bool
+
+
+   .. py:method:: _get_existing_rows(column_names) -> List[str]
+      :abstractmethod:
+
+
+
+   .. py:method:: get_experiment_configuration(random_order: bool) -> Tuple[int, Dict[str, Any]]
+
+
+   .. py:method:: _pull_open_experiment(random_order) -> Tuple[int, List, List]
+      :abstractmethod:
+
+
+
+   .. py:method:: _select_open_experiments_from_db(connection, cursor, random_order: bool) -> Tuple[int, List, List]
+
+
+   .. py:method:: random_order_string()
+      :staticmethod:
+
+
+
+   .. py:method:: _get_pull_experiment_query(order_by: str)
+      :abstractmethod:
+
+
+
+   .. py:method:: _write_to_database(combinations: List[Dict[str, str]]) -> None
+
+
+   .. py:method:: pull_paused_experiment(experiment_id: int) -> Dict[str, Any]
+
+
+   .. py:method:: prepare_write_query(table_name: str, keys) -> str
+
+
+   .. py:method:: update_database(table_name: str, values: Dict[str, Union[str, int, object]], condition: str)
+
+
+   .. py:method:: _prepare_update_query(table_name: str, values: Dict[str, Union[str, int, object]], condition: str) -> str
+
+
+   .. py:method:: reset_experiments(*states: str) -> None
+
+
+   .. py:method:: _pop_experiments_with_status(status: Optional[str] = None) -> Tuple[List[str], List[List]]
+
+
+   .. py:method:: _get_experiments_with_condition(condition: Optional[str] = None) -> Tuple[List[str], List[List]]
+
+
+   .. py:method:: _delete_experiments_with_condition(condition: Optional[str] = None) -> None
+
+
+   .. py:method:: get_structure_from_table(cursor)
+      :abstractmethod:
+
+
+
+   .. py:method:: execute_queries(queries: List[str])
+
+
+   .. py:method:: delete_table() -> None
+
+
+   .. py:method:: get_logtable(logtable_name: str) -> pandas.DataFrame
+
+
+   .. py:method:: get_codecarbon_table() -> pandas.DataFrame
+
+
+   .. py:method:: get_table(table_name: Optional[str] = None) -> pandas.DataFrame
+
+
+.. py:exception:: DatabaseConnectionError
+
+   Bases: :py:obj:`DatabaseError`
+
+
+   Common base class for all non-exit exceptions.
+
+
+.. py:exception:: DatabaseCreationError
+
+   Bases: :py:obj:`DatabaseError`
+
+
+   Common base class for all non-exit exceptions.
+
+
+.. py:exception:: SshTunnelError
+
+   Bases: :py:obj:`DatabaseError`
+
+
+   Common base class for all non-exit exceptions.
 
 
 .. py:class:: DatabaseConnectorMYSQL(database_configuration: py_experimenter.config.DatabaseCfg, use_codecarbon: bool, credential_path: str, logger: logging.Logger)
 
-
    Bases: :py:obj:`py_experimenter.database_connector.DatabaseConnector`
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
 
    .. py:attribute:: _prepared_statement_placeholder
       :value: '%s'
 
-      
+
 
    .. py:method:: get_ssh_tunnel(logger: logging.Logger)
 
@@ -61,10 +304,14 @@ Classes
       :staticmethod:
 
 
+
    .. py:method:: _table_has_correct_structure(cursor, typed_fields: Dict[str, str])
 
 
    .. py:method:: _pull_open_experiment(random_order) -> Tuple[int, List, List]
+
+
+   .. py:method:: _last_insert_id_string() -> str
 
 
    .. py:method:: _get_pull_experiment_query(order_by: str)
@@ -74,10 +321,10 @@ Classes
       :staticmethod:
 
 
+
    .. py:method:: _get_existing_rows(column_names)
 
 
    .. py:method:: get_structure_from_table(cursor)
-
 
 

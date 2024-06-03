@@ -53,17 +53,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">py_experimenter</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.config</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../database_connector/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../database_connector_lite/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector_lite</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../database_connector_mysql/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector_mysql</span></code></a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.exceptions</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../experiment_status/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.experiment_status</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../experimenter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.experimenter</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../result_processor/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.result_processor</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../config/index.html">py_experimenter.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../database_connector/index.html">py_experimenter.database_connector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../database_connector_lite/index.html">py_experimenter.database_connector_lite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../database_connector_mysql/index.html">py_experimenter.database_connector_mysql</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">py_experimenter.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../experiment_status/index.html">py_experimenter.experiment_status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../experimenter/index.html">py_experimenter.experimenter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../result_processor/index.html">py_experimenter.result_processor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utils/index.html">py_experimenter.utils</a></li>
 </ul>
 </li>
 </ul>
@@ -103,8 +103,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.exceptions</span></code></li>
+          <li class="breadcrumb-item"><a href="../index.html">py_experimenter</a></li>
+      <li class="breadcrumb-item active">py_experimenter.exceptions</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/autoapi/py_experimenter/exceptions/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -115,7 +115,77 @@
            <div itemprop="articleBody">
              
   <section id="module-py_experimenter.exceptions">
-<span id="py-experimenter-exceptions"></span><h1><a class="reference internal" href="#module-py_experimenter.exceptions" title="py_experimenter.exceptions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.exceptions</span></code></a><a class="headerlink" href="#module-py_experimenter.exceptions" title="Permalink to this heading"></a></h1>
+<span id="py-experimenter-exceptions"></span><h1>py_experimenter.exceptions<a class="headerlink" href="#module-py_experimenter.exceptions" title="Permalink to this heading"></a></h1>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.exceptions.PyExperimenterError" title="py_experimenter.exceptions.PyExperimenterError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyExperimenterError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.exceptions.ParameterCombinationError" title="py_experimenter.exceptions.ParameterCombinationError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ParameterCombinationError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.exceptions.DatabaseError" title="py_experimenter.exceptions.DatabaseError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatabaseError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.exceptions.DatabaseCreationError" title="py_experimenter.exceptions.DatabaseCreationError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatabaseCreationError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.exceptions.DatabaseConnectionError" title="py_experimenter.exceptions.DatabaseConnectionError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatabaseConnectionError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.exceptions.SshTunnelError" title="py_experimenter.exceptions.SshTunnelError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SshTunnelError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.exceptions.DatabaseQueryError" title="py_experimenter.exceptions.DatabaseQueryError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatabaseQueryError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.exceptions.EmptyFillDatabaseCallError" title="py_experimenter.exceptions.EmptyFillDatabaseCallError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EmptyFillDatabaseCallError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.exceptions.CreatingTableError" title="py_experimenter.exceptions.CreatingTableError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CreatingTableError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.exceptions.InvalidResultFieldError" title="py_experimenter.exceptions.InvalidResultFieldError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InvalidResultFieldError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.exceptions.InvalidLogFieldError" title="py_experimenter.exceptions.InvalidLogFieldError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InvalidLogFieldError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.exceptions.TableHasWrongStructureError" title="py_experimenter.exceptions.TableHasWrongStructureError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableHasWrongStructureError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.exceptions.NoExperimentsLeftException" title="py_experimenter.exceptions.NoExperimentsLeftException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NoExperimentsLeftException</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.exceptions.NoPausedExperimentsException" title="py_experimenter.exceptions.NoPausedExperimentsException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NoPausedExperimentsException</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.exceptions.ConfigError" title="py_experimenter.exceptions.ConfigError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.exceptions.NoConfigFileError" title="py_experimenter.exceptions.NoConfigFileError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NoConfigFileError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.exceptions.InvalidConfigError" title="py_experimenter.exceptions.InvalidConfigError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InvalidConfigError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.exceptions.InvalidValuesInConfiguration" title="py_experimenter.exceptions.InvalidValuesInConfiguration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InvalidValuesInConfiguration</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.exceptions.MissingLogTableError" title="py_experimenter.exceptions.MissingLogTableError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MissingLogTableError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.exceptions.InvalidColumnError" title="py_experimenter.exceptions.InvalidColumnError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InvalidColumnError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.exceptions.InvalidLogtableError" title="py_experimenter.exceptions.InvalidLogtableError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InvalidLogtableError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
 <dl class="py exception">

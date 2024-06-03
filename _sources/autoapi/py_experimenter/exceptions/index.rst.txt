@@ -1,7 +1,35 @@
-:py:mod:`py_experimenter.exceptions`
-====================================
+py_experimenter.exceptions
+==========================
 
 .. py:module:: py_experimenter.exceptions
+
+
+Exceptions
+----------
+
+.. autoapisummary::
+
+   py_experimenter.exceptions.PyExperimenterError
+   py_experimenter.exceptions.ParameterCombinationError
+   py_experimenter.exceptions.DatabaseError
+   py_experimenter.exceptions.DatabaseCreationError
+   py_experimenter.exceptions.DatabaseConnectionError
+   py_experimenter.exceptions.SshTunnelError
+   py_experimenter.exceptions.DatabaseQueryError
+   py_experimenter.exceptions.EmptyFillDatabaseCallError
+   py_experimenter.exceptions.CreatingTableError
+   py_experimenter.exceptions.InvalidResultFieldError
+   py_experimenter.exceptions.InvalidLogFieldError
+   py_experimenter.exceptions.TableHasWrongStructureError
+   py_experimenter.exceptions.NoExperimentsLeftException
+   py_experimenter.exceptions.NoPausedExperimentsException
+   py_experimenter.exceptions.ConfigError
+   py_experimenter.exceptions.NoConfigFileError
+   py_experimenter.exceptions.InvalidConfigError
+   py_experimenter.exceptions.InvalidValuesInConfiguration
+   py_experimenter.exceptions.MissingLogTableError
+   py_experimenter.exceptions.InvalidColumnError
+   py_experimenter.exceptions.InvalidLogtableError
 
 
 Module Contents
@@ -9,168 +37,168 @@ Module Contents
 
 .. py:exception:: PyExperimenterError
 
-
    Bases: :py:obj:`Exception`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: ParameterCombinationError
 
-
    Bases: :py:obj:`PyExperimenterError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: DatabaseError
 
-
    Bases: :py:obj:`PyExperimenterError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: DatabaseCreationError
 
-
    Bases: :py:obj:`DatabaseError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: DatabaseConnectionError
 
-
    Bases: :py:obj:`DatabaseError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: SshTunnelError
 
-
    Bases: :py:obj:`DatabaseError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: DatabaseQueryError
 
-
    Bases: :py:obj:`DatabaseError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: EmptyFillDatabaseCallError
 
-
    Bases: :py:obj:`DatabaseError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: CreatingTableError
 
-
    Bases: :py:obj:`DatabaseError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: InvalidResultFieldError
 
-
    Bases: :py:obj:`DatabaseError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: InvalidLogFieldError
 
-
    Bases: :py:obj:`DatabaseError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: TableHasWrongStructureError
 
-
    Bases: :py:obj:`CreatingTableError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: NoExperimentsLeftException
 
-
    Bases: :py:obj:`PyExperimenterError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: NoPausedExperimentsException
 
-
    Bases: :py:obj:`PyExperimenterError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: ConfigError
 
-
    Bases: :py:obj:`PyExperimenterError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: NoConfigFileError
 
-
    Bases: :py:obj:`ConfigError`, :py:obj:`FileNotFoundError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: InvalidConfigError
 
-
    Bases: :py:obj:`ConfigError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: InvalidValuesInConfiguration
 
-
    Bases: :py:obj:`ConfigError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: MissingLogTableError
 
-
    Bases: :py:obj:`ConfigError`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: InvalidColumnError
 
-
    Bases: :py:obj:`Exception`
+
 
    Common base class for all non-exit exceptions.
 
 
 .. py:exception:: InvalidLogtableError
 
-
    Bases: :py:obj:`Exception`
+
 
    Common base class for all non-exit exceptions.
 

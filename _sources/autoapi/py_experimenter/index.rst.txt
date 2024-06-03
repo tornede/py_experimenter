@@ -1,23 +1,23 @@
-:py:mod:`py_experimenter`
-=========================
+py_experimenter
+===============
 
 .. py:module:: py_experimenter
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   config/index.rst
-   database_connector/index.rst
-   database_connector_lite/index.rst
-   database_connector_mysql/index.rst
-   exceptions/index.rst
-   experiment_status/index.rst
-   experimenter/index.rst
-   result_processor/index.rst
-   utils/index.rst
+   /autoapi/py_experimenter/config/index
+   /autoapi/py_experimenter/database_connector/index
+   /autoapi/py_experimenter/database_connector_lite/index
+   /autoapi/py_experimenter/database_connector_mysql/index
+   /autoapi/py_experimenter/exceptions/index
+   /autoapi/py_experimenter/experiment_status/index
+   /autoapi/py_experimenter/experimenter/index
+   /autoapi/py_experimenter/result_processor/index
+   /autoapi/py_experimenter/utils/index
 
 

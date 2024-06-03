@@ -53,17 +53,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">py_experimenter</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.config</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../database_connector/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../database_connector_lite/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector_lite</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../database_connector_mysql/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.database_connector_mysql</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../exceptions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.exceptions</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../experiment_status/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.experiment_status</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../experimenter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.experimenter</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../result_processor/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.result_processor</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.utils</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">py_experimenter.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../database_connector/index.html">py_experimenter.database_connector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../database_connector_lite/index.html">py_experimenter.database_connector_lite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../database_connector_mysql/index.html">py_experimenter.database_connector_mysql</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../exceptions/index.html">py_experimenter.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../experiment_status/index.html">py_experimenter.experiment_status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../experimenter/index.html">py_experimenter.experimenter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../result_processor/index.html">py_experimenter.result_processor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utils/index.html">py_experimenter.utils</a></li>
 </ul>
 </li>
 </ul>
@@ -103,8 +103,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.config</span></code></li>
+          <li class="breadcrumb-item"><a href="../index.html">py_experimenter</a></li>
+      <li class="breadcrumb-item active">py_experimenter.config</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/autoapi/py_experimenter/config/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -115,11 +115,25 @@
            <div itemprop="articleBody">
              
   <section id="module-py_experimenter.config">
-<span id="py-experimenter-config"></span><h1><a class="reference internal" href="#module-py_experimenter.config" title="py_experimenter.config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">py_experimenter.config</span></code></a><a class="headerlink" href="#module-py_experimenter.config" title="Permalink to this heading"></a></h1>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<span id="py-experimenter-config"></span><h1>py_experimenter.config<a class="headerlink" href="#module-py_experimenter.config" title="Permalink to this heading"></a></h1>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.config.InvalidColumnError" title="py_experimenter.config.InvalidColumnError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InvalidColumnError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.config.InvalidConfigError" title="py_experimenter.config.InvalidConfigError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InvalidConfigError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.config.InvalidLogtableError" title="py_experimenter.config.InvalidLogtableError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InvalidLogtableError</span></code></a></p></td>
+<td><p>Common base class for all non-exit exceptions.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.config.Cfg" title="py_experimenter.config.Cfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cfg</span></code></a></p></td>
@@ -142,6 +156,30 @@
 </tr>
 </tbody>
 </table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="py_experimenter.config.InvalidColumnError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.config.</span></span><span class="sig-name descname"><span class="pre">InvalidColumnError</span></span><a class="headerlink" href="#py_experimenter.config.InvalidColumnError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Common base class for all non-exit exceptions.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="py_experimenter.config.InvalidConfigError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.config.</span></span><span class="sig-name descname"><span class="pre">InvalidConfigError</span></span><a class="headerlink" href="#py_experimenter.config.InvalidConfigError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigError</span></code></p>
+<p>Common base class for all non-exit exceptions.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="py_experimenter.config.InvalidLogtableError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.config.</span></span><span class="sig-name descname"><span class="pre">InvalidLogtableError</span></span><a class="headerlink" href="#py_experimenter.config.InvalidLogtableError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Common base class for all non-exit exceptions.</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="py_experimenter.config.Cfg">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.config.</span></span><span class="sig-name descname"><span class="pre">Cfg</span></span><a class="headerlink" href="#py_experimenter.config.Cfg" title="Permalink to this definition"></a></dt>
@@ -281,7 +319,6 @@ of tables in the <cite>keyfields</cite>, <cite>resultfields</cite>, and <cite>lo
 
 </dd></dl>
 
-</section>
 </section>
 </section>
 
