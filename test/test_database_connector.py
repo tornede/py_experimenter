@@ -6,12 +6,7 @@ import pytest
 from mock import patch
 from omegaconf import OmegaConf
 
-from py_experimenter import (
-    database_connector,
-    database_connector_lite,
-    database_connector_mysql,
-    utils,
-)
+from py_experimenter import database_connector, database_connector_lite, database_connector_mysql, utils
 from py_experimenter.config import DatabaseCfg
 from py_experimenter.database_connector import DatabaseConnector
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
@@ -97,7 +92,7 @@ def test_create_table_if_not_existing(
         (
             os.path.join("test", "test_config_files", "load_config_test_file", "mysql_test_file.yml"),
             [{"value": 1, "exponent": 3}, {"value": 1, "exponent": 4}, {"value": 2, "exponent": 3}, {"value": 2, "exponent": 4}],
-            ["value", "exponent", "status", "creation_date"],
+            ["value", "exponent", "creation_date", "status"],
             [
                 {"value": 1, "exponent": 3, "status": "created"},
                 {"value": 1, "exponent": 4, "status": "created"},
