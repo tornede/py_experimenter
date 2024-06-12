@@ -458,6 +458,19 @@ Module Contents
 
 
 
+   .. py:method:: attach(experiment_function: Callable, experiment_id: int) -> None
+
+      Executes the given `experiment_function` on the allready running experiment.
+      Note that the `experiment_function` signature differs from the `experiment_function` used in the `execute` method!
+
+      :param experiment_function: The function that should be executed..
+      :type own_function: Callable
+      :param experiment_id: The id of the experiment to be executed.
+      :type experiment_id: int
+      :raises ValueError: If the database provider is sqlite.
+
+
+
    .. py:method:: _worker(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], None], random_order: bool) -> None
 
       Worker that repeatedly pulls open experiments from the database table and executes them.

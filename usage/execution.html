@@ -63,6 +63,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#execute-experiments">Execute Experiments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#add-experiment-and-execute">Add Experiment and Execute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attach-to-running-experiment">Attach to Running Experiment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#reset-experiments">Reset Experiments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#obtain-results">Obtain Results</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#codecarbon">CodeCarbon</a></li>
@@ -210,6 +211,49 @@
 </pre></div>
 </div>
 <p>This function may be useful in case of dependencies, where the result of one experiment is needed to configure the next one, or if the experiments are supposed to be configured with software such as <a class="reference external" href="https://hydra.cc/">Hydra</a>.</p>
+</section>
+<section id="attach-to-running-experiment">
+<span id="attach"></span><h2>Attach to Running Experiment<a class="headerlink" href="#attach-to-running-experiment" title="Permalink to this heading"></a></h2>
+<p>For cases of multiprocessing, where the <code class="docutils literal notranslate"><span class="pre">experiment_function</span></code> contains a main job, that runs multiple additional workers in other processes (maybe on a different machine), it is inconvenient to log all information through the main job. Therefore, we allow these workers to also attach to the database and log their information about the same experiment.</p>
+<p>First, a worker experiment function wrapper has to be defined, which handles the parallel execution of something in a different process. The actual worker experiment function is defined inside the wrapper. The worker function is then attached to the experiment and logs its information on its own. In case more arguments are needed within the worker function, they can be passed to the wrapper function as keyword arguments.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">worker_experiment_function_wrapper</span><span class="p">(</span><span class="n">experiment_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">worker_experiment_function</span><span class="p">(</span><span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">):</span>
+        <span class="c1"># Worker Experiment Execution</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">do_something_else</span><span class="p">()</span>
+
+        <span class="n">result_processor</span><span class="o">.</span><span class="n">process_logs</span><span class="p">(</span>
+            <span class="c1"># Some Logs</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">return</span> <span class="n">experimenter</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">worker_experiment_function</span><span class="p">,</span> <span class="n">experiment_id</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">experimenter.attach</span></code> function returns the result of <code class="docutils literal notranslate"><span class="pre">worker_experiment_function</span></code>.</p>
+</div>
+<p>Second, the main experiment function has to be defined calling the above created wrapper, which is provided with the <code class="docutils literal notranslate"><span class="pre">experiment_id</span></code> and started in a different process:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main_experiment_function</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+    <span class="c1"># Main Experiment Execution</span>
+    <span class="n">do_something</span><span class="p">()</span>
+
+    <span class="c1"># Start worker in different process, and provide it with the experiment_id</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">worker_experiment_function_wrapper</span><span class="p">(</span><span class="n">result_processor</span><span class="o">.</span><span class="n">experiment_id</span><span class="p">)</span>
+
+    <span class="c1"># Compute Something</span>
+    <span class="n">do_more</span><span class="p">()</span>
+
+    <span class="n">result_processor</span><span class="o">.</span><span class="n">process_results</span><span class="p">(</span>
+        <span class="c1"># Results</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Afterwards, the main experiment function can be started as usual:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">main_experiment_function</span><span class="p">,</span> <span class="n">max_experiments</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="reset-experiments">
 <span id="id3"></span><h2>Reset Experiments<a class="headerlink" href="#reset-experiments" title="Permalink to this heading"></a></h2>
