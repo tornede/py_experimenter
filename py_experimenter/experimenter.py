@@ -342,6 +342,28 @@ class PyExperimenter:
 
         self._delete_codecarbon_config()
 
+    def attach(self, experiment_function: Callable, experiment_id:int) -> None:
+        """
+        Executes the given `experiment_function` on the allready running experiment.
+        Note that the `experiment_function` signature differs from the `experiment_function` used in the `execute` method!
+
+        :param experiment_function: The function that should be executed..
+        :type own_function: Callable
+        :param experiment_id: The id of the experiment to be executed.
+        :type experiment_id: int
+        :raises ValueError: If the database provider is sqlite.
+        """
+        if self.config.database_configuration.provider == "sqlite":
+            raise ValueError("Attaching is not supported for sqlite databases")
+        if self.use_codecarbon:
+            self.logger.warning(
+                "CodeCarbon is not supported for attached functions. Therefore the emissions are only tracked for the main experiment."
+            )
+
+        result_processor = ResultProcessor(self.config.database_configuration, self.db_connector, experiment_id=experiment_id, logger=self.logger)
+
+        return experiment_function(result_processor)
+
     def _worker(self, experiment_function: Callable[[Dict, Dict, ResultProcessor], None], random_order: bool) -> None:
         """
         Worker that repeatedly pulls open experiments from the database table and executes them.
