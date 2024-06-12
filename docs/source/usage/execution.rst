@@ -132,9 +132,31 @@ This function may be useful in case of dependencies, where the result of one exp
 Attach to Running Experiment
 ----------------------------
 
-For cases of multiprocessing, where the ``experiment_function`` contains a main job, that runs multiple additional workers in other processes (maybe on a different machine), it is inconvenient to log all information through the main job. Therefore we allow these workers to also attach to the database and log their information about the same experiment. 
+For cases of multiprocessing, where the ``experiment_function`` contains a main job, that runs multiple additional workers in other processes (maybe on a different machine), it is inconvenient to log all information through the main job. Therefore, we allow these workers to also attach to the database and log their information about the same experiment. 
 
-This works as follows: Given two epxeriment functions
+First, a worker experiment function wrapper has to be defined, which handles the parallel execution of something in a different process. The actual worker experiment function is defined inside the wrapper. The worker function is then attached to the experiment and logs its information on its own. In case more arguments are needed within the worker function, they can be passed to the wrapper function as keyword arguments.
+
+.. code-block:: python
+
+    def worker_experiment_function_wrapper(experiment_id: int, **kwargs):
+        
+        def worker_experiment_function(result_processor: ResultProcessor):
+            # Worker Experiment Execution
+            result = do_something_else()
+            
+            result_processor.process_logs(
+                # Some Logs 
+            )
+            return result
+
+        return experimenter.attach(worker_experiment_function, experiment_id)
+
+
+.. note::
+
+    The ``experimenter.attach`` function returns the result of ``worker_experiment_function``.
+
+Second, the main experiment function has to be defined calling the above created wrapper, which is provided with the ``experiment_id`` and started in a different process: 
 
 .. code-block:: python
 
@@ -143,37 +165,21 @@ This works as follows: Given two epxeriment functions
         do_something()
 
         # Start worker in different process, and provide it with the experiment_id
-        result = worker(worker_experiment_function)
+        result = worker_experiment_function_wrapper(result_processor.experiment_id)
 
         # Compute Something
-        do_something()
+        do_more()
 
         result_processor.process_results(
             # Results
         )
 
-    def worker_experiment_function(result_processor: ResultProcessor):
-        # Work Work Work
-        result_processor.process_logs(
-            # Some Logs 
-        )
-        return result
-
-we first start the main experiment
+Afterwards, the main experiment function can be started as usual:
 
 .. code-block:: python
     
     experimenter.execute(main_experiment_function, max_experiments=-1)
 
-that in turn starts a new worker process that calls
-
-.. code-block:: python
-
-    return_value = experimenter.attach(worker_experiment_function, experiment_id)
-
-to attach to the already-running experiment. 
-
-Note that the attach function returns the result of worker_experiment_function.
 
 .. _reset_experiments:
 
