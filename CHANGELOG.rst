@@ -11,7 +11,8 @@ Feature
 
 - Added documentation about how to execute PyExperimenter on distributed machines.
 - Improved the usage and documentation of ssh tunnel to be more flexible and user friendly.
-- Add add_experiment_and_execute method to PyExperimenter to add and execute an experiment in one step.
+- Added add_experiment_and_execute method to PyExperimenter to add and execute an experiment in one step.
+- Added functionality to attach multiple processes to the same experiment, all being able to write to the database tables of the same experiment.
 
 Fix
 ---
