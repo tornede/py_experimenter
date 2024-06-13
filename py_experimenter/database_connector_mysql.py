@@ -7,61 +7,67 @@ import sshtunnel
 from omegaconf import OmegaConf
 from pymysql import Error, connect
 
+from py_experimenter.config import DatabaseCfg
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.exceptions import (
-    DatabaseConnectionError,
-    DatabaseCreationError,
-    SshTunnelError,
-)
+from py_experimenter.exceptions import DatabaseConnectionError, DatabaseCreationError, SshTunnelError
 
 
 class DatabaseConnectorMYSQL(DatabaseConnector):
     _prepared_statement_placeholder = "%s"
 
-    def __init__(self, database_configuration: OmegaConf, use_codecarbon: bool, credential_path: str, use_ssh_tunnel: bool, logger: Logger):
+    def __init__(self, database_configuration: DatabaseCfg, use_codecarbon: bool, credential_path: str, logger: Logger):
         self.credential_path = credential_path
-        self.use_ssh_tunnel = use_ssh_tunnel
-        if self.use_ssh_tunnel:
+        if database_configuration.use_ssh_tunnel:
             self.start_ssh_tunnel(logger)
         super().__init__(database_configuration, use_codecarbon, logger)
 
     def get_ssh_tunnel(self, logger: Logger):
-        credentials = OmegaConf.load(self.credential_path)["CREDENTIALS"]["Connection"]
-        if "Ssh" in credentials:
-            parameters = dict(credentials["Ssh"])
-            ssh_address_or_host = parameters["address"]
-            ssh_address_or_host_port = parameters["port"] if "port" in parameters else 22
-            ssh_private_key_password = parameters["ssh_private_key_password"] if "ssh_private_key_password" in parameters else None
-            remote_bind_address = parameters["remote_address"] if "remote_address" in parameters else "127.0.0.1"
-            remote_bind_address_port = parameters["remote_port"] if "remote_port" in parameters else 3306
-            local_bind_address = parameters["local_address"] if "local_address" in parameters else "127.0.0.1"
-            local_bind_address_port = parameters["local_port"] if "local_port" in parameters else 3306
+        try:
+            credentials = OmegaConf.load(self.credential_path)["CREDENTIALS"]["Connection"]
+            if "Ssh" in credentials:
+                parameters = dict(credentials["Ssh"])
+                ssh_address_or_host = parameters["address"]
+                ssh_address_or_host_port = parameters["port"] if "port" in parameters else 22
+                ssh_private_key_password = parameters["ssh_private_key_password"] if "ssh_private_key_password" in parameters else None
+                remote_bind_address = parameters["remote_address"] if "remote_address" in parameters else "127.0.0.1"
+                remote_bind_address_port = parameters["remote_port"] if "remote_port" in parameters else 3306
+                local_bind_address = parameters["local_address"] if "local_address" in parameters else "127.0.0.1"
+                local_bind_address_port = parameters["local_port"] if "local_port" in parameters else 3306
 
-            try:
-                tunnel = sshtunnel.SSHTunnelForwarder(
-                    ssh_address_or_host=(ssh_address_or_host, ssh_address_or_host_port),
-                    ssh_private_key_password=ssh_private_key_password,
-                    remote_bind_address=(remote_bind_address, remote_bind_address_port),
-                    local_bind_address=(local_bind_address, local_bind_address_port),
-                    logger=logger,
-                )
-            except Exception as err:
-                logger.error(err)
-                raise SshTunnelError(err)
-            return tunnel
-        else:
-            return None
+                try:
+                    tunnel = sshtunnel.SSHTunnelForwarder(
+                        ssh_address_or_host=(ssh_address_or_host, ssh_address_or_host_port),
+                        ssh_private_key_password=ssh_private_key_password,
+                        remote_bind_address=(remote_bind_address, remote_bind_address_port),
+                        local_bind_address=(local_bind_address, local_bind_address_port),
+                        logger=logger,
+                    )
+                except Exception as err:
+                    logger.error(err)
+                    raise SshTunnelError(err)
+                return tunnel
+            else:
+                return None
+        except DatabaseConnectionError as err:
+            logger.error(err)
+            raise SshTunnelError("Error when creating SSH tunnel! Check the credentials file.")
 
     def start_ssh_tunnel(self, logger: Logger):
         tunnel = self.get_ssh_tunnel(logger)
         # Tunnels may not be stopepd instantly, so we check if the tunnel is active before starting it
         if tunnel is not None and not tunnel.is_active:
-            tunnel.start()
+            try:
+                tunnel.start()
+            except Exception as e:
+                logger.warning("Failed at creating SSH tunnel. Maybe the tunnel is already active in other process?")
+                logger.warning(e)
 
     def close_ssh_tunnel(self):
+        if not self.database_configuration.use_ssh_tunnel:
+            self.logger.warning("Attempt to close SSH tunnel, but ssh tunnel is not used.")
         tunnel = self.get_ssh_tunnel(self.logger)
         if tunnel is not None:
-            tunnel.stop(force=True)
+            tunnel.stop(force=False)
 
     def _test_connection(self):
         try:
@@ -103,7 +109,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         try:
             credential_config = OmegaConf.load(self.credential_path)
             database_configuration = credential_config["CREDENTIALS"]["Database"]
-            if self.use_ssh_tunnel:
+            if self.database_configuration.use_ssh_tunnel:
                 server_address = credential_config["CREDENTIALS"]["Connection"]["Ssh"]["server"]
             else:
                 server_address = credential_config["CREDENTIALS"]["Connection"]["Standard"]["server"]
@@ -157,6 +163,9 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             self.close_connection(connection)
 
         return experiment_id, description, values
+
+    def _last_insert_id_string(self) -> str:
+        return "LAST_INSERT_ID()"
 
     def _get_pull_experiment_query(self, order_by: str):
         return super()._get_pull_experiment_query(order_by) + " FOR UPDATE;"

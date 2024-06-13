@@ -6,12 +6,7 @@ import pytest
 from mock import patch
 from omegaconf import OmegaConf
 
-from py_experimenter import (
-    database_connector,
-    database_connector_lite,
-    database_connector_mysql,
-    utils,
-)
+from py_experimenter import database_connector, database_connector_lite, database_connector_mysql, utils
 from py_experimenter.config import DatabaseCfg
 from py_experimenter.database_connector import DatabaseConnector
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
@@ -97,7 +92,7 @@ def test_create_table_if_not_existing(
         (
             os.path.join("test", "test_config_files", "load_config_test_file", "mysql_test_file.yml"),
             [{"value": 1, "exponent": 3}, {"value": 1, "exponent": 4}, {"value": 2, "exponent": 3}, {"value": 2, "exponent": 4}],
-            ["value", "exponent", "status", "creation_date"],
+            ["value", "exponent", "creation_date", "status"],
             [
                 {"value": 1, "exponent": 3, "status": "created"},
                 {"value": 1, "exponent": 4, "status": "created"},
@@ -133,7 +128,6 @@ def test_fill_table(
         experiment_configuration,
         False,
         CREDENTIAL_PATH,
-        False,
         logger=logger,
     )
 
@@ -176,7 +170,7 @@ def test_delete_experiments_with_condition(
 
     config = OmegaConf.load(CONFIG_PATH)
     experiment_configuration = DatabaseCfg.extract_config(config, logger)
-    database_connector = DatabaseConnectorMYSQL(experiment_configuration, False, CREDENTIAL_PATH, use_ssh_tunnel=True, logger=logger)
+    database_connector = DatabaseConnectorMYSQL(experiment_configuration, False, CREDENTIAL_PATH, logger=logger)
 
     database_connector._delete_experiments_with_condition(f'WHERE status = "{ExperimentStatus.CREATED.value}"')
 
@@ -222,7 +216,7 @@ def test_get_experiments_with_condition(
 
     config = OmegaConf.load(CONFIG_PATH)
     experiment_configuration = DatabaseCfg.extract_config(config, logger)
-    database_connector = DatabaseConnectorMYSQL(experiment_configuration, False, CREDENTIAL_PATH, False, logger=logger)
+    database_connector = DatabaseConnectorMYSQL(experiment_configuration, False, CREDENTIAL_PATH, logger=logger)
 
     database_connector._get_experiments_with_condition(f'WHERE status = "{ExperimentStatus.CREATED.value}"')
 
@@ -251,7 +245,7 @@ def test_delete_table(
 
     config = OmegaConf.load(CONFIG_PATH)
     experiment_configuration = DatabaseCfg.extract_config(config, logger)
-    database_connector = DatabaseConnectorMYSQL(experiment_configuration, False, CREDENTIAL_PATH, False, logger=logger)
+    database_connector = DatabaseConnectorMYSQL(experiment_configuration, False, CREDENTIAL_PATH, logger=logger)
 
     database_connector.delete_table()
 

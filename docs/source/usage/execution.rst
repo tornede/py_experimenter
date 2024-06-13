@@ -109,6 +109,78 @@ An experiment can be executed easily with the following call:
 - ``max_experiments`` determines how many experiments will be executed by this ``PyExperimenter``. If set to ``-1``, it will execute experiments in a sequential fashion until no more open experiments are available.
 - ``random_order`` determines if the experiments will be executed in a random order. By default, the parameter is set to ``False``, meaning that experiments will be executed ordered by their ``id``.
 
+.. _add_experiment_and_execute:
+
+--------------------------
+Add Experiment and Execute
+--------------------------
+
+Instead of filling the database table with rows and then executing the experiments, it is also possible to add an experiment and execute it directly. This can be done with the following call:
+
+.. code-block:: python
+
+    experimenter.add_experiment_and_execute(
+        keyfields = {'dataset': 'new_data', 'cross_validation_splits': 4, 'seed': 42, 'kernel': 'poly'},
+        experiment_function = run_experiment
+    )
+
+This function may be useful in case of dependencies, where the result of one experiment is needed to configure the next one, or if the experiments are supposed to be configured with software such as `Hydra <hydra_>`_.	 
+
+.. _attach:
+
+----------------------------
+Attach to Running Experiment
+----------------------------
+
+For cases of multiprocessing, where the ``experiment_function`` contains a main job, that runs multiple additional workers in other processes (maybe on a different machine), it is inconvenient to log all information through the main job. Therefore, we allow these workers to also attach to the database and log their information about the same experiment. 
+
+First, a worker experiment function wrapper has to be defined, which handles the parallel execution of something in a different process. The actual worker experiment function is defined inside the wrapper. The worker function is then attached to the experiment and logs its information on its own. In case more arguments are needed within the worker function, they can be passed to the wrapper function as keyword arguments.
+
+.. code-block:: python
+
+    def worker_experiment_function_wrapper(experiment_id: int, **kwargs):
+        
+        def worker_experiment_function(result_processor: ResultProcessor):
+            # Worker Experiment Execution
+            result = do_something_else()
+            
+            result_processor.process_logs(
+                # Some Logs 
+            )
+            return result
+
+        return experimenter.attach(worker_experiment_function, experiment_id)
+
+
+.. note::
+
+    The ``experimenter.attach`` function returns the result of ``worker_experiment_function``.
+
+Second, the main experiment function has to be defined calling the above created wrapper, which is provided with the ``experiment_id`` and started in a different process: 
+
+.. code-block:: python
+
+    def main_experiment_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: Dict):
+        # Main Experiment Execution
+        do_something()
+
+        # Start worker in different process, and provide it with the experiment_id
+        result = worker_experiment_function_wrapper(result_processor.experiment_id)
+
+        # Compute Something
+        do_more()
+
+        result_processor.process_results(
+            # Results
+        )
+
+Afterwards, the main experiment function can be started as usual:
+
+.. code-block:: python
+    
+    experimenter.execute(main_experiment_function, max_experiments=-1)
+
+
 .. _reset_experiments:
 
 -----------------
@@ -215,3 +287,6 @@ If an SSH tunnel was opened during the creation of the ``PyExperimenter``, it ha
 
     experimenter.execute(...)
     experimenter.close_ssh_tunnel()
+
+
+.. _hydra: https://hydra.cc/
