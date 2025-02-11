@@ -150,6 +150,8 @@ output/
 # codecarbon
 .codecarbon.config
 emissions.csv
+powermetrics_log.txt
 
 # development folder
 development/
+
