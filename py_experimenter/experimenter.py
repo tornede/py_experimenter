@@ -96,7 +96,7 @@ class PyExperimenter:
             handler.setFormatter(formatter)
             self.logger.addHandler(handler)
 
-        self.config = PyExperimenterCfg.extract_config(experiment_configuration_file_path, logger=self.logger)
+        self.config = PyExperimenterCfg.extract_config(experiment_configuration_file_path, logger=self.logger, overwritten_table_name=table_name)
 
         self.use_codecarbon = use_codecarbon
 
@@ -109,8 +109,6 @@ class PyExperimenter:
         if use_ssh_tunnel is not None:
             self.config.database_configuration.use_ssh_tunnel = use_ssh_tunnel
 
-        if table_name is not None:
-            self.config.database_configuration.table_name = table_name
         if database_name is not None:
             self.config.database_configuration.database_name = database_name
         self.name = name
