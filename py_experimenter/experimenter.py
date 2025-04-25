@@ -494,16 +494,20 @@ class PyExperimenter:
         """
         self.db_connector.delete_table()
 
-    def get_table(self) -> pd.DataFrame:
+    def get_table(self, condition:Optional[str] = None) -> pd.DataFrame:
         """
         Returns the database table as `Pandas.DataFrame`.
+
+        :param condition: The condition to filter the table in sql syntax. The condition is added as a where clause.
+          If None, the whole table is returned.
+        :type condition: str
 
         :return: The database table as `Pandas.DataFrame`.
         :rtype: pd.DataFrame
         """
         return self.db_connector.get_table()
 
-    def get_logtable(self, logtable_name: str) -> pd.DataFrame:
+    def get_logtable(self, logtable_name: str, condition:Optional[str] = None) -> pd.DataFrame:
         """
         Returns the log table as `Pandas.DataFrame`.
 
@@ -512,7 +516,7 @@ class PyExperimenter:
         :return: The log table as `Pandas.DataFrame`.
         :rtype: pd.DataFrame
         """
-        return self.db_connector.get_logtable(logtable_name)
+        return self.db_connector.get_logtable(logtable_name, condition)
 
     def get_codecarbon_table(self) -> pd.DataFrame:
         """
