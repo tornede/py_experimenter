@@ -1,7 +1,7 @@
 import logging
 from abc import ABC, abstractclassmethod
 from logging import Logger
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import omegaconf
@@ -9,7 +9,10 @@ from attr import dataclass
 from omegaconf import DictConfig, ListConfig, OmegaConf
 
 from py_experimenter import utils
-from py_experimenter.exceptions import InvalidColumnError, InvalidConfigError, InvalidLogtableError
+from py_experimenter.exceptions import (
+    InvalidColumnError,
+    InvalidLogtableError,
+)
 
 
 class Cfg(ABC):
@@ -362,8 +365,10 @@ class PyExperimenterCfg:
         self.codecarbon_configuration = codecarbon_configuration
 
     @staticmethod
-    def extract_config(config_path: str, logger: logging.Logger) -> "PyExperimenterCfg":
+    def extract_config(config_path: str, logger: logging.Logger, overwritten_table_name: Optional[str] = None) -> "PyExperimenterCfg":
         config = omegaconf.OmegaConf.load(config_path)
+        if overwritten_table_name is not None:
+            config["PY_EXPERIMENTER"]["Database"]["table"]["name"] = overwritten_table_name
 
         if "n_jobs" not in config["PY_EXPERIMENTER"]:
             config["PY_EXPERIMENTER"]["n_jobs"] = 1
