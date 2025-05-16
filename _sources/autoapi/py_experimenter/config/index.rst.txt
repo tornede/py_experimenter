@@ -4,16 +4,6 @@ py_experimenter.config
 .. py:module:: py_experimenter.config
 
 
-Exceptions
-----------
-
-.. autoapisummary::
-
-   py_experimenter.config.InvalidColumnError
-   py_experimenter.config.InvalidConfigError
-   py_experimenter.config.InvalidLogtableError
-
-
 Classes
 -------
 
@@ -29,30 +19,6 @@ Classes
 
 Module Contents
 ---------------
-
-.. py:exception:: InvalidColumnError
-
-   Bases: :py:obj:`Exception`
-
-
-   Common base class for all non-exit exceptions.
-
-
-.. py:exception:: InvalidConfigError
-
-   Bases: :py:obj:`ConfigError`
-
-
-   Common base class for all non-exit exceptions.
-
-
-.. py:exception:: InvalidLogtableError
-
-   Bases: :py:obj:`Exception`
-
-
-   Common base class for all non-exit exceptions.
-
 
 .. py:class:: Cfg
 
@@ -100,6 +66,33 @@ Module Contents
    of tables in the `keyfields`, `resultfields`, and `logtables` attributes.
 
 
+   .. py:attribute:: provider
+
+
+   .. py:attribute:: use_ssh_tunnel
+
+
+   .. py:attribute:: database_name
+
+
+   .. py:attribute:: table_name
+
+
+   .. py:attribute:: result_timestamps
+
+
+   .. py:attribute:: keyfields
+
+
+   .. py:attribute:: resultfields
+
+
+   .. py:attribute:: logtables
+
+
+   .. py:attribute:: logger
+
+
    .. py:method:: extract_config(config: omegaconf.OmegaConf, logger: logging.Logger) -> Tuple[DatabaseCfg, List[str]]
       :staticmethod:
 
@@ -145,6 +138,12 @@ Module Contents
    Class for custom values given to every experiment.
 
 
+   .. py:attribute:: custom_values
+
+
+   .. py:attribute:: logger
+
+
    .. py:method:: extract_config(config: omegaconf.OmegaConf, logger: logging.Logger) -> CustomCfg
       :staticmethod:
 
@@ -167,6 +166,12 @@ Module Contents
    Class for the configuration of the CodeCarbon API.
 
 
+   .. py:attribute:: config
+
+
+   .. py:attribute:: logger
+
+
    .. py:method:: extract_config(config: omegaconf.OmegaConf, logger: logging.Logger) -> CodeCarbonCfg
       :staticmethod:
 
@@ -186,7 +191,22 @@ Module Contents
    Configuration of a PyExperimenter object. Contains the configuration of the database, custom values, and the CodeCarbon API.
 
 
-   .. py:method:: extract_config(config_path: str, logger: logging.Logger) -> PyExperimenterCfg
+   .. py:attribute:: logger
+
+
+   .. py:attribute:: n_jobs
+
+
+   .. py:attribute:: database_configuration
+
+
+   .. py:attribute:: custom_configuration
+
+
+   .. py:attribute:: codecarbon_configuration
+
+
+   .. py:method:: extract_config(config_path: str, logger: logging.Logger, overwritten_table_name: Optional[str] = None) -> PyExperimenterCfg
       :staticmethod:
 
 

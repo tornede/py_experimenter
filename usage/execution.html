@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
@@ -5,22 +7,18 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Executing PyExperimenter &mdash; PyExperimenter 1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=359c27e9"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=359c27e9"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -122,7 +120,7 @@
   <section id="executing-pyexperimenter">
 <span id="execution"></span><h1>Executing PyExperimenter<a class="headerlink" href="#executing-pyexperimenter" title="Permalink to this heading"></a></h1>
 <p>The actual execution of <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> only needs a few lines of code. Please make sure that you have created the <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file"><span class="std std-ref">experiment configuration file</span></a> and defined the <a class="reference internal" href="experiment_function.html#experiment-function"><span class="std std-ref">experiment function</span></a> beforehand.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">py_experimenter.experimenter</span> <span class="kn">import</span> <span class="n">PyExperimenter</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">py_experimenter.experimenter</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyExperimenter</span>
 
 <span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">()</span>
 <span class="n">experimenter</span><span class="o">.</span><span class="n">fill_table_from_config</span><span class="p">()</span>
@@ -216,9 +214,9 @@
 <span id="attach"></span><h2>Attach to Running Experiment<a class="headerlink" href="#attach-to-running-experiment" title="Permalink to this heading"></a></h2>
 <p>For cases of multiprocessing, where the <code class="docutils literal notranslate"><span class="pre">experiment_function</span></code> contains a main job, that runs multiple additional workers in other processes (maybe on a different machine), it is inconvenient to log all information through the main job. Therefore, we allow these workers to also attach to the database and log their information about the same experiment.</p>
 <p>First, a worker experiment function wrapper has to be defined, which handles the parallel execution of something in a different process. The actual worker experiment function is defined inside the wrapper. The worker function is then attached to the experiment and logs its information on its own. In case more arguments are needed within the worker function, they can be passed to the wrapper function as keyword arguments.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">worker_experiment_function_wrapper</span><span class="p">(</span><span class="n">experiment_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">worker_experiment_function_wrapper</span><span class="p">(</span><span class="n">experiment_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">worker_experiment_function</span><span class="p">(</span><span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">worker_experiment_function</span><span class="p">(</span><span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">):</span>
         <span class="c1"># Worker Experiment Execution</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">do_something_else</span><span class="p">()</span>
 
@@ -235,7 +233,7 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">experimenter.attach</span></code> function returns the result of <code class="docutils literal notranslate"><span class="pre">worker_experiment_function</span></code>.</p>
 </div>
 <p>Second, the main experiment function has to be defined calling the above created wrapper, which is provided with the <code class="docutils literal notranslate"><span class="pre">experiment_id</span></code> and started in a different process:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main_experiment_function</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">main_experiment_function</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
     <span class="c1"># Main Experiment Execution</span>
     <span class="n">do_something</span><span class="p">()</span>
 
@@ -290,7 +288,7 @@
 <span id="id5"></span><h2>Pausing and Unpausing Experiments<a class="headerlink" href="#pausing-and-unpausing-experiments" title="Permalink to this heading"></a></h2>
 <p>For convenience, we support pausing and unpausing experiments. This means that you can use one <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> to start an experiment, which will be paused after certain operations. Therefore, it can be resumed later on. Afterwards, depending on the parametrization of <code class="docutils literal notranslate"><span class="pre">execute()</span></code> of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> instance (see <a class="reference internal" href="#execute-experiments"><span class="std std-ref">in Execute Experiments</span></a>), the experimenter terminates or another experiment will be started.</p>
 <p>To pause an experiment, the experiment function has to return the state <code class="docutils literal notranslate"><span class="pre">ExperimentStatus.PAUSED</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_experiment_until_pause</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_experiment_until_pause</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
     <span class="c1"># do something</span>
 
     <span class="k">if</span> <span class="n">some_reason_to_pause</span><span class="p">:</span>
@@ -307,7 +305,7 @@
 </pre></div>
 </div>
 <p>At a later point in time, the experiment can be unpaused and continued. This can be done by calling <code class="docutils literal notranslate"><span class="pre">unpause_experiment()</span></code> on <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> instance given the specific <code class="docutils literal notranslate"><span class="pre">experiment_id</span></code> of the experiment to continue, together with a separate experiment function, which only contains experiment code to be executed after the pause. Note that only a single <code class="docutils literal notranslate"><span class="pre">experiment_id</span></code> can be executed at the same time, i.e. there is no parallelization of unpausing multiple <code class="docutils literal notranslate"><span class="pre">experiment_id</span></code> supported.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_experiment_after_pause</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_experiment_after_pause</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
     <span class="c1"># do something</span>
     <span class="k">return</span> <span class="n">ExperimentStatus</span><span class="o">.</span><span class="n">DONE</span>
 

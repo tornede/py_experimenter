@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
@@ -5,22 +7,18 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Distributed Execution &mdash; PyExperimenter 1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=359c27e9"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=359c27e9"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -129,7 +127,7 @@
 <section id="database-handling">
 <h3>Database Handling<a class="headerlink" href="#database-handling" title="Permalink to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">database</span> <span class="pre">handler</span></code> process creates/resets the experiments and stores them in the database once in advance.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">py_experimenter.experimenter</span> <span class="kn">import</span> <span class="n">PyExperimenter</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">py_experimenter.experimenter</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyExperimenter</span>
 
 <span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">(</span>
     <span class="n">experiment_configuration_file_path</span> <span class="o">=</span> <span class="s2">&quot;path/to/file&quot;</span><span class="p">,</span>
@@ -142,7 +140,7 @@
 <section id="experiment-execution">
 <h3>Experiment Execution<a class="headerlink" href="#experiment-execution" title="Permalink to this heading"></a></h3>
 <p>Multiple <code class="docutils literal notranslate"><span class="pre">experiment</span> <span class="pre">executer</span></code> processes execute the experiments in parallel on different machines, all using the same code. In a typical HPC context, each job starts a single <code class="docutils literal notranslate"><span class="pre">experiment</span> <span class="pre">executer</span></code> process on a different node.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">py_experimenter.experimenter</span> <span class="kn">import</span> <span class="n">PyExperimenter</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">py_experimenter.experimenter</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyExperimenter</span>
 
 <span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">experiment_function</span><span class="p">,</span> <span class="n">max_experiments</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
@@ -160,12 +158,12 @@
 </pre></div>
 </div>
 <p>and then add the configured experiments experiments in the worker job, followed by an immediate execution.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_experiment_function</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_experiment_function</span><span class="p">(</span><span class="n">keyfields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result_processor</span><span class="p">:</span> <span class="n">ResultProcessor</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
     <span class="o">...</span>
 
 <span class="o">...</span>
 <span class="nd">@hydra</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">config_path</span><span class="o">=</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="n">config_name</span><span class="o">=</span><span class="s2">&quot;hydra_configname&quot;</span><span class="p">,</span> <span class="n">version_base</span><span class="o">=</span><span class="s2">&quot;1.1&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">experiment_wrapepr</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Configuration</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">experiment_wrapepr</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Configuration</span><span class="p">):</span>
 
     <span class="o">...</span>
     <span class="n">experimenter</span> <span class="o">=</span> <span class="n">PyExperimenter</span><span class="p">(</span>

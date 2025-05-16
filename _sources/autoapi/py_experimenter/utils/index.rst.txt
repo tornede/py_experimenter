@@ -4,16 +4,6 @@ py_experimenter.utils
 .. py:module:: py_experimenter.utils
 
 
-Exceptions
-----------
-
-.. autoapisummary::
-
-   py_experimenter.utils.ConfigError
-   py_experimenter.utils.NoConfigFileError
-   py_experimenter.utils.ParameterCombinationError
-
-
 Functions
 ---------
 
@@ -28,30 +18,6 @@ Functions
 
 Module Contents
 ---------------
-
-.. py:exception:: ConfigError
-
-   Bases: :py:obj:`PyExperimenterError`
-
-
-   Common base class for all non-exit exceptions.
-
-
-.. py:exception:: NoConfigFileError
-
-   Bases: :py:obj:`ConfigError`, :py:obj:`FileNotFoundError`
-
-
-   Common base class for all non-exit exceptions.
-
-
-.. py:exception:: ParameterCombinationError
-
-   Bases: :py:obj:`PyExperimenterError`
-
-
-   Common base class for all non-exit exceptions.
-
 
 .. py:function:: load_credential_config(path)
 

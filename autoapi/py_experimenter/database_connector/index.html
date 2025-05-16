@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
@@ -5,22 +7,18 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>py_experimenter.database_connector &mdash; PyExperimenter 1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=359c27e9"></script>
-        <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=359c27e9"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -116,45 +114,11 @@
              
   <section id="module-py_experimenter.database_connector">
 <span id="py-experimenter-database-connector"></span><h1>py_experimenter.database_connector<a class="headerlink" href="#module-py_experimenter.database_connector" title="Permalink to this heading"></a></h1>
-<section id="exceptions">
-<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this heading"></a></h2>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.database_connector.CreatingTableError" title="py_experimenter.database_connector.CreatingTableError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CreatingTableError</span></code></a></p></td>
-<td><p>Common base class for all non-exit exceptions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.database_connector.DatabaseConnectionError" title="py_experimenter.database_connector.DatabaseConnectionError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatabaseConnectionError</span></code></a></p></td>
-<td><p>Common base class for all non-exit exceptions.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.database_connector.EmptyFillDatabaseCallError" title="py_experimenter.database_connector.EmptyFillDatabaseCallError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EmptyFillDatabaseCallError</span></code></a></p></td>
-<td><p>Common base class for all non-exit exceptions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.database_connector.NoExperimentsLeftException" title="py_experimenter.database_connector.NoExperimentsLeftException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NoExperimentsLeftException</span></code></a></p></td>
-<td><p>Common base class for all non-exit exceptions.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.database_connector.NoPausedExperimentsException" title="py_experimenter.database_connector.NoPausedExperimentsException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NoPausedExperimentsException</span></code></a></p></td>
-<td><p>Common base class for all non-exit exceptions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.database_connector.TableHasWrongStructureError" title="py_experimenter.database_connector.TableHasWrongStructureError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TableHasWrongStructureError</span></code></a></p></td>
-<td><p>Common base class for all non-exit exceptions.</p></td>
-</tr>
-</tbody>
-</table>
-</section>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.database_connector.DatabaseCfg" title="py_experimenter.database_connector.DatabaseCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatabaseCfg</span></code></a></p></td>
-<td><p>Class for the configuration of the database connection. In addition to <cite>provider</cite>, <cite>database_name</cite>, and <cite>table_name</cite>, the class also defined the structure</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.database_connector.Keyfield" title="py_experimenter.database_connector.Keyfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Keyfield</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.database_connector.ExperimentStatus" title="py_experimenter.database_connector.ExperimentStatus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExperimentStatus</span></code></a></p></td>
-<td><p>Generic enumeration.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.database_connector.DatabaseConnector" title="py_experimenter.database_connector.DatabaseConnector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatabaseConnector</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.database_connector.DatabaseConnector" title="py_experimenter.database_connector.DatabaseConnector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatabaseConnector</span></code></a></p></td>
 <td><p>Helper class that provides a standard way to create an ABC using</p></td>
 </tr>
 </tbody>
@@ -163,156 +127,26 @@
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseCfg">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">DatabaseCfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ssh_tunnel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_timestamps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyfields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#py_experimenter.database_connector.Keyfield" title="py_experimenter.database_connector.Keyfield"><span class="pre">Keyfield</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resultfields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logtables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseCfg" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Cfg</span></code></p>
-<p>Class for the configuration of the database connection. In addition to <cite>provider</cite>, <cite>database_name</cite>, and <cite>table_name</cite>, the class also defined the structure
-of tables in the <cite>keyfields</cite>, <cite>resultfields</cite>, and <cite>logtables</cite> attributes.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseCfg.extract_config">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extract_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.OmegaConf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#py_experimenter.database_connector.DatabaseCfg" title="py_experimenter.database_connector.DatabaseCfg"><span class="pre">DatabaseCfg</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseCfg.extract_config" title="Permalink to this definition"></a></dt>
-<dd><p>Abstract method for extracting the configuration from a given OmegaConf object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseCfg._extract_keyfields">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_extract_keyfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyfields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.DictConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#py_experimenter.database_connector.Keyfield" title="py_experimenter.database_connector.Keyfield"><span class="pre">Keyfield</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseCfg._extract_keyfields" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseCfg._extract_value_range">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_extract_value_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyfield_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyfield_content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.DictConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseCfg._extract_value_range" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseCfg._extract_resultfields">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_extract_resultfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.OmegaConf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseCfg._extract_resultfields" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseCfg._extract_logtables">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_extract_logtables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">omegaconf.OmegaConf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseCfg._extract_logtables" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseCfg.get_experiment_configuration">
-<span class="sig-name descname"><span class="pre">get_experiment_configuration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseCfg.get_experiment_configuration" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseCfg.valid">
-<span class="sig-name descname"><span class="pre">valid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseCfg.valid" title="Permalink to this definition"></a></dt>
-<dd><p>Abstract method for checking the validity of the configuration.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.Keyfield">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">Keyfield</span></span><a class="headerlink" href="#py_experimenter.database_connector.Keyfield" title="Permalink to this definition"></a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.Keyfield.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#py_experimenter.database_connector.Keyfield.name" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.Keyfield.dtype">
-<span class="sig-name descname"><span class="pre">dtype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#py_experimenter.database_connector.Keyfield.dtype" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.Keyfield.values">
-<span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#py_experimenter.database_connector.Keyfield.values" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.CreatingTableError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">CreatingTableError</span></span><a class="headerlink" href="#py_experimenter.database_connector.CreatingTableError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">DatabaseError</span></code></p>
-<p>Common base class for all non-exit exceptions.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnectionError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">DatabaseConnectionError</span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnectionError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">DatabaseError</span></code></p>
-<p>Common base class for all non-exit exceptions.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.EmptyFillDatabaseCallError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">EmptyFillDatabaseCallError</span></span><a class="headerlink" href="#py_experimenter.database_connector.EmptyFillDatabaseCallError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">DatabaseError</span></code></p>
-<p>Common base class for all non-exit exceptions.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.NoExperimentsLeftException">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">NoExperimentsLeftException</span></span><a class="headerlink" href="#py_experimenter.database_connector.NoExperimentsLeftException" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PyExperimenterError</span></code></p>
-<p>Common base class for all non-exit exceptions.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.NoPausedExperimentsException">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">NoPausedExperimentsException</span></span><a class="headerlink" href="#py_experimenter.database_connector.NoPausedExperimentsException" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PyExperimenterError</span></code></p>
-<p>Common base class for all non-exit exceptions.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.TableHasWrongStructureError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">TableHasWrongStructureError</span></span><a class="headerlink" href="#py_experimenter.database_connector.TableHasWrongStructureError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#py_experimenter.database_connector.CreatingTableError" title="py_experimenter.database_connector.CreatingTableError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CreatingTableError</span></code></a></p>
-<p>Common base class for all non-exit exceptions.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.ExperimentStatus">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">ExperimentStatus</span></span><a class="headerlink" href="#py_experimenter.database_connector.ExperimentStatus" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
-<p>Generic enumeration.</p>
-<p>Derive from this class to define new enumerations.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.ExperimentStatus.CREATED">
-<span class="sig-name descname"><span class="pre">CREATED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'created'</span></em><a class="headerlink" href="#py_experimenter.database_connector.ExperimentStatus.CREATED" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.ExperimentStatus.RUNNING">
-<span class="sig-name descname"><span class="pre">RUNNING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'running'</span></em><a class="headerlink" href="#py_experimenter.database_connector.ExperimentStatus.RUNNING" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.ExperimentStatus.DONE">
-<span class="sig-name descname"><span class="pre">DONE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'done'</span></em><a class="headerlink" href="#py_experimenter.database_connector.ExperimentStatus.DONE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.ExperimentStatus.ERROR">
-<span class="sig-name descname"><span class="pre">ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'error'</span></em><a class="headerlink" href="#py_experimenter.database_connector.ExperimentStatus.ERROR" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.ExperimentStatus.ALL">
-<span class="sig-name descname"><span class="pre">ALL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'all'</span></em><a class="headerlink" href="#py_experimenter.database_connector.ExperimentStatus.ALL" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="py_experimenter.database_connector.ExperimentStatus.PAUSED">
-<span class="sig-name descname"><span class="pre">PAUSED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'paused'</span></em><a class="headerlink" href="#py_experimenter.database_connector.ExperimentStatus.PAUSED" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">DatabaseConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database_configuration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../config/index.html#py_experimenter.config.DatabaseCfg" title="py_experimenter.config.DatabaseCfg"><span class="pre">py_experimenter.config.DatabaseCfg</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_codecarbon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Helper class that provides a standard way to create an ABC using
 inheritance.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector.logger" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector.database_configuration">
+<span class="sig-name descname"><span class="pre">database_configuration</span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector.database_configuration" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector.use_codecarbon">
+<span class="sig-name descname"><span class="pre">use_codecarbon</span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector.use_codecarbon" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector._test_connection">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_test_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector._test_connection" title="Permalink to this definition"></a></dt>
@@ -510,7 +344,7 @@ inheritance.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector.get_logtable">
-<span class="sig-name descname"><span class="pre">get_logtable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logtable_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector.get_logtable" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_logtable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logtable_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Optional[str]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector.get_logtable" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -520,7 +354,7 @@ inheritance.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector.get_table">
-<span class="sig-name descname"><span class="pre">get_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector.get_table" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">condition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector.get_table" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>

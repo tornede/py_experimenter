@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
@@ -5,25 +7,21 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Example: Conditional Parameter Grids &mdash; PyExperimenter 1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
-      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=359c27e9"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=359c27e9"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -287,8 +285,12 @@ experimenter = PyExperimenter(experiment_configuration_file_path=experiment_conf
 </section>
 <section id="Fill-Table">
 <h3>Fill Table<a class="headerlink" href="#Fill-Table" title="Permalink to this heading"></a></h3>
-<p>The table is filled programmatically using the <code class="docutils literal notranslate"><span class="pre">fill_table_from_combination()</span></code> method. We first generate the fixed parameter combinations for each kernel of the SVM in the first three lines. * For the <code class="docutils literal notranslate"><span class="pre">rbf</span></code> kernel, we need to set values for the <code class="docutils literal notranslate"><span class="pre">gamma</span></code> parameter. The degree and <code class="docutils literal notranslate"><span class="pre">coef0</span></code> parameter are not present in this kernel, so we set these to <code class="docutils literal notranslate"><span class="pre">'nan'</span></code>. * For the <code class="docutils literal notranslate"><span class="pre">poly</span></code> kernel, we need to set the <code class="docutils literal notranslate"><span class="pre">gamma</span></code>, the degree as well as the <code class="docutils literal notranslate"><span class="pre">coef0</span></code> parameter. * For the <code class="docutils literal notranslate"><span class="pre">linear</span></code>
-kernel, we do not need to set any parameters, so all of them are set to <code class="docutils literal notranslate"><span class="pre">'nan'</span></code>.</p>
+<p>The table is filled programmatically using the <code class="docutils literal notranslate"><span class="pre">fill_table_from_combination()</span></code> method. We first generate the fixed parameter combinations for each kernel of the SVM in the first three lines.</p>
+<ul class="simple">
+<li><p>For the <code class="docutils literal notranslate"><span class="pre">rbf</span></code> kernel, we need to set values for the <code class="docutils literal notranslate"><span class="pre">gamma</span></code> parameter. The degree and <code class="docutils literal notranslate"><span class="pre">coef0</span></code> parameter are not present in this kernel, so we set these to <code class="docutils literal notranslate"><span class="pre">'nan'</span></code>.</p></li>
+<li><p>For the <code class="docutils literal notranslate"><span class="pre">poly</span></code> kernel, we need to set the <code class="docutils literal notranslate"><span class="pre">gamma</span></code>, the degree as well as the <code class="docutils literal notranslate"><span class="pre">coef0</span></code> parameter.</p></li>
+<li><p>For the <code class="docutils literal notranslate"><span class="pre">linear</span></code> kernel, we do not need to set any parameters, so all of them are set to <code class="docutils literal notranslate"><span class="pre">'nan'</span></code>.</p></li>
+</ul>
 <p>Afterwards, we combine these with the seed, the dataset and the cross_validation_splits parameters, which are present for all experiment runs. Thus, these are not set unconditionally.</p>
 <p>Note that the table can easily be obtained as <code class="docutils literal notranslate"><span class="pre">pandas.Dataframe</span></code> via <code class="docutils literal notranslate"><span class="pre">experimenter.get_table()</span></code>.</p>
 <div class="nbinput docutils container">
