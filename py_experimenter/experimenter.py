@@ -96,7 +96,7 @@ class PyExperimenter:
             handler.setFormatter(formatter)
             self.logger.addHandler(handler)
 
-        self.config = PyExperimenterCfg.extract_config(experiment_configuration_file_path, logger=self.logger)
+        self.config = PyExperimenterCfg.extract_config(experiment_configuration_file_path, logger=self.logger, overwritten_table_name=table_name)
 
         self.use_codecarbon = use_codecarbon
 
@@ -109,8 +109,6 @@ class PyExperimenter:
         if use_ssh_tunnel is not None:
             self.config.database_configuration.use_ssh_tunnel = use_ssh_tunnel
 
-        if table_name is not None:
-            self.config.database_configuration.table_name = table_name
         if database_name is not None:
             self.config.database_configuration.database_name = database_name
         self.name = name
@@ -494,16 +492,20 @@ class PyExperimenter:
         """
         self.db_connector.delete_table()
 
-    def get_table(self) -> pd.DataFrame:
+    def get_table(self, condition:Optional[str] = None) -> pd.DataFrame:
         """
         Returns the database table as `Pandas.DataFrame`.
+
+        :param condition: The condition to filter the table in sql syntax. The condition is added as a where clause.
+          If None, the whole table is returned.
+        :type condition: str
 
         :return: The database table as `Pandas.DataFrame`.
         :rtype: pd.DataFrame
         """
         return self.db_connector.get_table()
 
-    def get_logtable(self, logtable_name: str) -> pd.DataFrame:
+    def get_logtable(self, logtable_name: str, condition:Optional[str] = None) -> pd.DataFrame:
         """
         Returns the log table as `Pandas.DataFrame`.
 
@@ -512,7 +514,7 @@ class PyExperimenter:
         :return: The log table as `Pandas.DataFrame`.
         :rtype: pd.DataFrame
         """
-        return self.db_connector.get_logtable(logtable_name)
+        return self.db_connector.get_logtable(logtable_name, condition)
 
     def get_codecarbon_table(self) -> pd.DataFrame:
         """

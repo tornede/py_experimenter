@@ -390,15 +390,17 @@ class DatabaseConnector(abc.ABC):
         self.commit(connection)
         self.close_connection(connection)
 
-    def get_logtable(self, logtable_name: str) -> pd.DataFrame:
-        return self.get_table(f"{self.database_configuration.table_name}__{logtable_name}")
+    def get_logtable(self, logtable_name: str, condition = Optional[str]) -> pd.DataFrame:
+        return self.get_table(f"{self.database_configuration.table_name}__{logtable_name}", condition)
 
     def get_codecarbon_table(self) -> pd.DataFrame:
         return self.get_table(f"{self.database_configuration.table_name}_codecarbon")
 
-    def get_table(self, table_name: Optional[str] = None) -> pd.DataFrame:
+    def get_table(self, table_name: Optional[str] = None, condition:Optional[str] = None) -> pd.DataFrame:
         connection = self.connect()
         query = f"SELECT * FROM {self.database_configuration.table_name}" if table_name is None else f"SELECT * FROM {table_name}"
+        if condition:
+            query += f" WHERE {condition}"
         # suppress warning for pandas
         import warnings
 
