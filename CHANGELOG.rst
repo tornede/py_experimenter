@@ -8,6 +8,7 @@ Fix
 ===
 
 - Fix bug, where the logtable_name was not overwritten by `table_name` updates in the `PyExperimenter` class.
+- Allow condition for experimenter.get_table() and experimenter.get_logtable()
 
 v1.4.2 (12.06.2024)
 ===================
