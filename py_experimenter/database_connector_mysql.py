@@ -117,20 +117,22 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             connection_configuration = credential_config["CREDENTIALS"]["Connection"]
             if self.database_configuration.use_ssh_tunnel:
                 server_address = connection_configuration["Ssh"]["server"]
+                ssl_params = None
+
+                
             else:
                 server_address = connection_configuration["Standard"]["server"]
-            
-            if "use_ssl" in connection_configuration["Standard"]:
-                if connection_configuration["Standard"]["use_ssl"]:
-                    ssl_params = {
-                        "ca": connection_configuration["Standard"]["ssl_params"]["ca"],
-                        "cert": connection_configuration["Standard"]["ssl_params"]["cert"],
-                        "key": connection_configuration["Standard"]["ssl_params"]["key"],
-                    }
+                if "use_ssl" in connection_configuration["Standard"]:
+                    if connection_configuration["Standard"]["use_ssl"]:
+                        ssl_params = {
+                            "ca": connection_configuration["Standard"]["ssl_params"]["ca"],
+                            "cert": connection_configuration["Standard"]["ssl_params"]["cert"],
+                            "key": connection_configuration["Standard"]["ssl_params"]["key"],
+                        }
+                    else:
+                        ssl_params = None
                 else:
                     ssl_params = None
-            else:
-                ssl_params = None
 
             credentials = {
                 "host": server_address,
