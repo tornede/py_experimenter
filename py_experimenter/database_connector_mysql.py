@@ -124,11 +124,10 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
                 server_address = connection_configuration["Standard"]["server"]
                 if "use_ssl" in connection_configuration["Standard"]:
                     if connection_configuration["Standard"]["use_ssl"]:
-                        ssl_params = {
-                            "ca": connection_configuration["Standard"]["ssl_params"]["ca"],
-                            "cert": connection_configuration["Standard"]["ssl_params"]["cert"],
-                            "key": connection_configuration["Standard"]["ssl_params"]["key"],
-                        }
+                        ssl_params = dict()
+                        ssl_params["ca"] = connection_configuration["Standard"]["ssl_params"]["ca"] if "ca" in connection_configuration["Standard"]["ssl_params"] else None
+                        ssl_params["cert"] = connection_configuration["Standard"]["ssl_params"]["cert"] if "cert" in connection_configuration["Standard"]["ssl_params"] else None
+                        ssl_params["key"] = connection_configuration["Standard"]["ssl_params"]["key"] if "key" in connection_configuration["Standard"]["ssl_params"] else None
                     else:
                         ssl_params = None
                 else:
