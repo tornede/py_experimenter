@@ -59,7 +59,7 @@ Module Contents
    .. py:method:: _start_transaction(connection, readonly=False)
 
 
-   .. py:method:: _table_exists(cursor, table_name: str = None) -> bool
+   .. py:method:: _table_exists(cursor, table_name: Optional[str] = None) -> bool
 
 
    .. py:method:: get_autoincrement()
