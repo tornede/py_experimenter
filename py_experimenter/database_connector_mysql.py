@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import sshtunnel
@@ -9,7 +9,11 @@ from pymysql import Error, connect
 
 from py_experimenter.config import DatabaseCfg
 from py_experimenter.database_connector import DatabaseConnector
-from py_experimenter.exceptions import DatabaseConnectionError, DatabaseCreationError, SshTunnelError
+from py_experimenter.exceptions import (
+    DatabaseConnectionError,
+    DatabaseCreationError,
+    SshTunnelError,
+)
 
 
 class DatabaseConnectorMYSQL(DatabaseConnector):
@@ -23,7 +27,8 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
     def get_ssh_tunnel(self, logger: Logger):
         try:
-            credentials = OmegaConf.load(self.credential_path)["CREDENTIALS"]["Connection"]
+            credential_config = dict(OmegaConf.load(self.credential_path))
+            credentials = credential_config["CREDENTIALS"]["Connection"]
             if "Ssh" in credentials:
                 parameters = dict(credentials["Ssh"])
                 ssh_address_or_host = parameters["address"]
@@ -107,12 +112,30 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
     def _get_database_credentials(self):
         try:
-            credential_config = OmegaConf.load(self.credential_path)
+            credential_config = dict(OmegaConf.load(self.credential_path))
             database_configuration = credential_config["CREDENTIALS"]["Database"]
+            connection_configuration = credential_config["CREDENTIALS"]["Connection"]
             if self.database_configuration.use_ssh_tunnel:
-                server_address = credential_config["CREDENTIALS"]["Connection"]["Ssh"]["server"]
+                server_address = connection_configuration["Ssh"]["server"]
+                ssl_params = None
+
+                
             else:
-                server_address = credential_config["CREDENTIALS"]["Connection"]["Standard"]["server"]
+                server_address = connection_configuration["Standard"]["server"]
+                if "use_ssl" in connection_configuration["Standard"]:
+                    if connection_configuration["Standard"]["use_ssl"]:
+                        ssl_params = dict()
+                        if "ca" in connection_configuration["Standard"]["ssl_params"]:
+                            ssl_params["ca"] = connection_configuration["Standard"]["ssl_params"]["ca"]
+                        if "cert" in connection_configuration["Standard"]["ssl_params"]: 
+                            ssl_params["cert"] = connection_configuration["Standard"]["ssl_params"]["cert"]
+                        if "key" in connection_configuration["Standard"]["ssl_params"]:
+                            ssl_params["key"] = connection_configuration["Standard"]["ssl_params"]["key"]
+                    else:
+                        ssl_params = None
+                else:
+                    ssl_params = None
+
             credentials = {
                 "host": server_address,
                 "user": database_configuration["user"],
@@ -122,6 +145,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             return {
                 **credentials,
                 "database": self.database_configuration.database_name,
+                "ssl": ssl_params,
             }
         except Exception as err:
             logging.error(err)
@@ -131,7 +155,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
         if not readonly:
             connection.begin()
 
-    def _table_exists(self, cursor, table_name: str = None) -> bool:
+    def _table_exists(self, cursor, table_name: Optional[str] = None) -> bool:
         table_name = table_name if table_name is not None else self.database_configuration.table_name
         self.execute(cursor, f"SHOW TABLES LIKE '{table_name}'")
         return self.fetchall(cursor)

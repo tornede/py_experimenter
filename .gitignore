@@ -155,3 +155,7 @@ powermetrics_log.txt
 # development folder
 development/
 
+# MTLS certificates
+config/certificates/ca.crt
+config/certificates/user_cert.crt
+config/certificates/user_private_key.key

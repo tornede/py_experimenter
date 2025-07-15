@@ -18,7 +18,29 @@ Below is an example of a database credential file, that connects to a server wit
         Standard: 
           server: example.mysqlserver.com
 
-However, for security reasons, databases might only be accessible from a specific IP address. In these cases, one can use an ssh jumphost. This means that ``PyExperimenter`` will first connect to the ssh server
+We additionally also support utilizing encrypted connections with (m)tls.  To that end, the following parameters can be added to the ``Standard`` section of the database credential file
+- ``use_ssl``: a boolean value indicating whether to use ssl
+- ``ssl_params``: a dictionary containing the following keys:
+  - ``ca``: the path to the ca certificate (optional, needed if the database server uses a custom ca certificate not trusted by the client)
+  - ``cert``: the path to the user certificate (optional, needed in case of client authentication with mtls)
+  - ``key``: the path to the user private key (optional, needed in case of client authentication with mtls)
+
+.. code-block:: yaml
+
+    CREDENTIALS:
+      Database:
+        user: example_user
+        password: example_password
+      Connection:
+        Standard: 
+          server: example.mysqlserver.com
+          use_ssl: some_boolean_value
+          ssl_params:
+            ca: config/certificates/ca.crt
+            cert: config/certificates/user_cert.crt
+            key: config/certificates/user_private_key.key
+
+Alternatively, for security reasons, databases might only be accessible from a specific IP address. In these cases, one can use an ssh jumphost. This means that ``PyExperimenter`` will first connect to the ssh server
 that has access to the database and then connect to the database server from there. This is done by adding an additional ``Ssh`` section to the database credential file, and can be activated either by a ``PyExperimenter`` keyword argument or in the :ref:`experimenter configuration file <experiment_configuration_file>`.
 The following example shows how to connect to a database server using an SSH server with the address ``ssh_hostname`` and the port ``optional_ssh_port``.
 
