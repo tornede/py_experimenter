@@ -1,11 +1,14 @@
 import logging
-import os
 from math import cos, sin
+import os
+import time
+from unittest.mock import MagicMock, patch
 
 from freezegun import freeze_time
 from mock import MagicMock, call, patch
 from omegaconf import OmegaConf
 
+from py_experimenter import database_connector_mysql
 from py_experimenter.config import DatabaseCfg
 from py_experimenter.database_connector import DatabaseConnector
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
@@ -177,3 +180,28 @@ def test_integration_without_resultfields():
     assert logtable2 == [(1, 1, 1), (2, 1, 3)]
     assert timesteps == timesteps2
     experimenter.close_ssh()
+
+def own_function_without_resultfields_stagger(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+    result_processor.process_logs({"log": {"test": 0}})
+    result_processor.process_logs({"log": {"test": 2}})
+    time.sleep(10)
+    result_processor.process_logs({"log": {"test": 4}})
+
+
+def test_stagger_logging():
+    experimenter = PyExperimenter(
+        os.path.join("test", "test_logtables", "mysql_logtables.yml"),
+        use_ssh_tunnel=False,
+        stagger_logging=True,
+        log_every_n_seconds=10,
+    )
+    try:
+        experimenter.delete_table()
+    except Exception:
+        pass
+
+    experimenter.fill_table_from_config()
+    experimenter.execute(own_function_without_resultfields_stagger, max_experiments=1)
+
+    logtable = experimenter.get_logtable("log")
+    assert (logtable.groupby("timestamp").count()["test"] == [2,1]).all()
