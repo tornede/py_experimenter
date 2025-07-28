@@ -15,7 +15,7 @@ Classes
 Module Contents
 ---------------
 
-.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.yml'), database_credential_file_path: str = os.path.join('config', 'database_credentials.yml'), use_ssh_tunnel: Optional[bool] = None, table_name: Optional[str] = None, database_name: Optional[str] = None, use_codecarbon: bool = True, name='PyExperimenter', logger_name: str = 'py-experimenter', log_level: Union[int, str] = logging.INFO, log_file: str = './logs/py-experimenter.log')
+.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.yml'), database_credential_file_path: str = os.path.join('config', 'database_credentials.yml'), use_ssh_tunnel: Optional[bool] = None, table_name: Optional[str] = None, database_name: Optional[str] = None, stagger_logging: bool = False, log_every_n_seconds: int = None, use_codecarbon: bool = True, name='PyExperimenter', logger_name: str = 'py-experimenter', log_level: Union[int, str] = logging.INFO, log_file: str = './logs/py-experimenter.log')
 
    Module handling the initialization, execution and collection of experiments and their respective results.
 
@@ -26,6 +26,16 @@ Module Contents
 
 
    .. py:attribute:: logger
+      :value: None
+
+
+
+   .. py:attribute:: stagger_logging
+      :value: False
+
+
+
+   .. py:attribute:: log_every_n_seconds
       :value: None
 
 
@@ -249,7 +259,7 @@ Module Contents
 
 
 
-   .. py:method:: _execution_wrapper(experiment_function: Callable[[Dict, Dict, py_experimenter.result_processor.ResultProcessor], Optional[py_experimenter.experiment_status.ExperimentStatus]], random_order: bool) -> None
+   .. py:method:: _execution_wrapper(experiment_function: Callable[[Dict, py_experimenter.result_processor.ResultProcessor, Dict], Optional[py_experimenter.experiment_status.ExperimentStatus]], random_order: bool) -> None
 
       Executes the given `experiment_function` on one open experiment. To that end, one of the open experiments is pulled
       from the database table. Then `experiment_function` is executed on the keyfield values of the pulled experiment.
@@ -267,7 +277,7 @@ Module Contents
       and do not appear in the table. Additionally errors due to returning `ExperimentStatus.ERROR` are not logged.
 
       :param experiment_function: The function that should be executed with the different parametrizations.
-      :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
+      :type experiment_function: Callable[[dict, ResultProcessor, dict], None]
       :param random_order: If True, the order of the experiments is determined randomly. Defaults to False.
       :type random_order: bool
       :raises NoExperimentsLeftError: If there are no experiments left to be executed.

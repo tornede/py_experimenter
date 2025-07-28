@@ -128,7 +128,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="py_experimenter.result_processor.ResultProcessor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.result_processor.</span></span><span class="sig-name descname"><span class="pre">ResultProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../config/index.html#py_experimenter.config.DatabaseCfg" title="py_experimenter.config.DatabaseCfg"><span class="pre">py_experimenter.config.DatabaseCfg</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_connector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../database_connector/index.html#py_experimenter.database_connector.DatabaseConnector" title="py_experimenter.database_connector.DatabaseConnector"><span class="pre">py_experimenter.database_connector.DatabaseConnector</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.result_processor.</span></span><span class="sig-name descname"><span class="pre">ResultProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../config/index.html#py_experimenter.config.DatabaseCfg" title="py_experimenter.config.DatabaseCfg"><span class="pre">py_experimenter.config.DatabaseCfg</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_connector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../database_connector/index.html#py_experimenter.database_connector.DatabaseConnector" title="py_experimenter.database_connector.DatabaseConnector"><span class="pre">py_experimenter.database_connector.DatabaseConnector</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stagger_logging</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_every_n_seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor" title="Permalink to this definition"></a></dt>
 <dd><p>Class for processing the results from an experiment. Use this class whenever you want to write results to the
 database.</p>
 <dl class="py attribute">
@@ -156,6 +156,31 @@ database.</p>
 <span class="sig-name descname"><span class="pre">experiment_id_condition</span></span><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor.experiment_id_condition" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="py_experimenter.result_processor.ResultProcessor.stagger_logging">
+<span class="sig-name descname"><span class="pre">stagger_logging</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor.stagger_logging" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="py_experimenter.result_processor.ResultProcessor.log_every_n_seconds">
+<span class="sig-name descname"><span class="pre">log_every_n_seconds</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor.log_every_n_seconds" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="py_experimenter.result_processor.ResultProcessor.last_log_time">
+<span class="sig-name descname"><span class="pre">last_log_time</span></span><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor.last_log_time" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="py_experimenter.result_processor.ResultProcessor.log_queries">
+<span class="sig-name descname"><span class="pre">log_queries</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor.log_queries" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="py_experimenter.result_processor.ResultProcessor.log_counter">
+<span class="sig-name descname"><span class="pre">log_counter</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor.log_counter" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.result_processor.ResultProcessor.process_results">
 <span class="sig-name descname"><span class="pre">process_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor.process_results" title="Permalink to this definition"></a></dt>
@@ -176,16 +201,23 @@ want to write results to the database.
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.result_processor.ResultProcessor.process_logs">
-<span class="sig-name descname"><span class="pre">process_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor.process_logs" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">process_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor.process_logs" title="Permalink to this definition"></a></dt>
 <dd><p>Appends logs to the logtables. Raises InvalidLogFieldError if the given logs are invalid.
 The logs are of the following structure: Dictionary keys are the logtable_names (without the prefix <cite>table_name__</cite>). Each key refers to a inner dictionary
-with the keys as columnsnames and values as results.</p>
+with the keys as columnsnames and values as results. The logs are first collected and then written to the database jointly. To that end at every call to
+this method, it is checked if the time since the last write is greater than the log_every_n_seconds. If so, the logs are written to the database.
+If force_write is True, or when the result_processor is closed, the logs are written to the database.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>logs</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Logs to be appended to the logtables.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="py_experimenter.result_processor.ResultProcessor.write_logs">
+<span class="sig-name descname"><span class="pre">write_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force_write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor.write_logs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.result_processor.ResultProcessor._valid_logtable_logs">

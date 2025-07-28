@@ -15,7 +15,7 @@ Classes
 Module Contents
 ---------------
 
-.. py:class:: ResultProcessor(database_config: py_experimenter.config.DatabaseCfg, db_connector: py_experimenter.database_connector.DatabaseConnector, experiment_id: int, logger)
+.. py:class:: ResultProcessor(database_config: py_experimenter.config.DatabaseCfg, db_connector: py_experimenter.database_connector.DatabaseConnector, experiment_id: int, logger, stagger_logging: bool = False, log_every_n_seconds: int = None)
 
    Class for processing the results from an experiment. Use this class whenever you want to write results to the
    database.
@@ -36,6 +36,29 @@ Module Contents
    .. py:attribute:: experiment_id_condition
 
 
+   .. py:attribute:: stagger_logging
+      :value: False
+
+
+
+   .. py:attribute:: log_every_n_seconds
+      :value: None
+
+
+
+   .. py:attribute:: last_log_time
+
+
+   .. py:attribute:: log_queries
+      :value: []
+
+
+
+   .. py:attribute:: log_counter
+      :value: 0
+
+
+
    .. py:method:: process_results(results: Dict) -> None
 
       Process results from the experiment and write them to the database. You can call this method, whenever you
@@ -52,15 +75,20 @@ Module Contents
 
 
 
-   .. py:method:: process_logs(logs: Dict[str, Dict[str, str]]) -> None
+   .. py:method:: process_logs(logs: Dict[str, Dict[str, str]], force_write: bool = False) -> None
 
       Appends logs to the logtables. Raises InvalidLogFieldError if the given logs are invalid.
       The logs are of the following structure: Dictionary keys are the logtable_names (without the prefix `table_name__`). Each key refers to a inner dictionary
-      with the keys as columnsnames and values as results.
+      with the keys as columnsnames and values as results. The logs are first collected and then written to the database jointly. To that end at every call to
+      this method, it is checked if the time since the last write is greater than the log_every_n_seconds. If so, the logs are written to the database. 
+      If force_write is True, or when the result_processor is closed, the logs are written to the database.
 
       :param logs: Logs to be appended to the logtables.
       :type logs: Dict[str, Dict[str, str]]
 
+
+
+   .. py:method:: write_logs(force_write: bool = False) -> None
 
 
    .. py:method:: _valid_logtable_logs(logs: Dict[str, Dict[str, str]]) -> bool
