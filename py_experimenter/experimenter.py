@@ -29,6 +29,8 @@ class PyExperimenter:
         use_ssh_tunnel: Optional[bool] = None,
         table_name: Optional[str] = None,
         database_name: Optional[str] = None,
+        stagger_logging: bool = False,
+        log_every_n_seconds: int = None,
         use_codecarbon: bool = True,
         name="PyExperimenter",
         logger_name: str = "py-experimenter",
@@ -60,6 +62,10 @@ class PyExperimenter:
             `experiment_configuration_file_path`. If None, the database name is taken from the experiment configuration
             file. Defaults to None.
         :type database_name: str, optional
+        :param stagger_logging: If True, the logs are written to the database every `log_every_n_seconds` seconds. Defaults to False.
+        :type stagger_logging: bool, optional
+        :param log_every_n_seconds: The time interval in seconds at which the logs are written to the database. Defaults to 10.
+        :type log_every_n_seconds: int, optional
         :param use_codecarbon: If True, the carbon emissions are tracked and stored in the database. Defaults to True.
         :type use_codecarbon: bool, optional
         :param name: The name of the PyExperimenter, which will be logged in the according column in the database table.
@@ -95,6 +101,13 @@ class PyExperimenter:
             handler = logging.FileHandler(log_file)
             handler.setFormatter(formatter)
             self.logger.addHandler(handler)
+
+        self.stagger_logging = stagger_logging
+        self.log_every_n_seconds = log_every_n_seconds
+        if self.stagger_logging and (log_every_n_seconds is None or not isinstance(log_every_n_seconds, int)):
+            raise ValueError("log_every_n_seconds must be set to an integer when stagger_logging is True")
+        if self.stagger_logging and log_every_n_seconds <= 0:
+            raise ValueError("log_every_n_seconds must be greater than 0 when stagger_logging is True and log_every_n_seconds is set")
 
         self.config = PyExperimenterCfg.extract_config(experiment_configuration_file_path, logger=self.logger, overwritten_table_name=table_name)
 
@@ -378,7 +391,7 @@ class PyExperimenter:
                 break
 
     def _execution_wrapper(
-        self, experiment_function: Callable[[Dict, Dict, ResultProcessor], Optional[ExperimentStatus]], random_order: bool
+        self, experiment_function: Callable[[Dict, ResultProcessor, Dict], Optional[ExperimentStatus]], random_order: bool
     ) -> None:
         """
         Executes the given `experiment_function` on one open experiment. To that end, one of the open experiments is pulled
@@ -397,7 +410,7 @@ class PyExperimenter:
         and do not appear in the table. Additionally errors due to returning `ExperimentStatus.ERROR` are not logged.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
-        :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
+        :type experiment_function: Callable[[dict, ResultProcessor, dict], None]
         :param random_order: If True, the order of the experiments is determined randomly. Defaults to False.
         :type random_order: bool
         :raises NoExperimentsLeftError: If there are no experiments left to be executed.
@@ -407,7 +420,7 @@ class PyExperimenter:
         self._execute_experiment(experiment_id, keyfield_values, experiment_function)
 
     def _execute_experiment(self, experiment_id, keyfield_values, experiment_function):
-        result_processor = ResultProcessor(self.config.database_configuration, self.db_connector, experiment_id=experiment_id, logger=self.logger)
+        result_processor = ResultProcessor(self.config.database_configuration, self.db_connector, experiment_id=experiment_id, logger=self.logger, stagger_logging=self.stagger_logging, log_every_n_seconds=self.log_every_n_seconds)
         result_processor._set_name(self.name)
         result_processor._set_machine(socket.gethostname())
 
@@ -449,6 +462,7 @@ class PyExperimenter:
                 tracker.stop()
                 emission_data = tracker._prepare_emissions_data().values
                 result_processor._write_emissions(emission_data, self.codecarbon_offline_mode)
+                result_processor.write_logs(force_write=True)
 
     def _write_codecarbon_config(self) -> None:
         """ "
