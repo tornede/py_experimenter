@@ -542,3 +542,14 @@ class PyExperimenter:
             return self.db_connector.get_codecarbon_table()
         else:
             raise ValueError("CodeCarbon is not used in this experiment.")
+
+    def execute_custom_query(self, query: str) -> pd.DataFrame:
+        """
+        Executes the given custom query and returns the result as `Pandas.DataFrame`.
+
+        :raises ValueError: If no custom query is given in the configuration file.
+        :return: The result of the custom query as `Pandas.DataFrame`.
+        """
+        if not query:
+            raise ValueError("No custom query given.")
+        return self.db_connector.execute_custom_query(query)
