@@ -517,7 +517,7 @@ class PyExperimenter:
         :return: The database table as `Pandas.DataFrame`.
         :rtype: pd.DataFrame
         """
-        return self.db_connector.get_table()
+        return self.db_connector.get_table(condition=condition)
 
     def get_logtable(self, logtable_name: str, condition:Optional[str] = None) -> pd.DataFrame:
         """
