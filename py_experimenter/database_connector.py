@@ -409,3 +409,14 @@ class DatabaseConnector(abc.ABC):
             df = pd.read_sql(query, connection)
         self.close_connection(connection)
         return df
+
+    def execute_custom_query(self, query: str) -> pd.DataFrame:
+        connection = self.connect()
+        # suppress warning for pandas
+        import warnings
+
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=UserWarning)
+            df = pd.read_sql(query, connection)
+        self.close_connection(connection)
+        return df

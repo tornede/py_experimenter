@@ -66,8 +66,7 @@ def test_integration(experimenter: PyExperimenter):
         "ram_total_size",
         "tracking_mode",
         "on_cloud",
-        "power_usage_efficiency",
         "offline_mode",
     ]
-    assert table.shape == (12, 34)
+    assert table.shape == (12, 33)
     assert set(table["experiment_id"]) == {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
