@@ -70,7 +70,6 @@ def extract_codecarbon_columns() -> Dict[str, str]:
             ("ram_total_size", "DOUBLE"),
             ("tracking_mode", "VARCHAR(255)"),
             ("on_cloud", "VARCHAR(255)"),
-            #("power_usage_efficiency", "DOUBLE"),
             ("offline_mode", "BOOL"),
         ]
     )
