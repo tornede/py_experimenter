@@ -3,7 +3,6 @@ from logging import Logger
 from typing import Dict, List, Optional, Tuple
 
 import numpy as np
-import sshtunnel
 from omegaconf import OmegaConf
 from pymysql import Error, connect
 
@@ -12,7 +11,6 @@ from py_experimenter.database_connector import DatabaseConnector
 from py_experimenter.exceptions import (
     DatabaseConnectionError,
     DatabaseCreationError,
-    SshTunnelError,
 )
 
 
@@ -21,58 +19,7 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
 
     def __init__(self, database_configuration: DatabaseCfg, use_codecarbon: bool, credential_path: str, logger: Logger):
         self.credential_path = credential_path
-        if database_configuration.use_ssh_tunnel:
-            self.start_ssh_tunnel(logger)
         super().__init__(database_configuration, use_codecarbon, logger)
-
-    def get_ssh_tunnel(self, logger: Logger):
-        try:
-            credential_config = dict(OmegaConf.load(self.credential_path))
-            credentials = credential_config["CREDENTIALS"]["Connection"]
-            if "Ssh" in credentials:
-                parameters = dict(credentials["Ssh"])
-                ssh_address_or_host = parameters["address"]
-                ssh_address_or_host_port = parameters["port"] if "port" in parameters else 22
-                ssh_private_key_password = parameters["ssh_private_key_password"] if "ssh_private_key_password" in parameters else None
-                remote_bind_address = parameters["remote_address"] if "remote_address" in parameters else "127.0.0.1"
-                remote_bind_address_port = parameters["remote_port"] if "remote_port" in parameters else 3306
-                local_bind_address = parameters["local_address"] if "local_address" in parameters else "127.0.0.1"
-                local_bind_address_port = parameters["local_port"] if "local_port" in parameters else 3306
-
-                try:
-                    tunnel = sshtunnel.SSHTunnelForwarder(
-                        ssh_address_or_host=(ssh_address_or_host, ssh_address_or_host_port),
-                        ssh_private_key_password=ssh_private_key_password,
-                        remote_bind_address=(remote_bind_address, remote_bind_address_port),
-                        local_bind_address=(local_bind_address, local_bind_address_port),
-                        logger=logger,
-                    )
-                except Exception as err:
-                    logger.error(err)
-                    raise SshTunnelError(err)
-                return tunnel
-            else:
-                return None
-        except DatabaseConnectionError as err:
-            logger.error(err)
-            raise SshTunnelError("Error when creating SSH tunnel! Check the credentials file.")
-
-    def start_ssh_tunnel(self, logger: Logger):
-        tunnel = self.get_ssh_tunnel(logger)
-        # Tunnels may not be stopepd instantly, so we check if the tunnel is active before starting it
-        if tunnel is not None and not tunnel.is_active:
-            try:
-                tunnel.start()
-            except Exception as e:
-                logger.warning("Failed at creating SSH tunnel. Maybe the tunnel is already active in other process?")
-                logger.warning(e)
-
-    def close_ssh_tunnel(self):
-        if not self.database_configuration.use_ssh_tunnel:
-            self.logger.warning("Attempt to close SSH tunnel, but ssh tunnel is not used.")
-        tunnel = self.get_ssh_tunnel(self.logger)
-        if tunnel is not None:
-            tunnel.stop(force=False)
 
     def _test_connection(self):
         try:
@@ -115,26 +62,20 @@ class DatabaseConnectorMYSQL(DatabaseConnector):
             credential_config = dict(OmegaConf.load(self.credential_path))
             database_configuration = credential_config["CREDENTIALS"]["Database"]
             connection_configuration = credential_config["CREDENTIALS"]["Connection"]
-            if self.database_configuration.use_ssh_tunnel:
-                server_address = connection_configuration["Ssh"]["server"]
-                ssl_params = None
-
-                
-            else:
-                server_address = connection_configuration["Standard"]["server"]
-                if "use_ssl" in connection_configuration["Standard"]:
-                    if connection_configuration["Standard"]["use_ssl"]:
-                        ssl_params = dict()
-                        if "ca" in connection_configuration["Standard"]["ssl_params"]:
-                            ssl_params["ca"] = connection_configuration["Standard"]["ssl_params"]["ca"]
-                        if "cert" in connection_configuration["Standard"]["ssl_params"]: 
-                            ssl_params["cert"] = connection_configuration["Standard"]["ssl_params"]["cert"]
-                        if "key" in connection_configuration["Standard"]["ssl_params"]:
-                            ssl_params["key"] = connection_configuration["Standard"]["ssl_params"]["key"]
-                    else:
-                        ssl_params = None
+            server_address = connection_configuration["Standard"]["server"]
+            if "use_ssl" in connection_configuration["Standard"]:
+                if connection_configuration["Standard"]["use_ssl"]:
+                    ssl_params = dict()
+                    if "ca" in connection_configuration["Standard"]["ssl_params"]:
+                        ssl_params["ca"] = connection_configuration["Standard"]["ssl_params"]["ca"]
+                    if "cert" in connection_configuration["Standard"]["ssl_params"]:
+                        ssl_params["cert"] = connection_configuration["Standard"]["ssl_params"]["cert"]
+                    if "key" in connection_configuration["Standard"]["ssl_params"]:
+                        ssl_params["key"] = connection_configuration["Standard"]["ssl_params"]["key"]
                 else:
                     ssl_params = None
+            else:
+                ssl_params = None
 
             credentials = {
                 "host": server_address,

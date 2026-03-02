@@ -12,7 +12,7 @@ from py_experimenter.result_processor import ResultProcessor
 def experimenter():
     configuration_path = os.path.join("test", "test_codecarbon", "configs", "integration_test_mysql.yml")
 
-    return PyExperimenter(configuration_path, use_ssh_tunnel=False)
+    return PyExperimenter(configuration_path)
 
 
 def run_ml(parameters: dict, result_processor: ResultProcessor, custom_config: dict):

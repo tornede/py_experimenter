@@ -17,7 +17,7 @@ def experimenter_mysql():
 
     configuration_path = os.path.join("test", "test_codecarbon", "configs", "test_config_mysql.yml")
     with patch.object(DatabaseConnectorMYSQL, "_test_connection", return_value=None):
-        experimenter = PyExperimenter(experiment_configuration_file_path=configuration_path, use_ssh_tunnel=False)
+        experimenter = PyExperimenter(experiment_configuration_file_path=configuration_path)
 
     yield experimenter
 

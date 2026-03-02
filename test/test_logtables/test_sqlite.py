@@ -167,7 +167,6 @@ def own_function_without_resultfields_stagger(keyfields: dict, result_processor:
 def test_stagger_logging():
     experimenter = PyExperimenter(
         os.path.join("test", "test_logtables", "sqlite_logtables.yml"),
-        use_ssh_tunnel=False,
         stagger_logging=True,
         log_every_n_seconds=10,
     )
