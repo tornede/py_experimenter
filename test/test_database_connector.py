@@ -8,7 +8,7 @@ from omegaconf import OmegaConf
 
 from py_experimenter import database_connector, database_connector_lite, database_connector_mysql, utils
 from py_experimenter.config import DatabaseCfg
-from py_experimenter.database_connector import DatabaseConnector
+from py_experimenter.database_connector import DatabaseConnector, _combinations_are_equal, _values_are_equal
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
 from py_experimenter.experiment_status import ExperimentStatus
@@ -44,10 +44,53 @@ def test_constructor(test_connetion_mock):
         ({"value": 1, "exponent": 4}, [{"value": 1, "exponent": 2}, {"value": 3, "exponent": 4}], False),
         ({"value": 1}, [{"value": 1}], True),
         ({"value": 1}, [{"value": 2}], False),
+        # MySQL FLOAT (4-byte) precision loss: 0.7 stored as ~0.699999988079071
+        ({"temperature": 0.7}, [{"temperature": 0.699999988079071}], True),
+        ({"temperature": 0.7, "seed": 42}, [{"temperature": 0.699999988079071, "seed": 42}], True),
+        # Values that are actually different should not match
+        ({"temperature": 0.7}, [{"temperature": 0.8}], False),
+        # Boolean vs int (MySQL BOOLEAN returns as 0/1)
+        ({"flag": True}, [{"flag": 1}], True),
+        ({"flag": False}, [{"flag": 0}], True),
     ],
 )
 def test_check_combination_in_existing_rows(combination, existing_rows, result):
     assert result == DatabaseConnector._check_combination_in_existing_rows(None, combination, existing_rows)
+
+
+@pytest.mark.parametrize(
+    "value_a, value_b, expected",
+    [
+        (0.7, 0.699999988079071, True),
+        (0.5, 0.5, True),
+        (1.0, 1.0000000001, True),
+        (0.7, 0.8, False),
+        (0, 0, True),
+        (0.0, 0, True),
+        (42, 42, True),
+        (42, 43, False),
+        ("hello", "hello", True),
+        ("hello", "world", False),
+        (None, None, True),
+        (None, 1, False),
+        (True, 1, True),
+        (False, 0, True),
+    ],
+)
+def test_values_are_equal(value_a, value_b, expected):
+    assert _values_are_equal(value_a, value_b) == expected
+
+
+@pytest.mark.parametrize(
+    "combination_a, combination_b, expected",
+    [
+        ({"a": 1, "b": 0.7}, {"a": 1, "b": 0.699999988079071}, True),
+        ({"a": 1, "b": 0.7}, {"a": 1, "b": 0.8}, False),
+        ({"a": 1}, {"a": 1, "b": 2}, False),
+    ],
+)
+def test_combinations_are_equal(combination_a, combination_b, expected):
+    assert _combinations_are_equal(combination_a, combination_b) == expected
 
 
 @pytest.fixture

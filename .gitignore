@@ -132,6 +132,9 @@ dmypy.json
 .idea/
 .DS_Store
 
+# Cursor
+.cursor/
+
 # Database
 *.db
 
