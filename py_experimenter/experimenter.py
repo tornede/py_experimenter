@@ -26,7 +26,6 @@ class PyExperimenter:
         self,
         experiment_configuration_file_path: str = os.path.join("config", "experiment_configuration.yml"),
         database_credential_file_path: str = os.path.join("config", "database_credentials.yml"),
-        use_ssh_tunnel: Optional[bool] = None,
         table_name: Optional[str] = None,
         database_name: Optional[str] = None,
         stagger_logging: bool = False,
@@ -47,13 +46,6 @@ class PyExperimenter:
         :param database_credential_file_path: The path to the database configuration file storing the credentials
             for the database connection, i.e., host, user and password. Defaults to 'config/database_credentials.cfg'.
         :type database_credential_file_path: str, optional
-        :param use_ssh_tunnel: If the used database is sqlite this parameter is ignored. Otherwise: If the database is mysql,
-            and `use_ssh_tunnel == None` the ssh decision is based on the configuration file (defaults to false).
-            If `use_ssh_tunnel != True` the ssh credentials provided in `database_credential_file_path` are used to establish
-            an ssh tunnel to the database. If `use_ssh_tunnel == True` but no ssh credentials are provided in
-            `database_credential_file_path`, an error is raised. If `use_shh_tunnel==False` PxExperimenter directly connects
-            to the databse. Defaults to None.
-        :type use_ssh_tunnel: bool
         :param table_name: The name of the database table, if given it will overwrite the table_name given in the
             `experiment_configuration_file_path`. If None, the table table name is taken from the experiment
             configuration file. Defaults to None.
@@ -79,7 +71,6 @@ class PyExperimenter:
         :type log_file: str
         :raises InvalidConfigError: If either the experiment or database configuration are missing mandatory information.
         :raises ValueError: If an unsupported or unknown database connection provider is given.
-        :raises SshTunnelError: If the ssh tunnel could not be established, or if the ssh credentials are missing/invalid.
         """
         # If the logger is not allready craeted, create it with the given name and level
         self.logger_name = logger_name
@@ -118,10 +109,6 @@ class PyExperimenter:
 
         self.database_credential_file_path = database_credential_file_path
 
-        # If use_ssh_tunnel is not None, the decision is based on the given kwarg
-        if use_ssh_tunnel is not None:
-            self.config.database_configuration.use_ssh_tunnel = use_ssh_tunnel
-
         if database_name is not None:
             self.config.database_configuration.database_name = database_name
         self.name = name
@@ -138,15 +125,6 @@ class PyExperimenter:
             raise ValueError("The provider indicated in the config file is not supported")
 
         self.logger.info("Initialized and connected to database")
-
-    def close_ssh(self) -> None:
-        """
-        Closes the ssh tunnel if it is used.
-        """
-        if self.config.database_configuration.provider == "mysql":
-            self.db_connector.close_ssh_tunnel()
-        else:
-            self.logger.warning("No ssh tunnel to close")
 
     def fill_table_from_combination(self, fixed_parameter_combinations: List[dict] = None, parameters: dict = None) -> None:
         """

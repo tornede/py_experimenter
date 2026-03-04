@@ -150,18 +150,16 @@ def test_fill_table(
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "_test_connection")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "_create_database_if_not_existing")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "connect")
-@patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "start_ssh_tunnel")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "close_connection")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "cursor")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "execute")
 @patch.object(database_connector_mysql.DatabaseConnectorMYSQL, "commit")
 def test_delete_experiments_with_condition(
-    commit_mock, execute_mock, cursor_mock, close_conenction_mock, ssh_mock, connect_mock, create_database_if_not_existing_mock, _test_connection_mock
+    commit_mock, execute_mock, cursor_mock, close_conenction_mock, connect_mock, create_database_if_not_existing_mock, _test_connection_mock
 ):
     create_database_if_not_existing_mock.return_value = None
     _test_connection_mock.return_value = None
     connect_mock.return_value = None
-    ssh_mock.return_value = None
     close_conenction_mock.return_value = None
     execute_mock.return_value = None
     cursor_mock.return_value = None

@@ -159,3 +159,6 @@ development/
 config/certificates/ca.crt
 config/certificates/user_cert.crt
 config/certificates/user_private_key.key
+emissions.csv.bak
+.cursor/rules/interaction-preferences.mdc
+.cursor/rules/research-coding-standards.mdc

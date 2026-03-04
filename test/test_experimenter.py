@@ -97,9 +97,8 @@ def test_init(
     experimenter = PyExperimenter(
         config_file,
         os.path.join("test", "test_config_files", "load_config_test_file", "mysql_fake_credentials.cfg"),
-        False,
-        table_name,
-        database_name,
+        table_name=table_name,
+        database_name=database_name,
     )
 
     assert experimenter.config.database_configuration.table_name == expected_table_name
