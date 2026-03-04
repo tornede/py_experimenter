@@ -32,7 +32,6 @@ Additionally, further information can be given to ``PyExperimenter``:
 
 - ``experiment_configuration_file_path``: The path of the :ref:`experiment configuration file <experiment_configuration_file>`. Default: ``config/experiment_configuration.cfg``.
 - ``database_credential_file_path``: The path of the :ref:`database credential file <database_credential_file>`. Default: ``config/database_credentials.cfg``
-- ``use_ssh_tunnel``: Specifies if a SSH tunnel will be used to connect to the database. Default: ``False``. If ``use_ssh_tunnel`` is set to ``True``, creating a ``PyExperimenter`` will also open an ssh tunnel, which should be :ref:`closed manually <close_ssh_tunnel>`. The details of the ssh-connection have to be specified in the :ref:`database credential file <database_credential_file>`.
 - ``database_name``: The name of the database to manage the experiments. If given, it will overwrite the database name given in the `experiment_configuration_file_path`.
 - ``table_name``: The name of the database table to manage the experiments. If given, it will overwrite the table name given in the `experiment_configuration_file_path`.
 - ``use_codecarbon``: Specifies if :ref:`CodeCarbon <experiment_configuration_file_codecarbon>` will be used to track experiment emissions. Default: ``True``. 
@@ -272,21 +271,6 @@ At a later point in time, the experiment can be unpaused and continued. This can
     )
 
 A complete example on how to pause and continue an experiment can be found in the :ref:`examples section <examples>`.
-
-
-
-.. _close_ssh_tunnel:
-
-----------------
-Close SSH Tunnel
-----------------
-
-If an SSH tunnel was opened during the creation of the ``PyExperimenter``, it has to be closed manually by calling the following method:
-
-.. code-block:: python
-
-    experimenter.execute(...)
-    experimenter.close_ssh_tunnel()
 
 
 .. _hydra: https://hydra.cc/

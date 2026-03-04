@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Experiment Configuration File &mdash; PyExperimenter 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
 
@@ -121,7 +121,6 @@
 <span class="w">  </span><span class="nt">Database</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqlite</span>
 <span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">py_experimenter</span>
-<span class="w">    </span><span class="nt">use_ssh_tunnel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 <span class="w">    </span><span class="nt">table</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_general_usage</span>
 <span class="w">      </span><span class="nt">keyfields</span><span class="p">:</span>
@@ -176,7 +175,6 @@
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">provider</span></code>: The provider of the database connection. Currently, <code class="docutils literal notranslate"><span class="pre">sqlite</span></code> and <code class="docutils literal notranslate"><span class="pre">mysql</span></code> are supported. In the case of <code class="docutils literal notranslate"><span class="pre">mysql</span></code> an additional <a class="reference internal" href="database_credential_file.html#database-credential-file"><span class="std std-ref">database credential file</span></a> has to be created.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">database</span></code>: The name of the database to create or connect to.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">use_ssh_tunnel</span></code>: Flag to decide if the database is connected via ssh as defined in the <a class="reference internal" href="database_credential_file.html#database-credential-file"><span class="std std-ref">database credential file</span></a>. This is ignored if <code class="docutils literal notranslate"><span class="pre">sqlite</span></code> is chosen as provider. Optional Parameter, default is False.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">table</span></code>: Defines the structure and predefined values for the experiment table.</p>
 <blockquote>
 <div><ul class="simple">

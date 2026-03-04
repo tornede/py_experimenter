@@ -14,7 +14,6 @@ Exceptions
    py_experimenter.exceptions.DatabaseError
    py_experimenter.exceptions.DatabaseCreationError
    py_experimenter.exceptions.DatabaseConnectionError
-   py_experimenter.exceptions.SshTunnelError
    py_experimenter.exceptions.DatabaseQueryError
    py_experimenter.exceptions.EmptyFillDatabaseCallError
    py_experimenter.exceptions.CreatingTableError
@@ -68,14 +67,6 @@ Module Contents
 
 
 .. py:exception:: DatabaseConnectionError
-
-   Bases: :py:obj:`DatabaseError`
-
-
-   Common base class for all non-exit exceptions.
-
-
-.. py:exception:: SshTunnelError
 
    Bases: :py:obj:`DatabaseError`
 

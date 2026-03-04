@@ -15,7 +15,7 @@ Classes
 Module Contents
 ---------------
 
-.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.yml'), database_credential_file_path: str = os.path.join('config', 'database_credentials.yml'), use_ssh_tunnel: Optional[bool] = None, table_name: Optional[str] = None, database_name: Optional[str] = None, stagger_logging: bool = False, log_every_n_seconds: int = None, use_codecarbon: bool = True, name='PyExperimenter', logger_name: str = 'py-experimenter', log_level: Union[int, str] = logging.INFO, log_file: str = './logs/py-experimenter.log')
+.. py:class:: PyExperimenter(experiment_configuration_file_path: str = os.path.join('config', 'experiment_configuration.yml'), database_credential_file_path: str = os.path.join('config', 'database_credentials.yml'), table_name: Optional[str] = None, database_name: Optional[str] = None, stagger_logging: bool = False, log_every_n_seconds: int = None, use_codecarbon: bool = True, name='PyExperimenter', logger_name: str = 'py-experimenter', log_level: Union[int, str] = logging.INFO, log_file: str = './logs/py-experimenter.log')
 
    Module handling the initialization, execution and collection of experiments and their respective results.
 
@@ -57,12 +57,6 @@ Module Contents
 
 
    .. py:attribute:: experiment_configuration_file_path
-
-
-   .. py:method:: close_ssh() -> None
-
-      Closes the ssh tunnel if it is used.
-
 
 
    .. py:method:: fill_table_from_combination(fixed_parameter_combinations: List[dict] = None, parameters: dict = None) -> None

@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Executing PyExperimenter &mdash; PyExperimenter 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
 
@@ -66,7 +66,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#obtain-results">Obtain Results</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#codecarbon">CodeCarbon</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pausing-and-unpausing-experiments">Pausing and Unpausing Experiments</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#close-ssh-tunnel">Close SSH Tunnel</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="distributed_execution.html">Distributed Execution</a></li>
@@ -138,7 +137,6 @@
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">experiment_configuration_file_path</span></code>: The path of the <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file"><span class="std std-ref">experiment configuration file</span></a>. Default: <code class="docutils literal notranslate"><span class="pre">config/experiment_configuration.cfg</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">database_credential_file_path</span></code>: The path of the <a class="reference internal" href="database_credential_file.html#database-credential-file"><span class="std std-ref">database credential file</span></a>. Default: <code class="docutils literal notranslate"><span class="pre">config/database_credentials.cfg</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">use_ssh_tunnel</span></code>: Specifies if a SSH tunnel will be used to connect to the database. Default: <code class="docutils literal notranslate"><span class="pre">False</span></code>. If <code class="docutils literal notranslate"><span class="pre">use_ssh_tunnel</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, creating a <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> will also open an ssh tunnel, which should be <a class="reference internal" href="#close-ssh-tunnel"><span class="std std-ref">closed manually</span></a>. The details of the ssh-connection have to be specified in the <a class="reference internal" href="database_credential_file.html#database-credential-file"><span class="std std-ref">database credential file</span></a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">database_name</span></code>: The name of the database to manage the experiments. If given, it will overwrite the database name given in the <cite>experiment_configuration_file_path</cite>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">table_name</span></code>: The name of the database table to manage the experiments. If given, it will overwrite the table name given in the <cite>experiment_configuration_file_path</cite>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">use_codecarbon</span></code>: Specifies if <a class="reference internal" href="experiment_configuration_file.html#experiment-configuration-file-codecarbon"><span class="std std-ref">CodeCarbon</span></a> will be used to track experiment emissions. Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
@@ -317,14 +315,6 @@
 </pre></div>
 </div>
 <p>A complete example on how to pause and continue an experiment can be found in the <a class="reference internal" href="../examples/index.html#examples"><span class="std std-ref">examples section</span></a>.</p>
-</section>
-<section id="close-ssh-tunnel">
-<span id="id6"></span><h2>Close SSH Tunnel<a class="headerlink" href="#close-ssh-tunnel" title="Permalink to this heading"></a></h2>
-<p>If an SSH tunnel was opened during the creation of the <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code>, it has to be closed manually by calling the following method:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experimenter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="n">experimenter</span><span class="o">.</span><span class="n">close_ssh_tunnel</span><span class="p">()</span>
-</pre></div>
-</div>
 </section>
 </section>
 
