@@ -18,9 +18,12 @@ Below is an example of a database credential file, that connects to a server wit
         Standard: 
           server: example.mysqlserver.com
 
-However, for security reasons, databases might only be accessible from a specific IP address. In these cases, one can use an ssh jumphost. This means that ``PyExperimenter`` will first connect to the ssh server
-that has access to the database and then connect to the database server from there. This is done by adding an additional ``Ssh`` section to the database credential file, and can be activated either by a ``PyExperimenter`` keyword argument or in the :ref:`experimenter configuration file <experiment_configuration_file>`.
-The following example shows how to connect to a database server using an SSH server with the address ``ssh_hostname`` and the port ``optional_ssh_port``.
+We additionally also support utilizing encrypted connections with (m)tls.  To that end, the following parameters can be added to the ``Standard`` section of the database credential file
+- ``use_ssl``: a boolean value indicating whether to use ssl
+- ``ssl_params``: a dictionary containing the following keys:
+  - ``ca``: the path to the ca certificate (optional, needed if the database server uses a custom ca certificate not trusted by the client)
+  - ``cert``: the path to the user certificate (optional, needed in case of client authentication with mtls)
+  - ``key``: the path to the user private key (optional, needed in case of client authentication with mtls)
 
 .. code-block:: yaml
 
@@ -30,16 +33,9 @@ The following example shows how to connect to a database server using an SSH ser
         password: example_password
       Connection:
         Standard: 
-          server: example.sshmysqlserver.com
-        Ssh:
-          server: example.mysqlserver.com (address from ssh server)
-          address: ssh_hostname (either name/ip address of the ssh server or a name from you local ssh config file)
-          port: optional_ssh_port (default: 22)
-          ssh_private_key_password: passphrase
-          remote_address: optional_mysql_server_address (default: 127.0.0.1)
-          remote_port: optional_mysql_server_port (default: 3306)
-          local_address: optional_local_address (default: 127.0.0.1)
-          local_port: optional_local_port (default: 3306)
-
-.. note::
-  Note that we do not support further parameters for the SSH connection, such as explicitly setting the private key file. To use these, you have to adapt your local ssh config file.
+          server: example.mysqlserver.com
+          use_ssl: some_boolean_value
+          ssl_params:
+            ca: config/certificates/ca.crt
+            cert: config/certificates/user_cert.crt
+            key: config/certificates/user_private_key.key

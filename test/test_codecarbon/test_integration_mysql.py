@@ -10,7 +10,7 @@ from py_experimenter.result_processor import ResultProcessor
 
 @pytest.fixture
 def experimenter():
-    configuration_path = os.path.join("test", "test_codecarbon", "configs", "integration_test_sqlite.yml")
+    configuration_path = os.path.join("test", "test_codecarbon", "configs", "integration_test_mysql.yml")
 
     return PyExperimenter(configuration_path)
 

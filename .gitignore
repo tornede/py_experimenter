@@ -132,6 +132,9 @@ dmypy.json
 .idea/
 .DS_Store
 
+# Cursor
+.cursor/
+
 # Database
 *.db
 
@@ -150,6 +153,15 @@ output/
 # codecarbon
 .codecarbon.config
 emissions.csv
+powermetrics_log.txt
 
 # development folder
 development/
+
+# MTLS certificates
+config/certificates/ca.crt
+config/certificates/user_cert.crt
+config/certificates/user_private_key.key
+emissions.csv.bak
+.cursor/rules/interaction-preferences.mdc
+.cursor/rules/research-coding-standards.mdc

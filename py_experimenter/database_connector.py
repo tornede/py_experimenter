@@ -18,6 +18,41 @@ from py_experimenter.exceptions import (
 )
 from py_experimenter.experiment_status import ExperimentStatus
 
+FLOAT_RELATIVE_TOLERANCE = 1e-6
+
+
+def _combinations_are_equal(combination_a: Dict[str, Any], combination_b: Dict[str, Any]) -> bool:
+    """
+    Check if two experiment combinations (keyfield dicts) are equal,
+    handling floating-point precision differences caused by database
+    storage (e.g. MySQL FLOAT is 4-byte single precision, which loses
+    precision compared to Python's 8-byte float).
+    """
+    if set(combination_a.keys()) != set(combination_b.keys()):
+        return False
+    for key in combination_a:
+        if not _values_are_equal(combination_a[key], combination_b[key]):
+            return False
+    return True
+
+
+def _values_are_equal(value_a: Any, value_b: Any) -> bool:
+    """
+    Check if two values are equal, with tolerance for floating-point
+    precision differences. Falls back to exact equality for non-numeric types.
+    """
+    if value_a == value_b:
+        return True
+    try:
+        float_a = float(value_a)
+        float_b = float(value_b)
+    except (TypeError, ValueError):
+        return False
+    max_abs = max(abs(float_a), abs(float_b))
+    if max_abs == 0:
+        return True
+    return abs(float_a - float_b) / max_abs < FLOAT_RELATIVE_TOLERANCE
+
 
 class DatabaseConnector(abc.ABC):
     def __init__(self, database_configuration: DatabaseCfg, use_codecarbon: bool, logger: logging.Logger):
@@ -221,8 +256,9 @@ class DatabaseConnector(abc.ABC):
         return combination
 
     def _check_combination_in_existing_rows(self, combination, existing_rows) -> bool:
-        if combination in existing_rows:
-            return True
+        for existing_row in existing_rows:
+            if _combinations_are_equal(combination, existing_row):
+                return True
         return False
 
     @abc.abstractmethod
@@ -390,15 +426,17 @@ class DatabaseConnector(abc.ABC):
         self.commit(connection)
         self.close_connection(connection)
 
-    def get_logtable(self, logtable_name: str) -> pd.DataFrame:
-        return self.get_table(f"{self.database_configuration.table_name}__{logtable_name}")
+    def get_logtable(self, logtable_name: str, condition = Optional[str]) -> pd.DataFrame:
+        return self.get_table(f"{self.database_configuration.table_name}__{logtable_name}", condition)
 
     def get_codecarbon_table(self) -> pd.DataFrame:
         return self.get_table(f"{self.database_configuration.table_name}_codecarbon")
 
-    def get_table(self, table_name: Optional[str] = None) -> pd.DataFrame:
+    def get_table(self, table_name: Optional[str] = None, condition:Optional[str] = None) -> pd.DataFrame:
         connection = self.connect()
         query = f"SELECT * FROM {self.database_configuration.table_name}" if table_name is None else f"SELECT * FROM {table_name}"
+        if condition:
+            query += f" WHERE {condition}"
         # suppress warning for pandas
         import warnings
 

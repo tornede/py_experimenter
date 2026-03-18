@@ -1,6 +1,7 @@
 import logging
-import os
 from math import cos, sin
+import os
+import time
 
 from freezegun import freeze_time
 from mock import MagicMock, call, patch
@@ -155,3 +156,27 @@ def test_integration_without_resultfields():
     non_timesteps_2 = [x[:2] + x[3:] for x in logtable2]
     assert non_timesteps_2 == [(1, 1, 1), (2, 1, 3)]
     assert timesteps == timesteps_2
+
+def own_function_without_resultfields_stagger(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+    result_processor.process_logs({"log": {"test": 0}})
+    result_processor.process_logs({"log": {"test": 2}})
+    time.sleep(10)
+    result_processor.process_logs({"log": {"test": 4}})
+
+
+def test_stagger_logging():
+    experimenter = PyExperimenter(
+        os.path.join("test", "test_logtables", "sqlite_logtables.yml"),
+        stagger_logging=True,
+        log_every_n_seconds=10,
+    )
+    try:
+        experimenter.delete_table()
+    except Exception:
+        pass
+
+    experimenter.fill_table_from_config()
+    experimenter.execute(own_function_without_resultfields_stagger, max_experiments=1)
+
+    logtable = experimenter.get_logtable("log")
+    assert (logtable.groupby("timestamp").count()["test"] == [2,1]).all()

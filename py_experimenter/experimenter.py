@@ -26,9 +26,10 @@ class PyExperimenter:
         self,
         experiment_configuration_file_path: str = os.path.join("config", "experiment_configuration.yml"),
         database_credential_file_path: str = os.path.join("config", "database_credentials.yml"),
-        use_ssh_tunnel: Optional[bool] = None,
-        table_name: str = None,
-        database_name: str = None,
+        table_name: Optional[str] = None,
+        database_name: Optional[str] = None,
+        stagger_logging: bool = False,
+        log_every_n_seconds: int = None,
         use_codecarbon: bool = True,
         name="PyExperimenter",
         logger_name: str = "py-experimenter",
@@ -45,13 +46,6 @@ class PyExperimenter:
         :param database_credential_file_path: The path to the database configuration file storing the credentials
             for the database connection, i.e., host, user and password. Defaults to 'config/database_credentials.cfg'.
         :type database_credential_file_path: str, optional
-        :param use_ssh_tunnel: If the used database is sqlite this parameter is ignored. Otherwise: If the database is mysql,
-            and `use_ssh_tunnel == None` the ssh decision is based on the configuration file (defaults to false).
-            If `use_ssh_tunnel != True` the ssh credentials provided in `database_credential_file_path` are used to establish
-            an ssh tunnel to the database. If `use_ssh_tunnel == True` but no ssh credentials are provided in
-            `database_credential_file_path`, an error is raised. If `use_shh_tunnel==False` PxExperimenter directly connects
-            to the databse. Defaults to None.
-        :type use_ssh_tunnel: bool
         :param table_name: The name of the database table, if given it will overwrite the table_name given in the
             `experiment_configuration_file_path`. If None, the table table name is taken from the experiment
             configuration file. Defaults to None.
@@ -60,6 +54,10 @@ class PyExperimenter:
             `experiment_configuration_file_path`. If None, the database name is taken from the experiment configuration
             file. Defaults to None.
         :type database_name: str, optional
+        :param stagger_logging: If True, the logs are written to the database every `log_every_n_seconds` seconds. Defaults to False.
+        :type stagger_logging: bool, optional
+        :param log_every_n_seconds: The time interval in seconds at which the logs are written to the database. Defaults to 10.
+        :type log_every_n_seconds: int, optional
         :param use_codecarbon: If True, the carbon emissions are tracked and stored in the database. Defaults to True.
         :type use_codecarbon: bool, optional
         :param name: The name of the PyExperimenter, which will be logged in the according column in the database table.
@@ -73,7 +71,6 @@ class PyExperimenter:
         :type log_file: str
         :raises InvalidConfigError: If either the experiment or database configuration are missing mandatory information.
         :raises ValueError: If an unsupported or unknown database connection provider is given.
-        :raises SshTunnelError: If the ssh tunnel could not be established, or if the ssh credentials are missing/invalid.
         """
         # If the logger is not allready craeted, create it with the given name and level
         self.logger_name = logger_name
@@ -96,7 +93,14 @@ class PyExperimenter:
             handler.setFormatter(formatter)
             self.logger.addHandler(handler)
 
-        self.config = PyExperimenterCfg.extract_config(experiment_configuration_file_path, logger=self.logger)
+        self.stagger_logging = stagger_logging
+        self.log_every_n_seconds = log_every_n_seconds
+        if self.stagger_logging and (log_every_n_seconds is None or not isinstance(log_every_n_seconds, int)):
+            raise ValueError("log_every_n_seconds must be set to an integer when stagger_logging is True")
+        if self.stagger_logging and log_every_n_seconds <= 0:
+            raise ValueError("log_every_n_seconds must be greater than 0 when stagger_logging is True and log_every_n_seconds is set")
+
+        self.config = PyExperimenterCfg.extract_config(experiment_configuration_file_path, logger=self.logger, overwritten_table_name=table_name)
 
         self.use_codecarbon = use_codecarbon
 
@@ -105,12 +109,6 @@ class PyExperimenter:
 
         self.database_credential_file_path = database_credential_file_path
 
-        # If use_ssh_tunnel is not None, the decision is based on the given kwarg
-        if use_ssh_tunnel is not None:
-            self.config.database_configuration.use_ssh_tunnel = use_ssh_tunnel
-
-        if table_name is not None:
-            self.config.database_configuration.table_name = table_name
         if database_name is not None:
             self.config.database_configuration.database_name = database_name
         self.name = name
@@ -127,15 +125,6 @@ class PyExperimenter:
             raise ValueError("The provider indicated in the config file is not supported")
 
         self.logger.info("Initialized and connected to database")
-
-    def close_ssh(self) -> None:
-        """
-        Closes the ssh tunnel if it is used.
-        """
-        if self.config.database_configuration.provider == "mysql":
-            self.db_connector.close_ssh_tunnel()
-        else:
-            self.logger.warning("No ssh tunnel to close")
 
     def fill_table_from_combination(self, fixed_parameter_combinations: List[dict] = None, parameters: dict = None) -> None:
         """
@@ -380,7 +369,7 @@ class PyExperimenter:
                 break
 
     def _execution_wrapper(
-        self, experiment_function: Callable[[Dict, Dict, ResultProcessor], Optional[ExperimentStatus]], random_order: bool
+        self, experiment_function: Callable[[Dict, ResultProcessor, Dict], Optional[ExperimentStatus]], random_order: bool
     ) -> None:
         """
         Executes the given `experiment_function` on one open experiment. To that end, one of the open experiments is pulled
@@ -399,7 +388,7 @@ class PyExperimenter:
         and do not appear in the table. Additionally errors due to returning `ExperimentStatus.ERROR` are not logged.
 
         :param experiment_function: The function that should be executed with the different parametrizations.
-        :type experiment_function: Callable[[dict, dict, ResultProcessor], None]
+        :type experiment_function: Callable[[dict, ResultProcessor, dict], None]
         :param random_order: If True, the order of the experiments is determined randomly. Defaults to False.
         :type random_order: bool
         :raises NoExperimentsLeftError: If there are no experiments left to be executed.
@@ -409,7 +398,7 @@ class PyExperimenter:
         self._execute_experiment(experiment_id, keyfield_values, experiment_function)
 
     def _execute_experiment(self, experiment_id, keyfield_values, experiment_function):
-        result_processor = ResultProcessor(self.config.database_configuration, self.db_connector, experiment_id=experiment_id, logger=self.logger)
+        result_processor = ResultProcessor(self.config.database_configuration, self.db_connector, experiment_id=experiment_id, logger=self.logger, stagger_logging=self.stagger_logging, log_every_n_seconds=self.log_every_n_seconds)
         result_processor._set_name(self.name)
         result_processor._set_machine(socket.gethostname())
 
@@ -451,6 +440,7 @@ class PyExperimenter:
                 tracker.stop()
                 emission_data = tracker._prepare_emissions_data().values
                 result_processor._write_emissions(emission_data, self.codecarbon_offline_mode)
+                result_processor.write_logs(force_write=True)
 
     def _write_codecarbon_config(self) -> None:
         """ "
@@ -494,16 +484,20 @@ class PyExperimenter:
         """
         self.db_connector.delete_table()
 
-    def get_table(self) -> pd.DataFrame:
+    def get_table(self, condition:Optional[str] = None) -> pd.DataFrame:
         """
         Returns the database table as `Pandas.DataFrame`.
+
+        :param condition: The condition to filter the table in sql syntax. The condition is added as a where clause.
+          If None, the whole table is returned.
+        :type condition: str
 
         :return: The database table as `Pandas.DataFrame`.
         :rtype: pd.DataFrame
         """
         return self.db_connector.get_table()
 
-    def get_logtable(self, logtable_name: str) -> pd.DataFrame:
+    def get_logtable(self, logtable_name: str, condition:Optional[str] = None) -> pd.DataFrame:
         """
         Returns the log table as `Pandas.DataFrame`.
 
@@ -512,7 +506,7 @@ class PyExperimenter:
         :return: The log table as `Pandas.DataFrame`.
         :rtype: pd.DataFrame
         """
-        return self.db_connector.get_logtable(logtable_name)
+        return self.db_connector.get_logtable(logtable_name, condition)
 
     def get_codecarbon_table(self) -> pd.DataFrame:
         """
