@@ -114,6 +114,16 @@
              
   <section id="module-py_experimenter.database_connector">
 <span id="py-experimenter-database-connector"></span><h1>py_experimenter.database_connector<a class="headerlink" href="#module-py_experimenter.database_connector" title="Permalink to this heading"></a></h1>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.database_connector.FLOAT_RELATIVE_TOLERANCE" title="py_experimenter.database_connector.FLOAT_RELATIVE_TOLERANCE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FLOAT_RELATIVE_TOLERANCE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
@@ -124,8 +134,42 @@
 </tbody>
 </table>
 </section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#py_experimenter.database_connector._combinations_are_equal" title="py_experimenter.database_connector._combinations_are_equal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_combinations_are_equal</span></code></a>(→ bool)</p></td>
+<td><p>Check if two experiment combinations (keyfield dicts) are equal,</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#py_experimenter.database_connector._values_are_equal" title="py_experimenter.database_connector._values_are_equal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_values_are_equal</span></code></a>(→ bool)</p></td>
+<td><p>Check if two values are equal, with tolerance for floating-point</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="py_experimenter.database_connector.FLOAT_RELATIVE_TOLERANCE">
+<span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">FLOAT_RELATIVE_TOLERANCE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1e-06</span></em><a class="headerlink" href="#py_experimenter.database_connector.FLOAT_RELATIVE_TOLERANCE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="py_experimenter.database_connector._combinations_are_equal">
+<span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">_combinations_are_equal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">combination_a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">combination_b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#py_experimenter.database_connector._combinations_are_equal" title="Permalink to this definition"></a></dt>
+<dd><p>Check if two experiment combinations (keyfield dicts) are equal,
+handling floating-point precision differences caused by database
+storage (e.g. MySQL FLOAT is 4-byte single precision, which loses
+precision compared to Python’s 8-byte float).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="py_experimenter.database_connector._values_are_equal">
+<span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">_values_are_equal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value_a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#py_experimenter.database_connector._values_are_equal" title="Permalink to this definition"></a></dt>
+<dd><p>Check if two values are equal, with tolerance for floating-point
+precision differences. Falls back to exact equality for non-numeric types.</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="py_experimenter.database_connector.DatabaseConnector">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">py_experimenter.database_connector.</span></span><span class="sig-name descname"><span class="pre">DatabaseConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database_configuration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../config/index.html#py_experimenter.config.DatabaseCfg" title="py_experimenter.config.DatabaseCfg"><span class="pre">py_experimenter.config.DatabaseCfg</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_codecarbon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#py_experimenter.database_connector.DatabaseConnector" title="Permalink to this definition"></a></dt>

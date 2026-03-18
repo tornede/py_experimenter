@@ -4,6 +4,14 @@ py_experimenter.database_connector
 .. py:module:: py_experimenter.database_connector
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   py_experimenter.database_connector.FLOAT_RELATIVE_TOLERANCE
+
+
 Classes
 -------
 
@@ -12,8 +20,35 @@ Classes
    py_experimenter.database_connector.DatabaseConnector
 
 
+Functions
+---------
+
+.. autoapisummary::
+
+   py_experimenter.database_connector._combinations_are_equal
+   py_experimenter.database_connector._values_are_equal
+
+
 Module Contents
 ---------------
+
+.. py:data:: FLOAT_RELATIVE_TOLERANCE
+   :value: 1e-06
+
+
+.. py:function:: _combinations_are_equal(combination_a: Dict[str, Any], combination_b: Dict[str, Any]) -> bool
+
+   Check if two experiment combinations (keyfield dicts) are equal,
+   handling floating-point precision differences caused by database
+   storage (e.g. MySQL FLOAT is 4-byte single precision, which loses
+   precision compared to Python's 8-byte float).
+
+
+.. py:function:: _values_are_equal(value_a: Any, value_b: Any) -> bool
+
+   Check if two values are equal, with tolerance for floating-point
+   precision differences. Falls back to exact equality for non-numeric types.
+
 
 .. py:class:: DatabaseConnector(database_configuration: py_experimenter.config.DatabaseCfg, use_codecarbon: bool, logger: logging.Logger)
 
