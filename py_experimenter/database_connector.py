@@ -1,8 +1,9 @@
 import abc
 import logging
+import math
 from functools import reduce
 from operator import concat
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
 import pandas as pd
 
@@ -19,39 +20,50 @@ from py_experimenter.exceptions import (
 from py_experimenter.experiment_status import ExperimentStatus
 
 FLOAT_RELATIVE_TOLERANCE = 1e-6
+_FLOAT_DTYPE_PREFIXES = ("float", "double", "decimal", "numeric", "real")
 
 
-def _combinations_are_equal(combination_a: Dict[str, Any], combination_b: Dict[str, Any]) -> bool:
+def _is_float_dtype(dtype: str) -> bool:
+    return isinstance(dtype, str) and dtype.strip().lower().startswith(_FLOAT_DTYPE_PREFIXES)
+
+
+def _combinations_are_equal(combination_a: Dict[str, Any], combination_b: Dict[str, Any], float_keys: Iterable[str] = ()) -> bool:
     """
-    Check if two experiment combinations (keyfield dicts) are equal,
-    handling floating-point precision differences caused by database
+    Check if two experiment combinations (keyfield dicts) are equal.
+    Keyfields declared with a floating-point dtype (`float_keys`) are compared
+    with tolerance, to account for precision differences caused by database
     storage (e.g. MySQL FLOAT is 4-byte single precision, which loses
-    precision compared to Python's 8-byte float).
+    precision compared to Python's 8-byte float). All other keyfields are
+    compared exactly, so distinct integers/strings are never merged.
     """
     if set(combination_a.keys()) != set(combination_b.keys()):
         return False
+    float_keys = set(float_keys)
     for key in combination_a:
-        if not _values_are_equal(combination_a[key], combination_b[key]):
+        if not _values_are_equal(combination_a[key], combination_b[key], use_tolerance=key in float_keys):
             return False
     return True
 
 
-def _values_are_equal(value_a: Any, value_b: Any) -> bool:
+def _values_are_equal(value_a: Any, value_b: Any, use_tolerance: bool = False) -> bool:
     """
-    Check if two values are equal, with tolerance for floating-point
-    precision differences. Falls back to exact equality for non-numeric types.
+    Check if two values are equal. When `use_tolerance` is set (i.e. the
+    keyfield is declared as a floating-point dtype), falls back to a
+    relative-tolerance comparison for floating-point precision differences,
+    treating two NaNs as equal. Otherwise requires exact equality.
     """
     if value_a == value_b:
         return True
+    if not use_tolerance:
+        return False
     try:
         float_a = float(value_a)
         float_b = float(value_b)
-    except (TypeError, ValueError):
+    except (TypeError, ValueError, OverflowError):
         return False
-    max_abs = max(abs(float_a), abs(float_b))
-    if max_abs == 0:
+    if math.isnan(float_a) and math.isnan(float_b):
         return True
-    return abs(float_a - float_b) / max_abs < FLOAT_RELATIVE_TOLERANCE
+    return math.isclose(float_a, float_b, rel_tol=FLOAT_RELATIVE_TOLERANCE)
 
 
 class DatabaseConnector(abc.ABC):
@@ -256,8 +268,9 @@ class DatabaseConnector(abc.ABC):
         return combination
 
     def _check_combination_in_existing_rows(self, combination, existing_rows) -> bool:
+        float_keys = {name for name, keyfield in self.database_configuration.keyfields.items() if _is_float_dtype(keyfield.dtype)}
         for existing_row in existing_rows:
-            if _combinations_are_equal(combination, existing_row):
+            if _combinations_are_equal(combination, existing_row, float_keys):
                 return True
         return False
 

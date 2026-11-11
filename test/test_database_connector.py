@@ -1,18 +1,24 @@
 import datetime
 import logging
 import os
+import types
 
 import pytest
 from mock import patch
 from omegaconf import OmegaConf
 
 from py_experimenter import database_connector, database_connector_lite, database_connector_mysql, utils
-from py_experimenter.config import DatabaseCfg
+from py_experimenter.config import DatabaseCfg, Keyfield
 from py_experimenter.database_connector import DatabaseConnector, _combinations_are_equal, _values_are_equal
 from py_experimenter.database_connector_lite import DatabaseConnectorLITE
 from py_experimenter.database_connector_mysql import DatabaseConnectorMYSQL
 from py_experimenter.experiment_status import ExperimentStatus
 from py_experimenter.experimenter import PyExperimenter
+
+
+def _fake_connector(keyfield_dtypes):
+    keyfields = {name: Keyfield(name=name, dtype=dtype, values=[]) for name, dtype in keyfield_dtypes.items()}
+    return types.SimpleNamespace(database_configuration=types.SimpleNamespace(keyfields=keyfields))
 
 CONFIG_PATH = os.path.join("test", "test_config_files", "load_config_test_file", "sqlite_test_file.yml")
 CREDENTIAL_PATH = os.path.join("test", "test_config_files", "load_config_test_file", "mysql_fake_credentials.cfg")
@@ -36,61 +42,92 @@ def test_constructor(test_connetion_mock):
 
 
 @pytest.mark.parametrize(
-    "combination, existing_rows, result",
+    "keyfield_dtypes, combination, existing_rows, result",
     [
-        ({"value": 1, "exponent": 2}, [{"value": 1, "exponent": 2}], True),
-        ({"value": 1, "exponent": 2}, [], False),
-        ({"value": 3, "exponent": 4}, [{"value": 1, "exponent": 2}, {"value": 3, "exponent": 4}], True),
-        ({"value": 1, "exponent": 4}, [{"value": 1, "exponent": 2}, {"value": 3, "exponent": 4}], False),
-        ({"value": 1}, [{"value": 1}], True),
-        ({"value": 1}, [{"value": 2}], False),
-        # MySQL FLOAT (4-byte) precision loss: 0.7 stored as ~0.699999988079071
-        ({"temperature": 0.7}, [{"temperature": 0.699999988079071}], True),
-        ({"temperature": 0.7, "seed": 42}, [{"temperature": 0.699999988079071, "seed": 42}], True),
+        ({"value": "INT", "exponent": "INT"}, {"value": 1, "exponent": 2}, [{"value": 1, "exponent": 2}], True),
+        ({"value": "INT", "exponent": "INT"}, {"value": 1, "exponent": 2}, [], False),
+        (
+            {"value": "INT", "exponent": "INT"},
+            {"value": 3, "exponent": 4},
+            [{"value": 1, "exponent": 2}, {"value": 3, "exponent": 4}],
+            True,
+        ),
+        (
+            {"value": "INT", "exponent": "INT"},
+            {"value": 1, "exponent": 4},
+            [{"value": 1, "exponent": 2}, {"value": 3, "exponent": 4}],
+            False,
+        ),
+        ({"value": "INT"}, {"value": 1}, [{"value": 1}], True),
+        ({"value": "INT"}, {"value": 1}, [{"value": 2}], False),
+        # MySQL FLOAT (4-byte) precision loss: 0.7 stored as ~0.699999988079071 -- only tolerated for float-dtype keyfields
+        ({"temperature": "FLOAT"}, {"temperature": 0.7}, [{"temperature": 0.699999988079071}], True),
+        (
+            {"temperature": "FLOAT", "seed": "INT"},
+            {"temperature": 0.7, "seed": 42},
+            [{"temperature": 0.699999988079071, "seed": 42}],
+            True,
+        ),
         # Values that are actually different should not match
-        ({"temperature": 0.7}, [{"temperature": 0.8}], False),
-        # Boolean vs int (MySQL BOOLEAN returns as 0/1)
-        ({"flag": True}, [{"flag": 1}], True),
-        ({"flag": False}, [{"flag": 0}], True),
+        ({"temperature": "FLOAT"}, {"temperature": 0.7}, [{"temperature": 0.8}], False),
+        # Boolean vs int (MySQL BOOLEAN returns as 0/1) -- exact equality already covers this, no tolerance needed
+        ({"flag": "BOOLEAN"}, {"flag": True}, [{"flag": 1}], True),
+        ({"flag": "BOOLEAN"}, {"flag": False}, [{"flag": 0}], True),
+        # Large, distinct INT keyfields must never collapse via float tolerance
+        ({"seed": "INT"}, {"seed": 1_000_000_000}, [{"seed": 1_000_000_001}], False),
+        # Numeric-looking VARCHAR keyfields are compared exactly, never coerced to float
+        ({"id": "VARCHAR(50)"}, {"id": "01"}, [{"id": "1"}], False),
+        # NaN is a legitimate sentinel for float keyfields and must be recognized as a duplicate
+        ({"param": "FLOAT"}, {"param": float("nan")}, [{"param": float("nan")}], True),
+        # Huge ints on a non-float keyfield must not raise, just compare exactly
+        ({"seed": "INT"}, {"seed": 10**400}, [{"seed": 10**400 + 1}], False),
     ],
 )
-def test_check_combination_in_existing_rows(combination, existing_rows, result):
-    assert result == DatabaseConnector._check_combination_in_existing_rows(None, combination, existing_rows)
+def test_check_combination_in_existing_rows(keyfield_dtypes, combination, existing_rows, result):
+    connector = _fake_connector(keyfield_dtypes)
+    assert result == DatabaseConnector._check_combination_in_existing_rows(connector, combination, existing_rows)
 
 
 @pytest.mark.parametrize(
-    "value_a, value_b, expected",
+    "value_a, value_b, use_tolerance, expected",
     [
-        (0.7, 0.699999988079071, True),
-        (0.5, 0.5, True),
-        (1.0, 1.0000000001, True),
-        (0.7, 0.8, False),
-        (0, 0, True),
-        (0.0, 0, True),
-        (42, 42, True),
-        (42, 43, False),
-        ("hello", "hello", True),
-        ("hello", "world", False),
-        (None, None, True),
-        (None, 1, False),
-        (True, 1, True),
-        (False, 0, True),
+        (0.7, 0.699999988079071, True, True),
+        (0.7, 0.699999988079071, False, False),
+        (0.5, 0.5, False, True),
+        (1.0, 1.0000000001, True, True),
+        (0.7, 0.8, True, False),
+        (0, 0, False, True),
+        (0.0, 0, False, True),
+        (42, 42, False, True),
+        (42, 43, False, False),
+        ("hello", "hello", False, True),
+        ("hello", "world", False, False),
+        (None, None, False, True),
+        (None, 1, False, False),
+        (True, 1, False, True),
+        (False, 0, False, True),
+        (float("nan"), float("nan"), True, True),
+        (float("nan"), float("nan"), False, False),
+        (10**400, 10**400 + 1, False, False),
+        ("01", 1, False, False),
     ],
 )
-def test_values_are_equal(value_a, value_b, expected):
-    assert _values_are_equal(value_a, value_b) == expected
+def test_values_are_equal(value_a, value_b, use_tolerance, expected):
+    assert _values_are_equal(value_a, value_b, use_tolerance) == expected
 
 
 @pytest.mark.parametrize(
-    "combination_a, combination_b, expected",
+    "combination_a, combination_b, float_keys, expected",
     [
-        ({"a": 1, "b": 0.7}, {"a": 1, "b": 0.699999988079071}, True),
-        ({"a": 1, "b": 0.7}, {"a": 1, "b": 0.8}, False),
-        ({"a": 1}, {"a": 1, "b": 2}, False),
+        ({"a": 1, "b": 0.7}, {"a": 1, "b": 0.699999988079071}, {"b"}, True),
+        ({"a": 1, "b": 0.7}, {"a": 1, "b": 0.699999988079071}, set(), False),
+        ({"a": 1, "b": 0.7}, {"a": 1, "b": 0.8}, {"b"}, False),
+        ({"a": 1}, {"a": 1, "b": 2}, {"b"}, False),
+        ({"a": 1_000_000_000}, {"a": 1_000_000_001}, set(), False),
     ],
 )
-def test_combinations_are_equal(combination_a, combination_b, expected):
-    assert _combinations_are_equal(combination_a, combination_b) == expected
+def test_combinations_are_equal(combination_a, combination_b, float_keys, expected):
+    assert _combinations_are_equal(combination_a, combination_b, float_keys) == expected
 
 
 @pytest.fixture
