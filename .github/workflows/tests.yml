@@ -16,30 +16,14 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        id: setup-python
-        uses: actions/setup-python@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: 1.8.5
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v3
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-      - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
-      - name: Install package
-        run: poetry install --no-interaction
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+      - name: Install dependencies and package
+        run: uv sync --locked --python ${{ matrix.python-version }}
       - name: Run tests
         run: |
-          source $VENV
           # Ignore the MySQL test, as it requires a MySQL server:
-          pytest --ignore=test/test_run_experiments/test_run_mysql_experiment.py --ignore=test/test_logtables/test_mysql.py --ignore=test/test_run_experiments/test_run_mysql_experiment.py --ignore=test/test_codecarbon/test_codecarbon_core_functions_mysql.py --ignore=test/test_codecarbon/test_integration_mysql.py
+          uv run pytest --ignore=test/test_run_experiments/test_run_mysql_experiment.py --ignore=test/test_logtables/test_mysql.py --ignore=test/test_run_experiments/test_run_mysql_experiment.py --ignore=test/test_codecarbon/test_codecarbon_core_functions_mysql.py --ignore=test/test_codecarbon/test_integration_mysql.py

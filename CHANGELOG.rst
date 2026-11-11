@@ -15,6 +15,12 @@ Fix
 
 - Fix bug, where the logtable_name was not overwritten by `table_name` updates in the `PyExperimenter` class.
 
+Other
+-----
+
+- Replaced Poetry with uv for dependency management, building, and publishing (``pyproject.toml`` now uses standard PEP 621 metadata and ``uv.lock`` replaces ``poetry.lock``).
+- Updated the GitHub test workflow and the developer documentation accordingly.
+
 v1.4.2 (12.06.2024)
 ===================
 
