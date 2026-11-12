@@ -11,8 +11,9 @@ Feature
 - Allow condition for experimenter.get_table() and experimenter.get_logtable()
 
 Fix
-===
+---
 
+- Fixed writing CodeCarbon emissions with ``codecarbon>=3.0``.
 - Fixed missing ``attrs`` dependency.
 - Fixed experiments being executed multiple times with SQLite and ``n_jobs > 1``.
 - Fix bug, where the logtable_name was not overwritten by `table_name` updates in the `PyExperimenter` class.
@@ -20,8 +21,10 @@ Fix
 Other
 -----
 
-- Replaced Poetry with uv for dependency management, building, and publishing (``pyproject.toml`` now uses standard PEP 621 metadata and ``uv.lock`` replaces ``poetry.lock``).
-- Updated the GitHub test workflow and the developer documentation accordingly.
+- Replaced Poetry with uv.
+- Updated all dependencies and removed unnecessary upper bounds.
+- **Breaking:** Requires Python 3.10+, ``codecarbon>=3.0``, ``numpy>=1.26`` and ``pandas>=2.0``.
+- Removed ``jupyterlab`` and ``setuptools`` from the core dependencies.
 
 v1.4.2 (12.06.2024)
 ===================

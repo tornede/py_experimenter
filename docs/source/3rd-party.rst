@@ -37,13 +37,13 @@ You can add a new core dependency that is needed to use ``PyExperimenter`` using
         # or
         uv add "<package_name>>=<version>"
 
-A development dependency can be added using the following command, which will add the latest or the given version of the package to the ``dev`` dependency group:
+Development dependencies are organized in dependency groups: ``test`` contains everything needed to run the unit tests, ``docs`` everything needed to build the documentation, and ``dev`` includes both of them plus further tools (e.g. ``jupyterlab``). ``uv sync`` installs the ``dev`` group by default. A development dependency can be added to one of these groups using the following command, which will add the latest or the given version of the package:
 
 .. code-block::
 
-        uv add --dev <package_name>
+        uv add --group <test/docs/dev> <package_name>
         # or
-        uv add --dev "<package_name>>=<version>"
+        uv add --group <test/docs/dev> "<package_name>>=<version>"
 
 The ``uv.lock`` file will be updated automatically, when doing so. Therefore, ``uv`` tries to resolve the dependencies. If needed dependencies will be updated. If you want to update the ``uv.lock`` file manually (resolve dependencies with the most current library versions), you can use the following command:
 

@@ -40,7 +40,7 @@ First, check whether the project is ready for publication on `Test PyPi <testpyp
 
   .. code-block::
 
-    uv venv pyexperimenter-release --python 3.9
+    uv venv pyexperimenter-release --python 3.10
     source pyexperimenter-release/bin/activate
     uv pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple --index-strategy unsafe-best-match py-experimenter==<VERSION>
 

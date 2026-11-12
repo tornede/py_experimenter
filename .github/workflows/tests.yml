@@ -8,7 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ "ubuntu-latest", "macos-latest", "windows-latest" ]
-        python-version: ["3.9", "3.10" ]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
     defaults:
       run:
         shell: bash
@@ -22,7 +22,8 @@ jobs:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
       - name: Install dependencies and package
-        run: uv sync --locked --python ${{ matrix.python-version }}
+        # Only install the test dependencies, so that missing core dependencies are not hidden by dev dependencies
+        run: uv sync --locked --no-default-groups --group test --python ${{ matrix.python-version }}
       - name: Run tests
         run: |
           # Ignore the MySQL test, as it requires a MySQL server:
