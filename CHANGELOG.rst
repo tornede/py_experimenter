@@ -13,6 +13,7 @@ Feature
 Fix
 ===
 
+- Fixed missing ``attrs`` dependency.
 - Fix bug, where the logtable_name was not overwritten by `table_name` updates in the `PyExperimenter` class.
 
 Other
