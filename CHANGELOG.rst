@@ -14,6 +14,7 @@ Fix
 ===
 
 - Fixed missing ``attrs`` dependency.
+- Fixed experiments being executed multiple times with SQLite and ``n_jobs > 1``.
 - Fix bug, where the logtable_name was not overwritten by `table_name` updates in the `PyExperimenter` class.
 
 Other

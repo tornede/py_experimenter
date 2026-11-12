@@ -199,3 +199,29 @@ def test_add_and_execute(boolean_experimenter: PyExperimenter):
     )
     assert boolean_experimenter.get_table().shape[0] == 1
     assert boolean_experimenter.get_table().iloc[0]["value"] == 1
+
+
+def log_execution_function(keyfields: dict, result_processor: ResultProcessor, custom_fields: dict):
+    # Every execution of an experiment writes exactly one row to the logtable, so that executing an experiment
+    # multiple times is detectable (the status of the experiment would still be `done` only once)
+    result_processor.process_logs({"executions": {"value": keyfields["value"]}})
+    result_processor.process_results({"sin": sin(keyfields["value"]) ** keyfields["exponent"]})
+
+
+def test_no_experiment_double_execution():
+    experimenter = PyExperimenter(
+        experiment_configuration_file_path=os.path.join("test", "test_run_experiments", "test_run_sqlite_double_execution_config.yml"),
+        use_codecarbon=False,
+    )
+    experimenter.delete_table()
+    experimenter.fill_table_from_config()
+
+    experimenter.execute(log_execution_function, max_experiments=-1)
+
+    table = experimenter.get_table()
+    assert len(table) == 30
+    assert (table["status"] == "done").all()
+
+    executions = experimenter.get_logtable("executions")
+    assert sorted(executions["experiment_id"].tolist()) == list(range(1, 31))
+    experimenter.delete_table()
