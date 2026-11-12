@@ -1,54 +1,71 @@
-[tool.poetry]
+[project]
 name = "py-experimenter"
 version = "1.4.2"
 description = "The PyExperimenter is a tool for the automatic execution of experiments, e.g. for machine learning (ML), capturing corresponding results in a unified manner in a database."
 authors = [
-    "Tanja Tornede <t.tornede@ai.uni-hannover.de>",
-    "Alexander Tornede <a.tornede@ai.uni-hannover.de>",
-    "Lukas Fehring <lukas.fehring@stud.uni-hannover.de>",
-    "Lukas Gehring",
-    "Helena Graf <h.graf@ai.uni-hannover.de>",
-    "Jonas Hanselle <jonas.hanselle@upb.de>",
-    "Marcel Wever <marcel.wever@ifi.lmu.de>",
-    "Felix Mohr <felix.mohr@unisabana.edu.co>"
+    { name = "Tanja Tornede", email = "t.tornede@ai.uni-hannover.de" },
+    { name = "Alexander Tornede", email = "a.tornede@ai.uni-hannover.de" },
+    { name = "Lukas Fehring", email = "lukas.fehring@stud.uni-hannover.de" },
+    { name = "Lukas Gehring" },
+    { name = "Helena Graf", email = "h.graf@ai.uni-hannover.de" },
+    { name = "Jonas Hanselle", email = "jonas.hanselle@upb.de" },
+    { name = "Marcel Wever", email = "marcel.wever@ifi.lmu.de" },
+    { name = "Felix Mohr", email = "felix.mohr@unisabana.edu.co" },
 ]
-license = "MIT"
+license = { text = "MIT" }
 readme = "README.md"
-documentation = "https://tornede.github.io/py_experimenter/"
-repository = "https://github.com/tornede/py_experimenter"
-packages = [{include = "py_experimenter"}]
+requires-python = ">=3.10"
 keywords = ["python", "experiments", "database", "executor"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9"
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.0",
+    "joblib>=1.2.0",
+    "codecarbon>=3.0",
+    "pymysql>=1.0.3",
+    "omegaconf>=2.3.0",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-numpy = ">=1.15"
-pandas = ">=1.0"
-jupyterlab = "^3.5.0"
-joblib = "^1.2.0"
-codecarbon = ">=2.2.1"
-pymysql = "^1.0.3"
-omegaconf = "^2.3.0"
-setuptools = "^69.5.1"
+[project.urls]
+Documentation = "https://tornede.github.io/py_experimenter/"
+Repository = "https://github.com/tornede/py_experimenter"
 
-[tool.poetry.group.dev.dependencies]
-pytest = ">=7.0"
-mock = ">=4.0"
-sphinx = ">=5.0"
-nbsphinx = "^0.8.9"
-sphinx-gallery = "^0.11.1"
-sphinx-autoapi = ">=2.0.0"
-sphinx-rtd-theme = ">=1.0.0"
-recommonmark = "^0.7.1"
-freezegun = "^1.2.2"
+[dependency-groups]
+test = [
+    "pytest>=7.0",
+    "mock>=4.0",
+    "freezegun>=1.2.2",
+]
+docs = [
+    "sphinx>=5.0",
+    "nbsphinx>=0.9",
+    "sphinx-gallery>=0.11.1",
+    "sphinx-autoapi>=2.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+    "recommonmark>=0.7.1",
+]
+dev = [
+    { include-group = "test" },
+    { include-group = "docs" },
+    "jupyterlab>=4.0",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["py_experimenter"]
+
+[tool.hatch.build.targets.sdist]
+include = ["py_experimenter", "README.md", "LICENSE", "CHANGELOG.rst"]

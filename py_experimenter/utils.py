@@ -36,6 +36,41 @@ def write_codecarbon_config(codecarbon_config: DictConfig):
     with open(".codecarbon.config", "w") as f:
         configparser.write(f)
 
+CODECARBON_COLUMN_TO_FIELD = {
+    "codecarbon_timestamp": "timestamp",
+    "project_name": "project_name",
+    "run_id": "run_id",
+    "duration_seconds": "duration",
+    "emissions_kg": "emissions",
+    "emissions_rate_kg_sec": "emissions_rate",
+    "cpu_power_watt": "cpu_power",
+    "gpu_power_watt": "gpu_power",
+    "ram_power_watt": "ram_power",
+    "cpu_energy_kw": "cpu_energy",
+    "gpu_energy_kw": "gpu_energy",
+    "ram_energy_kw": "ram_energy",
+    "energy_consumed_kw": "energy_consumed",
+    "country_name": "country_name",
+    "country_iso_code": "country_iso_code",
+    "region": "region",
+    "cloud_provider": "cloud_provider",
+    "cloud_region": "cloud_region",
+    "os": "os",
+    "python_version": "python_version",
+    "codecarbon_version": "codecarbon_version",
+    "cpu_count": "cpu_count",
+    "cpu_model": "cpu_model",
+    "gpu_count": "gpu_count",
+    "gpu_model": "gpu_model",
+    "longitude": "longitude",
+    "latitude": "latitude",
+    "ram_total_size": "ram_total_size",
+    "tracking_mode": "tracking_mode",
+    "on_cloud": "on_cloud",
+    "power_usage_efficiency": "pue",
+    "offline_mode": None,
+}
+
 
 def extract_codecarbon_columns() -> Dict[str, str]:
     return dict(

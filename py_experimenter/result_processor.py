@@ -4,8 +4,6 @@ from configparser import ConfigParser
 from copy import deepcopy
 from typing import Dict, List, Tuple
 
-from codecarbon.output import EmissionsData
-
 import py_experimenter.utils as utils
 from py_experimenter.config import CodeCarbonCfg, DatabaseCfg
 from py_experimenter.database_connector import DatabaseConnector
@@ -60,16 +58,24 @@ class ResultProcessor:
 
         self.db_connector.update_database(self.database_config.table_name, values=results, condition=self.experiment_id_condition)
 
-    def _write_emissions(self, emission_data: EmissionsData, offline_mode: bool) -> None:
-        emission_data["offline_mode"] = offline_mode
-        emission_data["experiment_id"] = self.experiment_id
+    def _write_emissions(self, emission_data: Dict[str, object], offline_mode: bool) -> None:
+        """
+        Writes the emissions measured by codecarbon to the codecarbon table.
 
+        :param emission_data: The fields of codecarbon's `EmissionsData` (e.g. `EmissionsData.values`).
+        :param offline_mode: Whether codecarbon was used in offline mode.
+        """
         keys = list(utils.extract_codecarbon_columns().keys())
+        values = []
+        for column in keys:
+            if column == "offline_mode":
+                value = offline_mode
+            else:
+                value = emission_data.get(utils.CODECARBON_COLUMN_TO_FIELD[column])
+            values.append(None if value == "" else value)
 
-        # Add experiment_id to keys
         keys.append("experiment_id")
-        values = emission_data.values()
-        values = [value if not value == "" else None for value in values]
+        values.append(self.experiment_id)
         statement = self.db_connector.prepare_write_query(f"{self.database_config.table_name}_codecarbon", keys)
         self.db_connector.execute_queries([(statement, values)])
 

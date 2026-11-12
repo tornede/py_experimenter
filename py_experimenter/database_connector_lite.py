@@ -26,13 +26,16 @@ class DatabaseConnectorLITE(DatabaseConnector):
             raise DatabaseConnectionError(err)
 
     def _pull_open_experiment(self, random_order: bool) -> Tuple[int, List, List]:
-        with connect(f"{self.database_configuration.database_name}.db") as connection:
-            try:
-                cursor = self.cursor(connection)
-                experiment_id, description, values = self._select_open_experiments_from_db(connection, cursor, random_order)
-            except Exception as err:
-                connection.rollback()
-                raise err
+        connection = self.connect()
+        try:
+            cursor = self.cursor(connection)
+            self.execute(cursor, "BEGIN IMMEDIATE;")
+            experiment_id, description, values = self._select_open_experiments_from_db(connection, cursor, random_order)
+        except Exception as err:
+            connection.rollback()
+            raise err
+        finally:
+            self.close_connection(connection)
 
         return experiment_id, description, values
 

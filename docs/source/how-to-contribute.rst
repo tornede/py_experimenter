@@ -40,39 +40,36 @@ The development workflow for the ``PyExperimenter`` is based on the fork-and-bra
         git switch develop
         git checkout -b <feature_branch_name>
 
-5. Create an environment for the development, e.g. using `Anaconda <anaconda_>`_.
-
-   .. code-block:: 
-
-        conda create -n py-experimenter-env python=3.9 
-        conda activate py-experimenter-env
-
-6. Install the development dependencies using :ref:`poetry <use_poetry>`.
-   
-   .. code-block::
-
-        poetry install
-
-7. Make sure to install `pandoc` separately in your anaconda environment `as this article suggests <pandoc_installation_>`_.
+5. Install the package together with its development dependencies using :ref:`uv <use_uv>`. This automatically creates a virtual environment in ``.venv`` with a suitable Python version.
 
    .. code-block::
 
-        conda install pandoc
+        uv sync
 
-8. Check tests: Before working on any changes, please make sure that all unit tests are working correctly. Therefore, navigate into the git project folder and execute all unit tests.
+6. Make sure to install `pandoc` separately `as this article suggests <pandoc_installation_>`_, e.g. using your system package manager.
+
+   .. code-block::
+
+        # macOS
+        brew install pandoc
+        # Debian / Ubuntu
+        sudo apt install pandoc
+
+7. Check tests: Before working on any changes, please make sure that all unit tests are working correctly. Therefore, navigate into the git project folder and execute all unit tests.
    
    .. code-block:: 
 
-        pytest
+        uv run pytest
 
    .. note::
         In case some tests are not succeeding due to ``ValueError`` of ``numpy``, try to update that dependency manually and execute the tests again.
         
         .. code-block::
                 
-                pip install numpy --upgrade
+                uv lock --upgrade-package numpy
+                uv sync
 
-9.  Finally you can start working on the planned changes! At any time, you can push your changes to the ``origin`` remote.
+8.  Finally you can start working on the planned changes! At any time, you can push your changes to the ``origin`` remote.
    
    .. code-block:: 
 
@@ -127,7 +124,6 @@ Afterwards, go to the `PyExperimenter GitHub Pull Requests <github_py_experiment
 3. Reference the according issue you either created or have selected at the very beginning.
 
 
-.. _anaconda: https://docs.anaconda.com/anaconda/install/
 .. _fork_and_branch_workflow: https://blog.scottlowe.org/2015/01/27/using-fork-branch-git-workflow/
 .. _github_py_experimenter: https://github.com/tornede/py_experimenter/
 .. _github_py_experimenter_issues: https://github.com/tornede/py_experimenter/issues

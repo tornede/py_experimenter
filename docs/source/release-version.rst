@@ -11,21 +11,13 @@ Release Version
 Prepare Test PyPi / PyPi
 -------------------------
 
-1. Add repositories to poetry config.
+1. Get your access tokens from `Test PyPi <testpypi_token_>`_ and `PyPi <pypi_token_>`_, respectively.
 
-  .. code-block::
-    
-    poetry config repositories.test-pypi https://test.pypi.org/legacy/
-    # pypi is already known by poetry by default
-
-2. Get your access tokens from `Test PyPi <testpypi_token_>`_ and `PyPi <pypi_token_>`_, respectively.
-
-3. Store tokens using poetry config.
+2. Provide the token to ``uv publish``, either via the ``--token`` argument or via the ``UV_PUBLISH_TOKEN`` environment variable. Make sure to use the token matching the index you publish to.
 
   .. code-block::
 
-    poetry config pypi-token.test-pypi pypi-XXXXX...
-    poetry config pypi-token.pypi pypi-XXXXX...
+    export UV_PUBLISH_TOKEN=pypi-XXXXX...
 
 
 .. _contribute_release_testpypi:
@@ -40,17 +32,17 @@ First, check whether the project is ready for publication on `Test PyPi <testpyp
 
   .. code-block::
 
-    poetry version prerelease
-    poetry build
-    poetry publish -r test-pypi
+    uv version --bump patch --bump alpha
+    uv build
+    uv publish --publish-url https://test.pypi.org/legacy/ --token <TEST_PYPI_TOKEN>
     
-2. Create a new conda environment and install ``PyExperimenter`` from Test PyPi.
+2. Create a new, empty virtual environment outside of the repository and install ``PyExperimenter`` from Test PyPi.
 
   .. code-block::
 
-    conda create -n pyexperimenter-release python=3.9
-    conda activate pyexperimenter-release
-    pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple py-experimenter==<VERSION>
+    uv venv pyexperimenter-release --python 3.10
+    source pyexperimenter-release/bin/activate
+    uv pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple --index-strategy unsafe-best-match py-experimenter==<VERSION>
 
 3. Execute all example notebooks and check the outputs based on the new environment ``pyexperimenter-release``. If anything does not work, fix it and repeat the steps above.
 
@@ -69,7 +61,7 @@ Release Version to PyPi
 
   .. code-block::
 
-    poetry version <major/minor/patch>
+    uv version --bump <major/minor/patch>
 
 2. Create a pull request from ``develop`` to ``main`` and merge it (not squash merge).
 
@@ -81,8 +73,8 @@ Release Version to PyPi
 
   .. code-block::
 
-    poetry build
-    poetry publish
+    uv build
+    uv publish --token <PYPI_TOKEN>
 
 6. Check `PyPi version <pypi_pyexperimenter_>`_. 
    

@@ -18,9 +18,11 @@ Below is an example of a database credential file, that connects to a server wit
         Standard: 
           server: example.mysqlserver.com
 
-We additionally also support utilizing encrypted connections with (m)tls.  To that end, the following parameters can be added to the ``Standard`` section of the database credential file
+We additionally also support utilizing encrypted connections with (m)tls.  To that end, the following parameters can be added to the ``Standard`` section of the database credential file:
+
 - ``use_ssl``: a boolean value indicating whether to use ssl
 - ``ssl_params``: a dictionary containing the following keys:
+
   - ``ca``: the path to the ca certificate (optional, needed if the database server uses a custom ca certificate not trusted by the client)
   - ``cert``: the path to the user certificate (optional, needed in case of client authentication with mtls)
   - ``key``: the path to the user private key (optional, needed in case of client authentication with mtls)

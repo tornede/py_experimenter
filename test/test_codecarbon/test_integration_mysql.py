@@ -1,6 +1,8 @@
 import os
+import platform
 import random
 
+import codecarbon
 import numpy as np
 import pytest
 
@@ -67,3 +69,10 @@ def test_integration(experimenter: PyExperimenter):
     ]
     assert table.shape == (12, 34)
     assert set(table["experiment_id"]) == {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
+
+    # Check that the values are written to the correct columns (codecarbon fields are matched by name)
+    assert set(table["codecarbon_version"]) == {codecarbon.__version__}
+    assert set(table["python_version"]) == {platform.python_version()}
+    assert (table["duration_seconds"] > 0).all()
+    assert (table["emissions_kg"] >= 0).all()
+    assert (table["offline_mode"] == 0).all()

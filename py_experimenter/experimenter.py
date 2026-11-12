@@ -438,7 +438,7 @@ class PyExperimenter:
         finally:
             if self.use_codecarbon:
                 tracker.stop()
-                emission_data = tracker._prepare_emissions_data().values
+                emission_data = tracker.final_emissions_data.values
                 result_processor._write_emissions(emission_data, self.codecarbon_offline_mode)
                 result_processor.write_logs(force_write=True)
 

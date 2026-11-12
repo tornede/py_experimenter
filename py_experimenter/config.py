@@ -1,11 +1,11 @@
 import logging
 from abc import ABC, abstractclassmethod
+from dataclasses import dataclass
 from logging import Logger
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import omegaconf
-from attr import dataclass
 from omegaconf import DictConfig, ListConfig, OmegaConf
 
 from py_experimenter import utils
