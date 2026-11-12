@@ -103,21 +103,11 @@
 <section id="prepare-test-pypi-pypi">
 <span id="contribute-release-preparepypi"></span><h2>Prepare Test PyPi / PyPi<a class="headerlink" href="#prepare-test-pypi-pypi" title="Permalink to this heading"></a></h2>
 <ol class="arabic simple">
-<li><p>Add repositories to poetry config.</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">config</span> <span class="n">repositories</span><span class="o">.</span><span class="n">test</span><span class="o">-</span><span class="n">pypi</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">test</span><span class="o">.</span><span class="n">pypi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">legacy</span><span class="o">/</span>
-<span class="c1"># pypi is already known by poetry by default</span>
-</pre></div>
-</div>
-</div></blockquote>
-<ol class="arabic simple" start="2">
 <li><p>Get your access tokens from <a class="reference external" href="https://test.pypi.org/manage/account/token/">Test PyPi</a> and <a class="reference external" href="https://pypi.org/manage/account/token/">PyPi</a>, respectively.</p></li>
-<li><p>Store tokens using poetry config.</p></li>
+<li><p>Provide the token to <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">publish</span></code>, either via the <code class="docutils literal notranslate"><span class="pre">--token</span></code> argument or via the <code class="docutils literal notranslate"><span class="pre">UV_PUBLISH_TOKEN</span></code> environment variable. Make sure to use the token matching the index you publish to.</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">config</span> <span class="n">pypi</span><span class="o">-</span><span class="n">token</span><span class="o">.</span><span class="n">test</span><span class="o">-</span><span class="n">pypi</span> <span class="n">pypi</span><span class="o">-</span><span class="n">XXXXX</span><span class="o">...</span>
-<span class="n">poetry</span> <span class="n">config</span> <span class="n">pypi</span><span class="o">-</span><span class="n">token</span><span class="o">.</span><span class="n">pypi</span> <span class="n">pypi</span><span class="o">-</span><span class="n">XXXXX</span><span class="o">...</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">UV_PUBLISH_TOKEN</span><span class="o">=</span><span class="n">pypi</span><span class="o">-</span><span class="n">XXXXX</span><span class="o">...</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -129,19 +119,19 @@
 <li><p>Update version, build the project, and publish the project at Test PyPi.</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">version</span> <span class="n">prerelease</span>
-<span class="n">poetry</span> <span class="n">build</span>
-<span class="n">poetry</span> <span class="n">publish</span> <span class="o">-</span><span class="n">r</span> <span class="n">test</span><span class="o">-</span><span class="n">pypi</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uv</span> <span class="n">version</span> <span class="o">--</span><span class="n">bump</span> <span class="n">patch</span> <span class="o">--</span><span class="n">bump</span> <span class="n">alpha</span>
+<span class="n">uv</span> <span class="n">build</span>
+<span class="n">uv</span> <span class="n">publish</span> <span class="o">--</span><span class="n">publish</span><span class="o">-</span><span class="n">url</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">test</span><span class="o">.</span><span class="n">pypi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">legacy</span><span class="o">/</span> <span class="o">--</span><span class="n">token</span> <span class="o">&lt;</span><span class="n">TEST_PYPI_TOKEN</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </div></blockquote>
 <ol class="arabic simple" start="2">
-<li><p>Create a new conda environment and install <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> from Test PyPi.</p></li>
+<li><p>Create a new, empty virtual environment outside of the repository and install <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> from Test PyPi.</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">pyexperimenter</span><span class="o">-</span><span class="n">release</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.9</span>
-<span class="n">conda</span> <span class="n">activate</span> <span class="n">pyexperimenter</span><span class="o">-</span><span class="n">release</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">i</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">test</span><span class="o">.</span><span class="n">pypi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">simple</span><span class="o">/</span> <span class="o">--</span><span class="n">extra</span><span class="o">-</span><span class="n">index</span><span class="o">-</span><span class="n">url</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">simple</span> <span class="n">py</span><span class="o">-</span><span class="n">experimenter</span><span class="o">==&lt;</span><span class="n">VERSION</span><span class="o">&gt;</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uv</span> <span class="n">venv</span> <span class="n">pyexperimenter</span><span class="o">-</span><span class="n">release</span> <span class="o">--</span><span class="n">python</span> <span class="mf">3.10</span>
+<span class="n">source</span> <span class="n">pyexperimenter</span><span class="o">-</span><span class="n">release</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="n">uv</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">index</span><span class="o">-</span><span class="n">url</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">test</span><span class="o">.</span><span class="n">pypi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">simple</span><span class="o">/</span> <span class="o">--</span><span class="n">extra</span><span class="o">-</span><span class="n">index</span><span class="o">-</span><span class="n">url</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">simple</span> <span class="o">--</span><span class="n">index</span><span class="o">-</span><span class="n">strategy</span> <span class="n">unsafe</span><span class="o">-</span><span class="n">best</span><span class="o">-</span><span class="n">match</span> <span class="n">py</span><span class="o">-</span><span class="n">experimenter</span><span class="o">==&lt;</span><span class="n">VERSION</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -159,7 +149,7 @@
 <li><p>Update version and <a class="reference external" href="https://github.com/tornede/py_experimenter/blob/main/CHANGELOG.rst">add according CHANGELOG information</a>.</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">version</span> <span class="o">&lt;</span><span class="n">major</span><span class="o">/</span><span class="n">minor</span><span class="o">/</span><span class="n">patch</span><span class="o">&gt;</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uv</span> <span class="n">version</span> <span class="o">--</span><span class="n">bump</span> <span class="o">&lt;</span><span class="n">major</span><span class="o">/</span><span class="n">minor</span><span class="o">/</span><span class="n">patch</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -170,8 +160,8 @@
 <li><p>Build the project and publish the project at PyPi.</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">build</span>
-<span class="n">poetry</span> <span class="n">publish</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uv</span> <span class="n">build</span>
+<span class="n">uv</span> <span class="n">publish</span> <span class="o">--</span><span class="n">token</span> <span class="o">&lt;</span><span class="n">PYPI_TOKEN</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </div></blockquote>

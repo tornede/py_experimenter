@@ -126,30 +126,28 @@
 </pre></div>
 </div>
 </li>
-<li><p>Create an environment for the development, e.g. using <a class="reference external" href="https://docs.anaconda.com/anaconda/install/">Anaconda</a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">py</span><span class="o">-</span><span class="n">experimenter</span><span class="o">-</span><span class="n">env</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.9</span>
-<span class="n">conda</span> <span class="n">activate</span> <span class="n">py</span><span class="o">-</span><span class="n">experimenter</span><span class="o">-</span><span class="n">env</span>
+<li><p>Install the package together with its development dependencies using <a class="reference internal" href="3rd-party.html#use-uv"><span class="std std-ref">uv</span></a>. This automatically creates a virtual environment in <code class="docutils literal notranslate"><span class="pre">.venv</span></code> with a suitable Python version.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uv</span> <span class="n">sync</span>
 </pre></div>
 </div>
 </li>
-<li><p>Install the development dependencies using <a class="reference internal" href="3rd-party.html#use-poetry"><span class="std std-ref">poetry</span></a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">install</span>
-</pre></div>
-</div>
-</li>
-<li><p>Make sure to install <cite>pandoc</cite> separately in your anaconda environment <a class="reference external" href="https://stackoverflow.com/questions/62398231/building-docs-fails-due-to-missing-pandoc">as this article suggests</a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">pandoc</span>
+<li><p>Make sure to install <cite>pandoc</cite> separately <a class="reference external" href="https://stackoverflow.com/questions/62398231/building-docs-fails-due-to-missing-pandoc">as this article suggests</a>, e.g. using your system package manager.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># macOS</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="n">pandoc</span>
+<span class="c1"># Debian / Ubuntu</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">pandoc</span>
 </pre></div>
 </div>
 </li>
 <li><p>Check tests: Before working on any changes, please make sure that all unit tests are working correctly. Therefore, navigate into the git project folder and execute all unit tests.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uv</span> <span class="n">run</span> <span class="n">pytest</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In case some tests are not succeeding due to <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> of <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, try to update that dependency manually and execute the tests again.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span> <span class="o">--</span><span class="n">upgrade</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uv</span> <span class="n">lock</span> <span class="o">--</span><span class="n">upgrade</span><span class="o">-</span><span class="n">package</span> <span class="n">numpy</span>
+<span class="n">uv</span> <span class="n">sync</span>
 </pre></div>
 </div>
 </div>

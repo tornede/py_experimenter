@@ -191,8 +191,17 @@ want to write results to the database.
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.result_processor.ResultProcessor._write_emissions">
-<span class="sig-name descname"><span class="pre">_write_emissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emission_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">codecarbon.output.EmissionsData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offline_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor._write_emissions" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_write_emissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emission_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offline_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#py_experimenter.result_processor.ResultProcessor._write_emissions" title="Permalink to this definition"></a></dt>
+<dd><p>Writes the emissions measured by codecarbon to the codecarbon table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>emission_data</strong> – The fields of codecarbon’s <cite>EmissionsData</cite> (e.g. <cite>EmissionsData.values</cite>).</p></li>
+<li><p><strong>offline_mode</strong> – Whether codecarbon was used in offline mode.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="py_experimenter.result_processor.ResultProcessor._add_timestamps_to_results">

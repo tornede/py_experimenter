@@ -4,6 +4,14 @@ py_experimenter.utils
 .. py:module:: py_experimenter.utils
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   py_experimenter.utils.CODECARBON_COLUMN_TO_FIELD
+
+
 Functions
 ---------
 
@@ -27,6 +35,8 @@ Module Contents
 
 
 .. py:function:: write_codecarbon_config(codecarbon_config: omegaconf.DictConfig)
+
+.. py:data:: CODECARBON_COLUMN_TO_FIELD
 
 .. py:function:: extract_codecarbon_columns() -> Dict[str, str]
 

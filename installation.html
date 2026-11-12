@@ -95,66 +95,24 @@
              
   <section id="installation">
 <span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> package can be easily installed via PyPI:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">PyExperimenter</span></code> package requires Python 3.10 or newer and can be easily installed via PyPI:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">py</span><span class="o">-</span><span class="n">experimenter</span>
 </pre></div>
 </div>
 <p>Thereby, the following dependencies are automatically installed:</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[tool.poetry]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;py-experimenter&quot;</span>
-<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.4.2&quot;</span>
-<span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;The PyExperimenter is a tool for the automatic execution of experiments, e.g. for machine learning (ML), capturing corresponding results in a unified manner in a database.&quot;</span>
-<span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;Tanja Tornede &lt;t.tornede@ai.uni-hannover.de&gt;&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;Alexander Tornede &lt;a.tornede@ai.uni-hannover.de&gt;&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;Lukas Fehring &lt;lukas.fehring@stud.uni-hannover.de&gt;&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;Lukas Gehring&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;Helena Graf &lt;h.graf@ai.uni-hannover.de&gt;&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;Jonas Hanselle &lt;jonas.hanselle@upb.de&gt;&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;Marcel Wever &lt;marcel.wever@ifi.lmu.de&gt;&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;Felix Mohr &lt;felix.mohr@unisabana.edu.co&gt;&quot;</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;numpy&gt;=1.26&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pandas&gt;=2.0&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;joblib&gt;=1.2.0&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;codecarbon&gt;=3.0&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pymysql&gt;=1.0.3&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;omegaconf&gt;=2.3.0&quot;</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;MIT&quot;</span>
-<span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;README.md&quot;</span>
-<span class="n">documentation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://tornede.github.io/py_experimenter/&quot;</span>
-<span class="n">repository</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/tornede/py_experimenter&quot;</span>
-<span class="n">packages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[{</span><span class="n">include</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;py_experimenter&quot;</span><span class="p">}]</span>
-<span class="n">keywords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;python&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;experiments&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;database&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;executor&quot;</span><span class="p">]</span>
-<span class="n">classifiers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;Development Status :: 5 - Production/Stable&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;Intended Audience :: Developers&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;Intended Audience :: Science/Research&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;Topic :: Scientific/Engineering :: Artificial Intelligence&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;Programming Language :: Python :: 3.8&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;Programming Language :: Python :: 3.9&quot;</span>
-<span class="p">]</span>
-
-<span class="k">[tool.poetry.dependencies]</span>
-<span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^3.9&quot;</span>
-<span class="n">numpy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=1.15&quot;</span>
-<span class="n">pandas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=1.0&quot;</span>
-<span class="n">jupyterlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^3.5.0&quot;</span>
-<span class="n">joblib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^1.2.0&quot;</span>
-<span class="n">codecarbon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=2.2.1&quot;</span>
-<span class="n">pymysql</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^1.0.3&quot;</span>
-<span class="n">omegaconf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^2.3.0&quot;</span>
-<span class="n">setuptools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^69.5.1&quot;</span>
-
-<span class="k">[tool.poetry.group.dev.dependencies]</span>
-<span class="n">pytest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=7.0&quot;</span>
-<span class="n">mock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=4.0&quot;</span>
-<span class="n">sphinx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=5.0&quot;</span>
-<span class="n">nbsphinx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^0.8.9&quot;</span>
-<span class="n">sphinx-gallery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^0.11.1&quot;</span>
-<span class="n">sphinx-autoapi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=2.0.0&quot;</span>
-<span class="n">sphinx-rtd-theme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=1.0.0&quot;</span>
-<span class="n">recommonmark</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^0.7.1&quot;</span>
-<span class="n">freezegun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^1.2.2&quot;</span>
-
-<span class="k">[build-system]</span>
-<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;poetry-core&quot;</span><span class="p">]</span>
-<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;poetry.core.masonry.api&quot;</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To run the <a class="reference internal" href="examples/index.html#examples"><span class="std std-ref">example notebooks</span></a>, a Jupyter environment is required, which is not installed automatically. It can be installed e.g. via <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jupyterlab</span></code>.</p>
 </div>
 </section>
 

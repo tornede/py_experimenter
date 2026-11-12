@@ -67,9 +67,10 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#v1-4-3-2025">v1.4.3 (<strong>.</strong>.2025)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#feature">Feature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fix">Fix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other">Other</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#fix">Fix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#v1-4-2-12-06-2024">v1.4.2 (12.06.2024)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id1">Feature</a></li>
 </ul>
@@ -173,12 +174,24 @@
 <li><p>Allow condition for experimenter.get_table() and experimenter.get_logtable()</p></li>
 </ul>
 </section>
-</section>
 <section id="fix">
-<h2>Fix<a class="headerlink" href="#fix" title="Permalink to this heading"></a></h2>
+<h3>Fix<a class="headerlink" href="#fix" title="Permalink to this heading"></a></h3>
 <ul class="simple">
+<li><p>Fixed writing CodeCarbon emissions with <code class="docutils literal notranslate"><span class="pre">codecarbon&gt;=3.0</span></code>.</p></li>
+<li><p>Fixed missing <code class="docutils literal notranslate"><span class="pre">attrs</span></code> dependency.</p></li>
+<li><p>Fixed experiments being executed multiple times with SQLite and <code class="docutils literal notranslate"><span class="pre">n_jobs</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>.</p></li>
 <li><p>Fix bug, where the logtable_name was not overwritten by <cite>table_name</cite> updates in the <cite>PyExperimenter</cite> class.</p></li>
 </ul>
+</section>
+<section id="other">
+<h3>Other<a class="headerlink" href="#other" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Replaced Poetry with uv.</p></li>
+<li><p>Updated all dependencies and removed unnecessary upper bounds.</p></li>
+<li><p><strong>Breaking:</strong> Requires Python 3.10+, <code class="docutils literal notranslate"><span class="pre">codecarbon&gt;=3.0</span></code>, <code class="docutils literal notranslate"><span class="pre">numpy&gt;=1.26</span></code> and <code class="docutils literal notranslate"><span class="pre">pandas&gt;=2.0</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">jupyterlab</span></code> and <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> from the core dependencies.</p></li>
+</ul>
+</section>
 </section>
 <section id="v1-4-2-12-06-2024">
 <h2>v1.4.2 (12.06.2024)<a class="headerlink" href="#v1-4-2-12-06-2024" title="Permalink to this heading"></a></h2>

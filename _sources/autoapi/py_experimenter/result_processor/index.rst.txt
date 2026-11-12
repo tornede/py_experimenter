@@ -67,7 +67,13 @@ Module Contents
 
 
 
-   .. py:method:: _write_emissions(emission_data: codecarbon.output.EmissionsData, offline_mode: bool) -> None
+   .. py:method:: _write_emissions(emission_data: Dict[str, object], offline_mode: bool) -> None
+
+      Writes the emissions measured by codecarbon to the codecarbon table.
+
+      :param emission_data: The fields of codecarbon's `EmissionsData` (e.g. `EmissionsData.values`).
+      :param offline_mode: Whether codecarbon was used in offline mode.
+
 
 
    .. py:method:: _add_timestamps_to_results(results: Dict) -> List[Tuple[str, object]]
